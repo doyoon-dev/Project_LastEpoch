@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovement : CharacterProperty
 {
     public float m_moveSpeed = 3.0f;
     // Start is called before the first frame update
