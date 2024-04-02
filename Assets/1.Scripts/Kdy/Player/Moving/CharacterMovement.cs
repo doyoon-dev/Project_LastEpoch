@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharacterMovement : CharacterProperty
 {
     public float m_moveSpeed = 3.0f;
+    public float m_rotSpeed = 2.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,18 +24,40 @@ public class CharacterMovement : CharacterProperty
         StartCoroutine(Moving(target));
     }
 
-    IEnumerator Moving(Vector3 target)
+    public IEnumerator Moving(Vector3 target)
     {
         Vector3 dir = target - transform.position;
         float dist = dir.magnitude;
         dir.Normalize();
-
-        while (dist > 0.0f)
+        m_myAnim.SetBool("Move", true);
+        StartCoroutine(Rotating(dir));
+        while (dist > 0.01f)
         {
             float delta = Time.deltaTime * m_moveSpeed;
             if(delta > dist) delta = dist;
             dist -= delta;
             transform.Translate(dir * delta, Space.World);
+            yield return null;
+        }
+        m_myAnim.SetBool("Move", false);
+    }
+
+    IEnumerator Rotating(Vector3 pos)
+    {
+        float angle = Vector3.Angle(transform.forward, pos);
+        if (angle > 180.0f) angle -= 360.0f;
+        float rotDir = 1.0f;
+        if (Vector3.Dot(transform.right, pos) < 0.0f)
+        {
+            rotDir = -1.0f;
+        }
+
+        while (angle > 0.0f)
+        {
+            float delta = Time.deltaTime * 360.0f * m_rotSpeed;
+            if (delta > angle) delta = angle;
+            angle -= delta;
+            transform.Rotate(Vector3.up * rotDir * delta, Space.World);
             yield return null;
         }
     }
