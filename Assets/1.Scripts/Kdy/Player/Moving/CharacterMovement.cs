@@ -24,6 +24,7 @@ public class CharacterMovement : CharacterProperty
         StartCoroutine(Moving(target));
     }
 
+    // 이동
     public IEnumerator Moving(Vector3 target)
     {
         Vector3 dir = target - transform.position;
@@ -42,6 +43,7 @@ public class CharacterMovement : CharacterProperty
         m_myAnim.SetBool("Move", false);
     }
 
+    // 회전
     IEnumerator Rotating(Vector3 pos)
     {
         float angle = Vector3.Angle(transform.forward, pos);

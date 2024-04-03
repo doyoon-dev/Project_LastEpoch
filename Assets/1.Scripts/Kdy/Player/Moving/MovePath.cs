@@ -7,6 +7,7 @@ public class MovePath : CharacterMovement
 {
     NavMeshPath m_path;
     
+    // 네비게이션 길 이동
     public void MoveToPathByNav(Vector3 pos)
     {
         StopAllCoroutines();
