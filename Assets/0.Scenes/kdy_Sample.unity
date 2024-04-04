@@ -558,6 +558,9 @@ MonoBehaviour:
   m_moveMask:
     serializedVersion: 2
     m_Bits: 64
+  m_enemyMask:
+    serializedVersion: 2
+    m_Bits: 0
   m_moveAct:
     m_PersistentCalls:
       m_Calls:
@@ -573,6 +576,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_attackAct:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 906990291}
+        m_TargetAssemblyTypeName: BattleSystem, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_moveAttackAct:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 906990291}
+        m_TargetAssemblyTypeName: CharacterMovement, Assembly-CSharp
+        m_MethodName: MoveToEnemy
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_anim: {fileID: 1274204000}
 --- !u!114 &906990291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,6 +621,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_moveSpeed: 3
   m_rotSpeed: 2
+  m_stat:
+    hp: 0
+    attackDmg: 0
 --- !u!95 &1274204000
 Animator:
   serializedVersion: 4
@@ -683,14 +720,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1379555173}
-  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 5, z: -6.19}
+  m_LocalRotation: {x: 0.38268343, y: -0, z: -0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 4, z: -4.52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1420612760
 GameObject:
   m_ObjectHideFlags: 0

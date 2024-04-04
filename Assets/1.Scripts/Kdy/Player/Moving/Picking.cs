@@ -6,8 +6,11 @@ using UnityEngine.Events;
 public class Picking : MonoBehaviour
 {
     public LayerMask m_moveMask;
+    public LayerMask m_enemyMask;
     public UnityEvent<Vector3> m_moveAct;
     public UnityEvent m_attackAct;
+    public UnityEvent<Transform, float> m_moveAttackAct;
+    public Animator m_anim;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,19 +20,23 @@ public class Picking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !m_anim.GetBool("IsAttacking"))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask | m_enemyMask))
             {
                 m_moveAct?.Invoke(hit.point);
             }
         }
-        if(Input.GetMouseButton(1))
+        if(Input.GetMouseButton(1) && !m_anim.GetBool("IsAttacking"))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, Mathf.Infinity, m_moveMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask | m_enemyMask))
             {
+                if ((1 << hit.transform.gameObject.layer & m_enemyMask) != 0)
+                {
+                    m_moveAttackAct?.Invoke(hit.transform, 1.0f);
+                }
                 m_attackAct?.Invoke();
             }
         }

@@ -63,4 +63,29 @@ public class CharacterMovement : CharacterProperty
             yield return null;
         }
     }
+
+    public void MoveToEnemy(Transform target, float range)
+    {
+        StopAllCoroutines();
+        StartCoroutine(MovingToEnemy(target, range));
+    }
+
+    // 적과 거리가 있을 때 적 앞까지 이동 후 공격
+    public IEnumerator MovingToEnemy(Transform target, float range)
+    {
+        Vector3 dir = target.position - transform.position;
+        float dist = dir.magnitude - range;
+        dir.Normalize();
+        m_myAnim.SetBool("Move", true);
+        StartCoroutine(Rotating(dir));
+        while (!Mathf.Approximately(dist, 0.0f))
+        {
+            float delta = Time.deltaTime * m_moveSpeed;
+            if (delta > dist) delta = dist;
+            dist -= delta;
+            transform.Translate(dir * delta, Space.World);
+            yield return null;
+        }
+        m_myAnim.SetBool("Move", false);
+    }
 }
