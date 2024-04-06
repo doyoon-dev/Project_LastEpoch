@@ -35,6 +35,7 @@ public class BattleSystem : MovePath
     // 제자리 공격
     public void OnAttack(Vector3 pos)
     {
+        if (m_myAnim.GetBool("Move")) m_myAnim.SetBool("Move", false);
         Rotate(pos);
         m_myAnim.SetTrigger("Attack");
     }
