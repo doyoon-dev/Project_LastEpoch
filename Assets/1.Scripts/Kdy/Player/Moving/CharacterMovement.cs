@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[System.Serializable]
+public struct MoveStat
+{
+    public float moveSpeed;
+    public float rotSpeed;
+}
+
 public class CharacterMovement : CharacterProperty
 {
-    public float m_moveSpeed = 3.0f;
-    public float m_rotSpeed = 2.0f;
+    [SerializeField] MoveStat m_moveStat;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,12 +40,12 @@ public class CharacterMovement : CharacterProperty
         dir.y = 0;
         m_myAnim.SetBool("Move", true);
         StartCoroutine(Rotating(dir));
-        while (dist > 0.01f)
+        while (dist > 0.0f)
         {
-            float delta = Time.deltaTime * m_moveSpeed;
+            float delta = Time.deltaTime * m_moveStat.moveSpeed;
             if(delta > dist) delta = dist;
-            dist -= delta;
             transform.Translate(dir * delta, Space.World);
+            dist -= delta;
             yield return null;
         }
         m_myAnim.SetBool("Move", false);
@@ -64,7 +70,7 @@ public class CharacterMovement : CharacterProperty
 
         while (angle > 0.0f)
         {
-            float delta = Time.deltaTime * 360.0f * m_rotSpeed;
+            float delta = Time.deltaTime * 360.0f * m_moveStat.rotSpeed;
             if (delta > angle) delta = angle;
             angle -= delta;
             transform.Rotate(Vector3.up * rotDir * delta, Space.World);
@@ -87,19 +93,20 @@ public class CharacterMovement : CharacterProperty
             float dist = dir.magnitude - range;
             dir.Normalize();
             dir.y = 0;
-            m_myAnim.SetBool("Move", true);
-            StartCoroutine(Rotating(dir));
+            
+            //StartCoroutine(Rotating(dir));
             if (!Mathf.Approximately(dist, 0.0f))
             {
-                float delta = Time.deltaTime * m_moveSpeed;
+                m_myAnim.SetBool("Move", true);
+                float delta = Time.deltaTime * m_moveStat.moveSpeed;
                 if (delta > dist) delta = dist;
-                dist -= delta;
-                transform.Translate(dir * delta, Space.World);
+                if(!m_myAnim.GetBool("IsAttacking")) transform.Translate(dir * delta, Space.World);
             }
             else
             {
                 m_myAnim.SetBool("Move", false);
                 act?.Invoke();
+                target = null;
             }
             yield return null;
         }

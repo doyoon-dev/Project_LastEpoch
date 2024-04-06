@@ -619,11 +619,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0abb2d890483a764595d5fd8b9339da4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 3
-  m_rotSpeed: 2
+  m_moveStat:
+    moveSpeed: 2
+    rotSpeed: 2
   m_stat:
-    hp: 0
-    attackDmg: 0
+    hp: 100
+    attackDmg: 20
+    attackRange: 2
 --- !u!1 &968368194
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,7 +639,7 @@ GameObject:
   - component: {fileID: 968368196}
   - component: {fileID: 968368195}
   m_Layer: 7
-  m_Name: Capsule
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -10,6 +10,7 @@ public struct BattleStat
 {
     public float hp;
     public float attackDmg;
+    public float attackRange;
 
 }
 public class BattleSystem : MovePath
@@ -45,9 +46,9 @@ public class BattleSystem : MovePath
 
     // Enemy한테 이동 후 공격
     // 공격 범위에 들어왔을 때 멈추고 공격
-    public void MoveToAttack(Transform target, float range)
+    public void MoveToAttack(Transform target)
     {
-        MoveToEnemy(target, range, Attack);
+        MoveToEnemy(target, m_stat.attackRange, null);
         m_myAnim.SetTrigger("Attack");
     }
 
