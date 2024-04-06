@@ -17,9 +17,10 @@ public class Player : BattleSystem
         
     }
 
-
-    public void Attacking(Transform target, float range)
+    // Enemy한테 이동 후 공격
+    // 공격 범위에 들어왔을 때 멈추고 공격
+    public void MoveToAttack(Transform target)
     {
-        MoveToEnemy(target, range, Attack);
+        MoveToEnemy(target, m_stat.attackRange, Attack);
     }
 }

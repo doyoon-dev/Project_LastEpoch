@@ -94,7 +94,7 @@ public class CharacterMovement : CharacterProperty
             dir.Normalize();
             dir.y = 0;
             
-            //StartCoroutine(Rotating(dir));
+            StartCoroutine(Rotating(dir));
             if (!Mathf.Approximately(dist, 0.0f))
             {
                 m_myAnim.SetBool("Move", true);

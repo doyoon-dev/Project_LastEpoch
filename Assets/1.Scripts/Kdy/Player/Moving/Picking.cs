@@ -36,11 +36,13 @@ public class Picking : MonoBehaviour
                 // 몬스터 클릭 됐을 때 -> BattleSystem의 MoveToAttack 실행
                 if ((1 << hit.transform.gameObject.layer & m_enemyMask) != 0)
                 {
+                    Debug.Log("Enemy");
                     m_moveAttackAct?.Invoke(hit.transform);
                 }
                 // 배경 클릭 됐을 때 - 마우스 클릭 방향으로 회전 후 제자리에서 공격
                 else
                 {
+                    Debug.Log("땅");
                     m_attackAct?.Invoke(hit.point);
                 }
             }

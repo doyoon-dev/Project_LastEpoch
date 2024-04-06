@@ -13,6 +13,8 @@ public struct BattleStat
     public float attackRange;
 
 }
+
+// 공격하고, 데미지 받는 스크립트
 public class BattleSystem : MovePath
 {
     public BattleStat m_stat;
@@ -42,14 +44,6 @@ public class BattleSystem : MovePath
 
     public void Attack()
     {
-        m_myAnim.SetTrigger("Attack");
-    }
-
-    // Enemy한테 이동 후 공격
-    // 공격 범위에 들어왔을 때 멈추고 공격
-    public void MoveToAttack(Transform target)
-    {
-        MoveToEnemy(target, m_stat.attackRange, null);
         m_myAnim.SetTrigger("Attack");
     }
 
