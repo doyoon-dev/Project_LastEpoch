@@ -39,12 +39,12 @@ public class BattleSystem : MovePath
     {
         if (m_myAnim.GetBool("Move")) m_myAnim.SetBool("Move", false);
         Rotate(pos);
-        m_myAnim.SetTrigger("Attack");
+        m_myAnim.SetBool("Attack", true);
     }
 
     public void Attack()
     {
-        m_myAnim.SetTrigger("Attack");
+        m_myAnim.SetBool("Attack", true);
     }
 
     // 데미지 받음
