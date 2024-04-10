@@ -5,6 +5,12 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Player : BattleSystem
 {
+    [SerializeField]
+    Transform m_weaponStartPoint;
+    [SerializeField]
+    Transform m_weaponEndPoint;
+    public LayerMask m_enemyMask;
+    int m_clickCnt = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,9 +20,9 @@ public class Player : BattleSystem
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(1) && !m_myAnim.GetBool("IsAttacking"))
+        if (Input.GetMouseButtonDown(1))
         {
-
+            m_clickCnt++;
         }
     }
 
@@ -28,7 +34,7 @@ public class Player : BattleSystem
     }
 
     // 첫 공격 이후 다음 공격 모션 바뀜
-    public void FirstAttack()
+    void FirstAttack()
     {
         m_myAnim.SetBool("ComboOn", true);
         m_myAnim.SetBool("Attack", false);
@@ -40,4 +46,38 @@ public class Player : BattleSystem
         m_myAnim.SetBool("ComboOn", false);
         m_myAnim.SetBool("Attack", false);
     }
+
+    public void ComboCheckStart()
+    {
+        FirstAttack();
+        m_myAnim.SetBool("ComboCheck", false);
+        m_clickCnt = 0;
+    }
+
+    public void ComboCheckEnd()
+    {
+        if(m_clickCnt > 0)
+        {
+            m_myAnim.SetBool("ComboCheck", true);
+        }
+    }
+
+    public override void Attack()
+    {
+        base.Attack();
+        Collider[] enemy = Physics.OverlapCapsule(m_weaponStartPoint.position, m_weaponEndPoint.position, 0.06f, m_enemyMask);
+        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 2f, m_enemyMask);
+
+        foreach (Collider col in list)
+        {
+            // 충돌한 col에 BattleSystem 컴포넌트가 없기 때문에 bat이 null이됨
+            // 충돌한 col에 BattleSystem 컴포넌트 넣으면 해결
+            BattleSystem bat = col.GetComponent<BattleSystem>();
+            if (bat != null)
+            {
+                bat.OnDamaged(10);
+            }
+        }
+    }
+
 }

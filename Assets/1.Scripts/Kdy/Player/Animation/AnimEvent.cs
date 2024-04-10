@@ -6,8 +6,9 @@ using UnityEngine.Events;
 
 public class AnimEvent : MonoBehaviour
 {
-    public UnityEvent m_firstAtk;
     public UnityEvent m_secondAtk;
+    public UnityEvent m_comboStart;
+    public UnityEvent m_comboEnd;
 
     // Start is called before the first frame update
     void Start()
@@ -21,13 +22,18 @@ public class AnimEvent : MonoBehaviour
         
     }
 
-    public void FirstComboCheck()
-    {
-        m_firstAtk?.Invoke();
-    }
-
     public void SecondComboCheck()
     {
         m_secondAtk?.Invoke();
+    }
+
+    public void ComboStart()
+    {
+        m_comboStart?.Invoke();
+    }
+
+    public void ComboEnd()
+    {
+        m_comboEnd?.Invoke();
     }
 }

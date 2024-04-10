@@ -18,6 +18,9 @@ public struct BattleStat
 public class BattleSystem : MovePath
 {
     public BattleStat m_stat;
+
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,7 +45,7 @@ public class BattleSystem : MovePath
         m_myAnim.SetBool("Attack", true);
     }
 
-    public void Attack()
+    public virtual void Attack()
     {
         m_myAnim.SetBool("Attack", true);
     }
@@ -50,6 +53,9 @@ public class BattleSystem : MovePath
     // 데미지 받음
     public void OnDamaged(float damage)
     {
+        Debug.Log("공격!!");
         m_stat.hp -= damage;
     }
+
+    
 }
