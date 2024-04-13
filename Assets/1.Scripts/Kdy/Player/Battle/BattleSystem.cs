@@ -14,13 +14,16 @@ public struct BattleStat
 
 }
 
+interface IDeadAlarm
+{
+    event Action m_deadAlarm;
+}
+
 // 공격하고, 데미지 받는 스크립트
-public class BattleSystem : MovePath
+public class BattleSystem : MovePath, IDeadAlarm
 {
     public BattleStat m_stat;
-
-    
-
+    public event Action m_deadAlarm;
     // Start is called before the first frame update
     void Start()
     {
@@ -50,11 +53,21 @@ public class BattleSystem : MovePath
         m_myAnim.SetBool("Attack", true);
     }
 
+    public void Dead()
+    {
+        m_deadAlarm?.Invoke();
+    }
+
     // 데미지 받음
     public void OnDamaged(float damage)
     {
-        Debug.Log("공격!!");
+        Debug.Log("피격 : " + damage);
         m_stat.hp -= damage;
+        if (m_stat.hp <= 0)
+        {
+            m_stat.hp = 0;
+            Dead();
+        }
     }
 
     

@@ -9,6 +9,8 @@ public class Player : BattleSystem
     Transform m_weaponStartPoint;
     [SerializeField]
     Transform m_weaponEndPoint;
+    [SerializeField]
+    Transform weaponPoint;
     public LayerMask m_enemyMask;
     int m_clickCnt = 0;
     // Start is called before the first frame update
@@ -66,16 +68,15 @@ public class Player : BattleSystem
     {
         base.Attack();
         Collider[] enemy = Physics.OverlapCapsule(m_weaponStartPoint.position, m_weaponEndPoint.position, 0.06f, m_enemyMask);
-        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 2f, m_enemyMask);
-
+        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 1.0f, m_enemyMask);
         foreach (Collider col in list)
         {
             // 충돌한 col에 BattleSystem 컴포넌트가 없기 때문에 bat이 null이됨
             // 충돌한 col에 BattleSystem 컴포넌트 넣으면 해결
-            BattleSystem bat = col.GetComponent<BattleSystem>();
-            if (bat != null)
+            MonsterSample ms = col.GetComponent<MonsterSample>();
+            if (ms != null)
             {
-                bat.OnDamaged(10);
+                ms.OnDamaged(m_stat.attackDmg);
             }
         }
     }
