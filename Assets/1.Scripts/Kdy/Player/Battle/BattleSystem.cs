@@ -41,10 +41,14 @@ public class BattleSystem : MovePath, IDeadAlarm
     // 몬스터 우클릭(계속 클릭할 때 도) 시 몬스터한테 이동 후 공격 범위 안에 몬스터가 들어오면 공격
 
     // 제자리 공격
-    public void OnAttack(Vector3 pos)
+    public virtual void OnAttack(Vector3 pos)
     {
         if (m_myAnim.GetBool("Move")) m_myAnim.SetBool("Move", false);
-        Rotate(pos);
+        Vector3 dir = pos - transform.position;
+        dir.Normalize();
+        dir.y = 0;
+        transform.forward = dir;
+        //Rotate(pos);
         m_myAnim.SetBool("Attack", true);
     }
 
@@ -61,8 +65,9 @@ public class BattleSystem : MovePath, IDeadAlarm
     // 데미지 받음
     public void OnDamaged(float damage)
     {
-        Debug.Log("피격 : " + damage);
+        
         m_stat.hp -= damage;
+        Debug.Log("현재 피 : " + m_stat.hp);
         if (m_stat.hp <= 0)
         {
             m_stat.hp = 0;

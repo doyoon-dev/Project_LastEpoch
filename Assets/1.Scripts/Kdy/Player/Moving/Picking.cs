@@ -20,7 +20,7 @@ public class Picking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0) && !m_anim.GetBool("IsAttacking"))
+        if (Input.GetMouseButtonDown(0) && !m_anim.GetBool("IsAttacking"))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask | m_enemyMask))
@@ -28,7 +28,7 @@ public class Picking : MonoBehaviour
                 m_moveAct?.Invoke(hit.point);
             }
         }
-        if(Input.GetMouseButton(1) && !m_anim.GetBool("IsAttacking"))
+        if(Input.GetMouseButtonDown(1) && !m_anim.GetBool("IsAttacking"))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask | m_enemyMask))

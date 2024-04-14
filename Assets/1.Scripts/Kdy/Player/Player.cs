@@ -64,6 +64,22 @@ public class Player : BattleSystem
         }
     }
 
+    public override void OnAttack(Vector3 pos)
+    {
+        base.OnAttack(pos);
+        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 1.0f, m_enemyMask);
+        foreach (Collider col in list)
+        {
+            // 충돌한 col에 BattleSystem 컴포넌트가 없기 때문에 bat이 null이됨
+            // 충돌한 col에 BattleSystem 컴포넌트 넣으면 해결
+            MonsterSample ms = col.GetComponent<MonsterSample>();
+            if (ms != null)
+            {
+                ms.OnDamaged(m_stat.attackDmg);
+            }
+        }
+    }
+
     public override void Attack()
     {
         base.Attack();
