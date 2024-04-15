@@ -14,13 +14,18 @@ public struct BattleStat
 
 }
 
+interface IOnDamaged
+{
+    void OnDamaged(float damage);
+}
+
 interface IDeadAlarm
 {
     event Action m_deadAlarm;
 }
 
 // 공격하고, 데미지 받는 스크립트
-public class BattleSystem : MovePath, IDeadAlarm
+public class BattleSystem : MovePath, IDeadAlarm, IOnDamaged
 {
     public BattleStat m_stat;
     public event Action m_deadAlarm;
@@ -65,7 +70,6 @@ public class BattleSystem : MovePath, IDeadAlarm
     // 데미지 받음
     public void OnDamaged(float damage)
     {
-        
         m_stat.hp -= damage;
         Debug.Log("현재 피 : " + m_stat.hp);
         if (m_stat.hp <= 0)

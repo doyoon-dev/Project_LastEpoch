@@ -111,4 +111,30 @@ public class CharacterMovement : CharacterProperty
             yield return null;
         }
     }
+
+    public void FollowingEnemy(Vector3 target, float range, UnityAction act)
+    {
+        StopAllCoroutines();
+        StartCoroutine(Following(target, range, act));
+    }
+
+    public IEnumerator Following(Vector3 target, float range, UnityAction act)
+    {
+        Vector3 dir = target - transform.position;
+        float dist = dir.magnitude - range;
+        dir.Normalize();
+        dir.y = 0;
+        m_myAnim.SetBool("Move", true);
+        StartCoroutine(Rotating(dir));
+        while (dist > 0.0f)
+        {
+            float delta = Time.deltaTime * m_moveStat.moveSpeed;
+            if (delta > dist) delta = dist;
+            transform.Translate(dir * delta, Space.World);
+            dist -= delta;
+            yield return null;
+        }
+        m_myAnim.SetBool("Move", false);
+        act?.Invoke();
+    }
 }

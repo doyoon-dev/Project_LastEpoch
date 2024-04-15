@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -30,9 +31,10 @@ public class Player : BattleSystem
 
     // Enemy한테 이동 후 공격
     // 공격 범위에 들어왔을 때 멈추고 공격
-    public void MoveToAttack(Transform target)
+    public void MoveToAttack(Vector3 target)//(Transform target)
     {
-        MoveToEnemy(target, m_stat.attackRange, Attack);
+        //MoveToEnemy(target, m_stat.attackRange, Attack);
+        FollowingEnemy(target, m_stat.attackRange, Attack);
     }
 
     // 첫 공격 이후 다음 공격 모션 바뀜
@@ -58,7 +60,8 @@ public class Player : BattleSystem
 
     public void ComboCheckEnd()
     {
-        if(m_clickCnt > 0)
+        m_myAnim.SetBool("Attack", false);
+        if (m_clickCnt > 0)
         {
             m_myAnim.SetBool("ComboCheck", true);
         }
@@ -72,29 +75,37 @@ public class Player : BattleSystem
         {
             // 충돌한 col에 BattleSystem 컴포넌트가 없기 때문에 bat이 null이됨
             // 충돌한 col에 BattleSystem 컴포넌트 넣으면 해결
-            MonsterSample ms = col.GetComponent<MonsterSample>();
+            IOnDamaged ms = col.GetComponent<IOnDamaged>();
             if (ms != null)
             {
                 ms.OnDamaged(m_stat.attackDmg);
             }
         }
     }
-
+    int count = 0;
     public override void Attack()
     {
         base.Attack();
         Collider[] enemy = Physics.OverlapCapsule(m_weaponStartPoint.position, m_weaponEndPoint.position, 0.06f, m_enemyMask);
-        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 1.0f, m_enemyMask);
+        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 0.06f, m_enemyMask);
         foreach (Collider col in list)
         {
+            
             // 충돌한 col에 BattleSystem 컴포넌트가 없기 때문에 bat이 null이됨
             // 충돌한 col에 BattleSystem 컴포넌트 넣으면 해결
-            MonsterSample ms = col.GetComponent<MonsterSample>();
+            IOnDamaged ms = col.GetComponent<IOnDamaged>();
             if (ms != null)
             {
+                Debug.Log(++count);
                 ms.OnDamaged(m_stat.attackDmg);
             }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(m_weaponEndPoint.position, 0.06f);
     }
 
 }

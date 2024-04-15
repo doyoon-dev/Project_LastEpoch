@@ -9,6 +9,7 @@ public class AnimEvent : MonoBehaviour
     public UnityEvent m_secondAtk;
     public UnityEvent m_comboStart;
     public UnityEvent m_comboEnd;
+    public UnityEvent m_atkEvent;
 
     // Start is called before the first frame update
     void Start()
@@ -35,5 +36,10 @@ public class AnimEvent : MonoBehaviour
     public void ComboEnd()
     {
         m_comboEnd?.Invoke();
+    }
+
+    public void AtkEvent()
+    {
+        m_atkEvent?.Invoke();
     }
 }
