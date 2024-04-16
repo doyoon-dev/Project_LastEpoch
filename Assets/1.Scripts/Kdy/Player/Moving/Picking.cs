@@ -9,8 +9,7 @@ public class Picking : MonoBehaviour
     public LayerMask m_enemyMask;
     public UnityEvent<Vector3> m_moveAct;
     public UnityEvent<Vector3> m_attackAct;
-    //public UnityEvent<Transform> m_moveAttackAct;
-    public UnityEvent<Vector3> m_moveAttackAct;
+    public UnityEvent<Transform> m_moveAttackAct;
     public Animator m_anim;
     // Start is called before the first frame update
     void Start()
@@ -37,7 +36,7 @@ public class Picking : MonoBehaviour
                 // 몬스터 클릭 됐을 때 -> BattleSystem의 MoveToAttack 실행
                 if ((1 << hit.transform.gameObject.layer & m_enemyMask) != 0)
                 {
-                    m_moveAttackAct?.Invoke(hit.point);
+                    m_moveAttackAct?.Invoke(hit.transform);
                 }
                 // 배경 클릭 됐을 때 - 마우스 클릭 방향으로 회전 후 제자리에서 공격
                 else

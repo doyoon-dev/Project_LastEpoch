@@ -14,21 +14,32 @@ public struct BattleStat
 
 }
 
-interface IOnDamaged
-{
-    void OnDamaged(float damage);
-}
-
-interface IDeadAlarm
+public interface IDeadAlarm
 {
     event Action m_deadAlarm;
 }
 
+public interface IOnDamaged
+{
+    void OnDamaged(float damage);
+}
+
+public interface ITransform
+{
+    Transform transform { get; }
+}
+
+public interface IBattle : IOnDamaged, ITransform
+{
+
+}
+
 // 공격하고, 데미지 받는 스크립트
-public class BattleSystem : MovePath, IDeadAlarm, IOnDamaged
+public class BattleSystem : MovePath, IDeadAlarm, IBattle
 {
     public BattleStat m_stat;
     public event Action m_deadAlarm;
+    protected IBattle m_target = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,11 +66,17 @@ public class BattleSystem : MovePath, IDeadAlarm, IOnDamaged
         transform.forward = dir;
         //Rotate(pos);
         m_myAnim.SetBool("Attack", true);
+        if(m_target != null) m_target.OnDamaged(m_stat.attackDmg);
+    }
+
+    public void AttackAnim()
+    {
+        m_myAnim.SetBool("Attack", true);
     }
 
     public virtual void Attack()
     {
-        m_myAnim.SetBool("Attack", true);
+        if (m_target != null) m_target.OnDamaged(m_stat.attackDmg);
     }
 
     public void Dead()

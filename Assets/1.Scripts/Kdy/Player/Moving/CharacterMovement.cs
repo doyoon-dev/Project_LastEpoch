@@ -95,7 +95,7 @@ public class CharacterMovement : CharacterProperty
             dir.y = 0;
             
             StartCoroutine(Rotating(dir));
-            if (!Mathf.Approximately(dist, 0.0f))
+            if (dist > 0.01f)
             {
                 m_myAnim.SetBool("Move", true);
                 float delta = Time.deltaTime * m_moveStat.moveSpeed;

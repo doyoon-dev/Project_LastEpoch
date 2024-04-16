@@ -14,6 +14,7 @@ public class Player : BattleSystem
     Transform weaponPoint;
     public LayerMask m_enemyMask;
     int m_clickCnt = 0;
+    bool m_isComboCheck = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,18 +24,32 @@ public class Player : BattleSystem
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (m_isComboCheck)
         {
-            m_clickCnt++;
+            if (Input.GetMouseButtonDown(1))
+            {
+                m_clickCnt++;
+            }
         }
     }
 
     // Enemy한테 이동 후 공격
     // 공격 범위에 들어왔을 때 멈추고 공격
-    public void MoveToAttack(Vector3 target)//(Transform target)
+    public void AttackTarget(Transform target)//(Transform target)
     {
-        //MoveToEnemy(target, m_stat.attackRange, Attack);
-        FollowingEnemy(target, m_stat.attackRange, Attack);
+        
+        m_target = target.GetComponent<IBattle>();
+        IDeadAlarm alarm = target.GetComponent<IDeadAlarm>();
+        if (alarm != null)
+        {
+            alarm.m_deadAlarm += () =>
+            {
+                StopAllCoroutines();
+                m_target = null;
+            };
+        }
+        //FollowingEnemy(target.position, m_stat.attackRange, null);
+        MoveToEnemy(target, m_stat.attackRange, AttackAnim);
     }
 
     // 첫 공격 이후 다음 공격 모션 바뀜
@@ -53,6 +68,7 @@ public class Player : BattleSystem
 
     public void ComboCheckStart()
     {
+        m_isComboCheck = true;
         FirstAttack();
         m_myAnim.SetBool("ComboCheck", false);
         m_clickCnt = 0;
@@ -60,6 +76,7 @@ public class Player : BattleSystem
 
     public void ComboCheckEnd()
     {
+        m_isComboCheck = false;
         m_myAnim.SetBool("Attack", false);
         if (m_clickCnt > 0)
         {
@@ -69,8 +86,7 @@ public class Player : BattleSystem
 
     public override void OnAttack(Vector3 pos)
     {
-        base.OnAttack(pos);
-        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 1.0f, m_enemyMask);
+        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 0.06f, m_enemyMask);
         foreach (Collider col in list)
         {
             // 충돌한 col에 BattleSystem 컴포넌트가 없기 때문에 bat이 null이됨
@@ -82,12 +98,10 @@ public class Player : BattleSystem
             }
         }
     }
-    int count = 0;
     public override void Attack()
     {
-        base.Attack();
         Collider[] enemy = Physics.OverlapCapsule(m_weaponStartPoint.position, m_weaponEndPoint.position, 0.06f, m_enemyMask);
-        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 0.06f, m_enemyMask);
+        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 0.5f, m_enemyMask);
         foreach (Collider col in list)
         {
             
@@ -96,7 +110,6 @@ public class Player : BattleSystem
             IOnDamaged ms = col.GetComponent<IOnDamaged>();
             if (ms != null)
             {
-                Debug.Log(++count);
                 ms.OnDamaged(m_stat.attackDmg);
             }
         }
@@ -105,7 +118,7 @@ public class Player : BattleSystem
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(m_weaponEndPoint.position, 0.06f);
+        Gizmos.DrawSphere(m_weaponEndPoint.position, 0.5f);
     }
 
 }
