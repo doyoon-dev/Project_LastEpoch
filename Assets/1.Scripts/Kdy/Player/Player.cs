@@ -18,7 +18,10 @@ public class Player : BattleSystem
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_deadAlarm += () =>
+        {
+            Debug.Log("죽음");
+        };
     }
 
     // Update is called once per frame
@@ -31,13 +34,16 @@ public class Player : BattleSystem
                 m_clickCnt++;
             }
         }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            OnDamaged(50);
+        }
     }
 
     // Enemy한테 이동 후 공격
     // 공격 범위에 들어왔을 때 멈추고 공격
     public void AttackTarget(Transform target)//(Transform target)
     {
-        
         m_target = target.GetComponent<IBattle>();
         IDeadAlarm alarm = target.GetComponent<IDeadAlarm>();
         if (alarm != null)
@@ -49,7 +55,7 @@ public class Player : BattleSystem
             };
         }
         //FollowingEnemy(target.position, m_stat.attackRange, null);
-        MoveToEnemy(target, m_stat.attackRange, AttackAnim);
+        MoveToEnemy(m_target.transform, m_stat.attackRange, AttackAnim);
     }
 
     // 첫 공격 이후 다음 공격 모션 바뀜
@@ -86,6 +92,7 @@ public class Player : BattleSystem
 
     public override void OnAttack(Vector3 pos)
     {
+        base.OnAttack(pos);
         Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 0.06f, m_enemyMask);
         foreach (Collider col in list)
         {
@@ -101,7 +108,8 @@ public class Player : BattleSystem
     public override void Attack()
     {
         Collider[] enemy = Physics.OverlapCapsule(m_weaponStartPoint.position, m_weaponEndPoint.position, 0.06f, m_enemyMask);
-        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 0.5f, m_enemyMask);
+        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 0.7f, m_enemyMask);
+        Debug.Log(list.Length);
         foreach (Collider col in list)
         {
             
@@ -118,7 +126,7 @@ public class Player : BattleSystem
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(m_weaponEndPoint.position, 0.5f);
+        Gizmos.DrawSphere(m_weaponEndPoint.position, 0.7f);
     }
 
 }

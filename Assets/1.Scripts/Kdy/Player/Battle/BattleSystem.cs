@@ -64,6 +64,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         dir.Normalize();
         dir.y = 0;
         transform.forward = dir;
+        StopAllCoroutines();
         //Rotate(pos);
         m_myAnim.SetBool("Attack", true);
         if(m_target != null) m_target.OnDamaged(m_stat.attackDmg);
@@ -88,7 +89,6 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     public void OnDamaged(float damage)
     {
         m_stat.hp -= damage;
-        Debug.Log("ÇöÀç ÇÇ : " + m_stat.hp);
         if (m_stat.hp <= 0)
         {
             m_stat.hp = 0;
