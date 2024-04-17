@@ -121,7 +121,7 @@ public class CharacterMovement : CharacterProperty
     public IEnumerator Following(Vector3 target, float range, UnityAction act)
     {
         Vector3 dir = target - transform.position;
-        float dist = dir.magnitude - range;
+        float dist = Mathf.Clamp(dir.magnitude - range, 0, Mathf.Infinity);
         dir.Normalize();
         dir.y = 0;
         m_myAnim.SetBool("Move", true);
