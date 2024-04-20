@@ -78,7 +78,7 @@ public class SentinelSkill : Skill
     }
 
     // 돌격 스킬
-    void Skill_Lunge()
+    void Skill_Lunge(KeyCode inputKey)
     {
         // 스킬 키 한 번 누르면 스킬 발동
         // 마우스 방향으로 일정거리 돌진
