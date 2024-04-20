@@ -9,9 +9,9 @@ using UnityEngine.UIElements;
 public struct BattleStat
 {
     public float hp;
+    public float mp;
     public float attackDmg;
     public float attackRange;
-
 }
 
 public interface IDeadAlarm

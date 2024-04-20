@@ -13,22 +13,22 @@ public class Skill : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Q_SkillInputKey();
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            W_SkillInputKey();
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            E_SkillInputKey();
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            R_SkillInputKey();
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    Q_SkillInputKey();
+        //}
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    W_SkillInputKey();
+        //}
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    E_SkillInputKey();
+        //}
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    R_SkillInputKey();
+        //}
     }
 
     protected virtual void Q_SkillInputKey()
