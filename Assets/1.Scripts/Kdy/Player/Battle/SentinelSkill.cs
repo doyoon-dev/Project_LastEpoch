@@ -17,6 +17,7 @@ public class SentinelSkill : Skill
     void Update()
     {
         Skill_WarPath(KeyCode.Q);
+        Skill_Lunge(KeyCode.W);
     }
 
     protected override void Q_SkillInputKey()
@@ -80,7 +81,54 @@ public class SentinelSkill : Skill
     // 돌격 스킬
     void Skill_Lunge(KeyCode inputKey)
     {
+        if (Input.GetKeyDown(inputKey))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+            {
+                StopAllCoroutines();
+                Vector3 dir = hit.point - transform.position;
+                transform.forward = dir;
+                StartCoroutine(LungeMove(dir));
+            }
+        }
         // 스킬 키 한 번 누르면 스킬 발동
         // 마우스 방향으로 일정거리 돌진
+    }
+
+    public void DamageBox()
+    {
+        Collider[] enemy = Physics.OverlapSphere(transform.position, 1.0f);
+        foreach (Collider col in enemy)
+        {
+            IBattle ib = col.GetComponent<IBattle>();
+            if (ib != null)
+            {
+                ib.OnDamaged(SkillData.m_skillData["WindMill"].dmg);
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position, 1.0f);
+    }
+
+    IEnumerator LungeMove(Vector3 dir)
+    {
+        m_myAnim.SetBool("SkillLunge", true);
+        float dist = 2;
+        dir.Normalize();
+        dir.y = 0;
+        while (dist > 0)
+        {
+            float delta = 5.0f * Time.deltaTime;
+            if (delta > dist) delta = dist;
+            dist -= delta;
+            transform.Translate(dir * delta, Space.World);
+            yield return null;
+        }
+        m_myAnim.SetBool("SkillLunge", false);
     }
 }
