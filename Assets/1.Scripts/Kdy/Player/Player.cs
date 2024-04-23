@@ -18,6 +18,7 @@ public class Player : BattleSystem
     // Start is called before the first frame update
     void Start()
     {
+        Initalize();
         m_deadAlarm += () =>
         {
             Debug.Log("죽음");
@@ -40,6 +41,7 @@ public class Player : BattleSystem
         }
     }
 
+
     // Enemy한테 이동 후 공격
     // 공격 범위에 들어왔을 때 멈추고 공격
     public void AttackTarget(Transform target)//(Transform target)
@@ -55,7 +57,7 @@ public class Player : BattleSystem
             };
         }
         //FollowingEnemy(target.position, m_stat.attackRange, null);
-        MoveToEnemy(m_target.transform, m_stat.attackRange, AttackAnim);
+        MoveToEnemy(m_target.transform, m_stat.AttackRange, AttackAnim);
     }
 
     // 첫 공격 이후 다음 공격 모션 바뀜
@@ -101,9 +103,10 @@ public class Player : BattleSystem
             IOnDamaged ms = col.GetComponent<IOnDamaged>();
             if (ms != null)
             {
-                ms.OnDamaged(m_stat.attackDmg);
+                ms.OnDamaged(m_stat.AttackDmg);
             }
         }
+
     }
     public override void Attack()
     {
@@ -118,7 +121,7 @@ public class Player : BattleSystem
             IOnDamaged ms = col.GetComponent<IOnDamaged>();
             if (ms != null)
             {
-                ms.OnDamaged(m_stat.attackDmg);
+                ms.OnDamaged(m_stat.AttackDmg);
             }
         }
     }

@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Skill : MonoBehaviour
 {
+    public UnityEvent<float> m_useSkill;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +32,11 @@ public class Skill : MonoBehaviour
         //{
         //    R_SkillInputKey();
         //}
+    }
+
+    protected void UsingSkillMp(float skillMp)
+    {
+        m_useSkill?.Invoke(skillMp);
     }
 
     protected virtual void Q_SkillInputKey()

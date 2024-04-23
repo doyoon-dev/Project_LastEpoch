@@ -8,6 +8,7 @@ public class MonsterSample : BattleSystem
     // Start is called before the first frame update
     void Start()
     {
+        Initalize();
         IDeadAlarm da = GetComponent<IDeadAlarm>();
         if (da != null)
         {

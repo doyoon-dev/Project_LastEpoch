@@ -8,15 +8,21 @@ using UnityEngine.UIElements;
 [System.Serializable]
 public struct BattleStat
 {
-    public float hp;
-    public float mp;
-    public float attackDmg;
-    public float attackRange;
+    public float MaxHp;
+    public float MaxMp;
+    public float AttackDmg;
+    public float AttackRange;
 }
 
 public interface IDeadAlarm
 {
     event Action m_deadAlarm;
+}
+
+// 인터페이스 필요 없어서 지워야 될 수 있음
+public interface IUsedSkill
+{
+    void UsedSkill(float skillMp);
 }
 
 public interface IOnDamaged
@@ -29,7 +35,7 @@ public interface ITransform
     Transform transform { get; }
 }
 
-public interface IBattle : IOnDamaged, ITransform
+public interface IBattle : IOnDamaged, ITransform, IUsedSkill
 {
 
 }
@@ -40,6 +46,24 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     public BattleStat m_stat;
     public event Action m_deadAlarm;
     protected IBattle m_target = null;
+    float m_curHp = 0.0f;
+    float m_curMp = 0.0f;
+    protected float m_curHealPoint
+    {
+        get { return m_curHp; }
+        set
+        {
+            m_curHp = Mathf.Clamp(value, 0.0f, m_stat.MaxHp);
+        }
+    }
+    public float m_curMagicPoint
+    {
+        get { return m_curMp; }
+        set
+        {
+            m_curMp = Mathf.Clamp(value, 0.0f, m_stat.MaxMp);
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +74,12 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     void Update()
     {
         
+    }
+
+    protected void Initalize()
+    {
+        m_curHealPoint = m_stat.MaxHp;
+        m_curMagicPoint = m_stat.MaxMp;
     }
 
     // 공격
@@ -67,7 +97,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         StopAllCoroutines();
         //Rotate(pos);
         m_myAnim.SetBool("Attack", true);
-        if(m_target != null) m_target.OnDamaged(m_stat.attackDmg);
+        if(m_target != null) m_target.OnDamaged(m_stat.AttackDmg);
     }
 
     public void AttackAnim()
@@ -77,7 +107,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
 
     public virtual void Attack()
     {
-        if (m_target != null) m_target.OnDamaged(m_stat.attackDmg);
+        if (m_target != null) m_target.OnDamaged(m_stat.AttackDmg);
     }
 
     public void Dead()
@@ -88,13 +118,21 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     // 데미지 받음
     public void OnDamaged(float damage)
     {
-        m_stat.hp -= damage;
-        if (m_stat.hp <= 0)
+        m_curHealPoint -= damage;
+        if (m_curHealPoint <= 0)
         {
-            m_stat.hp = 0;
+            m_curHealPoint = 0;
             Dead();
         }
     }
 
-    
+    public void UsedSkill(float skillMp)
+    {
+        m_curMagicPoint -= skillMp;
+        if (m_curMagicPoint <= 0)
+        {
+            m_curMagicPoint = 0;
+        }
+        Debug.Log(m_curMagicPoint);
+    }
 }

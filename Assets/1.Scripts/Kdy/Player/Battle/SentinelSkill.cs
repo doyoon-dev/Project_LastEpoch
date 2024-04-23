@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SentinelSkill : Skill
 {
     [SerializeField]
     Animator m_myAnim;
+    Player m_player;    // 나중에 인터페이스로 바꿔야 될 수 있음
     bool m_usingSkill = false;
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_player = transform.GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -54,8 +56,9 @@ public class SentinelSkill : Skill
     {
         // 스킬 키 누르고 있으면 마나를 다 쓸 때 까지 스킬 발동
         // 마우스 방향으로 이동가능
-        if (Input.GetKey(inputKey))
+        if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillData.m_skillData["WindMill"].Mp)
         {
+            UsingSkillMp(SkillData.m_skillData["WindMill"].Mp * Time.deltaTime);
             if(!m_usingSkill)
             {
                 m_usingSkill = true;
@@ -71,7 +74,7 @@ public class SentinelSkill : Skill
             }
             
         }
-        if (Input.GetKeyUp(inputKey))
+        if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillData.m_skillData["WindMill"].Mp)
         {
             m_myAnim.SetBool("SkillWarPath", false);
             m_usingSkill = false;
@@ -104,7 +107,7 @@ public class SentinelSkill : Skill
             IBattle ib = col.GetComponent<IBattle>();
             if (ib != null)
             {
-                ib.OnDamaged(SkillData.m_skillData["WindMill"].dmg);
+                ib.OnDamaged(SkillData.m_skillData["WindMill"].Dmg);
             }
         }
     }
@@ -115,6 +118,7 @@ public class SentinelSkill : Skill
         Gizmos.DrawSphere(transform.position, 1.0f);
     }
 
+    // 돌격 스킬 이동 함수
     IEnumerator LungeMove(Vector3 dir)
     {
         m_myAnim.SetBool("SkillLunge", true);
