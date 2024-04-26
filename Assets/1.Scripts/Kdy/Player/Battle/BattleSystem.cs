@@ -46,8 +46,8 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     public BattleStat m_stat;
     public event Action m_deadAlarm;
     protected IBattle m_target = null;
-    float m_curHp = 0.0f;
-    float m_curMp = 0.0f;
+    public float m_curHp = 0.0f;
+    public float m_curMp = 0.0f;
     protected float m_curHealPoint
     {
         get { return m_curHp; }
@@ -133,6 +133,5 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         {
             m_curMagicPoint = 0;
         }
-        Debug.Log(m_curMagicPoint);
     }
 }

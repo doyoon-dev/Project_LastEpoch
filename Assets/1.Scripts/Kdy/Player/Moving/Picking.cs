@@ -11,16 +11,17 @@ public class Picking : MonoBehaviour
     public UnityEvent<Vector3> m_attackAct;
     public UnityEvent<Transform> m_moveAttackAct;
     public Animator m_anim;
+    IUsingSkill m_skillUsed;
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_skillUsed = transform.GetComponent<IUsingSkill>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !m_anim.GetBool("IsAttacking"))
+        if (Input.GetMouseButtonDown(0) && !m_anim.GetBool("IsAttacking") && !m_skillUsed.UsingSkill())
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask | m_enemyMask))
@@ -28,7 +29,7 @@ public class Picking : MonoBehaviour
                 m_moveAct?.Invoke(hit.point);
             }
         }
-        if(Input.GetMouseButtonDown(1) && !m_anim.GetBool("IsAttacking"))
+        if(Input.GetMouseButtonDown(1) && !m_anim.GetBool("IsAttacking") && !m_skillUsed.UsingSkill())
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask | m_enemyMask))

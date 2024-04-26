@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Skill : MonoBehaviour
+public interface IUsingSkill
+{
+    bool UsingSkill();
+}
+
+public class Skill : MonoBehaviour, IUsingSkill
 {
     public UnityEvent<float> m_useSkill;
+    public bool m_usingSkill = false;
 
     // Start is called before the first frame update
     void Start()
@@ -60,5 +66,17 @@ public class Skill : MonoBehaviour
     protected virtual void R_SkillInputKey()
     {
 
+    }
+
+    public bool UsingSkill()
+    {
+        if(m_usingSkill)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

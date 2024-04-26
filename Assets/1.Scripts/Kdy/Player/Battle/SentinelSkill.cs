@@ -7,8 +7,15 @@ public class SentinelSkill : Skill
 {
     [SerializeField]
     Animator m_myAnim;
+    [SerializeField]
+    Transform m_warPathStartPos;
+    [SerializeField]
+    Transform m_warPathEndPos;
+    public LayerMask m_enemyMask;
     Player m_player;    // 나중에 인터페이스로 바꿔야 될 수 있음
-    bool m_usingSkill = false;
+    bool m_warPathUse = false;
+    float m_warPathChanneling = 10.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,15 +32,6 @@ public class SentinelSkill : Skill
     protected override void Q_SkillInputKey()
     {
         base.Q_SkillInputKey();
-        Collider[] enemy = Physics.OverlapBox(transform.forward * 2, new Vector3(2, 2, 2), Quaternion.identity);
-        foreach (Collider col in enemy)
-        {
-            IBattle ib = col.GetComponent<IBattle>();
-            if (ib != null)
-            {
-                ib.OnDamaged(30.0f);
-            }
-        }
     }
 
     protected override void W_SkillInputKey()
@@ -58,10 +56,11 @@ public class SentinelSkill : Skill
         // 마우스 방향으로 이동가능
         if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillData.m_skillData["WindMill"].Mp)
         {
-            UsingSkillMp(SkillData.m_skillData["WindMill"].Mp * Time.deltaTime);
-            if(!m_usingSkill)
+            UsingSkillMp(SkillData.m_skillData["WindMill"].Mp * Time.deltaTime * m_warPathChanneling);
+            if(!m_warPathUse)
             {
                 m_usingSkill = true;
+                m_warPathUse = true;
                 m_myAnim.SetBool("SkillWarPath", true);
             }
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -77,8 +76,42 @@ public class SentinelSkill : Skill
         if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillData.m_skillData["WindMill"].Mp)
         {
             m_myAnim.SetBool("SkillWarPath", false);
+            m_warPathUse = false;
             m_usingSkill = false;
         }
+    }
+
+    // 출정 스킬 데미지 박스
+    public void DamageBox()
+    {
+        //Collider[] enemy = Physics.OverlapSphere(m_warPathSkillRange.position, 0.07f);
+
+        //foreach (Collider col in enemy)
+        //{
+        //    IBattle ib = col.GetComponent<IBattle>();
+        //    if (ib != null)
+        //    {
+        //        ib.OnDamaged(SkillData.m_skillData["WindMill"].Dmg);
+        //    }
+        //}
+
+        // 충돌 문제 생기면 위에 걸로 아니면 이거 써도 됨
+        Collider[] list = Physics.OverlapCapsule(m_warPathStartPos.position, m_warPathEndPos.position, 0.07f, m_enemyMask);
+        foreach (Collider col in list)
+        {
+            IBattle ib = col.GetComponent<IBattle>();
+            if (ib != null)
+            {
+                ib.OnDamaged(SkillData.m_skillData["WindMill"].Dmg);
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(m_warPathStartPos.position, 0.07f);
+        Gizmos.DrawWireSphere(m_warPathEndPos.position, 0.07f);
     }
 
     // 돌격 스킬
@@ -99,25 +132,6 @@ public class SentinelSkill : Skill
         // 마우스 방향으로 일정거리 돌진
     }
 
-    public void DamageBox()
-    {
-        Collider[] enemy = Physics.OverlapSphere(transform.position, 1.0f);
-        foreach (Collider col in enemy)
-        {
-            IBattle ib = col.GetComponent<IBattle>();
-            if (ib != null)
-            {
-                ib.OnDamaged(SkillData.m_skillData["WindMill"].Dmg);
-            }
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position, 1.0f);
-    }
-
     // 돌격 스킬 이동 함수
     IEnumerator LungeMove(Vector3 dir)
     {
@@ -134,5 +148,20 @@ public class SentinelSkill : Skill
             yield return null;
         }
         m_myAnim.SetBool("SkillLunge", false);
+    }
+
+    // 돌진 스킬 데미지 박스
+    // OnTrigger 함수로 무기 앞에 콜라이더 만들고 충돌 적 무시, 충돌 적 데미지 주기로 해야 할 지도
+    public void LungeDamageBox()
+    {
+        Collider[] list = Physics.OverlapCapsule(m_warPathStartPos.position, m_warPathEndPos.position, 0.07f, m_enemyMask);
+        foreach (Collider col in list)
+        {
+            IBattle ib = col.GetComponent<IBattle>();
+            if (ib != null)
+            {
+                ib.OnDamaged(SkillData.m_skillData["Lunge"].Dmg);
+            }
+        }
     }
 }

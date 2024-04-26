@@ -10,6 +10,8 @@ public class AnimEvent : MonoBehaviour
     public UnityEvent m_comboStart;
     public UnityEvent m_comboEnd;
     public UnityEvent m_atkEvent;
+    public UnityEvent m_skillWarPath;
+    public UnityEvent m_skillLunge;
 
     // Start is called before the first frame update
     void Start()
@@ -41,5 +43,15 @@ public class AnimEvent : MonoBehaviour
     public void AtkEvent()
     {
         m_atkEvent?.Invoke();
+    }
+
+    public void Skill_WarPath()
+    {
+        m_skillWarPath?.Invoke();
+    }
+
+    public void Skill_Lunge()
+    {
+        m_skillLunge?.Invoke();
     }
 }

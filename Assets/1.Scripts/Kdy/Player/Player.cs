@@ -126,10 +126,10 @@ public class Player : BattleSystem
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(m_weaponEndPoint.position, 0.7f);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawSphere(m_weaponEndPoint.position, 0.7f);
+    //}
 
 }
