@@ -127,6 +127,7 @@ public class SentinelSkill : Skill
                 transform.forward = dir;
                 StartCoroutine(LungeMove(dir));
             }
+            
         }
         // 스킬 키 한 번 누르면 스킬 발동
         // 마우스 방향으로 일정거리 돌진
@@ -154,13 +155,18 @@ public class SentinelSkill : Skill
     // OnTrigger 함수로 무기 앞에 콜라이더 만들고 충돌 적 무시, 충돌 적 데미지 주기로 해야 할 지도
     public void LungeDamageBox()
     {
-        Collider[] list = Physics.OverlapCapsule(m_warPathStartPos.position, m_warPathEndPos.position, 0.07f, m_enemyMask);
+        Collider[] list = Physics.OverlapCapsule(m_warPathStartPos.position, m_warPathEndPos.position, 0.1f, m_enemyMask);
+        List<IBattle> enemyList = new List<IBattle>();
         foreach (Collider col in list)
         {
             IBattle ib = col.GetComponent<IBattle>();
+            enemyList.Add(ib);
+            Debug.Log("추가 : " + enemyList.Count);
             if (ib != null)
             {
                 ib.OnDamaged(SkillData.m_skillData["Lunge"].Dmg);
+                enemyList.Remove(ib);
+                Debug.Log("제거 : " + enemyList.Count);
             }
         }
     }

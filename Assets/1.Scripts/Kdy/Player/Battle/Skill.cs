@@ -11,6 +11,7 @@ public interface IUsingSkill
 public class Skill : MonoBehaviour, IUsingSkill
 {
     public UnityEvent<float> m_useSkill;
+    [HideInInspector]
     public bool m_usingSkill = false;
 
     // Start is called before the first frame update
