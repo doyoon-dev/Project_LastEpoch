@@ -140,13 +140,30 @@ public class SentinelSkill : Skill
         float dist = 2;
         dir.Normalize();
         dir.y = 0;
+        Collider[] list;
+        List<IBattle> enemyList = new List<IBattle>();
+        IBattle ib;
         while (dist > 0)
         {
+            list = Physics.OverlapCapsule(m_warPathStartPos.position, m_warPathEndPos.position, 0.1f, m_enemyMask);
+            foreach (Collider col in list)
+            {
+                ib = col.GetComponent<IBattle>();
+                if (!enemyList.Contains(ib))
+                {
+                    enemyList.Add(ib);
+                }
+            }
             float delta = 5.0f * Time.deltaTime;
             if (delta > dist) delta = dist;
             dist -= delta;
             transform.Translate(dir * delta, Space.World);
             yield return null;
+        }
+        for (int i = 0; i < enemyList.Count; i++)
+        {
+            enemyList[i].OnDamaged(SkillData.m_skillData["Lunge"].Dmg);
+            enemyList.Remove(enemyList[i]);
         }
         m_myAnim.SetBool("SkillLunge", false);
     }
