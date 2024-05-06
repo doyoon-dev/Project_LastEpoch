@@ -1610,6 +1610,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1474561756}
+  - component: {fileID: 1474561757}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -1638,6 +1639,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 750, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1474561757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474561755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03ccbc85f0cec4469bf55e502db3646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_selectedItmeGrid: {fileID: 0}
 --- !u!1 &1602440411
 GameObject:
   m_ObjectHideFlags: 0
@@ -1847,6 +1861,8 @@ GameObject:
   - component: {fileID: 1990488522}
   - component: {fileID: 1990488524}
   - component: {fileID: 1990488523}
+  - component: {fileID: 1990488525}
+  - component: {fileID: 1990488526}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Untagged
@@ -1869,11 +1885,11 @@ RectTransform:
   m_Father: {fileID: 1943501932}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 231}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 47, y: -583}
   m_SizeDelta: {x: 656, y: 375}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1990488523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1912,6 +1928,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1990488521}
   m_CullTransparentMesh: 1
+--- !u!114 &1990488525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990488521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe6ea25f6c97b3c4197e283b353b7859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_gridSizeWidth: 14
+  m_gridSizeHeight: 8
+  m_itemPrefab: {fileID: 8355942472590287906, guid: 88351aeb078373f4a8f5842eee3821b9, type: 3}
+--- !u!114 &1990488526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990488521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ac11a591427c0c4ab83cd386586cc8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_inventory: {fileID: 1474561757}
 --- !u!1 &2122692016
 GameObject:
   m_ObjectHideFlags: 0
