@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class Slot : MonoBehaviour
 {
+    // 슬롯 한 칸 사이즈
     const float m_tileSizeWidth = 47.0f;
     const float m_tileSizeHeight = 47.0f;
 
     [SerializeField]
-    int m_gridSizeWidth = 14;
+    int m_gridSizeWidth = 14;       // 슬롯 가로 개수
     [SerializeField]
-    int m_gridSizeHeight = 8;
+    int m_gridSizeHeight = 8;       // 슬롯 세로 개수
     [SerializeField]
-    GameObject m_itemPrefab;
+    GameObject m_itemPrefab;        // 슬롯에 들어갈 아이템
 
     RectTransform m_rectTransform;
-    Vector2 m_positionOnTheGrid = new Vector2();
-    Vector2Int m_tileGridPosition = new Vector2Int();
+    Vector2 m_positionOnTheGrid = new Vector2();            // 스크린 좌표 기준 슬롯 한 칸 좌표
+    Vector2Int m_tileGridPosition = new Vector2Int();       // 슬롯 기준 슬롯 한 칸 좌표
 
     Item[,] m_itemSlot;
 

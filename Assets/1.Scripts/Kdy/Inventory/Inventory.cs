@@ -24,6 +24,8 @@ public class Inventory : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             Vector2Int tileGridPosition = m_selectedItmeGrid.GetTileGridPosition(Input.mousePosition);
+            Debug.Log(tileGridPosition);
+            Debug.Log("------------------------------------------------------");
         }
         
     }
