@@ -9,6 +9,9 @@ public class Item : MonoBehaviour
     public int m_itemSizeWidth = 1;
     public int m_itemSizeHeight = 1;
 
+    public int m_onGridPositionX;
+    public int m_onGridPositionY;
+
     Slot m_slotSize;
 
     // string에 아이템 이름 -> 나중에 ItemData 만들면 그걸로 바꿔야함

@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 public class Slot : MonoBehaviour
 {
     // 슬롯 한 칸 사이즈
-    const float m_tileSizeWidth = 47.0f;
-    const float m_tileSizeHeight = 47.0f;
+    public const float m_tileSizeWidth = 47.0f;
+    public const float m_tileSizeHeight = 47.0f;
 
     [SerializeField]
     int m_gridSizeWidth = 14;       // 슬롯 가로 개수
@@ -55,16 +56,73 @@ public class Slot : MonoBehaviour
         return m_tileGridPosition;
     }
 
-    public void PlaceItem(Item item, int posX, int posY)
+    public bool PlaceItem(Item item, int posX, int posY)
     {
+        // 아이템 데이터 만들고 주석 해제
+        /*if(!BoundaryCheck(posX, posY, item.itemData.width, item.itemData.height))
+        {
+            return false;
+        }
+
         RectTransform itemPos = item.GetComponent<RectTransform>();
         itemPos.SetParent(m_rectTransform);
-        m_itemSlot[posX, posY] = item;
+
+        // 슬롯에 아이템을 넣을 때 아이템 크기에 따라 차지하는 슬롯만큼 데이터 넣기
+        for (int x = 0; x < item.itemData.width; x++)
+        {
+            for (int y = 0; y < item.itemData.height; y++)
+            {
+                m_itemSlot[posX + x, posY + y] = item;
+            }
+        }*/
+
+        item.m_onGridPositionX = posX;
+        item.m_onGridPositionY = posY;
 
         Vector2 pos = new Vector2();
         pos.x = posX * m_tileSizeWidth;
         pos.y = -(posY * m_tileSizeHeight);
 
-        itemPos.localPosition = pos;
+        //itemPos.localPosition = pos;
+
+        return true;
+    }
+
+    // 아이템을 옮기거나 슬롯에서 빼낼 때 m_itemSlot[x, y] = null 로 초기화 해주기
+    /*public Item PickUpItem(int x, int y)
+    {
+        Item item = m_itemSlot[x, y];
+
+        if(item == null) { return; };
+
+        for (int i = 0; i < item.itemData.width; i++)
+        {
+            for (int j = 0; j < item.itemData.height; j++)
+            {
+                m_itemSlot[item.m_onGridPositionX + i, item.m_onGridPositionY + j] = null;
+            }
+        }
+        return item;
+    }*/
+
+    // 아이템의 크기가 슬롯보다 클 때 예외처리 -> true일 때만 아이템 옮기기 가능
+    bool PositionCheck(int posX, int posY)
+    {
+        if (posX < 0 || posY < 0 || posX >= m_gridSizeWidth || posY >= m_gridSizeHeight)
+        {
+            return false;
+        }
+        return true;
+    }
+    bool BoundaryCheck(int posX, int posY, int width, int height)
+    {
+        if (!PositionCheck(posX, posY)) { return false; }
+
+        posX += width - 1;
+        posY += height - 1;
+
+        if (!PositionCheck(posX, posY)) { return false; }
+
+        return true;
     }
 }

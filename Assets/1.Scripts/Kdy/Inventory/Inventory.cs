@@ -10,6 +10,9 @@ public class Inventory : MonoBehaviour
     public Slot m_selectedItmeGrid;
     Item m_selectedItem;
 
+    [SerializeField]
+    List<Item> m_items = new List<Item>();
+
     // Start is called before the first frame update
     void Start()
     {
