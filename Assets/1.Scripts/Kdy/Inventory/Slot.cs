@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Slot : MonoBehaviour
 {
@@ -124,5 +126,27 @@ public class Slot : MonoBehaviour
         if (!PositionCheck(posX, posY)) { return false; }
 
         return true;
+    }
+
+    // 슬롯 빈 공간 찾기
+    void FindEmptySlot(Item item)
+    {
+        // item : 획득한 아이템
+        int width = m_gridSizeWidth;// - itemData.width;
+        int height = m_gridSizeHeight;// - itemData.height;
+        for (int y = 0; y < m_gridSizeHeight; y++)
+        {
+            for (int x = 0; x < m_gridSizeWidth; x++)
+            {
+                IGetItemSize itemSize = item.GetComponent<IGetItemSize>();
+                if (itemSize != null)
+                {
+                    if (itemSize.GetItemSize(x, y, width, height))  // 빈 슬롯에 해당 아이템이 들어갈 수 있을 때
+                    {
+
+                    }
+                }
+            }
+        }
     }
 }

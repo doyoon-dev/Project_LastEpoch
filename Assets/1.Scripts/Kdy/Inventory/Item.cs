@@ -4,7 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Item : MonoBehaviour
+public interface IGetItemSize
+{
+    bool GetItemSize(int x, int y, int width, int height);
+}
+
+public class Item : MonoBehaviour, IGetItemSize
 {
     public int m_itemSizeWidth = 1;
     public int m_itemSizeHeight = 1;
@@ -33,6 +38,7 @@ public class Item : MonoBehaviour
         }
     }
 
+    // 아이템 사이즈 구하는 부분 만드는중(영상 없는 부분)
     void ItemSize(string name, int itemSizeX, int itemSizeY)
     {
         int[,] slotSize = new int[itemSizeX, itemSizeY];
@@ -47,5 +53,10 @@ public class Item : MonoBehaviour
             }
         }
         //m_itemSlotSize.Add(name, slotSize[,]);
+    }
+
+    public bool GetItemSize(int x, int y, int width, int height)
+    {
+        return true;
     }
 }
