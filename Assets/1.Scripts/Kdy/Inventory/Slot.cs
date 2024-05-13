@@ -128,25 +128,42 @@ public class Slot : MonoBehaviour
         return true;
     }
 
-    // 슬롯 빈 공간 찾기
-    void FindEmptySlot(Item item)
+    // 찾은 슬롯의 빈 공간의 좌표 가져오기
+    Vector2Int? FindEmptySlot(Item item)
     {
         // item : 획득한 아이템
-        int width = m_gridSizeWidth;// - itemData.width;
-        int height = m_gridSizeHeight;// - itemData.height;
         for (int y = 0; y < m_gridSizeHeight; y++)
         {
             for (int x = 0; x < m_gridSizeWidth; x++)
             {
-                IGetItemSize itemSize = item.GetComponent<IGetItemSize>();
-                if (itemSize != null)
+                int nextSlotWidth = m_gridSizeWidth - x;
+                int nextSlotHeight = m_gridSizeHeight - y;
+                /*if (nextSlotWidth < item.itemData.width || nextSlotHeight < item.itemData.height)
                 {
-                    if (itemSize.GetItemSize(x, y, width, height))  // 빈 슬롯에 해당 아이템이 들어갈 수 있을 때
-                    {
+                    break;
+                }*/
+                /*if (CheckAvailableSpace(x, y, itemData.width, itemData.height))  // 빈 슬롯에 해당 아이템이 들어갈 수 있을 때
+                {
+                    return new Vector2Int(x, y);
+                }*/
+            }
+        }
+        return null;
+    }
 
-                    }
+    // 슬롯에 아이템을 넣을 수 있는 공간 찾기
+    bool CheckAvailableSpace(int posX, int posY, int width, int height)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for(int y =  0; y < height; y++)
+            {
+                if (m_itemSlot[posX + x, posY + y] != null)
+                {
+                    return false;
                 }
             }
         }
+        return true;
     }
 }
