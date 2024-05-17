@@ -51,6 +51,7 @@ public class Slot : MonoBehaviour
     {
         m_positionOnTheGrid.x = mousePosition.x - m_rectTransform.position.x;
         m_positionOnTheGrid.y = m_rectTransform.position.y - mousePosition.y;
+        Debug.Log(m_positionOnTheGrid);
 
         m_tileGridPosition.x = (int)(m_positionOnTheGrid.x / m_tileSizeWidth);
         m_tileGridPosition.y = (int)(m_positionOnTheGrid.y / m_tileSizeHeight);

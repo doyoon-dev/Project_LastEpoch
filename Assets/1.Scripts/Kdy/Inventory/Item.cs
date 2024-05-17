@@ -9,8 +9,8 @@ public class Item : MonoBehaviour
     public int m_itemSizeWidth = 1;
     public int m_itemSizeHeight = 1;
 
-    public int m_onGridPositionX;
-    public int m_onGridPositionY;
+    public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
+    public int m_onGridPositionY;       // 인벤토리 내의 아이템 위치 y좌표
 
     Slot m_slotSize;
 
