@@ -14,7 +14,6 @@ public class SentinelSkill : Skill
     public LayerMask m_enemyMask;
     Player m_player;    // 나중에 인터페이스로 바꿔야 될 수 있음
     bool m_warPathUse = false;
-    float m_warPathChanneling = 10.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +55,7 @@ public class SentinelSkill : Skill
         // 마우스 방향으로 이동가능
         if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillData.m_skillData["WindMill"].Mp)
         {
-            UsingSkillMp(SkillData.m_skillData["WindMill"].Mp * Time.deltaTime * m_warPathChanneling);
+            UsingSkillMp(SkillData.m_skillData["WindMill"].Mp * Time.deltaTime * SkillData.m_skillData["WindMill"].Channeling);
             if(!m_warPathUse)
             {
                 m_usingSkill = true;
