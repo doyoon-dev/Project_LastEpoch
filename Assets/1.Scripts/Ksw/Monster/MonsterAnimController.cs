@@ -13,7 +13,7 @@ public class MonsterAnimController : AnimController
         Run,
         Attack1,
         Attack2,
-        Death1,
+        Die1,
         Max
     }
     Motion m_curMotion = Motion.None;
