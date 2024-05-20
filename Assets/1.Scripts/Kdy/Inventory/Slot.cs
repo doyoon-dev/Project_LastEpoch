@@ -12,9 +12,9 @@ public class Slot : MonoBehaviour
     public const float m_tileSizeHeight = 47.0f;
 
     [SerializeField]
-    int m_gridSizeWidth = 14;       // 슬롯 가로 개수
+    int m_slotSizeWidth = 14;       // 슬롯 가로 개수
     [SerializeField]
-    int m_gridSizeHeight = 8;       // 슬롯 세로 개수
+    int m_slotSizeHeight = 8;       // 슬롯 세로 개수
     [SerializeField]
     GameObject m_itemPrefab;        // 슬롯에 들어갈 아이템
 
@@ -28,16 +28,22 @@ public class Slot : MonoBehaviour
     void Start()
     {
         m_rectTransform = GetComponent<RectTransform>();
-        Init(m_gridSizeWidth, m_gridSizeHeight);
+        Init(m_slotSizeWidth, m_slotSizeHeight);
         Item item = Instantiate(m_itemPrefab).GetComponent<Item>();
-        PlaceItem(item, 3, 2);
+        Vector2Int itemSlotSize = FindEmptySlot(item).Value;
+        PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            Item item = Instantiate(m_itemPrefab).GetComponent<Item>();
+            Vector2Int itemSlotSize = FindEmptySlot(item).Value;
+            PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
+        }
     }
 
     void Init(int width, int height)
@@ -59,59 +65,68 @@ public class Slot : MonoBehaviour
         return m_tileGridPosition;
     }
 
-    public bool PlaceItem(Item item, int posX, int posY)
+    // 아이템 슬롯에 넣기
+    public void PlaceItem(Item item, int posX, int posY)
     {
-        // 아이템 데이터 만들고 주석 해제
-        /*if(!BoundaryCheck(posX, posY, item.itemData.width, item.itemData.height))
+        if(BoundaryCheck(posX, posY, item.m_itemData.itemWidth, item.m_itemData.itemHeight))
         {
-            return false;
+            //return false;
         }
 
         RectTransform itemPos = item.GetComponent<RectTransform>();
         itemPos.SetParent(m_rectTransform);
 
         // 슬롯에 아이템을 넣을 때 아이템 크기에 따라 차지하는 슬롯만큼 데이터 넣기
-        for (int x = 0; x < item.itemData.width; x++)
+        for (int x = 0; x < item.m_itemData.itemWidth; x++)
         {
-            for (int y = 0; y < item.itemData.height; y++)
+            for (int y = 0; y < item.m_itemData.itemHeight; y++)
             {
                 m_itemSlot[posX + x, posY + y] = item;
             }
-        }*/
+        }
 
         item.m_onGridPositionX = posX;
         item.m_onGridPositionY = posY;
 
         Vector2 pos = new Vector2();
-        pos.x = posX * m_tileSizeWidth;
-        pos.y = -(posY * m_tileSizeHeight);
+        if (m_tileGridPosition.x == 0)
+        {
+            pos.x = posX * m_tileSizeWidth + 3;
+            pos.y = -(posY * m_tileSizeHeight) - 2;
+        }
+        else
+        {
+            pos.x = posX * m_tileSizeWidth;
+            pos.y = -(posY * m_tileSizeHeight);
+        }
+        
 
-        //itemPos.localPosition = pos;
+        itemPos.localPosition = pos;
 
-        return true;
+        //return true;
     }
 
     // 아이템을 옮기거나 슬롯에서 빼낼 때 m_itemSlot[x, y] = null 로 초기화 해주기
-    /*public Item PickUpItem(int x, int y)
+    public Item PickUpItem(int x, int y)
     {
         Item item = m_itemSlot[x, y];
 
-        if(item == null) { return; };
+        if(item == null) { return null; };
 
-        for (int i = 0; i < item.itemData.width; i++)
+        for (int i = 0; i < item.m_itemData.itemWidth; i++)
         {
-            for (int j = 0; j < item.itemData.height; j++)
+            for (int j = 0; j < item.m_itemData.itemHeight; j++)
             {
                 m_itemSlot[item.m_onGridPositionX + i, item.m_onGridPositionY + j] = null;
             }
         }
         return item;
-    }*/
+    }
 
     // 아이템의 크기가 슬롯보다 클 때 예외처리 -> true일 때만 아이템 옮기기 가능
     bool PositionCheck(int posX, int posY)
     {
-        if (posX < 0 || posY < 0 || posX >= m_gridSizeWidth || posY >= m_gridSizeHeight)
+        if (posX < 0 || posY < 0 || posX >= m_slotSizeWidth || posY >= m_slotSizeHeight)
         {
             return false;
         }
@@ -133,20 +148,20 @@ public class Slot : MonoBehaviour
     Vector2Int? FindEmptySlot(Item item)
     {
         // item : 획득한 아이템
-        for (int y = 0; y < m_gridSizeHeight; y++)
+        for (int y = 0; y < m_slotSizeHeight; y++)
         {
-            for (int x = 0; x < m_gridSizeWidth; x++)
+            for (int x = 0; x < m_slotSizeWidth; x++)
             {
-                int nextSlotWidth = m_gridSizeWidth - x;
-                int nextSlotHeight = m_gridSizeHeight - y;
-                /*if (nextSlotWidth < item.itemData.width || nextSlotHeight < item.itemData.height)
+                int nextSlotWidth = m_slotSizeWidth - x;
+                int nextSlotHeight = m_slotSizeHeight - y;
+                if (nextSlotWidth < item.m_itemData.itemWidth || nextSlotHeight < item.m_itemData.itemHeight)
                 {
                     break;
-                }*/
-                /*if (CheckAvailableSpace(x, y, itemData.width, itemData.height))  // 빈 슬롯에 해당 아이템이 들어갈 수 있을 때
+                }
+                if (CheckAvailableSpace(x, y, item.m_itemData.itemWidth, item.m_itemData.itemHeight))  // 빈 슬롯에 해당 아이템이 들어갈 수 있을 때
                 {
                     return new Vector2Int(x, y);
-                }*/
+                }
             }
         }
         return null;

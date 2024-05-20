@@ -401,6 +401,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c3ad2ef220befa4fb43513017e225e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackArea: 0
+  attack: 0
+  knockback: 0
+  delayTime: 0
 --- !u!4 &84741965
 Transform:
   m_ObjectHideFlags: 0
@@ -3567,9 +3571,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6ea25f6c97b3c4197e283b353b7859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gridSizeWidth: 14
-  m_gridSizeHeight: 8
-  m_itemPrefab: {fileID: 8355942472590287906, guid: 88351aeb078373f4a8f5842eee3821b9, type: 3}
+  m_slotSizeWidth: 14
+  m_slotSizeHeight: 8
+  m_itemPrefab: {fileID: 4938037848249251691, guid: 8085c0d6d365d86489d763579f215d81, type: 3}
 --- !u!114 &1990488526
 MonoBehaviour:
   m_ObjectHideFlags: 0

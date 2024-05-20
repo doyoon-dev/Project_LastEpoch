@@ -6,8 +6,7 @@ using UnityEngine.UI;
 
 public class Item : MonoBehaviour
 {
-    public int m_itemSizeWidth = 1;
-    public int m_itemSizeHeight = 1;
+    public ItemData m_itemData;
 
     public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
     public int m_onGridPositionY;       // 인벤토리 내의 아이템 위치 y좌표

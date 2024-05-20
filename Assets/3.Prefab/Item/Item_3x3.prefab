@@ -89,5 +89,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62eba52d3e9b0044385628da2ef87948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_itemSizeWidth: 1
-  m_itemSizeHeight: 1
+  m_itemData: {fileID: 11400000, guid: 607fc2cae2307484897382ae1f9c9757, type: 2}
+  m_onGridPositionX: 0
+  m_onGridPositionY: 0
