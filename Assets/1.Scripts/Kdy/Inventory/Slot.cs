@@ -38,12 +38,37 @@ public class Slot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // 실험중
         if (Input.GetKeyDown(KeyCode.J))
         {
-            Item item = Instantiate(m_itemPrefab).GetComponent<Item>();
-            Vector2Int itemSlotSize = FindEmptySlot(item).Value;
-            PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
+            if (CheckSlot())
+            {
+                Item item = Instantiate(m_itemPrefab).GetComponent<Item>();
+                Vector2Int itemSlotSize = FindEmptySlot(item).Value;
+                PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
+            }
         }
+    }
+
+    // 실험중
+    bool CheckSlot()
+    {
+        int size = 0;
+        for (int i = 0; i < m_slotSizeWidth; i++)
+        {
+            for (int j = 0; j < m_slotSizeHeight; j++)
+            {
+                if (m_itemSlot[i, j] != null)
+                {
+                    size++;
+                }
+            }
+        }
+        if (size >= 112)
+        {
+            return false;
+        }
+        return true;
     }
 
     void Init(int width, int height)
@@ -66,13 +91,13 @@ public class Slot : MonoBehaviour
     }
 
     // 아이템 슬롯에 넣기
+    // 나중에 불린 함수로 바꿔서 Inventory 스크립트에서 호출해서 true일 때 아이템 들어가도록 만듬(영상에서)
     public void PlaceItem(Item item, int posX, int posY)
     {
-        if(BoundaryCheck(posX, posY, item.m_itemData.itemWidth, item.m_itemData.itemHeight))
+        if (!BoundaryCheck(posX, posY, item.m_itemData.itemWidth, item.m_itemData.itemHeight))
         {
-            //return false;
+            return;
         }
-
         RectTransform itemPos = item.GetComponent<RectTransform>();
         itemPos.SetParent(m_rectTransform);
 
@@ -89,7 +114,7 @@ public class Slot : MonoBehaviour
         item.m_onGridPositionY = posY;
 
         Vector2 pos = new Vector2();
-        if (m_tileGridPosition.x == 0)
+        if (item.m_onGridPositionX == 0)
         {
             pos.x = posX * m_tileSizeWidth + 3;
             pos.y = -(posY * m_tileSizeHeight) - 2;
@@ -99,10 +124,7 @@ public class Slot : MonoBehaviour
             pos.x = posX * m_tileSizeWidth;
             pos.y = -(posY * m_tileSizeHeight);
         }
-        
-
         itemPos.localPosition = pos;
-
         //return true;
     }
 
@@ -126,6 +148,8 @@ public class Slot : MonoBehaviour
     // 아이템의 크기가 슬롯보다 클 때 예외처리 -> true일 때만 아이템 옮기기 가능
     bool PositionCheck(int posX, int posY)
     {
+        if (m_itemSlot[posX, posY] != null) { return false; }
+
         if (posX < 0 || posY < 0 || posX >= m_slotSizeWidth || posY >= m_slotSizeHeight)
         {
             return false;

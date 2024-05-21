@@ -25,11 +25,7 @@ public class Item : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            ItemSize("Knife", 2, 4);
-            Debug.Log(m_itemSlotSize.Values);
-        }
+
     }
 
     // 아이템 사이즈 구하는 부분 만드는중(영상 없는 부분)
