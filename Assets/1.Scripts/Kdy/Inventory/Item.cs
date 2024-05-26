@@ -25,7 +25,7 @@ public class Item : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        EquipItem();
     }
 
     // 아이템 사이즈 구하는 부분 만드는중(영상 없는 부분)
@@ -43,5 +43,13 @@ public class Item : MonoBehaviour
             }
         }
         //m_itemSlotSize.Add(name, slotSize[,]);
+    }
+
+    void EquipItem()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            transform.SetParent(transform.parent.parent);
+        }
     }
 }

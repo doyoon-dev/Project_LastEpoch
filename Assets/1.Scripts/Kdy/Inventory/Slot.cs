@@ -5,7 +5,12 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Slot : MonoBehaviour
+public interface IMakeSlotEmpty
+{
+    void MakeSlotEmpty(Item item);
+}
+
+public class Slot : MonoBehaviour, IMakeSlotEmpty
 {
     // 슬롯 한 칸 사이즈
     public const float m_tileSizeWidth = 47.0f;
@@ -206,4 +211,17 @@ public class Slot : MonoBehaviour
         }
         return true;
     }
+
+    // 아이템을 장착 했을 때 아이템이 있던 슬롯 null로 만들기
+    public void MakeSlotEmpty(Item item)
+    {
+        for (int i = 0; i < m_slotSizeWidth; i++)
+        {
+            for (int j = 0; j < m_slotSizeHeight; j++)
+            {
+
+            }
+        }
+    }
+
 }
