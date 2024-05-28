@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class Item : MonoBehaviour
 {
     public ItemData m_itemData;
-
     public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
     public int m_onGridPositionY;       // 인벤토리 내의 아이템 위치 y좌표
 
@@ -49,7 +48,15 @@ public class Item : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            transform.SetParent(transform.parent.parent);
+            IMakeSlotEmpty imse = transform.parent.GetComponent<IMakeSlotEmpty>();
+            if(imse != null)
+            {
+                imse.MakeSlotEmpty(this);
+            }
+            // 현재 아이템의 Layer나 이름을 비교해서 부모 오브젝트로 만들 게임오브젝트 골라야함
+            transform.SetParent(transform.parent.parent);       // 아이템의 부모 오브젝트를 Slot -> EquipSlot으로 변경
+            // 
+            transform.localPosition = Vector3.zero;
         }
     }
 }

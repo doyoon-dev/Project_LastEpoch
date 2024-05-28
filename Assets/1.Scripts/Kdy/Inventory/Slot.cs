@@ -215,11 +215,11 @@ public class Slot : MonoBehaviour, IMakeSlotEmpty
     // 아이템을 장착 했을 때 아이템이 있던 슬롯 null로 만들기
     public void MakeSlotEmpty(Item item)
     {
-        for (int i = 0; i < m_slotSizeWidth; i++)
+        for (int y = item.m_onGridPositionY; y < item.m_itemData.itemHeight + item.m_onGridPositionY; y++)
         {
-            for (int j = 0; j < m_slotSizeHeight; j++)
+            for (int x = item.m_onGridPositionX; x < item.m_itemData.itemWidth + item.m_onGridPositionX; x++)
             {
-
+                m_itemSlot[x, y] = null;
             }
         }
     }

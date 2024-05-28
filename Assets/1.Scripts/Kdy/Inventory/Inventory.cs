@@ -8,6 +8,7 @@ public class Inventory : MonoBehaviour
     // Slot : ItemGrid 
     // Item : InventoryItem
     public Slot m_selectedItmeGrid;
+    public GameObject m_equipSlot;
     Item m_selectedItem;
 
     [SerializeField]

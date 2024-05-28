@@ -7,7 +7,7 @@ public class ItemData : ScriptableObject
 {
     public enum ItemType
     {
-        Potion = 0,
+        Potion = -1,
         Head,
         Necklace,
         Weapon,
