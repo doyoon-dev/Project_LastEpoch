@@ -29,6 +29,9 @@ public class Slot : MonoBehaviour, IMakeSlotEmpty
 
     Item[,] m_itemSlot;
 
+    [SerializeField]
+    public EquipSlot[] m_equipSlot;
+
     // Start is called before the first frame update
     void Start()
     {

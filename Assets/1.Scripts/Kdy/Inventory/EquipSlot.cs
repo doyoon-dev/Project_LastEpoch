@@ -1,8 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ItemData;
 
-public class EquipSlot : MonoBehaviour
+public interface ISetParentEquipItem
+{
+    void SetParentEquipItem();
+}
+
+public class EquipSlot : MonoBehaviour, ISetParentEquipItem
 {
     public enum Equip
     {
@@ -18,7 +24,7 @@ public class EquipSlot : MonoBehaviour
         Hand
     }
 
-    public Equip m_equipSlotName;
+    public ItemType m_itemType;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,5 +35,10 @@ public class EquipSlot : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetParentEquipItem()
+    {
+
     }
 }

@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
+using static ItemData;
 
 public class Item : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class Item : MonoBehaviour
 
     // string에 아이템 이름 -> 나중에 ItemData 만들면 그걸로 바꿔야함
     Dictionary<string, int[]> m_itemSlotSize = new Dictionary<string, int[]>();
+    EquipSlot m_equipSlot;
 
     // Start is called before the first frame update
     void Start()
@@ -53,10 +56,50 @@ public class Item : MonoBehaviour
             {
                 imse.MakeSlotEmpty(this);
             }
-            // 현재 아이템의 Layer나 이름을 비교해서 부모 오브젝트로 만들 게임오브젝트 골라야함
-            transform.SetParent(transform.parent.parent);       // 아이템의 부모 오브젝트를 Slot -> EquipSlot으로 변경
-            // 
-            transform.localPosition = Vector3.zero;
+            EquipItemSetParent(this);
         }
+    }
+
+    void EquipItemSetParent(Item item)
+    {
+        switch (item.m_itemData.itemType)
+        {
+            case ItemType.Head:
+                SetEquip(0);
+                break;
+            case ItemType.Necklace:
+                SetEquip(1);
+                break;
+            case ItemType.Weapon:
+                SetEquip(2);
+                break;
+            case ItemType.Armor:
+                SetEquip(3);
+                break;
+            case ItemType.Sheild:
+                SetEquip(4);
+                Debug.Log("실드 장착");
+                break;
+            case ItemType.Belt:
+                SetEquip(5);
+                Debug.Log("벨트 장착");
+                break;
+            case ItemType.Ring:
+                SetEquip(6);
+                break;
+            case ItemType.Shoes:
+                SetEquip(7);
+                break;
+            case ItemType.Hand:
+                SetEquip(8);
+                break;
+        }
+    }
+
+    void SetEquip(int i)
+    {
+        m_equipSlot = transform.parent.GetComponent<Slot>().m_equipSlot[i];
+        transform.SetParent(m_equipSlot.transform);
+        transform.position = Vector3.zero;
     }
 }
