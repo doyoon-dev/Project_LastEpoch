@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ItemData;
 
-public interface ISetParentEquipItem
+public interface ISetEquipItem
 {
-    void SetParentEquipItem();
+    void SetEquipItem(Item item);
 }
 
-public class EquipSlot : MonoBehaviour, ISetParentEquipItem
+public class EquipSlot : MonoBehaviour, ISetEquipItem
 {
     public enum Equip
     {
@@ -25,6 +25,7 @@ public class EquipSlot : MonoBehaviour, ISetParentEquipItem
     }
 
     public ItemType m_itemType;
+    public Item m_item;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,8 +38,8 @@ public class EquipSlot : MonoBehaviour, ISetParentEquipItem
         
     }
 
-    public void SetParentEquipItem()
+    public void SetEquipItem(Item item)
     {
-
+        m_item = item;
     }
 }

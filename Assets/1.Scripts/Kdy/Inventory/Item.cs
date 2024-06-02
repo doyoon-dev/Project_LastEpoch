@@ -17,7 +17,6 @@ public class Item : MonoBehaviour
     // string에 아이템 이름 -> 나중에 ItemData 만들면 그걸로 바꿔야함
     Dictionary<string, int[]> m_itemSlotSize = new Dictionary<string, int[]>();
     EquipSlot m_equipSlot;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +26,10 @@ public class Item : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EquipItem();
+        if (Input.GetMouseButtonDown(1))
+        {
+            EquipItem();
+        }
     }
 
     // 아이템 사이즈 구하는 부분 만드는중(영상 없는 부분)
@@ -49,15 +51,12 @@ public class Item : MonoBehaviour
 
     void EquipItem()
     {
-        if (Input.GetMouseButtonDown(1))
+        IMakeSlotEmpty imse = transform.parent.GetComponent<IMakeSlotEmpty>();
+        if (imse != null)
         {
-            IMakeSlotEmpty imse = transform.parent.GetComponent<IMakeSlotEmpty>();
-            if(imse != null)
-            {
-                imse.MakeSlotEmpty(this);
-            }
-            EquipItemSetParent(this);
+            imse.MakeSlotEmpty(this);
         }
+        EquipItemSetParent(this);
     }
 
     void EquipItemSetParent(Item item)
@@ -88,10 +87,10 @@ public class Item : MonoBehaviour
                 SetEquip(6);
                 break;
             case ItemType.Shoes:
-                SetEquip(7);
+                SetEquip(8);
                 break;
             case ItemType.Hand:
-                SetEquip(8);
+                SetEquip(9);
                 break;
         }
     }
@@ -99,7 +98,28 @@ public class Item : MonoBehaviour
     void SetEquip(int i)
     {
         m_equipSlot = transform.parent.GetComponent<Slot>().m_equipSlot[i];
+        
+        if (m_equipSlot.m_itemType == ItemType.Ring)
+        {
+            if (m_equipSlot.m_item != null)
+            {
+                m_equipSlot = transform.parent.GetComponent<Slot>().m_equipSlot[7];
+            }
+        }
+        EquipItem(m_equipSlot);
         transform.SetParent(m_equipSlot.transform);
-        transform.position = Vector3.zero;
+        RectTransform rectTransform = transform.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = Vector2.zero;
+        //transform.position = Vector3.zero;
+        //transform.localPosition = Vector3.zero;
+    }
+
+    void EquipItem(EquipSlot es)
+    {
+        ISetEquipItem sei = es.GetComponent<ISetEquipItem>();
+        if (sei != null)
+        {
+            sei.SetEquipItem(this);
+        }
     }
 }

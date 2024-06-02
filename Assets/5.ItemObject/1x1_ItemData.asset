@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce51b55bcfe689e45b38e32ad739bbce, type: 3}
   m_Name: 1x1_ItemData
   m_EditorClassIdentifier: 
-  itemWidth: 0
-  itemHeight: 0
+  itemWidth: 1
+  itemHeight: 1
+  itemType: 6

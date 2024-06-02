@@ -112,7 +112,6 @@ public class Player : BattleSystem
     {
         Collider[] enemy = Physics.OverlapCapsule(m_weaponStartPoint.position, m_weaponEndPoint.position, 0.06f, m_enemyMask);
         Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 0.7f, m_enemyMask);
-        Debug.Log(list.Length);
         foreach (Collider col in list)
         {
             

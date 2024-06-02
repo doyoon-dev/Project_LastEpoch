@@ -890,6 +890,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_itemType: 1
+  m_item: {fileID: 0}
 --- !u!1 &316795209
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,6 +996,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_itemType: 4
+  m_item: {fileID: 0}
 --- !u!1 &368562769
 GameObject:
   m_ObjectHideFlags: 0
@@ -1252,6 +1254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_itemType: 2
+  m_item: {fileID: 0}
 --- !u!1 &430997561
 GameObject:
   m_ObjectHideFlags: 0
@@ -1647,6 +1650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_itemType: 6
+  m_item: {fileID: 0}
 --- !u!1 &948309911
 GameObject:
   m_ObjectHideFlags: 0
@@ -1752,6 +1756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_itemType: 8
+  m_item: {fileID: 0}
 --- !u!1 &968368194
 GameObject:
   m_ObjectHideFlags: 0
@@ -2054,6 +2059,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_itemType: 0
+  m_item: {fileID: 0}
 --- !u!1 &1069392194
 GameObject:
   m_ObjectHideFlags: 0
@@ -2872,6 +2878,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_itemType: 3
+  m_item: {fileID: 0}
 --- !u!1 &1474561755
 GameObject:
   m_ObjectHideFlags: 0
@@ -3182,6 +3189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_itemType: 7
+  m_item: {fileID: 0}
 --- !u!1 &1707455392
 GameObject:
   m_ObjectHideFlags: 0
@@ -3287,6 +3295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_itemType: 6
+  m_item: {fileID: 0}
 --- !u!1 &1831261206
 GameObject:
   m_ObjectHideFlags: 0
@@ -3700,7 +3709,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_slotSizeWidth: 14
   m_slotSizeHeight: 8
-  m_itemPrefab: {fileID: 4938037848249251691, guid: 8085c0d6d365d86489d763579f215d81, type: 3}
+  m_itemPrefab: {fileID: 8355942472590287906, guid: 88351aeb078373f4a8f5842eee3821b9, type: 3}
   m_equipSlot:
   - {fileID: 1011107583}
   - {fileID: 294439529}
@@ -3906,6 +3915,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_itemType: 5
+  m_item: {fileID: 0}
 --- !u!1001 &5244370769464062947
 PrefabInstance:
   m_ObjectHideFlags: 0
