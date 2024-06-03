@@ -25,7 +25,7 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem
     }
 
     public ItemType m_itemType;
-    public Item m_item;
+    public Item m_item = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +40,10 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem
 
     public void SetEquipItem(Item item)
     {
-        m_item = item;
+        // 아이템 교체할 때 m_item을 null로 만들고 교체할 아이템을 m_item에 넣기
+        if (m_item == null)
+        {
+            m_item = item;
+        }
     }
 }

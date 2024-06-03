@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static ItemData;
 
-public class Item : MonoBehaviour
+public class Item : MonoBehaviour, IPointerClickHandler
 {
+    public LayerMask m_itemMask;
     public ItemData m_itemData;
     public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
     public int m_onGridPositionY;       // 인벤토리 내의 아이템 위치 y좌표
@@ -17,6 +19,16 @@ public class Item : MonoBehaviour
     // string에 아이템 이름 -> 나중에 ItemData 만들면 그걸로 바꿔야함
     Dictionary<string, int[]> m_itemSlotSize = new Dictionary<string, int[]>();
     EquipSlot m_equipSlot;
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            Item item = eventData.pointerClick.GetComponent<Item>();
+            EquipItem(item);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,10 +38,7 @@ public class Item : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            EquipItem();
-        }
+
     }
 
     // 아이템 사이즈 구하는 부분 만드는중(영상 없는 부분)
@@ -49,14 +58,19 @@ public class Item : MonoBehaviour
         //m_itemSlotSize.Add(name, slotSize[,]);
     }
 
-    void EquipItem()
+    void EquipItem(Item item)
     {
+        // 장착 전에 슬롯이 비어있는지 확인하고
+        // 비어있다면 아래 코드 실행
+        // 꽉 찼다면 리턴
+        //if (m_equipSlot.m_item != null) { return; }
+        //CheckEmptyEquipSlot(item);
         IMakeSlotEmpty imse = transform.parent.GetComponent<IMakeSlotEmpty>();
         if (imse != null)
         {
-            imse.MakeSlotEmpty(this);
+            imse.MakeSlotEmpty(item);
         }
-        EquipItemSetParent(this);
+        EquipItemSetParent(item);
     }
 
     void EquipItemSetParent(Item item)
@@ -95,6 +109,57 @@ public class Item : MonoBehaviour
         }
     }
 
+    void CheckEmptyEquipSlot(Item item)
+    {
+        switch (item.m_itemData.itemType)
+        {
+            case ItemType.Head:
+                CheckSlot(0);
+                break;
+            case ItemType.Necklace:
+                CheckSlot(1);
+                break;
+            case ItemType.Weapon:
+                CheckSlot(2);
+                break;
+            case ItemType.Armor:
+                CheckSlot(3);
+                break;
+            case ItemType.Sheild:
+                CheckSlot(4);
+                break;
+            case ItemType.Belt:
+                CheckSlot(5);
+                break;
+            case ItemType.Ring:
+                CheckSlot(6);
+                break;
+            case ItemType.Shoes:
+                CheckSlot(8);
+                break;
+            case ItemType.Hand:
+                CheckSlot(9);
+                break;
+        }
+    }
+
+    void CheckSlot(int i)
+    {
+        m_equipSlot = transform.parent.GetComponent<Slot>().m_equipSlot[i];
+
+        if (m_equipSlot.m_itemType == ItemType.Ring)
+        {
+            if (m_equipSlot.m_item != null)
+            {
+                m_equipSlot = transform.parent.GetComponent<Slot>().m_equipSlot[7];
+            }
+        }
+        if (m_equipSlot.m_item == null)
+        {
+
+        }
+    }
+
     void SetEquip(int i)
     {
         m_equipSlot = transform.parent.GetComponent<Slot>().m_equipSlot[i];
@@ -106,6 +171,7 @@ public class Item : MonoBehaviour
                 m_equipSlot = transform.parent.GetComponent<Slot>().m_equipSlot[7];
             }
         }
+
         EquipItem(m_equipSlot);
         transform.SetParent(m_equipSlot.transform);
         RectTransform rectTransform = transform.GetComponent<RectTransform>();

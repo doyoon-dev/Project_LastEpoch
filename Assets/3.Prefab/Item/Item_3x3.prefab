@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7811476067717033737}
   - component: {fileID: 7811476067717033846}
   - component: {fileID: 8837144322794146276}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Item_3x3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -89,6 +89,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62eba52d3e9b0044385628da2ef87948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_itemMask:
+    serializedVersion: 2
+    m_Bits: 256
   m_itemData: {fileID: 11400000, guid: 607fc2cae2307484897382ae1f9c9757, type: 2}
   m_onGridPositionX: 0
   m_onGridPositionY: 0
