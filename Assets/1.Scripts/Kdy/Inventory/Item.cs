@@ -14,11 +14,6 @@ public class Item : MonoBehaviour, IPointerClickHandler
     public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
     public int m_onGridPositionY;       // 인벤토리 내의 아이템 위치 y좌표
 
-    Slot m_slotSize;
-    ItemType m_itemState;
-
-    // string에 아이템 이름 -> 나중에 ItemData 만들면 그걸로 바꿔야함
-    Dictionary<string, int[]> m_itemSlotSize = new Dictionary<string, int[]>();
     EquipSlot m_equipSlot;
 
     public void OnPointerClick(PointerEventData eventData)
@@ -27,7 +22,10 @@ public class Item : MonoBehaviour, IPointerClickHandler
         {
             Item item = eventData.pointerClick.GetComponent<Item>();
             CheckEmptyEquipSlot(item);
-            if(m_equipSlot.m_item != null) { return; }  // 아이템 교체 함수 넣기
+            if(m_equipSlot.m_item != null)   // 아이템 교체 함수 넣기 (m_equipSlot.m_item : 장비슬롯에 장착된 아이템)
+            {
+                ChangeItem(m_equipSlot.m_item);
+            }
             EquipItem(item);
         }
     }
@@ -125,5 +123,13 @@ public class Item : MonoBehaviour, IPointerClickHandler
         {
             sei.SetEquipItem(this);
         }
+    }
+
+    void ChangeItem(Item equipItem)
+    {
+        int equipX = equipItem.m_onGridPositionX;
+        int equipY = equipItem.m_onGridPositionY;
+        m_onGridPositionX = equipX;
+        m_onGridPositionY = equipY;
     }
 }
