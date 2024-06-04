@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using static ItemData;
 
@@ -46,4 +47,5 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem
             m_item = item;
         }
     }
+
 }
