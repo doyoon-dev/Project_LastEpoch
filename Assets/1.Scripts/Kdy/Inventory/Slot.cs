@@ -5,12 +5,17 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+public interface IPlaceItem
+{
+    void PlaceItem(Item item, int posX, int posY);
+}
+
 public interface IMakeSlotEmpty
 {
     void MakeSlotEmpty(Item item);
 }
 
-public class Slot : MonoBehaviour, IMakeSlotEmpty
+public class Slot : MonoBehaviour, IMakeSlotEmpty, IPlaceItem
 {
     // ΩΩ∑‘ «— ƒ≠ ªÁ¿Ã¡Ó
     public const float m_tileSizeWidth = 47.0f;

@@ -9,6 +9,7 @@ using static ItemData;
 
 public class Item : MonoBehaviour, IPointerClickHandler
 {
+    public Transform m_parentSlot = null;
     public LayerMask m_itemMask;
     public ItemData m_itemData;
     public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
@@ -24,7 +25,7 @@ public class Item : MonoBehaviour, IPointerClickHandler
             CheckEmptyEquipSlot(item);
             if(m_equipSlot.m_item != null)   // 아이템 교체 함수 넣기 (m_equipSlot.m_item : 장비슬롯에 장착된 아이템)
             {
-                ChangeItem(m_equipSlot.m_item);
+                ChangeEquipItem(m_equipSlot.m_item);
             }
             EquipItem(item);
         }
@@ -33,7 +34,7 @@ public class Item : MonoBehaviour, IPointerClickHandler
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_parentSlot = transform.parent;
     }
 
     // Update is called once per frame
@@ -125,10 +126,17 @@ public class Item : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    void ChangeItem(Item equipItem)
+    void ChangeEquipItem(Item equipItem)
     {
-        int equipX = equipItem.m_onGridPositionX;
-        int equipY = equipItem.m_onGridPositionY;
+        int equipX = equipItem.m_onGridPositionX;   // 장착중인 아이템이 슬롯에 있었을 때의 위치
+        int equipY = equipItem.m_onGridPositionY;   // 장착중인 아이템이 슬롯에 있었을 때의 위치
+        
+        IPlaceItem pi = m_parentSlot.transform.GetComponent<IPlaceItem>();
+        if(pi != null)
+        {
+            pi.PlaceItem(equipItem, m_onGridPositionX, m_onGridPositionY);
+        }
+
         m_onGridPositionX = equipX;
         m_onGridPositionY = equipY;
     }
