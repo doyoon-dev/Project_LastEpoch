@@ -15,7 +15,14 @@ public interface IMakeSlotEmpty
     void MakeSlotEmpty(Item item);
 }
 
-public class Slot : MonoBehaviour, IMakeSlotEmpty, IPlaceItem
+public interface IFindEmptySlot
+{
+    Vector2Int? FindEmptySlot(Item item);
+}
+
+public interface ISlotInterface : IPlaceItem, IMakeSlotEmpty, IFindEmptySlot { }
+
+public class Slot : MonoBehaviour, ISlotInterface
 {
     // ΩΩ∑‘ «— ƒ≠ ªÁ¿Ã¡Ó
     public const float m_tileSizeWidth = 47.0f;
@@ -182,7 +189,7 @@ public class Slot : MonoBehaviour, IMakeSlotEmpty, IPlaceItem
     }
 
     // √£¿∫ ΩΩ∑‘¿« ∫Û ∞¯∞£¿« ¡¬«• ∞°¡Æø¿±‚
-    Vector2Int? FindEmptySlot(Item item)
+    public Vector2Int? FindEmptySlot(Item item)
     {
         // item : »πµÊ«— æ∆¿Ã≈€
         for (int y = 0; y < m_slotSizeHeight; y++)

@@ -14,27 +14,35 @@ public class Item : MonoBehaviour, IPointerClickHandler
     public ItemData m_itemData;
     public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
     public int m_onGridPositionY;       // 인벤토리 내의 아이템 위치 y좌표
+    bool m_isEquiped = false;
 
-    EquipSlot m_equipSlot;
+    EquipSlot m_equipSlot;              // 장착할 아이템이 들어갈 장비 슬롯
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            Item item = eventData.pointerClick.GetComponent<Item>();
-            CheckEmptyEquipSlot(item);
-            if(m_equipSlot.m_item != null)   // 아이템 교체 함수 넣기 (m_equipSlot.m_item : 장비슬롯에 장착된 아이템)
+            if (!m_isEquiped)
             {
-                ChangeEquipItem(m_equipSlot.m_item);
+                Item item = eventData.pointerClick.GetComponent<Item>();    // 슬롯에 있던 아이템
+                CheckItemSlotType(item);
+                if (m_equipSlot.m_item != null)   // 아이템 교체 함수 넣기 (m_equipSlot.m_item : 장비슬롯에 장착된 아이템)
+                {
+                    ChangeEquipItem(m_equipSlot.m_item);
+                }
+                EquipItem(item);
             }
-            EquipItem(item);
+            else
+            {
+                UnEquipeItem(m_equipSlot.m_item);
+            }
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        m_parentSlot = transform.parent;
+        m_parentSlot = transform.parent;    // 슬롯 변수
     }
 
     // Update is called once per frame
@@ -43,14 +51,10 @@ public class Item : MonoBehaviour, IPointerClickHandler
 
     }
 
+    // 아이템 장착할 때 아이템이 있던 슬롯 비우기
     void EquipItem(Item item)
     {
-        // 장착 전에 슬롯이 비어있는지 확인하고
-        // 비어있다면 아래 코드 실행
-        // 꽉 찼다면 리턴
-
-        
-        IMakeSlotEmpty imse = transform.parent.GetComponent<IMakeSlotEmpty>();
+        IMakeSlotEmpty imse = m_parentSlot.GetComponent<IMakeSlotEmpty>();
         if (imse != null)
         {
             imse.MakeSlotEmpty(item);
@@ -58,7 +62,8 @@ public class Item : MonoBehaviour, IPointerClickHandler
         SetEquip();
     }
 
-    EquipSlot CheckEmptyEquipSlot(Item item)
+    // 아이템이 장착 될 슬롯 찾는 함수
+    EquipSlot CheckItemSlotType(Item item)
     {
         switch (item.m_itemData.itemType)
         {
@@ -107,9 +112,11 @@ public class Item : MonoBehaviour, IPointerClickHandler
         return m_equipSlot; 
     }
 
+    // 장비 장착했을 때 아이템 위치 설정
     void SetEquip()
     {
-        EquipItem(m_equipSlot);
+        m_isEquiped = true;
+        EquipSlotItem(m_equipSlot);
         transform.SetParent(m_equipSlot.transform);
         RectTransform rectTransform = transform.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = Vector2.zero;
@@ -117,7 +124,8 @@ public class Item : MonoBehaviour, IPointerClickHandler
         //transform.localPosition = Vector3.zero;
     }
 
-    void EquipItem(EquipSlot es)
+    // 장비슬롯에 장착한 아이템 장비슬롯에 저장하는 함수
+    void EquipSlotItem(EquipSlot es)
     {
         ISetEquipItem sei = es.GetComponent<ISetEquipItem>();
         if (sei != null)
@@ -126,18 +134,40 @@ public class Item : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    // 장착 아이템 교체 함수
     void ChangeEquipItem(Item equipItem)
     {
         int equipX = equipItem.m_onGridPositionX;   // 장착중인 아이템이 슬롯에 있었을 때의 위치
         int equipY = equipItem.m_onGridPositionY;   // 장착중인 아이템이 슬롯에 있었을 때의 위치
         
+        // 장착 해제 아이템 슬롯으로 이동
         IPlaceItem pi = m_parentSlot.transform.GetComponent<IPlaceItem>();
         if(pi != null)
         {
             pi.PlaceItem(equipItem, m_onGridPositionX, m_onGridPositionY);
+            equipItem.m_isEquiped = false;
         }
 
+        // 장착할 아이템 위치
         m_onGridPositionX = equipX;
         m_onGridPositionY = equipY;
+    }
+
+    // 장비 장착 해제 함수
+    void UnEquipeItem(Item equipItem)
+    {
+        m_equipSlot.m_item = null;
+        IFindEmptySlot fes = m_parentSlot.transform.GetComponent<IFindEmptySlot>();
+        if (fes != null)
+        {
+            equipItem.m_onGridPositionX = fes.FindEmptySlot(equipItem).Value.x;
+            equipItem.m_onGridPositionY = fes.FindEmptySlot(equipItem).Value.y;
+        }
+        IPlaceItem pi = m_parentSlot.transform.GetComponent<IPlaceItem>();
+        if (pi != null)
+        {
+            pi.PlaceItem(equipItem, equipItem.m_onGridPositionX, equipItem.m_onGridPositionY);
+            equipItem.m_isEquiped = false;
+        }
     }
 }
