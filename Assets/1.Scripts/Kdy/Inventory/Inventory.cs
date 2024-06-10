@@ -7,6 +7,10 @@ public class Inventory : MonoBehaviour
 {
     // Slot : ItemGrid 
     // Item : InventoryItem
+    [SerializeField]
+    GameObject m_inventory;
+    bool m_isInvenOpen = false;
+
     public Slot m_selectedItmeGrid;
     public GameObject m_equipSlot;
     Item m_selectedItem;
@@ -23,7 +27,19 @@ public class Inventory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(m_selectedItmeGrid == null) { return; }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            if (!m_isInvenOpen)
+            {
+                m_inventory.SetActive(true);
+            }
+            else
+            {
+                m_inventory.SetActive(false);
+            }
+            m_isInvenOpen = !m_isInvenOpen;
+        }
+        if (m_selectedItmeGrid == null) { return; }
 
         if(Input.GetMouseButtonDown(0))
         {
@@ -31,6 +47,7 @@ public class Inventory : MonoBehaviour
             Debug.Log(tileGridPosition);
             Debug.Log("------------------------------------------------------");
         }
+        
         
     }
 }

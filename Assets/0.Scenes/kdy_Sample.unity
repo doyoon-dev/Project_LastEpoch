@@ -1427,6 +1427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62eba52d3e9b0044385628da2ef87948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_parentSlot: {fileID: 0}
   m_itemMask:
     serializedVersion: 2
     m_Bits: 256
@@ -3025,6 +3026,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a03ccbc85f0cec4469bf55e502db3646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_inventory: {fileID: 1943501931}
   m_selectedItmeGrid: {fileID: 0}
   m_equipSlot: {fileID: 1949049222}
   m_items: []
@@ -3559,7 +3561,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1943501932
 RectTransform:
   m_ObjectHideFlags: 0
