@@ -42,10 +42,7 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem
     public void SetEquipItem(Item item)
     {
         // 아이템 교체할 때 m_item을 null로 만들고 교체할 아이템을 m_item에 넣기
-        if (m_item == null)
-        {
-            m_item = item;
-        }
+        m_item = item;
     }
 
 }

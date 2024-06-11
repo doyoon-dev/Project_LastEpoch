@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static ItemData;
+using static UnityEditor.Progress;
 
 public class Item : MonoBehaviour, IPointerClickHandler
 {
@@ -28,9 +29,17 @@ public class Item : MonoBehaviour, IPointerClickHandler
                 CheckItemSlotType(item);
                 if (m_equipSlot.m_item != null)   // 아이템 교체 함수 넣기 (m_equipSlot.m_item : 장비슬롯에 장착된 아이템)
                 {
+                    // 아이템 장착할 때 아이템이 있던 슬롯 비우기
+                    IMakeSlotEmpty imse = m_parentSlot.GetComponent<IMakeSlotEmpty>();
+                    if (imse != null)
+                    {
+                        imse.MakeSlotEmpty(item);
+                    }
+                    // 장착아이템 교체
                     ChangeEquipItem(m_equipSlot.m_item);
                 }
-                EquipItem(item);
+                //EquipItem(item);
+                SetEquip();
             }
             else
             {
@@ -49,17 +58,6 @@ public class Item : MonoBehaviour, IPointerClickHandler
     void Update()
     {
 
-    }
-
-    // 아이템 장착할 때 아이템이 있던 슬롯 비우기
-    void EquipItem(Item item)
-    {
-        IMakeSlotEmpty imse = m_parentSlot.GetComponent<IMakeSlotEmpty>();
-        if (imse != null)
-        {
-            imse.MakeSlotEmpty(item);
-        }
-        SetEquip();
     }
 
     // 아이템이 장착 될 슬롯 찾는 함수
@@ -139,7 +137,7 @@ public class Item : MonoBehaviour, IPointerClickHandler
     {
         int equipX = equipItem.m_onGridPositionX;   // 장착중인 아이템이 슬롯에 있었을 때의 위치
         int equipY = equipItem.m_onGridPositionY;   // 장착중인 아이템이 슬롯에 있었을 때의 위치
-        
+
         // 장착 해제 아이템 슬롯으로 이동
         IPlaceItem pi = m_parentSlot.transform.GetComponent<IPlaceItem>();
         if(pi != null)
