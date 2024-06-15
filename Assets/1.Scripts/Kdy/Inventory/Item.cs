@@ -8,7 +8,12 @@ using UnityEngine.UI;
 using static ItemData;
 using static UnityEditor.Progress;
 
-public class Item : MonoBehaviour, IPointerClickHandler
+public interface IChangePos
+{
+    void ChangePos(Vector2 pos);
+}
+
+public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IChangePos
 {
     public Transform m_parentSlot = null;
     public LayerMask m_itemMask;
@@ -18,6 +23,26 @@ public class Item : MonoBehaviour, IPointerClickHandler
     bool m_isEquiped = false;
 
     EquipSlot m_equipSlot;              // 장착할 아이템이 들어갈 장비 슬롯
+
+    Vector3 m_orgPos = Vector3.zero;
+    Vector2 m_dragOffset = Vector2.zero;
+
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        m_orgPos = transform.position;
+        m_dragOffset = (Vector2)transform.position - eventData.position;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        transform.position = eventData.position + m_dragOffset;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        transform.position = m_orgPos;
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -167,5 +192,11 @@ public class Item : MonoBehaviour, IPointerClickHandler
             pi.PlaceItem(equipItem, equipItem.m_onGridPositionX, equipItem.m_onGridPositionY);
             equipItem.m_isEquiped = false;
         }
+    }
+
+    public void ChangePos(Vector2 pos)
+    {
+        // 이동한 아이템의 위치 지정
+        m_orgPos = pos;
     }
 }

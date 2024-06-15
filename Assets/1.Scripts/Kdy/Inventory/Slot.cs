@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
 public interface IPlaceItem
@@ -22,7 +23,7 @@ public interface IFindEmptySlot
 
 public interface ISlotInterface : IPlaceItem, IMakeSlotEmpty, IFindEmptySlot { }
 
-public class Slot : MonoBehaviour, ISlotInterface
+public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
 {
     // 슬롯 한 칸 사이즈
     public const float m_tileSizeWidth = 47.0f;
@@ -43,6 +44,24 @@ public class Slot : MonoBehaviour, ISlotInterface
 
     [SerializeField]
     public EquipSlot[] m_equipSlot;
+
+
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        // 아이템을 놓는 슬롯의 좌표 가져오기
+        // 아이템을 해당 슬롯에 놓기
+        Item item = eventData.pointerClick.GetComponent<Item>();
+        MakeSlotEmpty(item);
+        PlaceItem(item, GetTileGridPosition(eventData.position).x, GetTileGridPosition(eventData.position).y);
+        IChangePos cp = item.GetComponent<IChangePos>();
+        if (cp != null)
+        {
+            //cp.ChangePos();
+        }
+    }
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -102,7 +121,6 @@ public class Slot : MonoBehaviour, ISlotInterface
     {
         m_positionOnTheGrid.x = mousePosition.x - m_rectTransform.position.x;
         m_positionOnTheGrid.y = m_rectTransform.position.y - mousePosition.y;
-        Debug.Log(m_positionOnTheGrid);
 
         m_tileGridPosition.x = (int)(m_positionOnTheGrid.x / m_tileSizeWidth);
         m_tileGridPosition.y = (int)(m_positionOnTheGrid.y / m_tileSizeHeight);
