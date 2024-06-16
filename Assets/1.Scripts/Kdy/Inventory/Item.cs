@@ -71,6 +71,10 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                 UnEquipeItem(m_equipSlot.m_item);
             }
         }
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            Debug.Log("아이템 위치 : " + eventData.position);
+        }
     }
 
     // Start is called before the first frame update

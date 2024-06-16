@@ -57,7 +57,7 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
         IChangePos cp = item.GetComponent<IChangePos>();
         if (cp != null)
         {
-            //cp.ChangePos();
+            cp.ChangePos(item.transform.position);
         }
     }
 
