@@ -12,13 +12,14 @@ public class SentinelSkill : Skill
     [SerializeField]
     Transform m_warPathEndPos;
     public LayerMask m_enemyMask;
-    Player m_player;    // 나중에 인터페이스로 바꿔야 될 수 있음
+    
     bool m_warPathUse = false;
+    bool m_lungeUse = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        m_player = transform.GetComponent<Player>();
+        
     }
 
     // Update is called once per frame
@@ -116,8 +117,9 @@ public class SentinelSkill : Skill
     // 돌격 스킬
     void Skill_Lunge(KeyCode inputKey)
     {
-        if (Input.GetKeyDown(inputKey))
+        if (Input.GetKeyDown(inputKey) && !m_lungeUse && m_player.m_curMagicPoint >= SkillData.m_skillData["Lunge"].Mp)
         {
+            m_lungeUse = true;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
             {
@@ -164,6 +166,7 @@ public class SentinelSkill : Skill
             enemyList[i].OnDamaged(SkillData.m_skillData["Lunge"].Dmg);
             enemyList.Remove(enemyList[i]);
         }
+        m_lungeUse = false;
         m_myAnim.SetBool("SkillLunge", false);
     }
 
