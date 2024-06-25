@@ -15,6 +15,7 @@ public interface IChangePos
 
 public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IChangePos
 {
+    public event UnityAction m_unEquipItem = null;
     public Transform m_parentSlot = null;
     public LayerMask m_itemMask;
     public ItemData m_itemData;
@@ -183,6 +184,8 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     // 장비 장착 해제 함수
     void UnEquipeItem(Item equipItem)
     {
+        m_unEquipItem?.Invoke();
+        m_unEquipItem = null;
         m_equipSlot.m_item = null;
         IFindEmptySlot fes = m_parentSlot.transform.GetComponent<IFindEmptySlot>();
         if (fes != null)
