@@ -53,14 +53,14 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
             {
                 Item item = eventData.pointerClick.GetComponent<Item>();    // 슬롯에 있던 아이템
                 CheckItemSlotType(item);
+                // 아이템 장착할 때 아이템이 있던 슬롯 비우기
+                IMakeSlotEmpty imse = m_parentSlot.GetComponent<IMakeSlotEmpty>();
+                if (imse != null)
+                {
+                    imse.MakeSlotEmpty(item);
+                }
                 if (m_equipSlot.m_item != null)   // 아이템 교체 함수 넣기 (m_equipSlot.m_item : 장비슬롯에 장착된 아이템)
                 {
-                    // 아이템 장착할 때 아이템이 있던 슬롯 비우기
-                    IMakeSlotEmpty imse = m_parentSlot.GetComponent<IMakeSlotEmpty>();
-                    if (imse != null)
-                    {
-                        imse.MakeSlotEmpty(item);
-                    }
                     // 장착아이템 교체
                     ChangeEquipItem(m_equipSlot.m_item);
                 }
@@ -186,6 +186,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     {
         m_unEquipItem?.Invoke();
         m_unEquipItem = null;
+
         m_equipSlot.m_item = null;
         IFindEmptySlot fes = m_parentSlot.transform.GetComponent<IFindEmptySlot>();
         if (fes != null)
