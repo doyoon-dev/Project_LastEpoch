@@ -40,7 +40,7 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
     Vector2 m_positionOnTheGrid = new Vector2();            // ½ºÅ©¸° ÁÂÇ¥ ±âÁØ ½½·Ô ÇÑ Ä­ ÁÂÇ¥
     Vector2Int m_tileGridPosition = new Vector2Int();       // ½½·Ô ±âÁØ ½½·Ô ÇÑ Ä­ ÁÂÇ¥
 
-    Item[,] m_itemSlot;
+    public Item[,] m_itemSlot;                  // 240702 public ½ÇÇèÁß ¿ø·¡ public ¾Æ´Ô
 
     [SerializeField]
     public EquipSlot[] m_equipSlot;
@@ -68,9 +68,9 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
     {
         m_rectTransform = GetComponent<RectTransform>();
         Init(m_slotSizeWidth, m_slotSizeHeight);
-        Item item = Instantiate(m_itemPrefab).GetComponent<Item>();
-        Vector2Int itemSlotSize = FindEmptySlot(item).Value;
-        PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
+        //Item item = Instantiate(m_itemPrefab).GetComponent<Item>();
+        //Vector2Int itemSlotSize = FindEmptySlot(item).Value;
+        //PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
         
     }
 
@@ -194,7 +194,9 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
         }
         return true;
     }
-    bool BoundaryCheck(int posX, int posY, int width, int height)
+
+    // 240702 public ½ÇÇèÁß ¿ø·¡ public ¾Æ´Ô
+    public bool BoundaryCheck(int posX, int posY, int width, int height)
     {
         if (!PositionCheck(posX, posY)) { return false; }
 

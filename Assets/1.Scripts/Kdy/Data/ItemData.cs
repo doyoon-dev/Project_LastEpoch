@@ -19,6 +19,7 @@ public class ItemData : ScriptableObject
         Hand
     }
 
+    public string itemName;
     public int itemWidth;
     public int itemHeight;
     public ItemType itemType;

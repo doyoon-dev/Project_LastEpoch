@@ -45,7 +45,48 @@ public class Inventory : MonoBehaviour
         {
             Vector2Int tileGridPosition = m_selectedItmeGrid.GetTileGridPosition(Input.mousePosition);
         }
-        
-        
+    }
+
+    // 드랍한 아이템 유니티 이벤트로 아래 함수 호출해서 아이템 저장 후 슬롯에 넣기
+    void GetDropItem()
+    {
+
+    }
+
+    // 240702 DropItem/Slot/Inventory 실험중
+    public void PlaceItem(Item item, int posX, int posY)
+    {
+        if (!m_selectedItmeGrid.BoundaryCheck(posX, posY, item.m_itemData.itemWidth, item.m_itemData.itemHeight))
+        {
+            return;
+        }
+        RectTransform itemPos = item.GetComponent<RectTransform>();
+        itemPos.SetParent(m_selectedItmeGrid.GetComponent<RectTransform>());
+
+        // 슬롯에 아이템을 넣을 때 아이템 크기에 따라 차지하는 슬롯만큼 데이터 넣기
+        for (int x = 0; x < item.m_itemData.itemWidth; x++)
+        {
+            for (int y = 0; y < item.m_itemData.itemHeight; y++)
+            {
+                m_selectedItmeGrid.m_itemSlot[posX + x, posY + y] = item;
+            }
+        }
+
+        item.m_onGridPositionX = posX;
+        item.m_onGridPositionY = posY;
+
+        Vector2 pos = new Vector2();
+        if (item.m_onGridPositionX == 0)
+        {
+            pos.x = posX * 47.0f + 3;
+            pos.y = -(posY * 47.0f) - 2;
+        }
+        else
+        {
+            pos.x = posX * 47.0f;
+            pos.y = -(posY * 47.0f);
+        }
+        itemPos.localPosition = pos;
+        //return true;
     }
 }
