@@ -10,9 +10,15 @@ public struct MoveStat
     public float rotSpeed;
 }
 
+public interface IIsMoving
+{
+    bool IsMoving { get; }
+}
+
 public class CharacterMovement : CharacterProperty
 {
     [SerializeField] MoveStat m_moveStat;
+    [SerializeField] Camera m_cam;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +51,7 @@ public class CharacterMovement : CharacterProperty
             float delta = Time.deltaTime * m_moveStat.moveSpeed;
             if(delta > dist) delta = dist;
             transform.Translate(dir * delta, Space.World);
+            m_cam.transform.Translate(dir * delta, Space.World);
             dist -= delta;
             yield return null;
         }
@@ -101,6 +108,7 @@ public class CharacterMovement : CharacterProperty
                 float delta = Time.deltaTime * m_moveStat.moveSpeed;
                 if (delta > dist) delta = dist;
                 if(!m_myAnim.GetBool("IsAttacking")) transform.Translate(dir * delta, Space.World);
+                m_cam.transform.Translate(dir * delta, Space.World);
             }
             else
             {
@@ -131,6 +139,7 @@ public class CharacterMovement : CharacterProperty
             float delta = Time.deltaTime * m_moveStat.moveSpeed;
             if (delta > dist) delta = dist;
             transform.Translate(dir * delta, Space.World);
+            m_cam.transform.Translate(dir * delta, Space.World);
             dist -= delta;
             yield return null;
         }
