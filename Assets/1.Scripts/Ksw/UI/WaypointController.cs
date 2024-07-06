@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 [ExecuteInEditMode]
 public class WaypointController : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class WaypointController : MonoBehaviour
         {
             if (i == 0)
             {
-                m_waypoints[i].m_color = Color.green;
+                m_waypoints[i].m_color = Color.magenta;
             }
             else if (i == m_waypoints.Length - 1)
             {
