@@ -32,17 +32,18 @@ public class MonsterController : MonoBehaviour
     MoveTween m_moveTween;
     NavMeshAgent m_navAgent;
     MonsterAnimController m_monAnimCtr;
-    bool m_isPatrol;
+    Renderer[] m_renderers;
+    bool m_isPatrol; //patrol 여부확인
     int m_curWaypoint;
     float m_idleDuration = 1f;
     float m_idleTime = 0;
     public LayerMask m_playerMask;
     public LayerMask m_BackgroundMask;
 
-   
-    
+
+
     //public bool IsDie { get { return m_state == BehaviourState.Die1; } }
-    public MonsterAnimController.Motion GetMotion {  get { return m_monAnimCtr.CurrentMotion; } }
+    public MonsterAnimController.Motion GetMotion { get { return m_monAnimCtr.CurrentMotion; } }// 어느 포인트를 가고 있는지 체크
     #region Animation Event Methods
     void AnimEvent_AttackFinished()
     {
@@ -71,12 +72,23 @@ public class MonsterController : MonoBehaviour
         SetIdleDuration(duration);
 
     }
+    IEnumerator Coroutine_SetHitColor(float duration)
+    {
+        for (int i = 0; i < m_renderers.Length; i++)
+        {
+            yield return new WaitForSeconds(duration);
+            m_renderers[i].material.SetColor("_RimcColor", Color.white);
+        }
+    }
 
     //임시 데미지 입었을떄 
     public void SetDamage(Transform attacker, SkillData skillData)
     {
         SetState(BehaviourState.Damaged);
         m_monAnimCtr.Play(MonsterAnimController.Motion.Hit);
+        m_navAgent.ResetPath();
+        m_navAgent.isStopped = true;
+    
         if (skillData.knockback > 0f)
         {
             var dir = (transform.position - attacker.position).normalized;
@@ -195,7 +207,7 @@ public class MonsterController : MonoBehaviour
                     {
                         m_isPatrol = false;
                         m_navAgent.ResetPath();
-                        SetIdle(0f);
+                        SetIdle(1f);
                     }
                     else
                     {
@@ -208,8 +220,8 @@ public class MonsterController : MonoBehaviour
                     }
                 }
                 break;
-                
-                //데미지 상태
+
+            //데미지 상태
             case BehaviourState.Damaged:
                 break;
 
@@ -229,6 +241,7 @@ public class MonsterController : MonoBehaviour
         m_monAnimCtr = GetComponent<MonsterAnimController>();
         m_moveTween = GetComponent<MoveTween>();
         m_navAgent = GetComponent<NavMeshAgent>();
+        m_renderers = GetComponentsInChildren<Renderer>();
     }
 
     void Update()
