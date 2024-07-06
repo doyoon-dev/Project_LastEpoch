@@ -13,6 +13,7 @@ public struct SkillInform
 public class SkillData : MonoBehaviour
 {
     public static Dictionary<string, SkillInform> m_skillData = new Dictionary<string, SkillInform>();
+    
     public static float MaxKnockbackDuration = 0.7f;
     public static float MaxKnockbackDist = 5f;
     [HideInInspector]

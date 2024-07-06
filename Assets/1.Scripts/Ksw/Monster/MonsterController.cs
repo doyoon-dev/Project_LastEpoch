@@ -12,6 +12,7 @@ public class MonsterController : MonoBehaviour
         Attack,
         Chase,
         Patrol,
+        Damaged,
         //Die,
         Max
     }
@@ -19,18 +20,25 @@ public class MonsterController : MonoBehaviour
     BehaviourState m_state; //상태
     [Header("타겟 인식 범위")]
     [SerializeField]
-    protected float m_dectectDist = 10f;
+    protected float m_dectectDist = 100f;
     [Header("공격 거리")]
     [SerializeField]
-    protected float m_attackDist = 3f;
+    protected float m_attackDist = 1.5f;
     [Header("플레이어 인식 ")]
     [SerializeField]
-    Player m_player; 
+    Player m_player;
+    [SerializeField]
+    WaypointController m_waypointCtr;
     MoveTween m_moveTween;
     NavMeshAgent m_navAgent;
     MonsterAnimController m_monAnimCtr;
-    float m_idleDuration = 5f;
+    bool m_isPatrol;
+    int m_curWaypoint;
+    float m_idleDuration = 1f;
     float m_idleTime = 0;
+    public LayerMask m_playerMask;
+    public LayerMask m_BackgroundMask;
+
    
     
     //public bool IsDie { get { return m_state == BehaviourState.Die1; } }
@@ -39,6 +47,10 @@ public class MonsterController : MonoBehaviour
     void AnimEvent_AttackFinished()
     {
         SetIdle(1f);
+    }
+    void AnimEvent_HitFinished()
+    {
+        SetIdle(0f);
     }
     #endregion
 
@@ -63,6 +75,8 @@ public class MonsterController : MonoBehaviour
     //임시 데미지 입었을떄 
     public void SetDamage(Transform attacker, SkillData skillData)
     {
+        SetState(BehaviourState.Damaged);
+        m_monAnimCtr.Play(MonsterAnimController.Motion.Hit);
         if (skillData.knockback > 0f)
         {
             var dir = (transform.position - attacker.position).normalized;
@@ -87,7 +101,8 @@ public class MonsterController : MonoBehaviour
         var originPos = transform.position + Vector3.up * 0.5f;
         var targetPos = m_player.transform.position + Vector3.up * 0.5f;
         var dir = targetPos - originPos;
-        Debug.DrawRay(originPos, dir.normalized * m_dectectDist, Color.green); 
+        Debug.DrawRay(originPos, dir.normalized * m_dectectDist, Color.green);
+        /*
         if (Physics.Raycast(originPos, dir.normalized, out hit, m_dectectDist, 1 << LayerMask.NameToLayer("Background") | 1 << LayerMask.NameToLayer("Player")))
         {
             if (hit.collider.CompareTag("Background"))
@@ -98,6 +113,17 @@ public class MonsterController : MonoBehaviour
             {
                 return true;
             }
+        }
+        return false;
+        */
+
+        if (Physics.Raycast(originPos, dir.normalized, out hit, m_dectectDist, m_playerMask | m_BackgroundMask))
+        {
+            if ((m_playerMask & (1 << hit.collider.gameObject.layer)) != 0)
+            {
+                return true;
+            }
+  
         }
         return false;
     }
@@ -128,6 +154,13 @@ public class MonsterController : MonoBehaviour
                             m_idleTime = 0;
                         }
                     }
+                    else
+                    {
+                        SetState(BehaviourState.Patrol);
+                        m_monAnimCtr.Play(MonsterAnimController.Motion.Run);
+                        m_navAgent.stoppingDistance = m_navAgent.radius; //navagent radius만큼 정지
+
+                    }
                 }
                 break;
 
@@ -141,18 +174,46 @@ public class MonsterController : MonoBehaviour
                 if (Mathf.Approximately(dist.sqrMagnitude, Mathf.Pow(m_navAgent.stoppingDistance, 2f)) || dist.sqrMagnitude < Mathf.Pow(m_navAgent.stoppingDistance, 2f))
                 {
                     SetIdle(1f);
-                }
-                
+                }               
                 break;
 
-                /*
-                //경계 상태
+            //경계 상태
             case BehaviourState.Patrol:
+                if (!m_isPatrol)
+                {
+                    m_isPatrol = true;
+                    m_curWaypoint++;
+                    if (m_curWaypoint >= m_waypointCtr.m_waypoints.Length)
+                    {
+                        m_curWaypoint = 0;
+                    }
+                    m_navAgent.SetDestination(m_waypointCtr.m_waypoints[m_curWaypoint].transform.position);
+                }
+                else
+                {
+                    if (FindTarget())
+                    {
+                        m_isPatrol = false;
+                        m_navAgent.ResetPath();
+                        SetIdle(0f);
+                    }
+                    else
+                    {
+                        dist = transform.position - m_waypointCtr.m_waypoints[m_curWaypoint].transform.position;
+                        if (Mathf.Approximately(dist.sqrMagnitude, Mathf.Pow(m_navAgent.stoppingDistance, 2f)) || dist.sqrMagnitude < Mathf.Pow(m_navAgent.stoppingDistance, 2f))
+                        {
+                            m_isPatrol = false;
+                            SetIdle(2f);
+                        }
+                    }
+                }
                 break;
                 
                 //데미지 상태
             case BehaviourState.Damaged:
                 break;
+
+                /*
                 //죽은 상태
             case BehaviourState.Die:
                 break;

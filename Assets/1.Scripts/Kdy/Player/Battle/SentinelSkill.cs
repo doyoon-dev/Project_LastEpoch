@@ -25,7 +25,7 @@ public class SentinelSkill : Skill
     // Update is called once per frame
     void Update()
     {
-        Skill_WarPath(KeyCode.Q);
+        //Skill_WarPath(KeyCode.Q);
         Skill_Lunge(KeyCode.W);
     }
 

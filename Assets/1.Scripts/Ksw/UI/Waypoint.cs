@@ -8,7 +8,7 @@ public class Waypoint : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = m_color;
-        Gizmos.DrawWireSphere(transform.position, 1f);
-    }
+        Gizmos.DrawWireSphere(transform.position, 1.0f);
 
+    }
 }
