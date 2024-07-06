@@ -13,11 +13,11 @@ public class Skill : MonoBehaviour, IUsingSkill
     public UnityEvent<float> m_useSkill;
     [HideInInspector]
     public bool m_usingSkill = false;
-
+    public Player m_player;    // 나중에 인터페이스로 바꿔야 될 수 있음
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        m_player = transform.GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -79,5 +79,18 @@ public class Skill : MonoBehaviour, IUsingSkill
         {
             return false;
         }
+    }
+
+    // 스킬 사용 가능한지 체크하는 함수
+    public bool IsSkillUsable(SkillData skillData)
+    {
+
+        return false;
+    }
+    
+    // 쿨타임
+    public void SkillCoolTime(SkillData skillData)
+    {
+
     }
 }

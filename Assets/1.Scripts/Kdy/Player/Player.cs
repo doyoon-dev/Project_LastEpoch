@@ -12,6 +12,7 @@ public class Player : BattleSystem
     Transform m_weaponEndPoint;
     [SerializeField]
     Transform weaponPoint;
+    public Inventory m_inventory;
     public LayerMask m_enemyMask;
     int m_clickCnt = 0;
     bool m_isComboCheck = false;
@@ -112,7 +113,6 @@ public class Player : BattleSystem
     {
         Collider[] enemy = Physics.OverlapCapsule(m_weaponStartPoint.position, m_weaponEndPoint.position, 0.06f, m_enemyMask);
         Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 0.7f, m_enemyMask);
-        Debug.Log(list.Length);
         foreach (Collider col in list)
         {
             
