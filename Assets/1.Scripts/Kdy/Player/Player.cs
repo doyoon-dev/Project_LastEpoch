@@ -12,6 +12,7 @@ public class Player : BattleSystem
     Transform m_weaponEndPoint;
     [SerializeField]
     Transform weaponPoint;
+    public Inventory m_inventory;
     public LayerMask m_enemyMask;
     int m_clickCnt = 0;
     bool m_isComboCheck = false;

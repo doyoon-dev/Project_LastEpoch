@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Inventory : MonoBehaviour
+public interface IGetItemData
+{
+    void GetItemData(GameObject itemPrefab);
+}
+
+public class Inventory : MonoBehaviour, IGetItemData
 {
     // Slot : ItemGrid 
     // Item : InventoryItem
@@ -14,6 +19,8 @@ public class Inventory : MonoBehaviour
     public Slot m_selectedItmeGrid;
     public GameObject m_equipSlot;
     Item m_selectedItem;
+
+    ItemData m_itemData;
 
     [SerializeField]
     List<Item> m_items = new List<Item>();
@@ -41,52 +48,30 @@ public class Inventory : MonoBehaviour
         }
         if (m_selectedItmeGrid == null) { return; }
 
-        if(Input.GetMouseButtonDown(0))
-        {
-            Vector2Int tileGridPosition = m_selectedItmeGrid.GetTileGridPosition(Input.mousePosition);
-        }
-    }
-
-    // 드랍한 아이템 유니티 이벤트로 아래 함수 호출해서 아이템 저장 후 슬롯에 넣기
-    void GetDropItem()
-    {
-
+        //if(Input.GetMouseButtonDown(0))
+        //{
+        //    Vector2Int tileGridPosition = m_selectedItmeGrid.GetTileGridPosition(Input.mousePosition);
+        //}
     }
 
     // 240702 DropItem/Slot/Inventory 실험중
-    public void PlaceItem(Item item, int posX, int posY)
+    public void PlaceItem(Vector2Int tileGridPosition)
     {
-        if (!m_selectedItmeGrid.BoundaryCheck(posX, posY, item.m_itemData.itemWidth, item.m_itemData.itemHeight))
+        bool complete = m_selectedItmeGrid.PlaceItem(m_selectedItem, tileGridPosition.x, tileGridPosition.y);
+        if (complete)
         {
-            return;
+            m_selectedItem = null;
         }
-        RectTransform itemPos = item.GetComponent<RectTransform>();
-        itemPos.SetParent(m_selectedItmeGrid.GetComponent<RectTransform>());
+    }
 
-        // 슬롯에 아이템을 넣을 때 아이템 크기에 따라 차지하는 슬롯만큼 데이터 넣기
-        for (int x = 0; x < item.m_itemData.itemWidth; x++)
+    public void GetItemData(GameObject itemPrefab)
+    {
+        ICreateItem ici = m_selectedItmeGrid.GetComponent<ICreateItem>();
+        if(ici != null)
         {
-            for (int y = 0; y < item.m_itemData.itemHeight; y++)
-            {
-                m_selectedItmeGrid.m_itemSlot[posX + x, posY + y] = item;
-            }
+            ici.CreateItem(itemPrefab);
         }
-
-        item.m_onGridPositionX = posX;
-        item.m_onGridPositionY = posY;
-
-        Vector2 pos = new Vector2();
-        if (item.m_onGridPositionX == 0)
-        {
-            pos.x = posX * 47.0f + 3;
-            pos.y = -(posY * 47.0f) - 2;
-        }
-        else
-        {
-            pos.x = posX * 47.0f;
-            pos.y = -(posY * 47.0f);
-        }
-        itemPos.localPosition = pos;
-        //return true;
+        //m_itemData = itemData;
+        //m_selectedItmeGrid.PlaceItem(item, itemData);
     }
 }

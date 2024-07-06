@@ -74,7 +74,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         }
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            Debug.Log("아이템 위치 : " + eventData.position);
+            //Debug.Log("아이템 위치 : " + eventData.position);
         }
     }
 

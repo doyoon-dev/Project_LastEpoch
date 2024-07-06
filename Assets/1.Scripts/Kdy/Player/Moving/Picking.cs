@@ -9,10 +9,12 @@ public class Picking : MonoBehaviour
 {
     public LayerMask m_moveMask;
     public LayerMask m_enemyMask;
+    public LayerMask m_itemMask;
     public UnityEvent<Vector3> m_moveAct;
     public UnityEvent<Vector3> m_attackAct;
     public UnityEvent<Transform> m_moveAttackAct;
     public Animator m_anim;
+    public Player m_player;
     IUsingSkill m_skillUsed;
     // Start is called before the first frame update
     void Start()
@@ -48,6 +50,20 @@ public class Picking : MonoBehaviour
                     {
                         m_attackAct?.Invoke(hit.point);
                     }
+                }
+            }
+        }
+
+        // 드랍된 아이템 클릭
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_itemMask))
+            {
+                ICheckDropItem icp = hit.transform.GetComponent<ICheckDropItem>();
+                if (icp != null)
+                {
+                    icp.CheckDropItem(m_player.m_inventory);
                 }
             }
         }

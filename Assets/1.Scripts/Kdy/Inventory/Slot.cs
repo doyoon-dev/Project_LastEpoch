@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 public interface IPlaceItem
 {
-    void PlaceItem(Item item, int posX, int posY);
+    bool PlaceItem(Item item, int posX, int posY);
 }
 
 public interface IMakeSlotEmpty
@@ -21,7 +21,12 @@ public interface IFindEmptySlot
     Vector2Int? FindEmptySlot(Item item);
 }
 
-public interface ISlotInterface : IPlaceItem, IMakeSlotEmpty, IFindEmptySlot { }
+public interface ICreateItem
+{
+    void CreateItem(GameObject dropItemPrefab);
+}
+
+public interface ISlotInterface : IPlaceItem, IMakeSlotEmpty, IFindEmptySlot, ICreateItem { }
 
 public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
 {
@@ -89,6 +94,13 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
         }
     }
 
+    public void CreateItem(GameObject dropItemPrefab)
+    {
+        Item item = Instantiate(dropItemPrefab).GetComponent<Item>();
+        Vector2Int itemSlotSize = FindEmptySlot(item).Value;
+        PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
+    }
+
     // 실험중
     bool CheckSlot()
     {
@@ -130,11 +142,12 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
 
     // 아이템 슬롯에 넣기
     // 나중에 불린 함수로 바꿔서 Inventory 스크립트에서 호출해서 true일 때 아이템 들어가도록 만듬(영상에서)
-    public void PlaceItem(Item item, int posX, int posY)
+    // Inventory 스크립트로 옮겨야 인벤토리가 꺼져있을 때도 아이템이 슬롯으로 들어감
+    public bool PlaceItem(Item item, int posX, int posY)
     {
         if (!BoundaryCheck(posX, posY, item.m_itemData.itemWidth, item.m_itemData.itemHeight))
         {
-            return;
+            return false;
         }
         RectTransform itemPos = item.GetComponent<RectTransform>();
         itemPos.SetParent(m_rectTransform);
@@ -163,7 +176,7 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
             pos.y = -(posY * m_tileSizeHeight);
         }
         itemPos.localPosition = pos;
-        //return true;
+        return true;
     }
 
     // 아이템을 옮기거나 슬롯에서 빼낼 때 m_itemSlot[x, y] = null 로 초기화 해주기
