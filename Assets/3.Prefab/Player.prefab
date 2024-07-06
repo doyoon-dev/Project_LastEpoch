@@ -1725,7 +1725,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1552417021340451250
 Transform:
   m_ObjectHideFlags: 0
@@ -1833,14 +1833,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2331104817605673596}
-  m_LocalRotation: {x: -0.031686336, y: 0.69106746, z: 0.044768076, w: 0.7207064}
-  m_LocalPosition: {x: 0.0202, y: 0.0298, z: -0.0836}
+  m_LocalRotation: {x: -0.0063918945, y: 0.8565598, z: 0.09434335, w: 0.5073102}
+  m_LocalPosition: {x: -0.0153, y: 0.0154, z: -0.0366}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2451246922008834294}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -6.174, y: 87.53, z: 1.195}
+  m_LocalEulerAnglesHint: {x: -9.678, y: 118.309, z: 4.933}
 --- !u!1 &2486930368093318046
 GameObject:
   m_ObjectHideFlags: 0
@@ -4110,7 +4110,7 @@ GameObject:
   - component: {fileID: 5244370769833058614}
   - component: {fileID: 5244370769833058615}
   - component: {fileID: 5244370769833058613}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4151,6 +4151,9 @@ MonoBehaviour:
   m_enemyMask:
     serializedVersion: 2
     m_Bits: 128
+  m_itemMask:
+    serializedVersion: 2
+    m_Bits: 256
   m_moveAct:
     m_PersistentCalls:
       m_Calls:
@@ -4197,6 +4200,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_anim: {fileID: 5244370768580197507}
+  m_player: {fileID: 5244370769833058608}
 --- !u!114 &5244370769833058608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4212,6 +4216,7 @@ MonoBehaviour:
   m_moveStat:
     moveSpeed: 2
     rotSpeed: 2
+  m_cam: {fileID: 0}
   m_stat:
     MaxHp: 100
     MaxMp: 100
@@ -4222,6 +4227,7 @@ MonoBehaviour:
   m_weaponStartPoint: {fileID: 5244370769042063078}
   m_weaponEndPoint: {fileID: 5244370770216268804}
   weaponPoint: {fileID: 5244370770216268804}
+  m_inventory: {fileID: 0}
   m_enemyMask:
     serializedVersion: 2
     m_Bits: 128
@@ -4283,6 +4289,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_usingSkill: 0
+  m_player: {fileID: 0}
   m_myAnim: {fileID: 5244370768580197507}
   m_warPathStartPos: {fileID: 5244370769042063078}
   m_warPathEndPos: {fileID: 5244370769486884012}
