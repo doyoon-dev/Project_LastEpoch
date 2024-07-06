@@ -13,12 +13,14 @@ public struct SkillInform
 public class SkillData : MonoBehaviour
 {
     public static Dictionary<string, SkillInform> m_skillData = new Dictionary<string, SkillInform>();
+    
     public static float MaxKnockbackDuration = 0.7f;
     public static float MaxKnockbackDist = 5f;
     public int attackArea;
     public float attack;
     public float knockback;
     public float delayTime;
+  
     private void Start()
     {
         m_skillData.Add("WindMill", new SkillInform() { Mp = 1, Dmg = 29, CoolTime = 0.5f, Channeling = 10 });
