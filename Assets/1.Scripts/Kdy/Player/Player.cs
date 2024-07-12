@@ -16,6 +16,8 @@ public class Player : BattleSystem
     public LayerMask m_enemyMask;
     int m_clickCnt = 0;
     bool m_isComboCheck = false;
+    public int attackDamage = 20;
+    public float attackRange = 3f;
     // Start is called before the first frame update
     void Start()
     {
@@ -109,6 +111,25 @@ public class Player : BattleSystem
         }
 
     }
+    /* //몬스터 피격 연결코드 임시 (안됨)
+    void Attack()
+    {
+        Ray ray = new Ray(transform.position, transform.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, attackRange, m_enemyMask))
+        {
+            IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                // 가상의 SkillData 객체를 생성하여 전달
+                SkillData skillData = new SkillData { knockback = 5f }; // 실제로는 스킬 데이터 설정
+                damageable.SetDamage(transform, skillData);
+            }
+        }
+    }
+    */
+    
     public override void Attack()
     {
         Collider[] enemy = Physics.OverlapCapsule(m_weaponStartPoint.position, m_weaponEndPoint.position, 0.06f, m_enemyMask);
@@ -125,6 +146,7 @@ public class Player : BattleSystem
             }
         }
     }
+    
 
     //private void OnDrawGizmos()
     //{
