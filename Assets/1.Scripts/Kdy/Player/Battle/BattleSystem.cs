@@ -24,7 +24,10 @@ public interface IUsedSkill
 {
     void UsedSkill(float skillMp);
 }
-
+public interface IDamageable
+{
+    void SetDamage(Transform attacker, SkillData skillData);
+}
 public interface IOnDamaged
 {
     void OnDamaged(float damage);
