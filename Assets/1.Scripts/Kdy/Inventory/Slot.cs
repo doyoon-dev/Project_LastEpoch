@@ -50,8 +50,6 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
     [SerializeField]
     public EquipSlot[] m_equipSlot;
 
-
-
     public void OnDrop(PointerEventData eventData)
     {
         // 아이템을 놓는 슬롯의 좌표 가져오기
@@ -66,17 +64,11 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
         }
     }
 
-
-
     // Start is called before the first frame update
     void Start()
     {
         m_rectTransform = GetComponent<RectTransform>();
         Init(m_slotSizeWidth, m_slotSizeHeight);
-        //Item item = Instantiate(m_itemPrefab).GetComponent<Item>();
-        //Vector2Int itemSlotSize = FindEmptySlot(item).Value;
-        //PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
-        
     }
 
     // Update is called once per frame
@@ -92,13 +84,6 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
                 PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
             }
         }
-    }
-
-    public void CreateItem(GameObject dropItemPrefab)
-    {
-        Item item = Instantiate(dropItemPrefab).GetComponent<Item>();
-        Vector2Int itemSlotSize = FindEmptySlot(item).Value;
-        PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
     }
 
     // 실험중
@@ -140,6 +125,31 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
         return m_tileGridPosition;
     }
 
+    // 아이템을 옮기거나 슬롯에서 빼낼 때 m_itemSlot[x, y] = null 로 초기화 해주기
+    public Item PickUpItem(int x, int y)
+    {
+        Item item = m_itemSlot[x, y];
+
+        if(item == null) { return null; };
+
+        for (int i = 0; i < item.m_itemData.itemWidth; i++)
+        {
+            for (int j = 0; j < item.m_itemData.itemHeight; j++)
+            {
+                m_itemSlot[item.m_onGridPositionX + i, item.m_onGridPositionY + j] = null;
+            }
+        }
+        return item;
+    }
+
+    #region 240712 인벤토리 스크립트로 이동중
+    public void CreateItem(GameObject dropItemPrefab)
+    {
+        Item item = Instantiate(dropItemPrefab).GetComponent<Item>();
+        Vector2Int itemSlotSize = FindEmptySlot(item).Value;
+        PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
+    }
+
     // 아이템 슬롯에 넣기
     // 나중에 불린 함수로 바꿔서 Inventory 스크립트에서 호출해서 true일 때 아이템 들어가도록 만듬(영상에서)
     // Inventory 스크립트로 옮겨야 인벤토리가 꺼져있을 때도 아이템이 슬롯으로 들어감
@@ -177,23 +187,6 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
         }
         itemPos.localPosition = pos;
         return true;
-    }
-
-    // 아이템을 옮기거나 슬롯에서 빼낼 때 m_itemSlot[x, y] = null 로 초기화 해주기
-    public Item PickUpItem(int x, int y)
-    {
-        Item item = m_itemSlot[x, y];
-
-        if(item == null) { return null; };
-
-        for (int i = 0; i < item.m_itemData.itemWidth; i++)
-        {
-            for (int j = 0; j < item.m_itemData.itemHeight; j++)
-            {
-                m_itemSlot[item.m_onGridPositionX + i, item.m_onGridPositionY + j] = null;
-            }
-        }
-        return item;
     }
 
     // 아이템의 크기가 슬롯보다 클 때 예외처리 -> true일 때만 아이템 옮기기 가능
@@ -271,5 +264,5 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
             }
         }
     }
-
+    #endregion
 }
