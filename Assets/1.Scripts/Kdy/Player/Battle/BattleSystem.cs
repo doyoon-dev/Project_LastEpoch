@@ -26,7 +26,7 @@ public interface IUsedSkill
 }
 public interface IDamageable
 {
-    void SetDamage(Transform attacker, SkillData skillData);
+    void SetDamage(Transform attacker, SkillInform skillData);
 }
 public interface IOnDamaged
 {
@@ -44,7 +44,7 @@ public interface IBattle : IOnDamaged, ITransform, IUsedSkill
 }
 
 // 공격하고, 데미지 받는 스크립트
-public class BattleSystem : MovePath, IDeadAlarm, IBattle
+public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
 {
     public BattleStat m_stat;
     public event Action m_deadAlarm;
@@ -122,6 +122,16 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     public void OnDamaged(float damage)
     {
         m_curHealPoint -= damage;
+        if (m_curHealPoint <= 0)
+        {
+            m_curHealPoint = 0;
+            Dead();
+        }
+    }
+
+    public virtual void SetDamage(Transform attacker, SkillInform skillData)
+    {
+        m_curHealPoint -= skillData.Dmg;
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
