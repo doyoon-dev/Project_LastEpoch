@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MonsterController : MonoBehaviour
+public class MonsterController : BattleSystem
 {
 
     public enum BehaviourState
@@ -13,7 +13,7 @@ public class MonsterController : MonoBehaviour
         Chase,
         Patrol,
         Damaged,
-        //Die,
+        Die,
         Max
     }
     [SerializeField]
@@ -29,6 +29,9 @@ public class MonsterController : MonoBehaviour
     Player m_player;
     [SerializeField]
     WaypointController m_waypointCtr;
+    [Header("임시 몬스터 체력 ")]
+    //[SerializeField]
+   //int m_hp = 10;
     MoveTween m_moveTween;
     NavMeshAgent m_navAgent;
     MonsterAnimController m_monAnimCtr;
@@ -37,12 +40,12 @@ public class MonsterController : MonoBehaviour
     int m_curWaypoint;
     float m_idleDuration = 1f;
     float m_idleTime = 0;
+    Coroutine m_hitColorCoroutine;
+    MaterialPropertyBlock m_mpBlock;
     public LayerMask m_playerMask;
     public LayerMask m_BackgroundMask;
-
-
-
-    //public bool IsDie { get { return m_state == BehaviourState.Die1; } }
+    public bool IsDie {get { return m_state == BehaviourState.Die; } }
+   
     public MonsterAnimController.Motion GetMotion { get { return m_monAnimCtr.CurrentMotion; } }// 어느 포인트를 가고 있는지 체크
     #region Animation Event Methods
     void AnimEvent_AttackFinished()
@@ -72,23 +75,74 @@ public class MonsterController : MonoBehaviour
         SetIdleDuration(duration);
 
     }
+    void SetHitColor(float duration)
+    {
+        if(m_hitColorCoroutine != null)
+        {
+            StopCoroutine(m_hitColorCoroutine);
+            m_hitColorCoroutine = null;
+        }
+        m_hitColorCoroutine = StartCoroutine(Coroutine_SetHitColor(duration));//동작 여러개 들어올수 있음
+
+    }
     IEnumerator Coroutine_SetHitColor(float duration)
     {
+        m_mpBlock.SetColor("_RimColor", Color.white);
+        m_mpBlock.SetFloat("_RimPower", 1);
+        for(int i = 0; i< m_renderers.Length; i++) 
+        {
+            m_renderers[i].SetPropertyBlock(m_mpBlock);
+        }
+        yield return new WaitForSeconds(duration);
+        m_mpBlock.SetColor("_RimColor", Color.black);
+        m_mpBlock.SetFloat("_RimPower", 10);
         for (int i = 0; i < m_renderers.Length; i++)
         {
-            yield return new WaitForSeconds(duration);
-            m_renderers[i].material.SetColor("_RimcColor", Color.white);
+            m_renderers[i].SetPropertyBlock(m_mpBlock);
         }
     }
+   
+    IEnumerator Coroutine_SetDissolve(float duration)
+    {
+        float time = 0f;
+        float result = 0f;
+        while(true)
+        {
+            time += Time.deltaTime;
+            result = Mathf.Lerp(-1.5f, 0.7f, time / duration);
+            m_mpBlock.SetFloat("_Duration",result);
+            for (int i = 0; i < m_renderers.Length; i++)
+            {
+                m_renderers[i].SetPropertyBlock(m_mpBlock);
+            }           
+            if(time > duration)
+            {
+                yield break;
+            }
+            yield return null;
+        }
 
-    //임시 데미지 입었을떄 
+    }
+    //데미지 입었을떄 
     public void SetDamage(Transform attacker, SkillData skillData)
     {
+        /*
+        m_hp--;
+        if(m_hp <=0)
+        {
+            if (IsDie) return;
+            m_hp = 0;
+            SetState(BehaviourState.Die);
+            m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);
+            StartCoroutine(Coroutine_SetDissolve(4f));
+            return;
+        }
+        */
         SetState(BehaviourState.Damaged);
-        m_monAnimCtr.Play(MonsterAnimController.Motion.Hit);
+        m_monAnimCtr.Play(MonsterAnimController.Motion.Hit, false);
         m_navAgent.ResetPath();
         m_navAgent.isStopped = true;
-    
+        SetHitColor(0.5f);
         if (skillData.knockback > 0f)
         {
             var dir = (transform.position - attacker.position).normalized;
@@ -97,6 +151,10 @@ public class MonsterController : MonoBehaviour
             m_moveTween.Play(transform.position, transform.position + dir * skillData.knockback, duration);
         }
     }
+
+
+ 
+
     bool CanAttack()
     {
         var dist = transform.position - m_player.transform.position;
@@ -114,21 +172,6 @@ public class MonsterController : MonoBehaviour
         var targetPos = m_player.transform.position + Vector3.up * 0.5f;
         var dir = targetPos - originPos;
         Debug.DrawRay(originPos, dir.normalized * m_dectectDist, Color.green);
-        /*
-        if (Physics.Raycast(originPos, dir.normalized, out hit, m_dectectDist, 1 << LayerMask.NameToLayer("Background") | 1 << LayerMask.NameToLayer("Player")))
-        {
-            if (hit.collider.CompareTag("Background"))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        return false;
-        */
-
         if (Physics.Raycast(originPos, dir.normalized, out hit, m_dectectDist, m_playerMask | m_BackgroundMask))
         {
             if ((m_playerMask & (1 << hit.collider.gameObject.layer)) != 0)
@@ -137,7 +180,7 @@ public class MonsterController : MonoBehaviour
             }
   
         }
-        return false;
+        return false;      
     }
 
     //행동 프로세스
@@ -224,12 +267,10 @@ public class MonsterController : MonoBehaviour
             //데미지 상태
             case BehaviourState.Damaged:
                 break;
-
-                /*
-                //죽은 상태
+            //죽은 상태  
             case BehaviourState.Die:
                 break;
-                */
+                 
         }
     }
 
@@ -239,9 +280,23 @@ public class MonsterController : MonoBehaviour
     void Start()
     {
         m_monAnimCtr = GetComponent<MonsterAnimController>();
+        m_mpBlock = new MaterialPropertyBlock();
+        m_mpBlock.SetColor("_RimColor", Color.black);
+        m_mpBlock.SetFloat("_RimPower", 10);
         m_moveTween = GetComponent<MoveTween>();
         m_navAgent = GetComponent<NavMeshAgent>();
         m_renderers = GetComponentsInChildren<Renderer>();
+        /*
+        Initalize();
+        IDeadAlarm da = GetComponent<IDeadAlarm>();
+        if (da != null)
+        {
+            da.m_deadAlarm += () =>
+            {
+                gameObject.SetActive(false);
+            };
+        }
+        */
     }
 
     void Update()
