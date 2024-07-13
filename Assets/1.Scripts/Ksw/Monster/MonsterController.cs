@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MonsterController : BattleSystem
+public class MonsterController : BattleSystem 
 {
 
     public enum BehaviourState
@@ -44,8 +44,10 @@ public class MonsterController : BattleSystem
     MaterialPropertyBlock m_mpBlock;
     public LayerMask m_playerMask;
     public LayerMask m_BackgroundMask;
-    public bool IsDie {get { return m_state == BehaviourState.Die; } }
-   
+    //public bool IsDie {get { return m_state == BehaviourState.Die; } }
+
+    private Transform playerTransform;
+
     public MonsterAnimController.Motion GetMotion { get { return m_monAnimCtr.CurrentMotion; } }// 어느 포인트를 가고 있는지 체크
     #region Animation Event Methods
     void AnimEvent_AttackFinished()
@@ -75,6 +77,7 @@ public class MonsterController : BattleSystem
         SetIdleDuration(duration);
 
     }
+    //몬스터 
     void SetHitColor(float duration)
     {
         if(m_hitColorCoroutine != null)
@@ -85,6 +88,7 @@ public class MonsterController : BattleSystem
         m_hitColorCoroutine = StartCoroutine(Coroutine_SetHitColor(duration));//동작 여러개 들어올수 있음
 
     }
+    //몬스터 맞았을떄
     IEnumerator Coroutine_SetHitColor(float duration)
     {
         m_mpBlock.SetColor("_RimColor", Color.white);
@@ -101,7 +105,7 @@ public class MonsterController : BattleSystem
             m_renderers[i].SetPropertyBlock(m_mpBlock);
         }
     }
-   
+   //몬스터 사라지는거
     IEnumerator Coroutine_SetDissolve(float duration)
     {
         float time = 0f;
@@ -126,18 +130,6 @@ public class MonsterController : BattleSystem
     //데미지 입었을떄 
     public void SetDamage(Transform attacker, SkillData skillData)
     {
-        /*
-        m_hp--;
-        if(m_hp <=0)
-        {
-            if (IsDie) return;
-            m_hp = 0;
-            SetState(BehaviourState.Die);
-            m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);
-            StartCoroutine(Coroutine_SetDissolve(4f));
-            return;
-        }
-        */
         SetState(BehaviourState.Damaged);
         m_monAnimCtr.Play(MonsterAnimController.Motion.Hit, false);
         m_navAgent.ResetPath();
@@ -152,8 +144,6 @@ public class MonsterController : BattleSystem
         }
     }
 
-
- 
 
     bool CanAttack()
     {
@@ -286,22 +276,24 @@ public class MonsterController : BattleSystem
         m_moveTween = GetComponent<MoveTween>();
         m_navAgent = GetComponent<NavMeshAgent>();
         m_renderers = GetComponentsInChildren<Renderer>();
-        /*
-        Initalize();
-        IDeadAlarm da = GetComponent<IDeadAlarm>();
-        if (da != null)
-        {
-            da.m_deadAlarm += () =>
-            {
-                gameObject.SetActive(false);
-            };
-        }
-        */
     }
 
     void Update()
     {
+
         BehaviourProcess();
+        
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            
+            Transform attacker = playerTransform;
+            SkillData skillData = new SkillData
+            {
+                knockback = 5f
+            };
+            SetDamage(attacker, skillData);
+        }
+        
     }
 
 
