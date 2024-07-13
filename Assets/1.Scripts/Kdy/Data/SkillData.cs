@@ -4,12 +4,12 @@ using UnityEngine;
 
 public struct SkillInform
 {
+    public string Name;
     public int Mp;
     public int Dmg;
     public float CoolTime;
     public int Channeling;
     public float knockback;
-    public float delayTime;
 };
 
 public class SkillData : MonoBehaviour
@@ -27,9 +27,10 @@ public class SkillData : MonoBehaviour
     [HideInInspector]
     public float delayTime;
 
-    private void Start()
+    private void Awake()
     {
-        m_skillData.Add("WindMill", new SkillInform() { Mp = 1, Dmg = 29, CoolTime = 0.5f, Channeling = 10, knockback = 0});
-        m_skillData.Add("Lunge", new SkillInform() { Mp = 8, Dmg = 15, CoolTime = 4.0f, Channeling = 0, knockback = 0});
+        m_skillData.Add("Normal", new SkillInform() { Name = "Normal", Mp = 0, Dmg = 29, CoolTime = 0, Channeling = 0, knockback = 0 }) ;
+        m_skillData.Add("WindMill", new SkillInform() { Name = "WindMill", Mp = 1, Dmg = 29, CoolTime = 0.5f, Channeling = 10, knockback = 0 });
+        m_skillData.Add("Lunge", new SkillInform() { Name = "Lunge", Mp = 8, Dmg = 15, CoolTime = 4.0f, Channeling = 0, knockback = 0 });
     }
 }

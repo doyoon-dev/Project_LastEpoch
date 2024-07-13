@@ -128,8 +128,20 @@ public class MonsterController : BattleSystem
 
     }
     //데미지 입었을떄 
-    public void SetDamage(Transform attacker, SkillData skillData)
+    public override void SetDamage(Transform attacker, SkillInform skillData)
     {
+        /*
+        m_hp--;
+        if(m_hp <=0)
+        {
+            if (IsDie) return;
+            m_hp = 0;
+            SetState(BehaviourState.Die);
+            m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);
+            StartCoroutine(Coroutine_SetDissolve(4f));
+            return;
+        }
+        */
         SetState(BehaviourState.Damaged);
         m_monAnimCtr.Play(MonsterAnimController.Motion.Hit, false);
         m_navAgent.ResetPath();
@@ -259,16 +271,25 @@ public class MonsterController : BattleSystem
                 break;
             //죽은 상태  
             case BehaviourState.Die:
+                
                 break;
                  
         }
     }
 
-
+    public void DieMon()
+    {
+        Debug.Log("DIE");
+        SetState(BehaviourState.Die);
+        m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);
+        StartCoroutine(Coroutine_SetDissolve(4f));
+    }
 
 
     void Start()
     {
+        m_deadAlarm += DieMon;
+        Initalize();
         m_monAnimCtr = GetComponent<MonsterAnimController>();
         m_mpBlock = new MaterialPropertyBlock();
         m_mpBlock.SetColor("_RimColor", Color.black);
