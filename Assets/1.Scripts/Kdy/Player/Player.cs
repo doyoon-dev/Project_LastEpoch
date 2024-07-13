@@ -12,12 +12,18 @@ public class Player : BattleSystem
     Transform m_weaponEndPoint;
     [SerializeField]
     Transform weaponPoint;
-    public Inventory m_inventory;
-    public LayerMask m_enemyMask;
-    int m_clickCnt = 0;
-    bool m_isComboCheck = false;
+    [SerializeField]
+    GameObject obj;
+
     public int attackDamage = 20;
     public float attackRange = 3f;
+    public Inventory m_inventory;
+    public LayerMask m_enemyMask;
+
+    int m_clickCnt = 0;
+    bool m_isComboCheck = false;
+    Vector3 boxSize = new Vector3(1, 1, 1);
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -95,22 +101,29 @@ public class Player : BattleSystem
         }
     }
 
-    public override void OnAttack(Vector3 pos)
+    
+    private void OnDrawGizmos()
     {
-        base.OnAttack(pos);
-        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 0.06f, m_enemyMask);
-        foreach (Collider col in list)
-        {
-            // 충돌한 col에 BattleSystem 컴포넌트가 없기 때문에 bat이 null이됨
-            // 충돌한 col에 BattleSystem 컴포넌트 넣으면 해결
-            IOnDamaged ms = col.GetComponent<IOnDamaged>();
-            if (ms != null)
-            {
-                ms.OnDamaged(m_stat.AttackDmg);
-            }
-        }
-
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(obj.transform.position, boxSize);
     }
+
+    //public override void OnAttack(Vector3 pos)
+    //{
+    //    base.OnAttack(pos);
+    //    Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 0.06f, m_enemyMask);
+    //    Collider[] box = Physics.OverlapBox(obj.transform.position, boxSize * 0.5f, gameObject.transform.rotation ,m_enemyMask);
+    //    foreach (Collider col in box)
+    //    {
+    //        // 충돌한 col에 BattleSystem 컴포넌트가 없기 때문에 bat이 null이됨
+    //        // 충돌한 col에 BattleSystem 컴포넌트 넣으면 해결
+    //        IOnDamaged ms = col.GetComponent<IOnDamaged>();
+    //        if (ms != null)
+    //        {
+    //            ms.OnDamaged(m_stat.AttackDmg);
+    //        }
+    //    }
+    //}
     /* //몬스터 피격 연결코드 임시 (안됨)
     void Attack()
     {
@@ -132,17 +145,13 @@ public class Player : BattleSystem
     
     public override void Attack()
     {
-        Collider[] enemy = Physics.OverlapCapsule(m_weaponStartPoint.position, m_weaponEndPoint.position, 0.06f, m_enemyMask);
-        Collider[] list = Physics.OverlapSphere(m_weaponEndPoint.position, 0.7f, m_enemyMask);
-        foreach (Collider col in list)
+        Collider[] box = Physics.OverlapBox(obj.transform.position, boxSize * 0.5f, gameObject.transform.rotation, m_enemyMask);
+        foreach (Collider col in box)
         {
-            
-            // 충돌한 col에 BattleSystem 컴포넌트가 없기 때문에 bat이 null이됨
-            // 충돌한 col에 BattleSystem 컴포넌트 넣으면 해결
-            IOnDamaged ms = col.GetComponent<IOnDamaged>();
-            if (ms != null)
+            IDamageable id = col.GetComponent<IDamageable>();
+            if (id != null)
             {
-                ms.OnDamaged(m_stat.AttackDmg);
+                id.SetDamage(gameObject.transform, SkillData.m_skillData["Normal"]);
             }
         }
     }
