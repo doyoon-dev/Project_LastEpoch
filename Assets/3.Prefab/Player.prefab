@@ -1810,6 +1810,37 @@ Transform:
   m_Father: {fileID: 2301831810842129780}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -9.236989, y: 0.000095991476, z: -0.0050704638}
+--- !u!1 &2298453706482485023
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3113122756266338706}
+  m_Layer: 9
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3113122756266338706
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2298453706482485023}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5244370769833058610}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2331104817605673596
 GameObject:
   m_ObjectHideFlags: 0
@@ -4130,6 +4161,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5714230171362868529}
+  - {fileID: 3113122756266338706}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4227,6 +4259,9 @@ MonoBehaviour:
   m_weaponStartPoint: {fileID: 5244370769042063078}
   m_weaponEndPoint: {fileID: 5244370770216268804}
   weaponPoint: {fileID: 5244370770216268804}
+  obj: {fileID: 2298453706482485023}
+  attackDamage: 20
+  attackRange: 3
   m_inventory: {fileID: 0}
   m_enemyMask:
     serializedVersion: 2
@@ -4289,7 +4324,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_usingSkill: 0
-  m_player: {fileID: 0}
+  m_player: {fileID: 5244370769833058608}
   m_myAnim: {fileID: 5244370768580197507}
   m_warPathStartPos: {fileID: 5244370769042063078}
   m_warPathEndPos: {fileID: 5244370769486884012}

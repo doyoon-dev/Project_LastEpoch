@@ -28,7 +28,7 @@ public interface ICreateItem
 
 public interface ISlotInterface : IPlaceItem, IMakeSlotEmpty, IFindEmptySlot, ICreateItem { }
 
-public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
+public class Slot : MonoBehaviour, IDropHandler, ISlotInterface
 {
     // 슬롯 한 칸 사이즈
     public const float m_tileSizeWidth = 47.0f;
@@ -55,6 +55,8 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
         // 아이템을 놓는 슬롯의 좌표 가져오기
         // 아이템을 해당 슬롯에 놓기
         Item item = eventData.pointerClick.GetComponent<Item>();
+
+        // 아래 함수들 인벤토리 스크립트로 옮겨서 인덱스 에러뜸 수정필요
         MakeSlotEmpty(item);
         PlaceItem(item, GetTileGridPosition(eventData.position).x, GetTileGridPosition(eventData.position).y);
         IChangePos cp = item.GetComponent<IChangePos>();
@@ -74,16 +76,7 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
     // Update is called once per frame
     void Update()
     {
-        // 실험중
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            if (CheckSlot())
-            {
-                Item item = Instantiate(m_itemPrefab).GetComponent<Item>();
-                Vector2Int itemSlotSize = FindEmptySlot(item).Value;
-                PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
-            }
-        }
+
     }
 
     // 실험중
@@ -142,6 +135,7 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
         return item;
     }
 
+    
     #region 240712 인벤토리 스크립트로 이동중
     public void CreateItem(GameObject dropItemPrefab)
     {
@@ -192,6 +186,7 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
     // 아이템의 크기가 슬롯보다 클 때 예외처리 -> true일 때만 아이템 옮기기 가능
     bool PositionCheck(int posX, int posY)
     {
+        // 슬롯 밖으로 아이템을 드랍하면 인덱스 에러 발생
         if (m_itemSlot[posX, posY] != null) { return false; }
 
         if (posX < 0 || posY < 0 || posX >= m_slotSizeWidth || posY >= m_slotSizeHeight)

@@ -3213,10 +3213,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a03ccbc85f0cec4469bf55e502db3646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_slotSizeWidth: 14
+  m_slotSizeHeight: 8
   m_inventory: {fileID: 1943501931}
   m_selectedItmeGrid: {fileID: 1990488525}
   m_equipSlot: {fileID: 1949049222}
-  m_items: []
 --- !u!1 &1517361428
 GameObject:
   m_ObjectHideFlags: 0
@@ -3811,7 +3812,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1943501932
 RectTransform:
   m_ObjectHideFlags: 0

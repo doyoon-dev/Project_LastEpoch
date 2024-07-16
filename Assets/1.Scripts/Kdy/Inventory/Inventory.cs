@@ -38,7 +38,7 @@ public class Inventory : MonoBehaviour, IGetItemData
     // Start is called before the first frame update
     void Start()
     {
-
+        Init(m_slotSizeWidth, m_slotSizeHeight);
     }
 
     // Update is called once per frame
@@ -73,7 +73,14 @@ public class Inventory : MonoBehaviour, IGetItemData
     //        m_selectedItem = null;
     //    }
     //}
-    
+
+
+    void Init(int width, int height)
+    {
+        m_itemSlot = new Item[width, height];
+        Vector2 size = new Vector2(width * m_tileSizeWidth, height * m_tileSizeHeight);
+        m_selectedItmeGrid.GetComponent<RectTransform>().sizeDelta = size;
+    }
 
     public void GetItemData(GameObject itemPrefab)
     {
