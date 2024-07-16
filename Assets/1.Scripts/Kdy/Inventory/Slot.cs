@@ -56,7 +56,7 @@ public class Slot : MonoBehaviour, IDropHandler, ISlotInterface
         // 아이템을 해당 슬롯에 놓기
         Item item = eventData.pointerClick.GetComponent<Item>();
 
-        // 아래 함수들 인벤토리 스크립트로 옮겨서 인덱스 에러뜸 수정필요
+        // 아래 함수들 인 벤토리 스크립트로 옮겨서 인덱스 에러뜸 수정필요
         MakeSlotEmpty(item);
         PlaceItem(item, GetTileGridPosition(eventData.position).x, GetTileGridPosition(eventData.position).y);
         IChangePos cp = item.GetComponent<IChangePos>();
