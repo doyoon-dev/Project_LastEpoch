@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MonsterController : BattleSystem
+public class MonsterController : BattleSystem 
 {
 
     public enum BehaviourState
@@ -20,18 +20,15 @@ public class MonsterController : BattleSystem
     BehaviourState m_state; //상태
     [Header("타겟 인식 범위")]
     [SerializeField]
-    protected float m_dectectDist = 100f;
+    protected float m_dectectDist;
     [Header("공격 거리")]
     [SerializeField]
-    protected float m_attackDist = 1.5f;
+    protected float m_attackDist;
     [Header("플레이어 인식 ")]
     [SerializeField]
     Player m_player;
     [SerializeField]
     WaypointController m_waypointCtr;
-    [Header("임시 몬스터 체력 ")]
-    //[SerializeField]
-   //int m_hp = 10;
     MoveTween m_moveTween;
     NavMeshAgent m_navAgent;
     MonsterAnimController m_monAnimCtr;
@@ -44,8 +41,10 @@ public class MonsterController : BattleSystem
     MaterialPropertyBlock m_mpBlock;
     public LayerMask m_playerMask;
     public LayerMask m_BackgroundMask;
-    public bool IsDie {get { return m_state == BehaviourState.Die; } }
-   
+    public bool IsDie {get { return m_state == BehaviourState.Die; } } //죽음 상태인지 체크
+
+    private Transform playerTransform;
+
     public MonsterAnimController.Motion GetMotion { get { return m_monAnimCtr.CurrentMotion; } }// 어느 포인트를 가고 있는지 체크
     #region Animation Event Methods
     void AnimEvent_AttackFinished()
@@ -75,6 +74,7 @@ public class MonsterController : BattleSystem
         SetIdleDuration(duration);
 
     }
+    //몬스터 
     void SetHitColor(float duration)
     {
         if(m_hitColorCoroutine != null)
@@ -85,6 +85,7 @@ public class MonsterController : BattleSystem
         m_hitColorCoroutine = StartCoroutine(Coroutine_SetHitColor(duration));//동작 여러개 들어올수 있음
 
     }
+    //몬스터 맞았을떄
     IEnumerator Coroutine_SetHitColor(float duration)
     {
         m_mpBlock.SetColor("_RimColor", Color.white);
@@ -101,7 +102,7 @@ public class MonsterController : BattleSystem
             m_renderers[i].SetPropertyBlock(m_mpBlock);
         }
     }
-   
+   //몬스터 사라지는거
     IEnumerator Coroutine_SetDissolve(float duration)
     {
         float time = 0f;
@@ -126,19 +127,17 @@ public class MonsterController : BattleSystem
     //데미지 입었을떄 
     public override void SetDamage(Transform attacker, SkillInform skillData)
     {
-        /*
-        m_hp--;
-        if(m_hp <=0)
+
+        if (IsDie) return;
+        m_curHealPoint -= skillData.Dmg;
+        if (m_curHealPoint <= 0)
         {
-            if (IsDie) return;
-            m_hp = 0;
+            m_curHealPoint = 0;
             SetState(BehaviourState.Die);
             m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);
             StartCoroutine(Coroutine_SetDissolve(4f));
             return;
         }
-        */
-        base.SetDamage(attacker, skillData);
         SetState(BehaviourState.Damaged);
         m_monAnimCtr.Play(MonsterAnimController.Motion.Hit, false);
         m_navAgent.ResetPath();
@@ -153,8 +152,6 @@ public class MonsterController : BattleSystem
         }
     }
 
-
- 
 
     bool CanAttack()
     {
@@ -276,18 +273,11 @@ public class MonsterController : BattleSystem
         }
     }
 
-    public void DieMon()
-    {
-        Debug.Log("DIE");
-        SetState(BehaviourState.Die);
-        m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);
-        StartCoroutine(Coroutine_SetDissolve(4f));
-    }
 
 
     void Start()
     {
-        m_deadAlarm += DieMon;
+       
         Initalize();
         m_monAnimCtr = GetComponent<MonsterAnimController>();
         m_mpBlock = new MaterialPropertyBlock();
@@ -296,22 +286,13 @@ public class MonsterController : BattleSystem
         m_moveTween = GetComponent<MoveTween>();
         m_navAgent = GetComponent<NavMeshAgent>();
         m_renderers = GetComponentsInChildren<Renderer>();
-        /*
-        Initalize();
-        IDeadAlarm da = GetComponent<IDeadAlarm>();
-        if (da != null)
-        {
-            da.m_deadAlarm += () =>
-            {
-                gameObject.SetActive(false);
-            };
-        }
-        */
     }
 
     void Update()
     {
+
         BehaviourProcess();
+        
     }
 
 
