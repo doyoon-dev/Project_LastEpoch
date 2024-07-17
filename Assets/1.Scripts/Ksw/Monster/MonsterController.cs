@@ -20,18 +20,15 @@ public class MonsterController : BattleSystem
     BehaviourState m_state; //상태
     [Header("타겟 인식 범위")]
     [SerializeField]
-    protected float m_dectectDist = 100f;
+    protected float m_dectectDist;
     [Header("공격 거리")]
     [SerializeField]
-    protected float m_attackDist = 1.5f;
+    protected float m_attackDist;
     [Header("플레이어 인식 ")]
     [SerializeField]
     Player m_player;
     [SerializeField]
     WaypointController m_waypointCtr;
-    [Header("임시 몬스터 체력 ")]
-    //[SerializeField]
-   //int m_hp = 10;
     MoveTween m_moveTween;
     NavMeshAgent m_navAgent;
     MonsterAnimController m_monAnimCtr;
@@ -44,7 +41,7 @@ public class MonsterController : BattleSystem
     MaterialPropertyBlock m_mpBlock;
     public LayerMask m_playerMask;
     public LayerMask m_BackgroundMask;
-    //public bool IsDie {get { return m_state == BehaviourState.Die; } }
+    public bool IsDie {get { return m_state == BehaviourState.Die; } } //죽음 상태인지 체크
 
     private Transform playerTransform;
 
@@ -130,18 +127,17 @@ public class MonsterController : BattleSystem
     //데미지 입었을떄 
     public override void SetDamage(Transform attacker, SkillInform skillData)
     {
-        /*
-        m_hp--;
-        if(m_hp <=0)
+
+        if (IsDie) return;
+        m_curHealPoint -= skillData.Dmg;
+        if (m_curHealPoint <= 0)
         {
-            if (IsDie) return;
-            m_hp = 0;
+            m_curHealPoint = 0;
             SetState(BehaviourState.Die);
             m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);
             StartCoroutine(Coroutine_SetDissolve(4f));
             return;
         }
-        */
         SetState(BehaviourState.Damaged);
         m_monAnimCtr.Play(MonsterAnimController.Motion.Hit, false);
         m_navAgent.ResetPath();
@@ -277,18 +273,11 @@ public class MonsterController : BattleSystem
         }
     }
 
-    public void DieMon()
-    {
-        Debug.Log("DIE");
-        SetState(BehaviourState.Die);
-        m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);
-        StartCoroutine(Coroutine_SetDissolve(4f));
-    }
 
 
     void Start()
     {
-        m_deadAlarm += DieMon;
+       
         Initalize();
         m_monAnimCtr = GetComponent<MonsterAnimController>();
         m_mpBlock = new MaterialPropertyBlock();
@@ -303,17 +292,6 @@ public class MonsterController : BattleSystem
     {
 
         BehaviourProcess();
-        
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            
-            Transform attacker = playerTransform;
-            SkillData skillData = new SkillData
-            {
-                knockback = 5f
-            };
-            SetDamage(attacker, skillData);
-        }
         
     }
 

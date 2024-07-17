@@ -135,7 +135,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
-            Dead();
+            
         }
     }
 
