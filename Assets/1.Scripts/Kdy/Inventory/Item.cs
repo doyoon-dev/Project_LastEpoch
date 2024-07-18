@@ -21,18 +21,22 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public ItemData m_itemData;
     public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
     public int m_onGridPositionY;       // 인벤토리 내의 아이템 위치 y좌표
+    
+
     bool m_isEquiped = false;
 
     EquipSlot m_equipSlot;              // 장착할 아이템이 들어갈 장비 슬롯
 
     Vector3 m_orgPos = Vector3.zero;
     Vector2 m_dragOffset = Vector2.zero;
+    Image m_image;
 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         m_orgPos = transform.position;
         m_dragOffset = (Vector2)transform.position - eventData.position;
+        m_image.raycastTarget = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -43,6 +47,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public void OnEndDrag(PointerEventData eventData)
     {
         transform.position = m_orgPos;
+        m_image.raycastTarget = true;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -82,6 +87,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     void Start()
     {
         m_parentSlot = transform.parent;    // 슬롯 변수
+        m_image = gameObject.GetComponent<Image>();
     }
 
     // Update is called once per frame
