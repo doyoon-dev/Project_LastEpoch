@@ -13,7 +13,12 @@ public interface IChangePos
     void ChangePos(Vector2 pos);
 }
 
-public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IChangePos
+public interface IOrgPos
+{
+    Vector3 m_orgPos { get; }
+}
+
+public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IChangePos, IOrgPos
 {
     public event UnityAction m_unEquipItem = null;
     public Transform m_parentSlot = null;
@@ -21,13 +26,17 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public ItemData m_itemData;
     public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
     public int m_onGridPositionY;       // 인벤토리 내의 아이템 위치 y좌표
+
+    public Transform m_orgPosition { get; private set; }  // 원래 위치
     
 
     bool m_isEquiped = false;
 
     EquipSlot m_equipSlot;              // 장착할 아이템이 들어갈 장비 슬롯
 
-    Vector3 m_orgPos = Vector3.zero;
+    public Vector3 m_orgPos {get; private set;}
+
+    Item m_curItem;
     Vector2 m_dragOffset = Vector2.zero;
     Image m_image;
 
@@ -35,6 +44,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public void OnBeginDrag(PointerEventData eventData)
     {
         m_orgPos = transform.position;
+        Debug.Log(m_orgPos);
         m_dragOffset = (Vector2)transform.position - eventData.position;
         m_image.raycastTarget = false;
     }

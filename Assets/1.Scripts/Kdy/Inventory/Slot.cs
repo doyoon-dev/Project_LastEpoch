@@ -40,6 +40,8 @@ public class Slot : MonoBehaviour, IDropHandler, ISlotInterface
     int m_slotSizeHeight = 8;       // 슬롯 세로 개수
     [SerializeField]
     GameObject m_itemPrefab;        // 슬롯에 들어갈 아이템
+    [SerializeField]
+    Inventory m_inven;
 
     RectTransform m_rectTransform;
     Vector2 m_positionOnTheGrid = new Vector2();            // 스크린 좌표 기준 슬롯 한 칸 좌표
@@ -54,10 +56,23 @@ public class Slot : MonoBehaviour, IDropHandler, ISlotInterface
     {
         // 아이템을 놓는 슬롯의 좌표 가져오기
         // 아이템을 해당 슬롯에 놓기
-        Item item = eventData.pointerClick.GetComponent<Item>();
+        // item.transform.position : 드랍했을 때의 아이템 위치
+        Item item = eventData.pointerDrag.GetComponent<Item>();
+        Vector3 itemPos = eventData.pointerDrag.GetComponent<IOrgPos>().m_orgPos;   // 원래 아이템 위치
+
+        
+
+
+
+        Vector2Int pos = GetTileGridPosition(Input.mousePosition);
+        int posX = pos.x;
+        int posY = pos.y;
+
+        // posX, posY 변수 : 아이템을 드랍한 슬롯의 위치의 x, y 좌표
+        if (!CheckAvailableSpace(posX, posY, item.m_itemData.itemWidth, item.m_itemData.itemHeight)) return;
 
         // 아래 함수들 인 벤토리 스크립트로 옮겨서 인덱스 에러뜸 수정필요
-        MakeSlotEmpty(item);
+        m_inven.MakeSlotEmpty(item);    // 인벤토리의 MakeSlotEmpty 함수로 슬롯 null로 변경해 줘야함 수정 필요
         PlaceItem(item, GetTileGridPosition(eventData.position).x, GetTileGridPosition(eventData.position).y);
         IChangePos cp = item.GetComponent<IChangePos>();
         if (cp != null)

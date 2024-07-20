@@ -4059,6 +4059,7 @@ MonoBehaviour:
   m_slotSizeWidth: 14
   m_slotSizeHeight: 8
   m_itemPrefab: {fileID: 8355942472590287906, guid: 88351aeb078373f4a8f5842eee3821b9, type: 3}
+  m_inven: {fileID: 1474561757}
   m_equipSlot:
   - {fileID: 1011107583}
   - {fileID: 294439529}
@@ -4077,7 +4078,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1990488521}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ac11a591427c0c4ab83cd386586cc8a, type: 3}
   m_Name: 
