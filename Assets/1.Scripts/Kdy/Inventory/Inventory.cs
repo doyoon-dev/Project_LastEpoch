@@ -8,7 +8,12 @@ public interface IGetItemData
     void GetItemData(GameObject itemPrefab);
 }
 
-public class Inventory : MonoBehaviour, IGetItemData
+public interface IMakeSlotEmpty
+{
+    void MakeSlotEmpty(Item item);
+}
+
+public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty
 {
     // Slot : ItemGrid 
     // Item : InventoryItem
@@ -177,13 +182,13 @@ public class Inventory : MonoBehaviour, IGetItemData
         return null;
     }
 
-    bool CheckAvailableSpace(int posX, int posY, int width, int height)
+    public bool CheckAvailableSpace(int posX, int posY, int width, int height)
     {
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                // ************ m_itemSlotÀÌ nullÀÌ¿©¼­ ¿¡·¯ ¶ä
+                // ************ index ¿¡·¯ ¶ä
                 if (m_itemSlot[posX + x, posY + y] != null)
                 {
                     return false;

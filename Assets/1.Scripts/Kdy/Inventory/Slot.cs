@@ -11,10 +11,10 @@ public interface IPlaceItem
     bool PlaceItem(Item item, int posX, int posY);
 }
 
-public interface IMakeSlotEmpty
-{
-    void MakeSlotEmpty(Item item);
-}
+//public interface IMakeSlotEmpty
+//{
+//    void MakeSlotEmpty(Item item);
+//}
 
 public interface IFindEmptySlot
 {
@@ -26,7 +26,7 @@ public interface ICreateItem
     void CreateItem(GameObject dropItemPrefab);
 }
 
-public interface ISlotInterface : IPlaceItem, IMakeSlotEmpty, IFindEmptySlot, ICreateItem { }
+public interface ISlotInterface : IPlaceItem, IFindEmptySlot, ICreateItem { } //IMakeSlotEmpty
 
 public class Slot : MonoBehaviour, IDropHandler, ISlotInterface
 {
@@ -69,10 +69,15 @@ public class Slot : MonoBehaviour, IDropHandler, ISlotInterface
         int posY = pos.y;
 
         // posX, posY 변수 : 아이템을 드랍한 슬롯의 위치의 x, y 좌표
-        if (!CheckAvailableSpace(posX, posY, item.m_itemData.itemWidth, item.m_itemData.itemHeight)) return;
+        if (!m_inven.CheckAvailableSpace(posX, posY, item.m_itemData.itemWidth, item.m_itemData.itemHeight)) return;
 
         // 아래 함수들 인 벤토리 스크립트로 옮겨서 인덱스 에러뜸 수정필요
-        m_inven.MakeSlotEmpty(item);    // 인벤토리의 MakeSlotEmpty 함수로 슬롯 null로 변경해 줘야함 수정 필요
+        IMakeSlotEmpty imsm = m_inven.GetComponent<IMakeSlotEmpty>();
+        if (imsm != null)
+        {
+            imsm.MakeSlotEmpty(item);
+        }
+        //m_inven.MakeSlotEmpty(item);    // 인벤토리의 MakeSlotEmpty 함수로 슬롯 null로 변경해 줘야함 수정 필요
         PlaceItem(item, GetTileGridPosition(eventData.position).x, GetTileGridPosition(eventData.position).y);
         IChangePos cp = item.GetComponent<IChangePos>();
         if (cp != null)
@@ -264,15 +269,15 @@ public class Slot : MonoBehaviour, IDropHandler, ISlotInterface
     }
 
     // 아이템을 장착 했을 때 아이템이 있던 슬롯 null로 만들기
-    public void MakeSlotEmpty(Item item)
-    {
-        for (int y = item.m_onGridPositionY; y < item.m_itemData.itemHeight + item.m_onGridPositionY; y++)
-        {
-            for (int x = item.m_onGridPositionX; x < item.m_itemData.itemWidth + item.m_onGridPositionX; x++)
-            {
-                m_itemSlot[x, y] = null;
-            }
-        }
-    }
+    //public void MakeSlotEmpty(Item item)
+    //{
+    //    for (int y = item.m_onGridPositionY; y < item.m_itemData.itemHeight + item.m_onGridPositionY; y++)
+    //    {
+    //        for (int x = item.m_onGridPositionX; x < item.m_itemData.itemWidth + item.m_onGridPositionX; x++)
+    //        {
+    //            m_itemSlot[x, y] = null;
+    //        }
+    //    }
+    //}
     #endregion
 }

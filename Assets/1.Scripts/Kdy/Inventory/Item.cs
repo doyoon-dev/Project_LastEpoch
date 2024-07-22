@@ -21,7 +21,7 @@ public interface IOrgPos
 public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IChangePos, IOrgPos
 {
     public event UnityAction m_unEquipItem = null;
-    public Transform m_parentSlot = null;
+    public Transform m_inventory = null;
     public LayerMask m_itemMask;
     public ItemData m_itemData;
     public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
@@ -44,7 +44,6 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public void OnBeginDrag(PointerEventData eventData)
     {
         m_orgPos = transform.position;
-        Debug.Log(m_orgPos);
         m_dragOffset = (Vector2)transform.position - eventData.position;
         m_image.raycastTarget = false;
     }
@@ -69,7 +68,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                 Item item = eventData.pointerClick.GetComponent<Item>();    // 슬롯에 있던 아이템
                 CheckItemSlotType(item);
                 // 아이템 장착할 때 아이템이 있던 슬롯 비우기
-                IMakeSlotEmpty imse = m_parentSlot.GetComponent<IMakeSlotEmpty>();
+                IMakeSlotEmpty imse = m_inventory.GetComponent<IMakeSlotEmpty>();
                 if (imse != null)
                 {
                     imse.MakeSlotEmpty(item);
@@ -96,7 +95,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     // Start is called before the first frame update
     void Start()
     {
-        m_parentSlot = transform.parent;    // 슬롯 변수
+        m_inventory = transform.parent.parent.parent;    // 인벤토리 변수
         m_image = gameObject.GetComponent<Image>();
     }
 
@@ -185,7 +184,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         int equipY = equipItem.m_onGridPositionY;   // 장착중인 아이템이 슬롯에 있었을 때의 위치
 
         // 장착 해제 아이템 슬롯으로 이동
-        IPlaceItem pi = m_parentSlot.transform.GetComponent<IPlaceItem>();
+        IPlaceItem pi = m_inventory.transform.GetComponent<IPlaceItem>();
         if(pi != null)
         {
             pi.PlaceItem(equipItem, m_onGridPositionX, m_onGridPositionY);
@@ -204,13 +203,13 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         m_unEquipItem = null;
 
         m_equipSlot.m_item = null;
-        IFindEmptySlot fes = m_parentSlot.transform.GetComponent<IFindEmptySlot>();
+        IFindEmptySlot fes = m_inventory.transform.GetComponent<IFindEmptySlot>();
         if (fes != null)
         {
             equipItem.m_onGridPositionX = fes.FindEmptySlot(equipItem).Value.x;
             equipItem.m_onGridPositionY = fes.FindEmptySlot(equipItem).Value.y;
         }
-        IPlaceItem pi = m_parentSlot.transform.GetComponent<IPlaceItem>();
+        IPlaceItem pi = m_inventory.transform.GetComponent<IPlaceItem>();
         if (pi != null)
         {
             pi.PlaceItem(equipItem, equipItem.m_onGridPositionX, equipItem.m_onGridPositionY);
