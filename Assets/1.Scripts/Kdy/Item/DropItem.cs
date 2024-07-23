@@ -15,8 +15,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem
     public ItemData m_itemData;
 
     public UnityAction<string> m_getItemAct;
-    public GameObject m_slotItemPrefab;
-    Inventory m_inventory;
+    public GameObject m_itemImagePrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,11 +30,10 @@ public class DropItem : MonoBehaviour, ICheckDropItem
 
     public void CheckDropItem(Inventory inven)
     {
-        m_inventory = inven;
-        IGetItemData igd = m_inventory.GetComponent<IGetItemData>();
+        IGetItemData igd = inven.GetComponent<IGetItemData>();
         if(igd != null)
         {
-            igd.GetItemData(m_slotItemPrefab);
+            igd.SetItemToInventory(m_itemImagePrefab);
         }
         // 오브젝트 풀링으로 몬스터에서 아이템 소환하고 여기서 아이템 다시 풀에 넣기
     }

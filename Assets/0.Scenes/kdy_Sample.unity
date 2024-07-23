@@ -4487,6 +4487,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7477774030807095839, guid: 40466a98fbbc9ae4eb3bedfa9b4bac44, type: 3}
+      propertyPath: m_itemImagePrefab
+      value: 
+      objectReference: {fileID: 6178653014876059792, guid: c7df0108b90679549a781d1dda25bce3, type: 3}
     - target: {fileID: 7822105422140375201, guid: 40466a98fbbc9ae4eb3bedfa9b4bac44, type: 3}
       propertyPath: m_Name
       value: Zweihander

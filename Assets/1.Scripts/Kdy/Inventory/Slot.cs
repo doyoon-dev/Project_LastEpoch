@@ -6,10 +6,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
-public interface IPlaceItem
-{
-    bool PlaceItem(Item item, int posX, int posY);
-}
+//public interface IPlaceItem
+//{
+//    bool PlaceItem(Item item, int posX, int posY);
+//}
 
 //public interface IMakeSlotEmpty
 //{
@@ -26,7 +26,7 @@ public interface ICreateItem
     void CreateItem(GameObject dropItemPrefab);
 }
 
-public interface ISlotInterface : IPlaceItem, IFindEmptySlot, ICreateItem { } //IMakeSlotEmpty
+public interface ISlotInterface : IFindEmptySlot, ICreateItem { } //IMakeSlotEmpty, IPlaceItem
 
 public class Slot : MonoBehaviour, IDropHandler, ISlotInterface
 {
@@ -58,11 +58,9 @@ public class Slot : MonoBehaviour, IDropHandler, ISlotInterface
         // 아이템을 해당 슬롯에 놓기
         // item.transform.position : 드랍했을 때의 아이템 위치
         Item item = eventData.pointerDrag.GetComponent<Item>();
-        Vector3 itemPos = eventData.pointerDrag.GetComponent<IOrgPos>().m_orgPos;   // 원래 아이템 위치
 
-        
-
-
+        // 원래 아이템 위치
+        //Vector3 itemPos = eventData.pointerDrag.GetComponent<IOrgPos>().m_orgPos;
 
         Vector2Int pos = GetTileGridPosition(Input.mousePosition);
         int posX = pos.x;
@@ -77,8 +75,13 @@ public class Slot : MonoBehaviour, IDropHandler, ISlotInterface
         {
             imsm.MakeSlotEmpty(item);
         }
-        //m_inven.MakeSlotEmpty(item);    // 인벤토리의 MakeSlotEmpty 함수로 슬롯 null로 변경해 줘야함 수정 필요
-        PlaceItem(item, GetTileGridPosition(eventData.position).x, GetTileGridPosition(eventData.position).y);
+
+        IPlaceItem ipi = m_inven.GetComponent<IPlaceItem>();
+        if(ipi != null)
+        {
+            ipi.PlaceItem(item, posX, posY);
+        }
+
         IChangePos cp = item.GetComponent<IChangePos>();
         if (cp != null)
         {

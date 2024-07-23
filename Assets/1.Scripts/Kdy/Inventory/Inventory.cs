@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public interface IGetItemData
 {
-    void GetItemData(GameObject itemPrefab);
+    void SetItemToInventory(GameObject itemPrefab);
 }
 
 public interface IMakeSlotEmpty
@@ -13,7 +13,12 @@ public interface IMakeSlotEmpty
     void MakeSlotEmpty(Item item);
 }
 
-public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty
+public interface IPlaceItem
+{
+    void PlaceItem(Item item, int posX, int posY);
+}
+
+public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
 {
     // Slot : ItemGrid 
     // Item : InventoryItem
@@ -69,15 +74,6 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty
         //}
     }
 
-    // 240702 DropItem/Slot/Inventory 실험중
-    //public void PlaceItem(Vector2Int tileGridPosition)
-    //{
-    //    bool complete = m_selectedItmeGrid.PlaceItem(m_selectedItem, tileGridPosition.x, tileGridPosition.y);
-    //    if (complete)
-    //    {
-    //        m_selectedItem = null;
-    //    }
-    //}
 
 
     void Init(int width, int height)
@@ -87,44 +83,82 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty
         m_selectedItmeGrid.GetComponent<RectTransform>().sizeDelta = size;
     }
 
-    public void GetItemData(GameObject itemPrefab)
+    public void SetItemToInventory(GameObject itemImagePrefab)
     {
-        //ICreateItem ici = m_selectedItmeGrid.GetComponent<ICreateItem>();
-        //if(ici != null)
-        //{
-        //    ici.CreateItem(itemPrefab);
-        //}
-        //m_itemData = itemData;
-        //m_selectedItmeGrid.PlaceItem(item, itemData);
-        Item item = Instantiate(itemPrefab).GetComponent<Item>();
-        Vector2Int itemSlotSize = FindEmptySlot(item).Value;
-        PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
+        Item itemImage = Instantiate(itemImagePrefab).GetComponent<Item>();
+        Vector2Int itemSlotSize = FindEmptySlot(itemImage).Value;
+        if (itemSlotSize == null)
+        {
+            // 아이템 이동시키는 경우 : 원래 자리로 아이템 이동
+            // 아이템을 획득한 경우 : 슬롯에 자리가 없으니 아이템 획득 안되게 만들기
+        }
+        PlaceItem(itemImage, itemSlotSize.x, itemSlotSize.y);
     }
 
     #region 240712 수정중
-    public void PlaceItem(Item item, int posX, int posY)
+    public Vector2Int? FindEmptySlot(Item itemImage)
     {
-        if (!BoundaryCheck(posX, posY, item.m_itemData.itemWidth, item.m_itemData.itemHeight))
+        // itemImage : 슬롯에 들어갈 획득한 아이템 이미지
+        // 빈 슬롯 있는지 전체 슬롯 검사
+        for (int y = 0; y < m_slotSizeHeight; y++)
+        {
+            for (int x = 0; x < m_slotSizeWidth; x++)
+            {
+                int nextSlotWidth = m_slotSizeWidth - x;
+                int nextSlotHeight = m_slotSizeHeight - y;
+                if (nextSlotWidth < itemImage.m_itemData.itemWidth || nextSlotHeight < itemImage.m_itemData.itemHeight)
+                {
+                    break;
+                }
+                if (CheckAvailableSpace(x, y, itemImage.m_itemData.itemWidth, itemImage.m_itemData.itemHeight))  // 빈 슬롯에 해당 아이템이 들어갈 수 있을 때
+                {
+                    return new Vector2Int(x, y);
+                }
+            }
+        }
+        return null;
+    }
+
+    // posX : 현재 슬롯의 X 좌표    posY : 현재 슬롯의 Y 죄표    width : 아이템의 가로 길이    height : 아이템의 세로 길이
+    public bool CheckAvailableSpace(int posX, int posY, int width, int height)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                // ************ 여러번 이동시키면? 어떤 위치로 이동시키면? index 에러 뜸
+                if (m_itemSlot[posX + x, posY + y] != null)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public void PlaceItem(Item itemImage, int posX, int posY)
+    {
+        if (!BoundaryCheck(posX, posY, itemImage.m_itemData.itemWidth, itemImage.m_itemData.itemHeight))
         {
             return;
         }
-        RectTransform itemPos = item.GetComponent<RectTransform>();
-        itemPos.SetParent(m_selectedItmeGrid.GetComponent<RectTransform>());
+        RectTransform itemPos = itemImage.GetComponent<RectTransform>();
+        itemPos.SetParent(m_selectedItmeGrid.GetComponent<RectTransform>());        // 아이템 오브젝트를 Slot 오브젝트의 자식 오브젝트로 만듬
 
         // 슬롯에 아이템을 넣을 때 아이템 크기에 따라 차지하는 슬롯만큼 데이터 넣기
-        for (int x = 0; x < item.m_itemData.itemWidth; x++)
+        for (int x = 0; x < itemImage.m_itemData.itemWidth; x++)
         {
-            for (int y = 0; y < item.m_itemData.itemHeight; y++)
+            for (int y = 0; y < itemImage.m_itemData.itemHeight; y++)
             {
-                m_itemSlot[posX + x, posY + y] = item;
+                m_itemSlot[posX + x, posY + y] = itemImage;
             }
         }
 
-        item.m_onGridPositionX = posX;
-        item.m_onGridPositionY = posY;
+        itemImage.m_onGridPositionX = posX;
+        itemImage.m_onGridPositionY = posY;
 
         Vector2 pos = new Vector2();
-        if (item.m_onGridPositionX == 0)
+        if (itemImage.m_onGridPositionX == 0)
         {
             pos.x = posX * m_tileSizeWidth + 3;
             pos.y = -(posY * m_tileSizeHeight) - 2;
@@ -160,43 +194,7 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty
         return true;
     }
 
-    public Vector2Int? FindEmptySlot(Item item)
-    {
-        // item : 획득한 아이템
-        for (int y = 0; y < m_slotSizeHeight; y++)
-        {
-            for (int x = 0; x < m_slotSizeWidth; x++)
-            {
-                int nextSlotWidth = m_slotSizeWidth - x;
-                int nextSlotHeight = m_slotSizeHeight - y;
-                if (nextSlotWidth < item.m_itemData.itemWidth || nextSlotHeight < item.m_itemData.itemHeight)
-                {
-                    break;
-                }
-                if (CheckAvailableSpace(x, y, item.m_itemData.itemWidth, item.m_itemData.itemHeight))  // 빈 슬롯에 해당 아이템이 들어갈 수 있을 때
-                {
-                    return new Vector2Int(x, y);
-                }
-            }
-        }
-        return null;
-    }
-
-    public bool CheckAvailableSpace(int posX, int posY, int width, int height)
-    {
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                // ************ index 에러 뜸
-                if (m_itemSlot[posX + x, posY + y] != null)
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+    
 
     // 아이템을 장착 했을 때 아이템이 있던 슬롯 null로 만들기
     public void MakeSlotEmpty(Item item)
