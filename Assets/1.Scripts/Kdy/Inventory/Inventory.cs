@@ -110,7 +110,7 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
                 {
                     break;
                 }
-                if (CheckAvailableSpace(x, y, itemImage.m_itemData.itemWidth, itemImage.m_itemData.itemHeight))  // 빈 슬롯에 해당 아이템이 들어갈 수 있을 때
+                if (CheckAvailableSpace(itemImage, x, y, itemImage.m_itemData.itemWidth, itemImage.m_itemData.itemHeight))  // 빈 슬롯에 해당 아이템이 들어갈 수 있을 때
                 {
                     return new Vector2Int(x, y);
                 }
@@ -120,8 +120,12 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
     }
 
     // posX : 현재 슬롯의 X 좌표    posY : 현재 슬롯의 Y 죄표    width : 아이템의 가로 길이    height : 아이템의 세로 길이
-    public bool CheckAvailableSpace(int posX, int posY, int width, int height)
+    public bool CheckAvailableSpace(Item itemImage, int posX, int posY, int width, int height)
     {
+        if (!BoundaryCheck(posX, posY, itemImage.m_itemData.itemWidth, itemImage.m_itemData.itemHeight))
+        {
+            return false;
+        }
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
