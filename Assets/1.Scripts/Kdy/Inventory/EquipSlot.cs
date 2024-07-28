@@ -32,6 +32,7 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem
 
     public ItemType m_itemType;
     public Item m_item = null;
+    public BattleSystem m_battleSystem;
     
 
     // Start is called before the first frame update

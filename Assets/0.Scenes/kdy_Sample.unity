@@ -913,6 +913,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1134649398}
   m_itemType: 1
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &316795209
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,6 +1021,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1517361430}
   m_itemType: 4
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &368562769
 GameObject:
   m_ObjectHideFlags: 0
@@ -1279,6 +1281,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 79404944}
   m_itemType: 2
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 1626618630}
 --- !u!1 &430997561
 GameObject:
   m_ObjectHideFlags: 0
@@ -1399,6 +1402,7 @@ MonoBehaviour:
     MaxMp: 0
     AttackDmg: 0
     AttackRange: 0
+  m_item: {fileID: 0}
   m_curHp: 0
   m_curMp: 0
 --- !u!1001 &580485799
@@ -1799,6 +1803,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 991272973}
   m_itemType: 6
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &948309911
 GameObject:
   m_ObjectHideFlags: 0
@@ -1906,6 +1911,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1831261208}
   m_itemType: 8
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &968368194
 GameObject:
   m_ObjectHideFlags: 0
@@ -2026,6 +2032,7 @@ MonoBehaviour:
     MaxMp: 0
     AttackDmg: 0
     AttackRange: 0
+  m_item: {fileID: 0}
   m_curHp: 0
   m_curMp: 0
 --- !u!1 &991272971
@@ -2211,6 +2218,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1234399286}
   m_itemType: 0
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &1069392194
 GameObject:
   m_ObjectHideFlags: 0
@@ -3163,6 +3171,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1408311526}
   m_itemType: 3
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &1474561755
 GameObject:
   m_ObjectHideFlags: 0
@@ -3477,6 +3486,18 @@ MonoBehaviour:
   m_bgImage: {fileID: 1080460591}
   m_itemType: 7
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
+--- !u!114 &1626618630 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5244370769833058608, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
+  m_PrefabInstance: {fileID: 5244370769464062947}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a55ec5b9d70ab546b3932bf7d412810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1641190791
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3645,6 +3666,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1205624551}
   m_itemType: 6
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &1831261206
 GameObject:
   m_ObjectHideFlags: 0
@@ -4267,6 +4289,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1942373101}
   m_itemType: 5
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &1559058904919776067
 GameObject:
   m_ObjectHideFlags: 0

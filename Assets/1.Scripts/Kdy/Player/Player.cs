@@ -44,10 +44,13 @@ public class Player : BattleSystem
                 m_clickCnt++;
             }
         }
+
+        #region 실험코드 나중에 지워야함
         if (Input.GetKeyDown(KeyCode.T))
         {
             OnDamaged(50);
         }
+        #endregion
     }
 
 

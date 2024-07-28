@@ -38,7 +38,12 @@ public interface ITransform
     Transform transform { get; }
 }
 
-public interface IBattle : IOnDamaged, ITransform, IUsedSkill
+public interface IEquipItemSetting
+{
+    void EquipItemSetting(Item item);
+}
+
+public interface IBattle : IOnDamaged, ITransform, IUsedSkill, IEquipItemSetting
 {
 
 }
@@ -49,6 +54,8 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
     public BattleStat m_stat;
     public event Action m_deadAlarm;
     protected IBattle m_target = null;
+    public Item m_item;
+
     public float m_curHp = 0.0f;
     public float m_curMp = 0.0f;
     protected float m_curHealPoint
@@ -67,6 +74,14 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
             m_curMp = Mathf.Clamp(value, 0.0f, m_stat.MaxMp);
         }
     }
+    public float m_curDamage
+    {
+        get { return m_stat.AttackDmg; }
+        set
+        {
+            m_stat.AttackDmg += value;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -83,6 +98,12 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
     {
         m_curHealPoint = m_stat.MaxHp;
         m_curMagicPoint = m_stat.MaxMp;
+        // 아래 코드 다른 곳으로 이동시켜야함. 아이템을 장착할 때마다 아래 코드 실행되게 만들어야함.
+        //IEquipItemStat ieis = m_item.GetComponent<IEquipItemStat>();
+        //if(ieis != null)
+        //{
+        //    ieis.m_equipItemStat += SetStatus;
+        //}
     }
 
     // 공격
@@ -146,5 +167,17 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         {
             m_curMagicPoint = 0;
         }
+    }
+
+    // Item 스크림트에서 장비 장착했을 때 이벤트 함수에 추가할 함수
+    public void SetStatus(ItemData itemData)
+    {
+        m_curDamage = itemData.atkPower;
+        Debug.Log(m_curDamage);
+    }
+
+    public void EquipItemSetting(Item item)
+    {
+        m_item = item;
     }
 }

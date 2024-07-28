@@ -19,8 +19,10 @@ public class ItemData : ScriptableObject
         Hand
     }
 
+    public ItemType itemType;
     public string itemName;
     public int itemWidth;
     public int itemHeight;
-    public ItemType itemType;
+    public float atkPower;
+    public float defense;
 }
