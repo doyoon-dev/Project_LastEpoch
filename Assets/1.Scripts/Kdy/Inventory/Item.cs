@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -20,13 +21,13 @@ public interface IOrgPos
 
 public interface IEquipItemStat
 {
-    event UnityAction<ItemData> m_equipItemStat;
+    event UnityAction<ItemData, bool> m_equipItemStat;
 }
 
 public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IChangePos, IOrgPos, IEquipItemStat
 {
     public event UnityAction m_unEquipItem = null;
-    public event UnityAction<ItemData> m_equipItemStat = null;         // 아이템을 장착했을 때 유니티 이벤트 실행해서 BattleSystem에 있는 Stat 아이템 Stat에 따라 바꿔주기
+    public event UnityAction<ItemData, bool> m_equipItemStat = null;         // 아이템을 장착했을 때 유니티 이벤트 실행해서 BattleSystem에 있는 Stat 아이템 Stat에 따라 바꿔주기
     public Transform m_inventory = null;
     public LayerMask m_itemMask;
     public ItemData m_itemData;
@@ -163,14 +164,22 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     void SetEquip()
     {
         m_isEquiped = true;
-        m_equipItemStat?.Invoke(m_itemData);            // BattleSystem 에서 캐릭터 Stat 바궈주는 이벤트
         EquipSlotItem(m_equipSlot);
         transform.SetParent(m_equipSlot.transform);
-        IEquipItemSetting ieis = m_equipSlot.m_battleSystem.GetComponent<IEquipItemSetting>();
-        if (ieis != null)
+
+        ISetStatus iss = m_equipSlot.m_battleSystem.GetComponent<ISetStatus>();
+        if (iss != null)
         {
-            ieis.EquipItemSetting(this);
+            m_equipItemStat += iss.SetStatus;
         }
+        m_equipItemStat?.Invoke(m_itemData, true);            // BattleSystem 에서 캐릭터 Stat 바궈주는 이벤트
+        m_equipItemStat = null;
+
+        //IEquipItemSetting ieis = m_equipSlot.m_battleSystem.GetComponent<IEquipItemSetting>();
+        //if (ieis != null)
+        //{
+        //    ieis.EquipItemSetting(this);
+        //}
         
         RectTransform rectTransform = transform.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = Vector2.zero;

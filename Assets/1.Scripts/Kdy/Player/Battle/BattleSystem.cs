@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
+using static ItemData;
 
 [System.Serializable]
 public struct BattleStat
@@ -12,6 +13,7 @@ public struct BattleStat
     public float MaxMp;
     public float AttackDmg;
     public float AttackRange;
+    public float Defense;
 }
 
 public interface IDeadAlarm
@@ -43,7 +45,12 @@ public interface IEquipItemSetting
     void EquipItemSetting(Item item);
 }
 
-public interface IBattle : IOnDamaged, ITransform, IUsedSkill, IEquipItemSetting
+public interface ISetStatus
+{
+    void SetStatus(ItemData itemData, bool equip);
+}
+
+public interface IBattle : IOnDamaged, ITransform, IUsedSkill, IEquipItemSetting, ISetStatus
 {
 
 }
@@ -74,14 +81,15 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
             m_curMp = Mathf.Clamp(value, 0.0f, m_stat.MaxMp);
         }
     }
-    public float m_curDamage
+    protected float m_curDamage
     {
         get { return m_stat.AttackDmg; }
         set
         {
-            m_stat.AttackDmg += value;
+            m_stat.AttackDmg = value;
         }
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -170,14 +178,55 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
     }
 
     // Item 스크림트에서 장비 장착했을 때 이벤트 함수에 추가할 함수
-    public void SetStatus(ItemData itemData)
+    public void SetStatus(ItemData itemData, bool equip)
     {
-        m_curDamage = itemData.atkPower;
-        Debug.Log(m_curDamage);
+        //m_curDamage += itemData.atkPower;
+        // 데미지와 방어력은 나중에 계산식 만들면 프로퍼티로 바꿔서 적용되게 만들 예정
+        if (equip)
+        {
+            m_stat.AttackDmg += itemData.atkPower;
+            m_stat.Defense += itemData.defense;
+        }
+        else
+        {
+            m_stat.AttackDmg -= itemData.atkPower;
+            m_stat.Defense -= itemData.defense;
+        }
+        Debug.Log("      공격력 :   " + m_stat.AttackDmg + "      방어력 :   " + m_stat.Defense);
     }
 
     public void EquipItemSetting(Item item)
     {
         m_item = item;
+        switch (item.m_itemData.itemType)
+        {
+            case ItemType.Head:
+                
+                break;
+            case ItemType.Necklace:
+                
+                break;
+            case ItemType.Weapon:
+                
+                break;
+            case ItemType.Armor:
+                
+                break;
+            case ItemType.Sheild:
+                
+                break;
+            case ItemType.Belt:
+                
+                break;
+            case ItemType.Ring:
+                
+                break;
+            case ItemType.Shoes:
+                
+                break;
+            case ItemType.Hand:
+                
+                break;
+        }
     }
 }
