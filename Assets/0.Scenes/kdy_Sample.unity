@@ -1402,6 +1402,7 @@ MonoBehaviour:
     MaxMp: 0
     AttackDmg: 0
     AttackRange: 0
+    Defense: 0
   m_item: {fileID: 0}
   m_curHp: 0
   m_curMp: 0
@@ -2032,6 +2033,7 @@ MonoBehaviour:
     MaxMp: 0
     AttackDmg: 0
     AttackRange: 0
+    Defense: 0
   m_item: {fileID: 0}
   m_curHp: 0
   m_curMp: 0
@@ -3182,6 +3184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1474561756}
   - component: {fileID: 1474561757}
+  - component: {fileID: 1474561758}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -3217,7 +3220,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474561755}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a03ccbc85f0cec4469bf55e502db3646, type: 3}
   m_Name: 
@@ -3227,6 +3230,20 @@ MonoBehaviour:
   m_inventory: {fileID: 1943501931}
   m_selectedItmeGrid: {fileID: 1990488525}
   m_equipSlot: {fileID: 1949049222}
+--- !u!114 &1474561758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474561755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1b1bb6ea16fa5f428bef51f222697dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_slotSizeWidth: 14
+  m_slotSizeHeight: 8
 --- !u!1 &1517361428
 GameObject:
   m_ObjectHideFlags: 0

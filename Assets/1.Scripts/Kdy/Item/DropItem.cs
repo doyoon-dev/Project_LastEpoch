@@ -9,7 +9,13 @@ public interface ICheckDropItem
     void CheckDropItem(Inventory inven);
 }
 
-public class DropItem : MonoBehaviour, ICheckDropItem
+// 획득 아이템 인벤토리에 List에 저장하는 코드 테스트 중
+public interface ICheckDropItemTest
+{
+    void CheckDropItemTest(Inventory inven);
+}
+
+public class DropItem : MonoBehaviour, ICheckDropItem, ICheckDropItemTest
 {
     public LayerMask m_itemMask;
     public ItemData m_itemData;
@@ -36,5 +42,15 @@ public class DropItem : MonoBehaviour, ICheckDropItem
             igd.SetItemToInventory(m_itemImagePrefab);
         }
         // 오브젝트 풀링으로 몬스터에서 아이템 소환하고 여기서 아이템 다시 풀에 넣기
+    }
+
+    // 획득 아이템 인벤토리에 List에 저장하는 코드 테스트 중
+    public void CheckDropItemTest(Inventory inven)
+    {
+        IGetItemToList igitl = inven.GetComponent<IGetItemToList>();
+        if(igitl != null)
+        {
+            igitl.GetItemToList(m_itemData);
+        }
     }
 }

@@ -20,6 +20,7 @@ public class ItemData : ScriptableObject
     }
 
     public ItemType itemType;
+    public GameObject itemImagePrefab;
     public string itemName;
     public int itemWidth;
     public int itemHeight;

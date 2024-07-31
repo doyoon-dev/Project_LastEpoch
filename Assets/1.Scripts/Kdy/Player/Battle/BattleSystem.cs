@@ -192,7 +192,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
             m_stat.AttackDmg -= itemData.atkPower;
             m_stat.Defense -= itemData.defense;
         }
-        Debug.Log("      공격력 :   " + m_stat.AttackDmg + "      방어력 :   " + m_stat.Defense);
+        //Debug.Log("      공격력 :   " + m_stat.AttackDmg + "      방어력 :   " + m_stat.Defense);
     }
 
     public void EquipItemSetting(Item item)

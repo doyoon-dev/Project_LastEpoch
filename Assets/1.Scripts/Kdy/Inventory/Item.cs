@@ -37,7 +37,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public Transform m_orgPosition { get; private set; }  // 원래 위치
     public Vector3 m_orgPos { get; private set; }
 
-    bool m_isEquiped = false;
+    //bool m_isEquiped = false;
 
     EquipSlot m_equipSlot;              // 장착할 아이템이 들어갈 장비 슬롯
 
@@ -68,7 +68,10 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            if (!m_isEquiped)
+            // m_isEquiped 변수는 현재 스크립트에 해당하는 아이템에만 적용돼서 이미 아이템을 장착한 상태여도 다른 아이템을 장착하면 그 아이템의 변수 m_isEquiped는 false 이므로
+            // 아래코드가 호출된다. -> 플레이어 쪽 또는 EquipSlot 쪽에 장착했을 때 변수를 만들어야함
+            // 처음 아이템을 장착할 때 순서상 m_equipSlot이 할당이 안된 상태임
+            if (!m_equipSlot.GetComponent<IIsEquiped>().m_isEquiped)
             {
                 Item item = eventData.pointerClick.GetComponent<Item>();    // 슬롯에 있던 아이템
                 CheckItemSlotType(item);
@@ -149,7 +152,6 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     EquipSlot CheckSlot(int i)
     {
         m_equipSlot = transform.parent.GetComponent<Slot>().m_equipSlot[i];
-
         if (m_equipSlot.m_itemType == ItemType.Ring)
         {
             if (m_equipSlot.m_item != null)
@@ -163,7 +165,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     // 장비 장착했을 때 아이템 위치 설정
     void SetEquip()
     {
-        m_isEquiped = true;
+        //m_isEquiped = true;
         EquipSlotItem(m_equipSlot);
         transform.SetParent(m_equipSlot.transform);
 
@@ -208,7 +210,8 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         if(pi != null)
         {
             pi.PlaceItem(equipItem, m_onGridPositionX, m_onGridPositionY);
-            equipItem.m_isEquiped = false;
+            // 문제
+            //equipItem.m_isEquiped = false;
         }
 
         // 장착할 아이템 위치
@@ -233,7 +236,6 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         if (pi != null)
         {
             pi.PlaceItem(equipItem, equipItem.m_onGridPositionX, equipItem.m_onGridPositionY);
-            equipItem.m_isEquiped = false;
         }
     }
 
