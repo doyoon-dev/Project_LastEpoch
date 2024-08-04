@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static ItemData;
 
 public interface IGetItemData
 {
@@ -18,7 +19,7 @@ public interface IPlaceItem
     void PlaceItem(Item item, int posX, int posY);
 }
 
-public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
+public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem, IFindEmptySlot
 {
     // Slot : ItemGrid 
     // Item : InventoryItem
@@ -38,7 +39,8 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
     bool m_isInvenOpen = false;
 
     public Slot m_selectedItmeGrid;
-    public GameObject m_equipSlot;
+    public EquipSlot m_equipSlot;
+
     Item m_selectedItem;
 
     ItemData m_itemData;
@@ -85,6 +87,12 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
 
     public void SetItemToInventory(GameObject itemImagePrefab)
     {
+        //GameObject itemaa = ObjectPool.Inst.Pool<Item>(itemImagePrefab, null);
+        //if (FindEmptySlot(itemaa.GetComponent<Item>()) == null)
+        //{
+        //    return;
+        //}
+        
         Item itemImage = Instantiate(itemImagePrefab).GetComponent<Item>();
         Vector2Int itemSlotSize = FindEmptySlot(itemImage).Value;
         if (itemSlotSize == null)

@@ -48,29 +48,39 @@ public class InventoryTest : MonoBehaviour, IGetItemToList
         return m_tileGridPosition;
     }
 
+    int count = 0;
     public void GetItemToList(ItemData itemData)
     {
         // 1. 리스트에 아이템 데이터만 넣고 인벤토리가 열리면 그 때 아이템 생성하고 슬롯에 아이템 넣음
         // 2. 아이템 생성해서 리스트에 넣고 인벤토리가 열리면 슬롯에 아이템 넣음
         // 아이템을 슬롯에 넣기 전에 아이템이 슬롯에 들어갈 자리가 있는지 체크 먼저 해야함
+        Debug.Log("딕셔너리 개수 : " + m_itemDic.Count);
+        if (FindEmptySlot(itemData.itemImagePrefab.GetComponent<Item>()) == null)
+        {
+            Debug.Log("슬롯 꽉참");
+            return;
+        }
         int x = FindEmptySlot(itemData.itemImagePrefab.GetComponent<Item>()).Value.x;
         int y = FindEmptySlot(itemData.itemImagePrefab.GetComponent<Item>()).Value.y;
         for (int i = x; i < itemData.itemWidth + x; i++)
         {
-            for (int j = y; j < itemData.itemHeight + j; j++)
+            for (int j = y; j < itemData.itemHeight + y; j++)
             {
-                //m_itemSlot[x, y] = itemData.itemImagePrefab.GetComponent<Item>();
-                //m_itemList.Add(m_itemSlot[x, y]);
+                m_itemSlot[i, j] = itemData.itemImagePrefab.GetComponent<Item>();
+                m_itemList.Add(m_itemSlot[i, j]);
             }
         }
-        //m_itemDic.Add(itemData.name, m_itemList);
-        //for (int i = 0; i < m_slotSizeWidth; i++)
-        //{
-        //    for (int j = 0; j < m_slotSizeHeight; j++)
-        //    {
+        if (m_itemDic.ContainsKey(itemData.name))
+        {
+            count++;
+            m_itemDic.Add(itemData.name + ("%d", count), m_itemList);
+        }
+        else
+        {
+            m_itemDic.Add(itemData.name, m_itemList);
+        }
+        
 
-        //    }
-        //}
         //Debug.Log(m_itemDic["Zweihander"].Count);
         //Item itemImage = Instantiate(itemImagePrefab).GetComponent<Item>();
         //int itemWidth = itemImage.m_itemData.itemWidth;

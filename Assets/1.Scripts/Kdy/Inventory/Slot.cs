@@ -26,7 +26,7 @@ public interface ICreateItem
     void CreateItem(GameObject dropItemPrefab);
 }
 
-public interface ISlotInterface : IFindEmptySlot, ICreateItem { } //IMakeSlotEmpty, IPlaceItem
+public interface ISlotInterface : ICreateItem { } //IMakeSlotEmpty, IPlaceItem, IFindEmptySlot
 
 public class Slot : MonoBehaviour, IDropHandler//, ISlotInterface
 {
@@ -67,7 +67,7 @@ public class Slot : MonoBehaviour, IDropHandler//, ISlotInterface
         int posY = pos.y;
         Debug.Log("좌표 : " + "( " + posX + " , " + posY + " )");
 
-        // 아래 함수들 인 벤토리 스크립트로 옮겨서 인덱스 에러뜸 수정필요
+        // 아래 함수들 인벤토리 스크립트로 옮겨서 인덱스 에러뜸 수정필요
         IMakeSlotEmpty imsm = m_inven.GetComponent<IMakeSlotEmpty>();
         if (imsm != null)
         {
@@ -76,8 +76,6 @@ public class Slot : MonoBehaviour, IDropHandler//, ISlotInterface
 
         // posX, posY 변수 : 아이템을 드랍한 슬롯의 위치의 x, y 좌표
         if (!m_inven.CheckAvailableSpace(item, posX, posY, item.m_itemData.itemWidth, item.m_itemData.itemHeight)) return;
-
-        
 
         IPlaceItem ipi = m_inven.GetComponent<IPlaceItem>();
         if(ipi != null)

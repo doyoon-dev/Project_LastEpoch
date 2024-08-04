@@ -9,6 +9,11 @@ using UnityEngine.UI;
 using static ItemData;
 using static UnityEditor.Progress;
 
+public interface IChangeParent
+{
+    void ChangeParent(Transform parent);
+}
+
 public interface IChangePos
 {
     void ChangePos(Vector2 pos);
@@ -44,11 +49,13 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     Item m_curItem;
     Vector2 m_dragOffset = Vector2.zero;
     Image m_image;
+    Transform m_parentPos;
 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         m_orgPos = transform.position;
+        //m_parentPos = transform.parent;
         m_dragOffset = (Vector2)transform.position - eventData.position;
         m_image.raycastTarget = false;
     }
@@ -61,6 +68,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public void OnEndDrag(PointerEventData eventData)
     {
         transform.position = m_orgPos;
+        //transform.SetParent(m_parentPos);
         m_image.raycastTarget = true;
     }
 
@@ -105,6 +113,12 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     {
         m_inventory = transform.parent.parent.parent;    // 인벤토리 변수
         m_image = gameObject.GetComponent<Image>();
+        CheckItemSlotType(this);
+        //ISetItemEquipSlot isies = m_inventory.GetComponent<ISetItemEquipSlot>();
+        //if(isies != null)
+        //{
+        //    m_equipSlot = isies.SetItemEquipSlot(this);
+        //}
     }
 
     // Update is called once per frame
@@ -243,5 +257,10 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     {
         // 이동한 아이템의 위치 지정
         m_orgPos = pos;
+    }
+
+    void ChangeParent(Transform parent)
+    {
+        m_parentPos = parent;
     }
 }
