@@ -111,9 +111,16 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     // Start is called before the first frame update
     void Start()
     {
+        gameObject.GetComponent<RectTransform>().localScale = Vector3.one;
         m_inventory = transform.parent.parent.parent;    // 인벤토리 변수
         m_image = gameObject.GetComponent<Image>();
-        CheckItemSlotType(this);
+
+        m_equipSlot = CheckItemSlotType(this);
+        ISetStatus iss = m_equipSlot.m_battleSystem.GetComponent<ISetStatus>();
+        if (iss != null)
+        {
+            m_equipItemStat += iss.SetStatus;
+        }
         //ISetItemEquipSlot isies = m_inventory.GetComponent<ISetItemEquipSlot>();
         //if(isies != null)
         //{
@@ -183,11 +190,11 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         EquipSlotItem(m_equipSlot);
         transform.SetParent(m_equipSlot.transform);
 
-        ISetStatus iss = m_equipSlot.m_battleSystem.GetComponent<ISetStatus>();
-        if (iss != null)
-        {
-            m_equipItemStat += iss.SetStatus;
-        }
+        //ISetStatus iss = m_equipSlot.m_battleSystem.GetComponent<ISetStatus>();
+        //if (iss != null)
+        //{
+        //    m_equipItemStat += iss.SetStatus;
+        //}
         m_equipItemStat?.Invoke(m_itemData, true);            // BattleSystem 에서 캐릭터 Stat 바궈주는 이벤트
         m_equipItemStat = null;
 

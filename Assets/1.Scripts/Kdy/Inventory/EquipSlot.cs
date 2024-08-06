@@ -59,11 +59,17 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem, IIsEquiped
         m_item = item;
         m_isEquiped = true;
         m_bgImage.gameObject.SetActive(false);
+        m_item.GetComponent<RectTransform>().localScale = Vector3.one;
         m_item.m_unEquipItem += UnEquipedItem;
     }
 
     void UnEquipedItem()
     {
+        ISetStatus iss = m_battleSystem.GetComponent<ISetStatus>();
+        if (iss != null)
+        {
+            m_item.m_equipItemStat += iss.SetStatus;
+        }
         m_bgImage.gameObject.SetActive(true);
         m_isEquiped = false;
     }
