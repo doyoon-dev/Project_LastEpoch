@@ -24,17 +24,36 @@ public class PlayerUI : MonoBehaviour
 
     public void HealthPoint(float value)
     {
-        //StopAllCoroutines();
-        //StartCoroutine(DecreaseHp(value));
-        m_hpUI.fillAmount = value;
+        StopAllCoroutines();
+        StartCoroutine(DecreaseHp(value, true));
+        //m_hpUI.fillAmount = value;
     }
 
-    IEnumerator DecreaseHp(float value)
+    public void ManaPoint(float value)
     {
-        while (!Mathf.Approximately(m_hpUI.fillAmount, value))
+        StopAllCoroutines();
+        StartCoroutine(DecreaseHp(value, false));
+    }
+
+    IEnumerator DecreaseHp(float value, bool isHp)
+    {
+        if (isHp)
         {
-            //m_hpUI.fillAmount -= (1 - value) * Time.deltaTime * 0.5f;
-            yield return null;
+            while (!Mathf.Approximately(m_hpUI.fillAmount, value))
+            {
+                m_hpUI.fillAmount = Mathf.Lerp(m_hpUI.fillAmount, value, Time.deltaTime * 2);
+                yield return null;
+            }
+            m_hpUI.fillAmount = value;
+        }
+        else
+        {
+            while (!Mathf.Approximately(m_mpUI.fillAmount, value))
+            {
+                m_mpUI.fillAmount = Mathf.Lerp(m_mpUI.fillAmount, value, Time.deltaTime * 2);
+                yield return null;
+            }
+            m_mpUI.fillAmount = value;
         }
     }
 }

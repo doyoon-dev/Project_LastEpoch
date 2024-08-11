@@ -61,6 +61,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
     public BattleStat m_stat;
     public event UnityAction m_deadAlarm;
     public event UnityAction<float> m_changeHp;
+    public event UnityAction<float> m_changeMp;
     protected IBattle m_target = null;
     public Item m_item;
 
@@ -81,6 +82,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         set
         {
             m_curMp = Mathf.Clamp(value, 0.0f, m_stat.MaxMp);
+            m_changeMp?.Invoke(m_curMp / m_stat.MaxMp);
         }
     }
     protected float m_curDamage
@@ -108,12 +110,6 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
     {
         m_curHealPoint = m_stat.MaxHp;
         m_curMagicPoint = m_stat.MaxMp;
-        // 아래 코드 다른 곳으로 이동시켜야함. 아이템을 장착할 때마다 아래 코드 실행되게 만들어야함.
-        //IEquipItemStat ieis = m_item.GetComponent<IEquipItemStat>();
-        //if(ieis != null)
-        //{
-        //    ieis.m_equipItemStat += SetStatus;
-        //}
     }
 
     // 공격

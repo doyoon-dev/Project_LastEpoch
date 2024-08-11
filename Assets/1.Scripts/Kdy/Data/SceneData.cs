@@ -6,7 +6,7 @@ public class SceneData : MonoBehaviour
 {
     public static SceneData Inst = null;
 
-    public PlayerUI m_playerHpUI;
+    public PlayerUI m_playerHpMpUI;
 
     private void Awake()
     {
