@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -21,9 +22,19 @@ public class PlayerUI : MonoBehaviour
         
     }
 
-    public void HealthPoint(float damage)
+    public void HealthPoint(float value)
     {
-        float hp = m_player.m_curHp - damage;
-        m_hpUI.fillAmount -= (hp / m_player.m_stat.MaxHp);
+        //StopAllCoroutines();
+        //StartCoroutine(DecreaseHp(value));
+        m_hpUI.fillAmount = value;
+    }
+
+    IEnumerator DecreaseHp(float value)
+    {
+        while (!Mathf.Approximately(m_hpUI.fillAmount, value))
+        {
+            //m_hpUI.fillAmount -= (1 - value) * Time.deltaTime * 0.5f;
+            yield return null;
+        }
     }
 }

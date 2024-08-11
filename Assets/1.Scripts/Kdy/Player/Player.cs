@@ -28,6 +28,7 @@ public class Player : BattleSystem
     void Start()
     {
         Initalize();
+        m_changeHp += SceneData.Inst.m_playerHpUI.HealthPoint;
         m_deadAlarm += () =>
         {
             Debug.Log("Á×À½");

@@ -18,7 +18,7 @@ public struct BattleStat
 
 public interface IDeadAlarm
 {
-    event Action m_deadAlarm;
+    event UnityAction m_deadAlarm;
 }
 
 // 인터페이스 필요 없어서 지워야 될 수 있음
@@ -59,7 +59,8 @@ public interface IBattle : IOnDamaged, ITransform, IUsedSkill, IEquipItemSetting
 public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
 {
     public BattleStat m_stat;
-    public event Action m_deadAlarm;
+    public event UnityAction m_deadAlarm;
+    public event UnityAction<float> m_changeHp;
     protected IBattle m_target = null;
     public Item m_item;
 
@@ -71,6 +72,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         set
         {
             m_curHp = Mathf.Clamp(value, 0.0f, m_stat.MaxHp);
+            m_changeHp?.Invoke(m_curHp / m_stat.MaxHp);
         }
     }
     public float m_curMagicPoint
