@@ -9,11 +9,13 @@ public class PlayerUI : MonoBehaviour
     public Player m_player;
     public Image m_hpUI;
     public Image m_mpUI;
+    public Text m_hpText;
+    public Text m_mpText;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Initialize();
     }
 
     // Update is called once per frame
@@ -22,17 +24,25 @@ public class PlayerUI : MonoBehaviour
         
     }
 
-    public void HealthPoint(float value)
+    void Initialize()
+    {
+        m_hpText.text = m_player.GetComponent<BattleSystem>().m_stat.MaxHp + " / " + m_player.GetComponent<BattleSystem>().m_stat.MaxHp;
+        m_mpText.text = m_player.GetComponent<BattleSystem>().m_stat.MaxMp + " / " + m_player.GetComponent<BattleSystem>().m_stat.MaxMp;
+    }
+
+    public void HealthPoint(float value, float MaxHpValue)
     {
         StopAllCoroutines();
         StartCoroutine(DecreaseHp(value, true));
+        m_hpText.text = Mathf.CeilToInt(value * MaxHpValue).ToString() + " / " + Mathf.CeilToInt(MaxHpValue).ToString();
         //m_hpUI.fillAmount = value;
     }
 
-    public void ManaPoint(float value)
+    public void ManaPoint(float value, float MaxMpValue)
     {
         StopAllCoroutines();
         StartCoroutine(DecreaseHp(value, false));
+        m_mpText.text = Mathf.CeilToInt(value * MaxMpValue).ToString() + " / " + Mathf.CeilToInt(MaxMpValue).ToString();
     }
 
     IEnumerator DecreaseHp(float value, bool isHp)

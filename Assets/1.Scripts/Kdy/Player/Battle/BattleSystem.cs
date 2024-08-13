@@ -60,8 +60,8 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
 {
     public BattleStat m_stat;
     public event UnityAction m_deadAlarm;
-    public event UnityAction<float> m_changeHp;
-    public event UnityAction<float> m_changeMp;
+    public event UnityAction<float, float> m_changeHp;
+    public event UnityAction<float, float> m_changeMp;
     protected IBattle m_target = null;
     public Item m_item;
 
@@ -73,7 +73,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         set
         {
             m_curHp = Mathf.Clamp(value, 0.0f, m_stat.MaxHp);
-            m_changeHp?.Invoke(m_curHp / m_stat.MaxHp);
+            m_changeHp?.Invoke(m_curHp / m_stat.MaxHp, m_stat.MaxHp);
         }
     }
     public float m_curMagicPoint
@@ -82,7 +82,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         set
         {
             m_curMp = Mathf.Clamp(value, 0.0f, m_stat.MaxMp);
-            m_changeMp?.Invoke(m_curMp / m_stat.MaxMp);
+            m_changeMp?.Invoke(m_curMp / m_stat.MaxMp, m_stat.MaxMp);
         }
     }
     protected float m_curDamage
