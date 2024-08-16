@@ -182,6 +182,7 @@ MonoBehaviour:
   m_mpUI: {fileID: 663041920}
   m_hpText: {fileID: 1820796967}
   m_mpText: {fileID: 146324595}
+  m_skillCoolTime: {fileID: 1520062131}
 --- !u!1 &48929433
 GameObject:
   m_ObjectHideFlags: 0
@@ -1743,7 +1744,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 0cdfd049b7d4af04bb189e17e624d8ae, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2636,7 +2637,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1200157092
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3110,6 +3111,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5244370769833058613, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
+      propertyPath: m_playerUI
+      value: 
+      objectReference: {fileID: 1595492}
+    - target: {fileID: 5244370769833058613, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
+      propertyPath: m_skillCoolTime
+      value: 
+      objectReference: {fileID: 1520062131}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
 --- !u!114 &1516420129 stripped

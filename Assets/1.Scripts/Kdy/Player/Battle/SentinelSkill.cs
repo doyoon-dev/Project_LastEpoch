@@ -25,8 +25,8 @@ public class SentinelSkill : Skill
     // Update is called once per frame
     void Update()
     {
-        //Skill_WarPath(KeyCode.Q);
-        Skill_Lunge(KeyCode.W);
+        Skill_WarPath(KeyCode.W);
+        Skill_Lunge(KeyCode.E);
     }
 
     protected override void Q_SkillInputKey()
@@ -117,19 +117,35 @@ public class SentinelSkill : Skill
     // 돌격 스킬
     void Skill_Lunge(KeyCode inputKey)
     {
-        if (Input.GetKeyDown(inputKey) && !m_lungeUse && m_player.m_curMagicPoint >= SkillData.m_skillData["Lunge"].Mp)
+        if (!m_usingSkill)
         {
-            m_lungeUse = true;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+            if (Input.GetKeyDown(inputKey) && !m_lungeUse && m_player.m_curMagicPoint >= SkillData.m_skillData["Lunge"].Mp)
             {
-                StopAllCoroutines();
-                Vector3 dir = hit.point - transform.position;
-                transform.forward = dir;
-                StartCoroutine(LungeMove(dir));
+                UsingSkillMp(SkillData.m_skillData["Lunge"].Mp);
+                m_usingSkill = true;
+                IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
+                if (iusa != null)
+                {
+                    iusa.m_usableSkillAct += () => { m_usingSkill = false; };
+                }
+                m_lungeUse = true;
+                ICoolTime ict = m_playerUI.m_skillCoolTime.GetComponent<ICoolTime>();
+                if (ict != null)
+                {
+                    ict.CoolTime(inputKey, SkillData.m_skillData["Lunge"].CoolTime);
+                }
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+                {
+                    StopAllCoroutines();
+                    Vector3 dir = hit.point - transform.position;
+                    transform.forward = dir;
+                    StartCoroutine(LungeMove(dir));
+                }
+
             }
-            
         }
+        
         // 스킬 키 한 번 누르면 스킬 발동
         // 마우스 방향으로 일정거리 돌진
     }

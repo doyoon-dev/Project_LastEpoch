@@ -11,6 +11,7 @@ public class PlayerUI : MonoBehaviour
     public Image m_mpUI;
     public Text m_hpText;
     public Text m_mpText;
+    public SkillCoolTime m_skillCoolTime;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,8 @@ public class PlayerUI : MonoBehaviour
         
     }
 
+
+    // HP MP UI 이미지 2개로 만들어서 "{앞에 그려진 이미지는 한번에 줄어들게} {뒤에 그려진 이미지는 Time.deltaTime 써서 서서히 줄어들게 만들기}"
     void Initialize()
     {
         m_hpText.text = m_player.GetComponent<BattleSystem>().m_stat.MaxHp + " / " + m_player.GetComponent<BattleSystem>().m_stat.MaxHp;
