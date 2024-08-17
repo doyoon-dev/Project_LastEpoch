@@ -4251,9 +4251,11 @@ MonoBehaviour:
   m_cam: {fileID: 0}
   m_stat:
     MaxHp: 100
-    MaxMp: 100
+    MaxMp: 51
     AttackDmg: 20
     AttackRange: 1
+    Defense: 0
+  m_item: {fileID: 0}
   m_curHp: 0
   m_curMp: 0
   m_weaponStartPoint: {fileID: 5244370769042063078}
@@ -4325,6 +4327,7 @@ MonoBehaviour:
         m_CallState: 2
   m_usingSkill: 0
   m_player: {fileID: 5244370769833058608}
+  m_playerUI: {fileID: 0}
   m_myAnim: {fileID: 5244370768580197507}
   m_warPathStartPos: {fileID: 5244370769042063078}
   m_warPathEndPos: {fileID: 5244370769486884012}

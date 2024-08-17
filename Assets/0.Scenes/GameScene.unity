@@ -3055,10 +3055,6 @@ PrefabInstance:
       propertyPath: m_cam
       value: 
       objectReference: {fileID: 1616566371}
-    - target: {fileID: 5244370769833058608, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
-      propertyPath: m_stat.MaxMp
-      value: 51
-      objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -3103,10 +3099,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058611, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_Name
       value: Player
@@ -3115,10 +3107,6 @@ PrefabInstance:
       propertyPath: m_playerUI
       value: 
       objectReference: {fileID: 1595492}
-    - target: {fileID: 5244370769833058613, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
-      propertyPath: m_skillCoolTime
-      value: 
-      objectReference: {fileID: 1520062131}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
 --- !u!114 &1516420129 stripped
