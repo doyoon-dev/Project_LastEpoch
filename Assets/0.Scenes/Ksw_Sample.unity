@@ -5415,6 +5415,7 @@ MonoBehaviour:
         m_CallState: 2
   m_usingSkill: 0
   m_player: {fileID: 0}
+  m_playerUI: {fileID: 0}
   m_myAnim: {fileID: 5244370769263410271}
   m_warPathStartPos: {fileID: 5244370769877188154}
   m_warPathEndPos: {fileID: 5244370768359074928}
@@ -5472,13 +5473,15 @@ MonoBehaviour:
     MaxMp: 100
     AttackDmg: 20
     AttackRange: 1
+    Defense: 0
+  m_item: {fileID: 0}
   m_curHp: 0
   m_curMp: 0
   m_weaponStartPoint: {fileID: 5244370769877188154}
   m_weaponEndPoint: {fileID: 5244370768701666520}
   weaponPoint: {fileID: 5244370768701666520}
   obj: {fileID: 986560734}
-  attackDamage: 20
+  attackDamage: 5
   attackRange: 3
   m_inventory: {fileID: 0}
   m_enemyMask:
