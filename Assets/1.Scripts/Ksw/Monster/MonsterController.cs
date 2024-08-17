@@ -134,7 +134,7 @@ public class MonsterController : BattleSystem
 
     }
 
-    public virtual void InitMonster(Player player)
+    public void InitMonster(Player player)
     {
         m_player = player;
 
@@ -149,7 +149,7 @@ public class MonsterController : BattleSystem
     {
         gameObject.SetActive(true);
         m_waypointCtr = waypoint;
-        transform.position = waypoint.transform.position;
+        //transform.position = waypoint.transform.position;
     }
 
     bool CanAttack()
@@ -164,6 +164,11 @@ public class MonsterController : BattleSystem
 
     bool FindTarget()
     {
+        //플레이어가 없으면 바로 false 반환
+        if(m_player == null)
+        {
+            return false;
+        }
         RaycastHit hit;
         var originPos = transform.position + Vector3.up * 0.5f;
         var targetPos = m_player.transform.position + Vector3.up * 0.5f;
@@ -354,9 +359,8 @@ public class MonsterController : BattleSystem
 
     void Update()
     {
-
         BehaviourProcess();
-
+        
     }
 
 
