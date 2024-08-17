@@ -1862,11 +1862,11 @@ GameObject:
   - component: {fileID: 1649170005297397332}
   m_Layer: 7
   m_Name: Monster(ZombieHound)
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4612578501198292015
 Transform:
   m_ObjectHideFlags: 0
@@ -1938,7 +1938,9 @@ MonoBehaviour:
     MaxMp: 0
     AttackDmg: 0
     AttackRange: 0
-  m_curHp: 10
+    Defense: 0
+  m_item: {fileID: 0}
+  m_curHp: 50
   m_curMp: 0
   m_state: 0
   m_detectDist: 4.5

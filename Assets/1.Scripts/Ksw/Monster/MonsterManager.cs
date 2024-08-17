@@ -40,11 +40,11 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     // 몬스터 소환 메서드
     void SpawnMonster()
     {
-
         // 오브젝트 풀에서 몬스터를 가져옴
         GameObject monster = ObjectPool.Inst.Pool<MonsterController>(m_monsterPrefab);
         MonsterController monsterController = monster.GetComponent<MonsterController>();
         NavMeshAgent navAgent = monster.GetComponent<NavMeshAgent>();
+        monster.transform.position = new Vector3(-9, 0, 42);
 
         // 몬스터 초기화
         monsterController.InitMonster(m_player);
@@ -55,6 +55,8 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
 
         // 웨이포인트에서 랜덤 위치를 얻어옴
         Vector3 spawnPosition = waypointController.GetRandomWaypointPosition();
+        monster.transform.position = spawnPosition;
+       
 
         // 이전 소환 위치와 동일한지 확인
         if (spawnPosition == lastSpawnPosition)
