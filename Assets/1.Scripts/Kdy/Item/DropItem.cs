@@ -54,4 +54,9 @@ public class DropItem : MonoBehaviour, ICheckDropItem, ICheckDropItemTest
             igitl.GetItemToList(m_itemData);
         }
     }
+
+    public void Initialize(ItemData itemData)
+    {
+        m_itemData = itemData;
+    }
 }
