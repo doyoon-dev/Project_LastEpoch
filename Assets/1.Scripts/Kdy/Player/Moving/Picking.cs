@@ -27,10 +27,6 @@ public class Picking : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (Input.GetMouseButtonDown(0) && !m_anim.GetBool("IsAttacking"))
-            {
-                Debug.Log(m_skillUsed.UsingSkill());
-            }
             if (Input.GetMouseButtonDown(0) && !m_anim.GetBool("IsAttacking") && !m_skillUsed.UsingSkill())
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
