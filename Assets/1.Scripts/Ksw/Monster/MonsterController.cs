@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -17,26 +17,29 @@ public class MonsterController : BattleSystem
         Max
     }
     [SerializeField]
-    BehaviourState m_state; //»óÅÂ
-    [Header("Å¸°Ù ÀÎ½Ä ¹üÀ§")]
+    BehaviourState m_state; //ìƒíƒœ
+    [Header("íƒ€ê²Ÿ ì¸ì‹ ë²”ìœ„")]
     [SerializeField]
-    protected float m_dectectDist = 100f;
-    [Header("°ø°İ °Å¸®")]
+    protected float m_detectDist;
+    [Header("ê³µê²© ê±°ë¦¬")]
     [SerializeField]
-    protected float m_attackDist = 1.5f;
-    [Header("ÇÃ·¹ÀÌ¾î ÀÎ½Ä ")]
+    protected float m_attackDist;
+    [Header("í”Œë ˆì´ì–´ ì¸ì‹ ")]
     [SerializeField]
     Player m_player;
     [SerializeField]
     WaypointController m_waypointCtr;
-    [Header("ÀÓ½Ã ¸ó½ºÅÍ Ã¼·Â ")]
-    //[SerializeField]
-   //int m_hp = 10;
+    [Header("ì•„ì´í…œ í”„ë¦¬íŒ¹")]
+    [SerializeField]
+    private GameObject m_dropItemPrefab;
+    [Header("ì•„ì´í…œ ë°ì´í„°")]
+    [SerializeField]
+    private ItemData m_itemData;
     MoveTween m_moveTween;
     NavMeshAgent m_navAgent;
     MonsterAnimController m_monAnimCtr;
     Renderer[] m_renderers;
-    bool m_isPatrol; //patrol ¿©ºÎÈ®ÀÎ
+    bool m_isPatrol; //patrol ì—¬ë¶€í™•ì¸
     int m_curWaypoint;
     float m_idleDuration = 1f;
     float m_idleTime = 0;
@@ -44,9 +47,14 @@ public class MonsterController : BattleSystem
     MaterialPropertyBlock m_mpBlock;
     public LayerMask m_playerMask;
     public LayerMask m_BackgroundMask;
-    public bool IsDie {get { return m_state == BehaviourState.Die; } }
-   
-    public MonsterAnimController.Motion GetMotion { get { return m_monAnimCtr.CurrentMotion; } }// ¾î´À Æ÷ÀÎÆ®¸¦ °¡°í ÀÖ´ÂÁö Ã¼Å©
+    private Transform m_attacker;
+    private SkillInform m_skillData;
+
+    public bool IsDie { get { return m_state == BehaviourState.Die; } } //ì£½ìŒ ìƒíƒœì¸ì§€ ì²´í¬
+
+    private Transform playerTransform;
+
+    public MonsterAnimController.Motion GetMotion { get { return m_monAnimCtr.CurrentMotion; } }// ì–´ëŠ í¬ì¸íŠ¸ë¥¼ ê°€ê³  ìˆëŠ”ì§€ ì²´í¬
     #region Animation Event Methods
     void AnimEvent_AttackFinished()
     {
@@ -62,7 +70,7 @@ public class MonsterController : BattleSystem
     {
         m_state = state;
     }
-    void SetIdleDuration(float duration)//idle ´ë±â½Ã°£
+    void SetIdleDuration(float duration)//idle ëŒ€ê¸°ì‹œê°„
     {
         m_idleTime = m_idleDuration - duration;
     }
@@ -75,21 +83,23 @@ public class MonsterController : BattleSystem
         SetIdleDuration(duration);
 
     }
+    //ëª¬ìŠ¤í„° ë§ì•˜ì„ ë–„ 
     void SetHitColor(float duration)
     {
-        if(m_hitColorCoroutine != null)
+        if (m_hitColorCoroutine != null)
         {
             StopCoroutine(m_hitColorCoroutine);
             m_hitColorCoroutine = null;
         }
-        m_hitColorCoroutine = StartCoroutine(Coroutine_SetHitColor(duration));//µ¿ÀÛ ¿©·¯°³ µé¾î¿Ã¼ö ÀÖÀ½
+        m_hitColorCoroutine = StartCoroutine(Coroutine_SetHitColor(duration));//ë™ì‘ ì—¬ëŸ¬ê°œ ë“¤ì–´ì˜¬ìˆ˜ ìˆìŒ
 
     }
+    //ëª¬ìŠ¤í„° ë§ì•˜ì„Â‹Âš ë•Œ ìƒ‰ìƒ
     IEnumerator Coroutine_SetHitColor(float duration)
     {
         m_mpBlock.SetColor("_RimColor", Color.white);
         m_mpBlock.SetFloat("_RimPower", 1);
-        for(int i = 0; i< m_renderers.Length; i++) 
+        for (int i = 0; i < m_renderers.Length; i++)
         {
             m_renderers[i].SetPropertyBlock(m_mpBlock);
         }
@@ -101,21 +111,21 @@ public class MonsterController : BattleSystem
             m_renderers[i].SetPropertyBlock(m_mpBlock);
         }
     }
-   
+    //ëª¬ìŠ¤í„° ì‚¬ë¼ì§€ëŠ”ê±°
     IEnumerator Coroutine_SetDissolve(float duration)
     {
         float time = 0f;
         float result = 0f;
-        while(true)
+        while (true)
         {
             time += Time.deltaTime;
             result = Mathf.Lerp(-1.5f, 0.7f, time / duration);
-            m_mpBlock.SetFloat("_Duration",result);
+            m_mpBlock.SetFloat("_Duration", result);
             for (int i = 0; i < m_renderers.Length; i++)
             {
                 m_renderers[i].SetPropertyBlock(m_mpBlock);
-            }           
-            if(time > duration)
+            }
+            if (time > duration)
             {
                 yield break;
             }
@@ -123,38 +133,24 @@ public class MonsterController : BattleSystem
         }
 
     }
-    //µ¥¹ÌÁö ÀÔ¾úÀ»‹š 
-    public override void SetDamage(Transform attacker, SkillInform skillData)
+
+    public virtual void InitMonster(Player player)
     {
-        /*
-        m_hp--;
-        if(m_hp <=0)
-        {
-            if (IsDie) return;
-            m_hp = 0;
-            SetState(BehaviourState.Die);
-            m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);
-            StartCoroutine(Coroutine_SetDissolve(4f));
-            return;
-        }
-        */
-        base.SetDamage(attacker, skillData);
-        SetState(BehaviourState.Damaged);
-        m_monAnimCtr.Play(MonsterAnimController.Motion.Hit, false);
-        m_navAgent.ResetPath();
-        m_navAgent.isStopped = true;
-        SetHitColor(0.5f);
-        if (skillData.knockback > 0f)
-        {
-            var dir = (transform.position - attacker.position).normalized;
-            dir.y = 0f;
-            var duration = SkillData.MaxKnockbackDuration * (skillData.knockback / SkillData.MaxKnockbackDist);
-            m_moveTween.Play(transform.position, transform.position + dir * skillData.knockback, duration);
-        }
+        m_player = player;
+
     }
-
-
- 
+    // ë ˆì´ì–´ ë§ˆìŠ¤í¬ ì„¤ì • ë©”ì„œë“œ
+    public void SetLayerMasks(LayerMask playerMask, LayerMask backgroundMask)
+    {
+        m_playerMask = playerMask;
+        m_BackgroundMask = backgroundMask;
+    }
+    public void SetMonster(WaypointController waypoint)
+    {
+        gameObject.SetActive(true);
+        m_waypointCtr = waypoint;
+        transform.position = waypoint.transform.position;
+    }
 
     bool CanAttack()
     {
@@ -172,24 +168,92 @@ public class MonsterController : BattleSystem
         var originPos = transform.position + Vector3.up * 0.5f;
         var targetPos = m_player.transform.position + Vector3.up * 0.5f;
         var dir = targetPos - originPos;
-        Debug.DrawRay(originPos, dir.normalized * m_dectectDist, Color.green);
-        if (Physics.Raycast(originPos, dir.normalized, out hit, m_dectectDist, m_playerMask | m_BackgroundMask))
+        Debug.DrawRay(originPos, dir.normalized * m_detectDist, Color.green); //ë ˆì´ ì˜ëŠ”ê±° í™•ì¸
+        if (Physics.Raycast(originPos, dir.normalized, out hit, m_detectDist, m_playerMask | m_BackgroundMask))
         {
             if ((m_playerMask & (1 << hit.collider.gameObject.layer)) != 0)
             {
                 return true;
             }
-  
+
         }
-        return false;      
+        return false;
     }
 
-    //Çàµ¿ ÇÁ·Î¼¼½º
-    void BehaviourProcess()
+    protected bool CheckArea(Vector3 target, float area)
     {
-        switch(m_state)
+        var dist = target - transform.position;
+        if (Mathf.Approximately(dist.sqrMagnitude, area) || dist.sqrMagnitude < area)
         {
-            //Idle »óÅÂ
+            return true;
+        }
+        return false;
+    }
+    //ì£½ì—ˆì„ ë–„ ëª¬ìŠ¤í„° ë“œë í™•ë¥  
+    void DropItemOnDeath()
+    {
+        // ë“œë¡­ í™•ë¥  (ì˜ˆ: 50%)
+        float dropChance = 0.5f;
+        if (UnityEngine.Random.value <= dropChance)
+        {
+            GameObject dropItemObject = ObjectPool.Inst.Pool<DropItem>(m_dropItemPrefab);
+            DropItem dropItem = dropItemObject.GetComponent<DropItem>();
+
+            dropItem.Initialize(m_itemData); //ë“œë¡­í•  ì•„ì´í…œ ë°ì´í„° ì„¤ì •
+            dropItem.transform.position = transform.position;  // ë“œë¡­ ìœ„ì¹˜ ì„¤ì •
+            dropItem.gameObject.SetActive(true); // ë“œë¡­ ì•„ì´í…œ í™œì„±í™”
+        }
+    }
+
+    public override void SetDamage(Transform attacker, SkillInform skillData)
+    {
+        if (IsDie) return;  // ì´ë¯¸ ì£½ì–´ìˆë‹¤ë©´ ì²˜ë¦¬í•˜ì§€ ì•ŠìŒ
+        m_curHealPoint -= skillData.Dmg;
+        if (m_curHealPoint <= 0)
+        {
+            m_curHealPoint = 0;
+            HandleDeath();
+            return;
+        }
+
+        // ë°ë¯¸ì§€ ì²˜ë¦¬
+        SetState(BehaviourState.Damaged);
+        m_monAnimCtr.Play(MonsterAnimController.Motion.Hit, false);
+        m_navAgent.ResetPath();
+        m_navAgent.isStopped = true;
+        SetHitColor(0.5f);
+
+        // ë„‰ë°± ì²˜ë¦¬
+        if (skillData.knockback > 0f)
+        {
+            var dir = (transform.position - attacker.position).normalized;
+            dir.y = 0f;
+            var duration = SkillData.MaxKnockbackDuration * (skillData.knockback / SkillData.MaxKnockbackDist);
+            m_moveTween.Play(transform.position, transform.position + dir * skillData.knockback, duration);
+        }
+    }
+
+    // ì£½ìŒ ìƒíƒœ ì²˜ë¦¬
+    void HandleDeath()
+    {
+        // ì´ë¯¸ ì£½ì€ ìƒíƒœì—ì„œ ë‹¤ì‹œ ì²˜ë¦¬í•˜ì§€ ì•Šë„ë¡ í•¨
+        if (IsDie) return;      
+        m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // ì‚¬ë§ ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ
+        StartCoroutine(Coroutine_SetDissolve(4f));  // ì‚¬ë¼ì§€ëŠ” íš¨ê³¼
+        m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // ë„¤ë¹„ê²Œì´ì…˜ ì—ì´ì „íŠ¸ ì„¤ì •
+        DropItemOnDeath(); // ì•„ì´í…œ ë“œë¡­                          
+        SetState(BehaviourState.Die);
+    }
+
+
+
+ 
+    //í–‰ë™ í”„ë¡œì„¸ìŠ¤
+    public virtual void BehaviourProcess()
+    {
+        switch (m_state)
+        {
+            //Idle ìƒíƒœ
             case BehaviourState.Idle:
                 m_idleTime += Time.deltaTime;
                 if (m_idleTime > m_idleDuration)
@@ -214,26 +278,25 @@ public class MonsterController : BattleSystem
                     {
                         SetState(BehaviourState.Patrol);
                         m_monAnimCtr.Play(MonsterAnimController.Motion.Run);
-                        m_navAgent.stoppingDistance = m_navAgent.radius; //navagent radius¸¸Å­ Á¤Áö
+                        m_navAgent.stoppingDistance = m_navAgent.radius; //navagent radiusë§Œí¼ ì •ì§€
 
                     }
                 }
                 break;
 
-            //°ø°İ »óÅÂ
+            //ê³µê²© ìƒíƒœ
             case BehaviourState.Attack:
                 break;
-            //ÃßÀû »óÅÂ
+            //ì¶”ì  ìƒíƒœ
             case BehaviourState.Chase:
                 m_navAgent.SetDestination(m_player.transform.position);
-                var dist = m_player.transform.position - transform.position;            
-                if (Mathf.Approximately(dist.sqrMagnitude, Mathf.Pow(m_navAgent.stoppingDistance, 2f)) || dist.sqrMagnitude < Mathf.Pow(m_navAgent.stoppingDistance, 2f))
+                if (CheckArea(m_player.transform.position, Mathf.Pow(m_navAgent.stoppingDistance, 2f)))
                 {
                     SetIdle(1f);
-                }               
+                }
                 break;
 
-            //°æ°è »óÅÂ
+            //ê²½ê³„ ìƒíƒœ
             case BehaviourState.Patrol:
                 if (!m_isPatrol)
                 {
@@ -255,39 +318,30 @@ public class MonsterController : BattleSystem
                     }
                     else
                     {
-                        dist = transform.position - m_waypointCtr.m_waypoints[m_curWaypoint].transform.position;
-                        if (Mathf.Approximately(dist.sqrMagnitude, Mathf.Pow(m_navAgent.stoppingDistance, 2f)) || dist.sqrMagnitude < Mathf.Pow(m_navAgent.stoppingDistance, 2f))
+                        if (CheckArea(m_waypointCtr.m_waypoints[m_curWaypoint].transform.position, Mathf.Pow(m_navAgent.stoppingDistance, 2f)))
                         {
                             m_isPatrol = false;
                             SetIdle(2f);
                         }
+
                     }
                 }
                 break;
-
-            //µ¥¹ÌÁö »óÅÂ
+            //ë°ë¯¸ì§€ ìƒíƒœ
             case BehaviourState.Damaged:
                 break;
-            //Á×Àº »óÅÂ  
+            //ì£½ì€ ìƒíƒœ  
             case BehaviourState.Die:
-                
+                HandleDeath();
                 break;
-                 
+
         }
     }
 
-    public void DieMon()
-    {
-        Debug.Log("DIE");
-        SetState(BehaviourState.Die);
-        m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);
-        StartCoroutine(Coroutine_SetDissolve(4f));
-    }
 
-
+     
     void Start()
     {
-        m_deadAlarm += DieMon;
         Initalize();
         m_monAnimCtr = GetComponent<MonsterAnimController>();
         m_mpBlock = new MaterialPropertyBlock();
@@ -296,25 +350,15 @@ public class MonsterController : BattleSystem
         m_moveTween = GetComponent<MoveTween>();
         m_navAgent = GetComponent<NavMeshAgent>();
         m_renderers = GetComponentsInChildren<Renderer>();
-        /*
-        Initalize();
-        IDeadAlarm da = GetComponent<IDeadAlarm>();
-        if (da != null)
-        {
-            da.m_deadAlarm += () =>
-            {
-                gameObject.SetActive(false);
-            };
-        }
-        */
     }
 
     void Update()
     {
+
         BehaviourProcess();
+
     }
 
 
 
 }
-

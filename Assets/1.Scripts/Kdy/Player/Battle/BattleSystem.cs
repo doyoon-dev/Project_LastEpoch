@@ -158,11 +158,12 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
 
     public virtual void SetDamage(Transform attacker, SkillInform skillData)
     {
+        //체력 깎이는거 
         m_curHealPoint -= skillData.Dmg;
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
-            Dead();
+            
         }
     }
 

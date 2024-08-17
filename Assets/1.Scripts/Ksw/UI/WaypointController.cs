@@ -32,4 +32,10 @@ public class WaypointController : MonoBehaviour
             Gizmos.DrawLine(m_waypoints[i].transform.position, m_waypoints[i + 1].transform.position);
         }
     }
+    public Vector3 GetRandomWaypointPosition()
+    {
+        if (m_waypoints.Length == 0) return Vector3.zero;
+        int randomIndex = Random.Range(0, m_waypoints.Length);
+        return m_waypoints[randomIndex].transform.position;
+    }
 }
