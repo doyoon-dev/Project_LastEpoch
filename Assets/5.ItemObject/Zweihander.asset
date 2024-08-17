@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce51b55bcfe689e45b38e32ad739bbce, type: 3}
   m_Name: Zweihander
   m_EditorClassIdentifier: 
+  itemType: 2
+  itemImagePrefab: {fileID: 6178653014876059792, guid: c7df0108b90679549a781d1dda25bce3, type: 3}
   itemName: Zweihander
   itemWidth: 2
   itemHeight: 4
-  itemType: 2
+  atkPower: 100
+  defense: 0

@@ -27,6 +27,10 @@ public class Picking : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
+            if (Input.GetMouseButtonDown(0) && !m_anim.GetBool("IsAttacking"))
+            {
+                Debug.Log(m_skillUsed.UsingSkill());
+            }
             if (Input.GetMouseButtonDown(0) && !m_anim.GetBool("IsAttacking") && !m_skillUsed.UsingSkill())
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -54,6 +58,7 @@ public class Picking : MonoBehaviour
             }
         }
 
+        #region 아이템 획득할 때 원래 쓰던 코드
         // 드랍된 아이템 클릭
         if (Input.GetMouseButtonDown(0))
         {
@@ -67,5 +72,20 @@ public class Picking : MonoBehaviour
                 }
             }
         }
+        #endregion
+
+        // 획득 아이템 인벤토리에 List에 저장하는 코드 테스트 중
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_itemMask))
+        //    {
+        //        ICheckDropItemTest icdit = hit.transform.GetComponent<ICheckDropItemTest>();
+        //        if (icdit != null)
+        //        {
+        //            icdit.CheckDropItemTest(m_player.m_inventory);
+        //        }
+        //    }
+        //}
     }
 }

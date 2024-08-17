@@ -28,6 +28,8 @@ public class Player : BattleSystem
     void Start()
     {
         Initalize();
+        m_changeHp += SceneData.Inst.m_playerHpMpUI.HealthPoint;
+        m_changeMp += SceneData.Inst.m_playerHpMpUI.ManaPoint;
         m_deadAlarm += () =>
         {
             Debug.Log("죽음");
@@ -44,10 +46,13 @@ public class Player : BattleSystem
                 m_clickCnt++;
             }
         }
+
+        #region 실험코드 나중에 지워야함
         if (Input.GetKeyDown(KeyCode.T))
         {
             OnDamaged(50);
         }
+        #endregion
     }
 
 

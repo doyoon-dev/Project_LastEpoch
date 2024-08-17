@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
+using static ItemData;
 
 [System.Serializable]
 public struct BattleStat
@@ -12,11 +13,12 @@ public struct BattleStat
     public float MaxMp;
     public float AttackDmg;
     public float AttackRange;
+    public float Defense;
 }
 
 public interface IDeadAlarm
 {
-    event Action m_deadAlarm;
+    event UnityAction m_deadAlarm;
 }
 
 // 인터페이스 필요 없어서 지워야 될 수 있음
@@ -38,7 +40,17 @@ public interface ITransform
     Transform transform { get; }
 }
 
-public interface IBattle : IOnDamaged, ITransform, IUsedSkill
+public interface IEquipItemSetting
+{
+    void EquipItemSetting(Item item);
+}
+
+public interface ISetStatus
+{
+    void SetStatus(ItemData itemData, bool equip);
+}
+
+public interface IBattle : IOnDamaged, ITransform, IUsedSkill, IEquipItemSetting, ISetStatus
 {
 
 }
@@ -47,8 +59,12 @@ public interface IBattle : IOnDamaged, ITransform, IUsedSkill
 public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
 {
     public BattleStat m_stat;
-    public event Action m_deadAlarm;
+    public event UnityAction m_deadAlarm;
+    public event UnityAction<float, float> m_changeHp;
+    public event UnityAction<float, float> m_changeMp;
     protected IBattle m_target = null;
+    public Item m_item;
+
     public float m_curHp = 0.0f;
     public float m_curMp = 0.0f;
     protected float m_curHealPoint
@@ -57,6 +73,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         set
         {
             m_curHp = Mathf.Clamp(value, 0.0f, m_stat.MaxHp);
+            m_changeHp?.Invoke(m_curHp / m_stat.MaxHp, m_stat.MaxHp);
         }
     }
     public float m_curMagicPoint
@@ -65,8 +82,18 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         set
         {
             m_curMp = Mathf.Clamp(value, 0.0f, m_stat.MaxMp);
+            m_changeMp?.Invoke(m_curMp / m_stat.MaxMp, m_stat.MaxMp);
         }
     }
+    protected float m_curDamage
+    {
+        get { return m_stat.AttackDmg; }
+        set
+        {
+            m_stat.AttackDmg = value;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -146,6 +173,59 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         if (m_curMagicPoint <= 0)
         {
             m_curMagicPoint = 0;
+        }
+    }
+
+    // Item 스크림트에서 장비 장착했을 때 이벤트 함수에 추가할 함수
+    public void SetStatus(ItemData itemData, bool equip)
+    {
+        //m_curDamage += itemData.atkPower;
+        // 데미지와 방어력은 나중에 계산식 만들면 프로퍼티로 바꿔서 적용되게 만들 예정
+        if (equip)
+        {
+            m_stat.AttackDmg += itemData.atkPower;
+            m_stat.Defense += itemData.defense;
+        }
+        else
+        {
+            m_stat.AttackDmg -= itemData.atkPower;
+            m_stat.Defense -= itemData.defense;
+        }
+        //Debug.Log("      공격력 :   " + m_stat.AttackDmg + "      방어력 :   " + m_stat.Defense);
+    }
+
+    public void EquipItemSetting(Item item)
+    {
+        m_item = item;
+        switch (item.m_itemData.itemType)
+        {
+            case ItemType.Head:
+                
+                break;
+            case ItemType.Necklace:
+                
+                break;
+            case ItemType.Weapon:
+                
+                break;
+            case ItemType.Armor:
+                
+                break;
+            case ItemType.Sheild:
+                
+                break;
+            case ItemType.Belt:
+                
+                break;
+            case ItemType.Ring:
+                
+                break;
+            case ItemType.Shoes:
+                
+                break;
+            case ItemType.Hand:
+                
+                break;
         }
     }
 }

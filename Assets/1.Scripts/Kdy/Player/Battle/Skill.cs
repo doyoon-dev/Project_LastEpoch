@@ -14,6 +14,7 @@ public class Skill : MonoBehaviour, IUsingSkill
     [HideInInspector]
     public bool m_usingSkill = false;
     public Player m_player;    // 나중에 인터페이스로 바꿔야 될 수 있음
+    public PlayerUI m_playerUI;
     // Start is called before the first frame update
     void Awake()
     {

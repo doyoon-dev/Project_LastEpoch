@@ -19,9 +19,11 @@ public class ItemData : ScriptableObject
         Hand
     }
 
+    public ItemType itemType;
+    public GameObject itemImagePrefab;
     public string itemName;
     public int itemWidth;
     public int itemHeight;
-    public ItemType itemType;
-    public GameObject itemPrefab;
+    public float atkPower;
+    public float defense;
 }
