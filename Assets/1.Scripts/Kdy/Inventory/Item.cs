@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -8,31 +9,55 @@ using UnityEngine.UI;
 using static ItemData;
 using static UnityEditor.Progress;
 
+public interface IChangeParent
+{
+    void ChangeParent(Transform parent);
+}
+
 public interface IChangePos
 {
     void ChangePos(Vector2 pos);
 }
 
-public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IChangePos
+public interface IOrgPos
+{
+    Vector3 m_orgPos { get; }
+}
+
+public interface IEquipItemStat
+{
+    event UnityAction<ItemData, bool> m_equipItemStat;
+}
+
+public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IChangePos, IOrgPos, IEquipItemStat
 {
     public event UnityAction m_unEquipItem = null;
-    public Transform m_parentSlot = null;
+    public event UnityAction<ItemData, bool> m_equipItemStat = null;         // 아이템을 장착했을 때 유니티 이벤트 실행해서 BattleSystem에 있는 Stat 아이템 Stat에 따라 바꿔주기
+    public Transform m_inventory = null;
     public LayerMask m_itemMask;
     public ItemData m_itemData;
     public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
     public int m_onGridPositionY;       // 인벤토리 내의 아이템 위치 y좌표
-    bool m_isEquiped = false;
+
+    public Transform m_orgPosition { get; private set; }  // 원래 위치
+    public Vector3 m_orgPos { get; private set; }
+
+    //bool m_isEquiped = false;
 
     EquipSlot m_equipSlot;              // 장착할 아이템이 들어갈 장비 슬롯
 
-    Vector3 m_orgPos = Vector3.zero;
+    Item m_curItem;
     Vector2 m_dragOffset = Vector2.zero;
+    Image m_image;
+    Transform m_parentPos;
 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         m_orgPos = transform.position;
+        //m_parentPos = transform.parent;
         m_dragOffset = (Vector2)transform.position - eventData.position;
+        m_image.raycastTarget = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -43,18 +68,23 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public void OnEndDrag(PointerEventData eventData)
     {
         transform.position = m_orgPos;
+        //transform.SetParent(m_parentPos);
+        m_image.raycastTarget = true;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            if (!m_isEquiped)
+            // m_isEquiped 변수는 현재 스크립트에 해당하는 아이템에만 적용돼서 이미 아이템을 장착한 상태여도 다른 아이템을 장착하면 그 아이템의 변수 m_isEquiped는 false 이므로
+            // 아래코드가 호출된다. -> 플레이어 쪽 또는 EquipSlot 쪽에 장착했을 때 변수를 만들어야함
+            // 처음 아이템을 장착할 때 순서상 m_equipSlot이 할당이 안된 상태임
+            if (!m_equipSlot.GetComponent<IIsEquiped>().m_isEquiped)
             {
                 Item item = eventData.pointerClick.GetComponent<Item>();    // 슬롯에 있던 아이템
                 CheckItemSlotType(item);
                 // 아이템 장착할 때 아이템이 있던 슬롯 비우기
-                IMakeSlotEmpty imse = m_parentSlot.GetComponent<IMakeSlotEmpty>();
+                IMakeSlotEmpty imse = m_inventory.GetComponent<IMakeSlotEmpty>();
                 if (imse != null)
                 {
                     imse.MakeSlotEmpty(item);
@@ -81,7 +111,21 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     // Start is called before the first frame update
     void Start()
     {
-        m_parentSlot = transform.parent;    // 슬롯 변수
+        gameObject.GetComponent<RectTransform>().localScale = Vector3.one;
+        m_inventory = transform.parent.parent.parent;    // 인벤토리 변수
+        m_image = gameObject.GetComponent<Image>();
+
+        m_equipSlot = CheckItemSlotType(this);
+        ISetStatus iss = m_equipSlot.m_battleSystem.GetComponent<ISetStatus>();
+        if (iss != null)
+        {
+            m_equipItemStat += iss.SetStatus;
+        }
+        //ISetItemEquipSlot isies = m_inventory.GetComponent<ISetItemEquipSlot>();
+        //if(isies != null)
+        //{
+        //    m_equipSlot = isies.SetItemEquipSlot(this);
+        //}
     }
 
     // Update is called once per frame
@@ -129,7 +173,6 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     EquipSlot CheckSlot(int i)
     {
         m_equipSlot = transform.parent.GetComponent<Slot>().m_equipSlot[i];
-
         if (m_equipSlot.m_itemType == ItemType.Ring)
         {
             if (m_equipSlot.m_item != null)
@@ -143,9 +186,24 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     // 장비 장착했을 때 아이템 위치 설정
     void SetEquip()
     {
-        m_isEquiped = true;
+        //m_isEquiped = true;
         EquipSlotItem(m_equipSlot);
         transform.SetParent(m_equipSlot.transform);
+
+        //ISetStatus iss = m_equipSlot.m_battleSystem.GetComponent<ISetStatus>();
+        //if (iss != null)
+        //{
+        //    m_equipItemStat += iss.SetStatus;
+        //}
+        m_equipItemStat?.Invoke(m_itemData, true);            // BattleSystem 에서 캐릭터 Stat 바궈주는 이벤트
+        m_equipItemStat = null;
+
+        //IEquipItemSetting ieis = m_equipSlot.m_battleSystem.GetComponent<IEquipItemSetting>();
+        //if (ieis != null)
+        //{
+        //    ieis.EquipItemSetting(this);
+        //}
+        
         RectTransform rectTransform = transform.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = Vector2.zero;
         //transform.position = Vector3.zero;
@@ -169,11 +227,12 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         int equipY = equipItem.m_onGridPositionY;   // 장착중인 아이템이 슬롯에 있었을 때의 위치
 
         // 장착 해제 아이템 슬롯으로 이동
-        IPlaceItem pi = m_parentSlot.transform.GetComponent<IPlaceItem>();
+        IPlaceItem pi = m_inventory.transform.GetComponent<IPlaceItem>();
         if(pi != null)
         {
             pi.PlaceItem(equipItem, m_onGridPositionX, m_onGridPositionY);
-            equipItem.m_isEquiped = false;
+            // 문제
+            //equipItem.m_isEquiped = false;
         }
 
         // 장착할 아이템 위치
@@ -188,17 +247,16 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         m_unEquipItem = null;
 
         m_equipSlot.m_item = null;
-        IFindEmptySlot fes = m_parentSlot.transform.GetComponent<IFindEmptySlot>();
+        IFindEmptySlot fes = m_inventory.transform.GetComponent<IFindEmptySlot>();
         if (fes != null)
         {
             equipItem.m_onGridPositionX = fes.FindEmptySlot(equipItem).Value.x;
             equipItem.m_onGridPositionY = fes.FindEmptySlot(equipItem).Value.y;
         }
-        IPlaceItem pi = m_parentSlot.transform.GetComponent<IPlaceItem>();
+        IPlaceItem pi = m_inventory.transform.GetComponent<IPlaceItem>();
         if (pi != null)
         {
             pi.PlaceItem(equipItem, equipItem.m_onGridPositionX, equipItem.m_onGridPositionY);
-            equipItem.m_isEquiped = false;
         }
     }
 
@@ -206,5 +264,10 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     {
         // 이동한 아이템의 위치 지정
         m_orgPos = pos;
+    }
+
+    void ChangeParent(Transform parent)
+    {
+        m_parentPos = parent;
     }
 }

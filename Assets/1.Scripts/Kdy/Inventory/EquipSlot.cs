@@ -11,7 +11,12 @@ public interface ISetEquipItem
     void SetEquipItem(Item item);
 }
 
-public class EquipSlot : MonoBehaviour, ISetEquipItem
+public interface IIsEquiped
+{
+    bool m_isEquiped { get; }
+}
+
+public class EquipSlot : MonoBehaviour, ISetEquipItem, IIsEquiped
 {
     public enum Equip
     {
@@ -32,7 +37,9 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem
 
     public ItemType m_itemType;
     public Item m_item = null;
-    
+    public BattleSystem m_battleSystem;
+    public bool m_isEquiped { get; private set; }
+
 
     // Start is called before the first frame update
     void Start()
@@ -50,12 +57,20 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem
     {
         // 아이템 교체할 때 m_item을 null로 만들고 교체할 아이템을 m_item에 넣기
         m_item = item;
+        m_isEquiped = true;
         m_bgImage.gameObject.SetActive(false);
+        m_item.GetComponent<RectTransform>().localScale = Vector3.one;
         m_item.m_unEquipItem += UnEquipedItem;
     }
 
     void UnEquipedItem()
     {
+        ISetStatus iss = m_battleSystem.GetComponent<ISetStatus>();
+        if (iss != null)
+        {
+            m_item.m_equipItemStat += iss.SetStatus;
+        }
         m_bgImage.gameObject.SetActive(true);
+        m_isEquiped = false;
     }
 }

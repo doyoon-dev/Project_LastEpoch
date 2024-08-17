@@ -913,6 +913,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1134649398}
   m_itemType: 1
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &316795209
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,6 +1021,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1517361430}
   m_itemType: 4
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &368562769
 GameObject:
   m_ObjectHideFlags: 0
@@ -1279,6 +1281,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 79404944}
   m_itemType: 2
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 1626618630}
 --- !u!1 &430997561
 GameObject:
   m_ObjectHideFlags: 0
@@ -1399,6 +1402,8 @@ MonoBehaviour:
     MaxMp: 0
     AttackDmg: 0
     AttackRange: 0
+    Defense: 0
+  m_item: {fileID: 0}
   m_curHp: 0
   m_curMp: 0
 --- !u!1001 &580485799
@@ -1510,7 +1515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -1799,6 +1804,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 991272973}
   m_itemType: 6
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &948309911
 GameObject:
   m_ObjectHideFlags: 0
@@ -1906,6 +1912,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1831261208}
   m_itemType: 8
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &968368194
 GameObject:
   m_ObjectHideFlags: 0
@@ -2026,6 +2033,8 @@ MonoBehaviour:
     MaxMp: 0
     AttackDmg: 0
     AttackRange: 0
+    Defense: 0
+  m_item: {fileID: 0}
   m_curHp: 0
   m_curMp: 0
 --- !u!1 &991272971
@@ -2211,6 +2220,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1234399286}
   m_itemType: 0
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &1069392194
 GameObject:
   m_ObjectHideFlags: 0
@@ -3163,6 +3173,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1408311526}
   m_itemType: 3
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &1474561755
 GameObject:
   m_ObjectHideFlags: 0
@@ -3189,8 +3200,8 @@ RectTransform:
   m_GameObject: {fileID: 1474561755}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1943501932}
   m_Father: {fileID: 595600260}
@@ -3198,7 +3209,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -415, y: 0}
+  m_AnchoredPosition: {x: -208, y: 0}
   m_SizeDelta: {x: 750, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1474561757
@@ -3213,10 +3224,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a03ccbc85f0cec4469bf55e502db3646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_slotSizeWidth: 14
+  m_slotSizeHeight: 8
   m_inventory: {fileID: 1943501931}
   m_selectedItmeGrid: {fileID: 1990488525}
   m_equipSlot: {fileID: 1949049222}
-  m_items: []
 --- !u!1 &1517361428
 GameObject:
   m_ObjectHideFlags: 0
@@ -3476,6 +3488,18 @@ MonoBehaviour:
   m_bgImage: {fileID: 1080460591}
   m_itemType: 7
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
+--- !u!114 &1626618630 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5244370769833058608, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
+  m_PrefabInstance: {fileID: 5244370769464062947}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a55ec5b9d70ab546b3932bf7d412810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1641190791
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3644,6 +3668,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1205624551}
   m_itemType: 6
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &1831261206
 GameObject:
   m_ObjectHideFlags: 0
@@ -3811,7 +3836,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1943501932
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4058,6 +4083,7 @@ MonoBehaviour:
   m_slotSizeWidth: 14
   m_slotSizeHeight: 8
   m_itemPrefab: {fileID: 8355942472590287906, guid: 88351aeb078373f4a8f5842eee3821b9, type: 3}
+  m_inven: {fileID: 1474561757}
   m_equipSlot:
   - {fileID: 1011107583}
   - {fileID: 294439529}
@@ -4076,7 +4102,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1990488521}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ac11a591427c0c4ab83cd386586cc8a, type: 3}
   m_Name: 
@@ -4265,6 +4291,7 @@ MonoBehaviour:
   m_bgImage: {fileID: 1942373101}
   m_itemType: 5
   m_item: {fileID: 0}
+  m_battleSystem: {fileID: 0}
 --- !u!1 &1559058904919776067
 GameObject:
   m_ObjectHideFlags: 0
@@ -4437,10 +4464,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7477774030807095832, guid: 40466a98fbbc9ae4eb3bedfa9b4bac44, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7477774030807095835, guid: 40466a98fbbc9ae4eb3bedfa9b4bac44, type: 3}
       propertyPath: m_RootOrder
       value: 17

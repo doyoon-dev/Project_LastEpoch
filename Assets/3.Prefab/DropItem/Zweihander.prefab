@@ -126,12 +126,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7822105422140375201}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62eba52d3e9b0044385628da2ef87948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_parentSlot: {fileID: 0}
+  m_inventory: {fileID: 0}
   m_itemMask:
     serializedVersion: 2
     m_Bits: 256
@@ -170,7 +170,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   m_itemData: {fileID: 11400000, guid: 8584b251692971d48af0193b13b425d3, type: 2}
-  m_slotItemPrefab: {fileID: 6178653014876059792, guid: c7df0108b90679549a781d1dda25bce3, type: 3}
+  m_itemImagePrefab: {fileID: 6178653014876059792, guid: c7df0108b90679549a781d1dda25bce3, type: 3}
 --- !u!65 &3557406494137606899
 BoxCollider:
   m_ObjectHideFlags: 0

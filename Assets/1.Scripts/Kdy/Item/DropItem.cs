@@ -9,15 +9,20 @@ public interface ICheckDropItem
     void CheckDropItem(Inventory inven);
 }
 
-public class DropItem : MonoBehaviour, ICheckDropItem
+// íšë“ ì•„ì´í…œ ì¸ë²¤í† ë¦¬ì— Listì— ì €ì¥í•˜ëŠ” ì½”ë“œ í…ŒìŠ¤íŠ¸ ì¤‘
+public interface ICheckDropItemTest
+{
+    void CheckDropItemTest(Inventory inven);
+}
+
+public class DropItem : MonoBehaviour, ICheckDropItem, ICheckDropItemTest
 {
     public LayerMask m_itemMask;
     public ItemData m_itemData;
-    public float dropChance;//µå¶ø È®·ü
+    public float dropChance;//ë“œë í™•ë¥ 
 
     public UnityAction<string> m_getItemAct;
-    public GameObject m_slotItemPrefab;
-    Inventory m_inventory;
+    public GameObject m_itemImagePrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,20 +37,21 @@ public class DropItem : MonoBehaviour, ICheckDropItem
 
     public void CheckDropItem(Inventory inven)
     {
-        m_inventory = inven;
-        IGetItemData igd = m_inventory.GetComponent<IGetItemData>();
+        IGetItemData igd = inven.GetComponent<IGetItemData>();
         if(igd != null)
         {
-            igd.GetItemData(m_slotItemPrefab);
+            igd.SetItemToInventory(m_itemImagePrefab);
         }
-        // ¿ÀºêÁ§Æ® Ç®¸µÀ¸·Î ¸ó½ºÅÍ¿¡¼­ ¾ÆÀÌÅÛ ¼ÒÈ¯ÇÏ°í ¿©±â¼­ ¾ÆÀÌÅÛ ´Ù½Ã Ç®¿¡ ³Ö±â
+        // ì˜¤ë¸Œì íŠ¸ í’€ë§ìœ¼ë¡œ ëª¬ìŠ¤í„°ì—ì„œ ì•„ì´í…œ ì†Œí™˜í•˜ê³  ì—¬ê¸°ì„œ ì•„ì´í…œ ë‹¤ì‹œ í’€ì— ë„£ê¸°
     }
-    public void Initialize(ItemData itemData)
+
+    // íšë“ ì•„ì´í…œ ì¸ë²¤í† ë¦¬ì— Listì— ì €ì¥í•˜ëŠ” ì½”ë“œ í…ŒìŠ¤íŠ¸ ì¤‘
+    public void CheckDropItemTest(Inventory inven)
     {
-        m_itemData = itemData;
-        // ÇÊ¿äÇÑ ÃÊ±âÈ­ ÄÚµå Ãß°¡
+        IGetItemToList igitl = inven.GetComponent<IGetItemToList>();
+        if(igitl != null)
+        {
+            igitl.GetItemToList(m_itemData);
+        }
     }
-
-
-
 }

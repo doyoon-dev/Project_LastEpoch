@@ -6,15 +6,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
-public interface IPlaceItem
-{
-    bool PlaceItem(Item item, int posX, int posY);
-}
+//public interface IPlaceItem
+//{
+//    bool PlaceItem(Item item, int posX, int posY);
+//}
 
-public interface IMakeSlotEmpty
-{
-    void MakeSlotEmpty(Item item);
-}
+//public interface IMakeSlotEmpty
+//{
+//    void MakeSlotEmpty(Item item);
+//}
 
 public interface IFindEmptySlot
 {
@@ -26,9 +26,9 @@ public interface ICreateItem
     void CreateItem(GameObject dropItemPrefab);
 }
 
-public interface ISlotInterface : IPlaceItem, IMakeSlotEmpty, IFindEmptySlot, ICreateItem { }
+public interface ISlotInterface : ICreateItem { } //IMakeSlotEmpty, IPlaceItem, IFindEmptySlot
 
-public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
+public class Slot : MonoBehaviour, IDropHandler//, ISlotInterface
 {
     // 슬롯 한 칸 사이즈
     public const float m_tileSizeWidth = 47.0f;
@@ -40,12 +40,14 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
     int m_slotSizeHeight = 8;       // 슬롯 세로 개수
     [SerializeField]
     GameObject m_itemPrefab;        // 슬롯에 들어갈 아이템
+    [SerializeField]
+    Inventory m_inven;
 
     RectTransform m_rectTransform;
     Vector2 m_positionOnTheGrid = new Vector2();            // 스크린 좌표 기준 슬롯 한 칸 좌표
     Vector2Int m_tileGridPosition = new Vector2Int();       // 슬롯 기준 슬롯 한 칸 좌표
 
-    public Item[,] m_itemSlot;                  // 240702 public 실험중 원래 public 아님
+    //public Item[,] m_itemSlot;                  // 240702 public 실험중 원래 public 아님
 
     [SerializeField]
     public EquipSlot[] m_equipSlot;
@@ -54,9 +56,33 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
     {
         // 아이템을 놓는 슬롯의 좌표 가져오기
         // 아이템을 해당 슬롯에 놓기
-        Item item = eventData.pointerClick.GetComponent<Item>();
-        MakeSlotEmpty(item);
-        PlaceItem(item, GetTileGridPosition(eventData.position).x, GetTileGridPosition(eventData.position).y);
+        // item.transform.position : 드랍했을 때의 아이템 위치
+        Item item = eventData.pointerDrag.GetComponent<Item>();
+
+        // 원래 아이템 위치
+        //Vector3 itemPos = eventData.pointerDrag.GetComponent<IOrgPos>().m_orgPos;
+
+        Vector2Int pos = GetTileGridPosition(item.transform.position);
+        int posX = pos.x;
+        int posY = pos.y;
+        Debug.Log("좌표 : " + "( " + posX + " , " + posY + " )");
+
+        // 아래 함수들 인벤토리 스크립트로 옮겨서 인덱스 에러뜸 수정필요
+        IMakeSlotEmpty imsm = m_inven.GetComponent<IMakeSlotEmpty>();
+        if (imsm != null)
+        {
+            imsm.MakeSlotEmpty(item);
+        }
+
+        // posX, posY 변수 : 아이템을 드랍한 슬롯의 위치의 x, y 좌표
+        if (!m_inven.CheckAvailableSpace(item, posX, posY, item.m_itemData.itemWidth, item.m_itemData.itemHeight)) return;
+
+        IPlaceItem ipi = m_inven.GetComponent<IPlaceItem>();
+        if(ipi != null)
+        {
+            ipi.PlaceItem(item, posX, posY);
+        }
+
         IChangePos cp = item.GetComponent<IChangePos>();
         if (cp != null)
         {
@@ -67,53 +93,24 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
     // Start is called before the first frame update
     void Start()
     {
-        m_rectTransform = GetComponent<RectTransform>();
-        Init(m_slotSizeWidth, m_slotSizeHeight);
+        //m_rectTransform = GetComponent<RectTransform>();
+        //Init(m_slotSizeWidth, m_slotSizeHeight);
     }
 
     // Update is called once per frame
     void Update()
     {
-        // 실험중
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            if (CheckSlot())
-            {
-                Item item = Instantiate(m_itemPrefab).GetComponent<Item>();
-                Vector2Int itemSlotSize = FindEmptySlot(item).Value;
-                PlaceItem(item, itemSlotSize.x, itemSlotSize.y);
-            }
-        }
+
     }
 
-    // 실험중
-    bool CheckSlot()
-    {
-        int size = 0;
-        for (int i = 0; i < m_slotSizeWidth; i++)
-        {
-            for (int j = 0; j < m_slotSizeHeight; j++)
-            {
-                if (m_itemSlot[i, j] != null)
-                {
-                    size++;
-                }
-            }
-        }
-        if (size >= 112)
-        {
-            return false;
-        }
-        return true;
-    }
+    //void Init(int width, int height)
+    //{
+    //    m_itemSlot = new Item[width, height];
+    //    Vector2 size = new Vector2(width * m_tileSizeWidth, height * m_tileSizeHeight);
+    //    m_rectTransform.sizeDelta = size;
+    //}
 
-    void Init(int width, int height)
-    {
-        m_itemSlot = new Item[width, height];
-        Vector2 size = new Vector2(width * m_tileSizeWidth, height * m_tileSizeHeight);
-        m_rectTransform.sizeDelta = size;
-    }
-
+    // 슬롯 좌표
     public Vector2Int GetTileGridPosition(Vector2 mousePosition)
     {
         m_positionOnTheGrid.x = mousePosition.x - m_rectTransform.position.x;
@@ -125,6 +122,7 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
         return m_tileGridPosition;
     }
 
+    /*
     // 아이템을 옮기거나 슬롯에서 빼낼 때 m_itemSlot[x, y] = null 로 초기화 해주기
     public Item PickUpItem(int x, int y)
     {
@@ -141,8 +139,10 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
         }
         return item;
     }
-
+    */
+    
     #region 240712 인벤토리 스크립트로 이동중
+    /*
     public void CreateItem(GameObject dropItemPrefab)
     {
         Item item = Instantiate(dropItemPrefab).GetComponent<Item>();
@@ -167,7 +167,7 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
         {
             for (int y = 0; y < item.m_itemData.itemHeight; y++)
             {
-                m_itemSlot[posX + x, posY + y] = item;
+                //m_itemSlot[posX + x, posY + y] = item;
             }
         }
 
@@ -192,7 +192,8 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
     // 아이템의 크기가 슬롯보다 클 때 예외처리 -> true일 때만 아이템 옮기기 가능
     bool PositionCheck(int posX, int posY)
     {
-        if (m_itemSlot[posX, posY] != null) { return false; }
+        // 슬롯 밖으로 아이템을 드랍하면 인덱스 에러 발생
+        //if (m_itemSlot[posX, posY] != null) { return false; }
 
         if (posX < 0 || posY < 0 || posX >= m_slotSizeWidth || posY >= m_slotSizeHeight)
         {
@@ -244,7 +245,7 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
         {
             for(int y =  0; y < height; y++)
             {
-                if (m_itemSlot[posX + x, posY + y] != null)
+                //if (m_itemSlot[posX + x, posY + y] != null)
                 {
                     return false;
                 }
@@ -254,15 +255,16 @@ public class Slot : MonoBehaviour, ISlotInterface, IDropHandler
     }
 
     // 아이템을 장착 했을 때 아이템이 있던 슬롯 null로 만들기
-    public void MakeSlotEmpty(Item item)
-    {
-        for (int y = item.m_onGridPositionY; y < item.m_itemData.itemHeight + item.m_onGridPositionY; y++)
-        {
-            for (int x = item.m_onGridPositionX; x < item.m_itemData.itemWidth + item.m_onGridPositionX; x++)
-            {
-                m_itemSlot[x, y] = null;
-            }
-        }
-    }
+    //public void MakeSlotEmpty(Item item)
+    //{
+    //    for (int y = item.m_onGridPositionY; y < item.m_itemData.itemHeight + item.m_onGridPositionY; y++)
+    //    {
+    //        for (int x = item.m_onGridPositionX; x < item.m_itemData.itemWidth + item.m_onGridPositionX; x++)
+    //        {
+    //            m_itemSlot[x, y] = null;
+    //        }
+    //    }
+    //}
+    */
     #endregion
 }
