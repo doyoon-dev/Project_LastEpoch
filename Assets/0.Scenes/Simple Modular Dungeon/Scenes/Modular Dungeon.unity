@@ -2003,11 +2003,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
---- !u!20 &167114648 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 167114648, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
-  m_PrefabInstance: {fileID: 994295107}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &168470942
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9707,18 +9702,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 167114649, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -3
-      objectReference: {fileID: 0}
-    - target: {fileID: 914711090, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5244370769833058608, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
-      propertyPath: m_cam
-      value: 
-      objectReference: {fileID: 167114648}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_RootOrder
       value: 0
