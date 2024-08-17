@@ -133,25 +133,7 @@ public class MonsterController : BattleSystem
         }
 
     }
-    //고정데미지
-    public override void SetDamage(Transform attacker, SkillInform skillData)
-    {
 
-        if (IsDie) return;
-
-        m_attacker = attacker;
-        m_skillData = skillData;
-        m_curHealPoint -= skillData.Dmg;
-
-        if (m_curHealPoint <= 0)
-        {
-            SetState(BehaviourState.Die); // 체력이 0 이하이면 Die 상태로 전환
-        }
-        else
-        {
-            SetState(BehaviourState.Damaged); // 체력이 남아 있으면 Damaged 상태로 전환
-        }
-    }
     public virtual void InitMonster(Player player)
     {
         m_player = player;
@@ -223,45 +205,49 @@ public class MonsterController : BattleSystem
         }
     }
 
-    //몬스터 죽음
-    void HandleDeath()
+    public override void SetDamage(Transform attacker, SkillInform skillData)
     {
-        // 죽음 상태 처리
-        m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // 사망 애니메이션 재생
-        StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과
-        m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정
+        if (IsDie) return;  // 이미 죽어있다면 처리하지 않음
+        m_curHealPoint -= skillData.Dmg;
+        if (m_curHealPoint <= 0)
+        {
+            m_curHealPoint = 0;
+            HandleDeath();
+            return;
+        }
 
-        // 아이템 드롭
-        DropItemOnDeath();
-    }
-
-    //몬스터 데미지 처리
-    void HandleDamaged()
-    {
+        // 데미지 처리
+        SetState(BehaviourState.Damaged);
         m_monAnimCtr.Play(MonsterAnimController.Motion.Hit, false);
         m_navAgent.ResetPath();
         m_navAgent.isStopped = true;
         SetHitColor(0.5f);
 
-        // 여기서도 죽었는지 체크를 해야 합니다
-        if (m_curHealPoint <= 0)
+        // 넉백 처리
+        if (skillData.knockback > 0f)
         {
-            SetState(BehaviourState.Die);
-        }
-        else if (m_curHealPoint > 0)
-        {
-            // Knockback 처리
-            if (m_skillData.knockback > 0f)
-            {
-                var dir = (transform.position - m_attacker.position).normalized;
-                dir.y = 0f;
-                var duration = SkillData.MaxKnockbackDuration * (m_skillData.knockback / SkillData.MaxKnockbackDist);
-                m_moveTween.Play(transform.position, transform.position + dir * m_skillData.knockback, duration);
-            }
+            var dir = (transform.position - attacker.position).normalized;
+            dir.y = 0f;
+            var duration = SkillData.MaxKnockbackDuration * (skillData.knockback / SkillData.MaxKnockbackDist);
+            m_moveTween.Play(transform.position, transform.position + dir * skillData.knockback, duration);
         }
     }
 
+    // 죽음 상태 처리
+    void HandleDeath()
+    {
+        // 이미 죽은 상태에서 다시 처리하지 않도록 함
+        if (IsDie) return;      
+        m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // 사망 애니메이션 재생
+        StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과
+        m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정
+        DropItemOnDeath(); // 아이템 드롭                          
+        SetState(BehaviourState.Die);
+    }
 
+
+
+ 
     //행동 프로세스
     public virtual void BehaviourProcess()
     {
@@ -343,7 +329,6 @@ public class MonsterController : BattleSystem
                 break;
             //데미지 상태
             case BehaviourState.Damaged:
-                HandleDamaged();
                 break;
             //죽은 상태  
             case BehaviourState.Die:
@@ -354,7 +339,7 @@ public class MonsterController : BattleSystem
     }
 
 
-
+     
     void Start()
     {
         Initalize();
