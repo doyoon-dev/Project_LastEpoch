@@ -9360,6 +9360,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9063539012579615814, guid: 0f61ae1b8da7f484198895822f942369, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f61ae1b8da7f484198895822f942369, type: 3}
 --- !u!1001 &834145221
@@ -14688,7 +14692,7 @@ MonoBehaviour:
   spawnInterval: 5
   spawnOffset: 1
   m_player: {fileID: 822364154}
-  m_monsterPrefab: {fileID: 5424861839386705557, guid: 0f61ae1b8da7f484198895822f942369, type: 3}
+  m_monsterPrefab: {fileID: 8539942111360040700, guid: 0f61ae1b8da7f484198895822f942369, type: 3}
   waypointController: {fileID: 1176403753}
 --- !u!4 &1262388510
 Transform:
