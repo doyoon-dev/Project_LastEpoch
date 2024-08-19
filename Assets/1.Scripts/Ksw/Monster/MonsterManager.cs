@@ -44,7 +44,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         GameObject monster = ObjectPool.Inst.Pool<MonsterController>(m_monsterPrefab);
         MonsterController monsterController = monster.GetComponent<MonsterController>();
         NavMeshAgent navAgent = monster.GetComponent<NavMeshAgent>();
-        monster.transform.position = new Vector3(-9, 0, 42);
+       
 
         // 몬스터 초기화
         monsterController.InitMonster(m_player);
