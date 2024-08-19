@@ -341,6 +341,8 @@ public class MonsterController : BattleSystem
                 break;
 
         }
+
+        
     }
 
 

@@ -6,6 +6,10 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Player : BattleSystem
 {
+    #region 아이템 드랍 실험
+    public GameObject m_dropItemPrefab;
+    public ItemData m_itemData;
+    #endregion
     [SerializeField]
     Transform m_weaponStartPoint;
     [SerializeField]
@@ -36,6 +40,16 @@ public class Player : BattleSystem
         };
     }
 
+    void ExDropItemOnDeath()
+    {
+        GameObject dropItemObject = ObjectPool.Inst.Pool<DropItem>(m_dropItemPrefab);
+        DropItem dropItem = dropItemObject.GetComponent<DropItem>();
+
+        dropItem.Initialize(m_itemData); //드롭할 아이템 데이터 설정
+        dropItem.transform.position = transform.position;  // 드롭 위치 설정
+        dropItem.gameObject.SetActive(true); // 드롭 아이템 활성화
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -51,6 +65,10 @@ public class Player : BattleSystem
         if (Input.GetKeyDown(KeyCode.T))
         {
             OnDamaged(50);
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            ExDropItemOnDeath();
         }
         #endregion
     }
