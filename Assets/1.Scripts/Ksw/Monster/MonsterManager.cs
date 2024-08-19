@@ -7,13 +7,13 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
 {
     [Header("몬스터 소환 수")]
     [SerializeField]
-    public int initialMonsterCount = 2;
+    public int initialMonsterCount;
     [Header("소환 간격(초)")]
     [SerializeField]
-    public float spawnInterval = 5.0f; // 몬스터 소환 간격 (초 단위)
-    [Header("몬스터 소환 위치 오프셋")]
+    public float spawnInterval; // 몬스터 소환 간격 (초 단위)
+    [Header("몬스터 소환 거리")]
     [SerializeField]
-    private float spawnOffset = 1.0f; // 몬스터 간 거리 오프셋
+    private float spawnOffset; // 몬스터 간 거리 오프셋
     [SerializeField]
     private Player m_player;
     public GameObject m_monsterPrefab;
@@ -44,7 +44,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         GameObject monster = ObjectPool.Inst.Pool<MonsterController>(m_monsterPrefab);
         MonsterController monsterController = monster.GetComponent<MonsterController>();
         NavMeshAgent navAgent = monster.GetComponent<NavMeshAgent>();
-        monster.transform.position = new Vector3(-9, 0, 42);
+       
 
         // 몬스터 초기화
         monsterController.InitMonster(m_player);
