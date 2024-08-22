@@ -17,8 +17,9 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         Vector3 dir = m_player.transform.position - transform.position;
+        dir.Normalize();
         Ray ray = Camera.main.ScreenPointToRay(dir);
-        if (Physics.Raycast(ray, m_wallMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, m_wallMask))
         {
 
         }
