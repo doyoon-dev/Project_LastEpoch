@@ -14,13 +14,16 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     [Header("몬스터 소환 거리")]
     [SerializeField]
     private float spawnOffset; // 몬스터 간 거리 오프셋
+    /*
     [SerializeField]
     private Player m_player;
+    */
     public GameObject m_monsterPrefab;
     public WaypointController waypointController;
     private Vector3 lastSpawnPosition = Vector3.zero; // 마지막 소환 위치 저장
-
-
+    
+   
+    
     void Start()
     {
         // 코루틴 시작: 일정 간격마다 몬스터 소환
@@ -47,7 +50,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
        
 
         // 몬스터 초기화
-        monsterController.InitMonster(m_player);
+        //monsterController.InitMonster(m_player);
         monsterController.SetMonster(waypointController);
 
         // NavMeshAgent의 장애물 회피 비활성화
