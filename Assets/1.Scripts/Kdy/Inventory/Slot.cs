@@ -31,8 +31,8 @@ public interface ISlotInterface : ICreateItem { } //IMakeSlotEmpty, IPlaceItem, 
 public class Slot : MonoBehaviour, IDropHandler//, ISlotInterface
 {
     // 슬롯 한 칸 사이즈 원래 47이였는데 문제생겨서 27로 바꿈
-    public const float m_tileSizeWidth = 27.0f;
-    public const float m_tileSizeHeight = 27.0f;
+    public const float m_tileSizeWidth = 25.0f;
+    public const float m_tileSizeHeight = 24.0f;
 
     [SerializeField]
     int m_slotSizeWidth = 14;       // 슬롯 가로 개수
@@ -62,8 +62,8 @@ public class Slot : MonoBehaviour, IDropHandler//, ISlotInterface
         // 원래 아이템 위치
         //Vector3 itemPos = eventData.pointerDrag.GetComponent<IOrgPos>().m_orgPos;
 
-        //Vector2Int pos = GetTileGridPosition(item.transform.position);
-        Vector2Int pos = GetTileGridPosition(Input.mousePosition);
+        Vector2Int pos = GetTileGridPosition(item.transform.position);
+        //Vector2Int pos = GetTileGridPosition(Input.mousePosition);
         int posX = pos.x;
         int posY = pos.y;
         //Debug.Log("좌표 : " + "( " + posX + " , " + posY + " )");
@@ -101,14 +101,7 @@ public class Slot : MonoBehaviour, IDropHandler//, ISlotInterface
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
-            //Debug.Log("마우스 포지션 : " + Input.mousePosition);
-            //Debug.Log("슬롯 포지션 : " + m_rectTransform.position);
-            //Debug.Log("그리드 좌표 : " + "( " + (Input.mousePosition.x - m_rectTransform.position.x) + " , " + (Input.mousePosition.y - m_rectTransform.position.y) + " )");
-            Debug.Log("최종 좌표 : " + GetTileGridPosition(Input.mousePosition).x + " , " + GetTileGridPosition(Input.mousePosition).y);
-            //Debug.Log("-----------------------------------------");
-        }
+
     }
 
     //void Init(int width, int height)
