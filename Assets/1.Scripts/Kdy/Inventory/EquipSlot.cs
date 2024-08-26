@@ -59,6 +59,7 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem, IIsEquiped
         m_item = item;
         m_isEquiped = true;
         m_bgImage.gameObject.SetActive(false);
+        m_item.transform.position = Vector3.zero;
         m_item.GetComponent<RectTransform>().localScale = Vector3.one;
         m_item.m_unEquipItem += UnEquipedItem;
     }
