@@ -27,6 +27,7 @@ public class MonsterController : BattleSystem
     [Header("플레이어 인식 ")]
     [SerializeField]
     Player m_player;
+    private GameObject detectedPlayer;
     [SerializeField]
     WaypointController m_waypointCtr;
     [Header("아이템 프리팹")]
@@ -134,11 +135,6 @@ public class MonsterController : BattleSystem
 
     }
 
-    public void InitMonster(Player player)
-    {
-        m_player = player;
-
-    }
     // 레이어 마스크 설정 메서드
     public void SetLayerMasks(LayerMask playerMask, LayerMask backgroundMask)
     {
@@ -150,7 +146,7 @@ public class MonsterController : BattleSystem
     {
         gameObject.SetActive(true);
         m_waypointCtr = waypoint;
-        //transform.position = waypoint.transform.position;
+
     }
 
     bool CanAttack()
@@ -179,10 +175,13 @@ public class MonsterController : BattleSystem
         {
             if ((m_playerMask & (1 << hit.collider.gameObject.layer)) != 0)
             {
+                // 플레이어를 감지했으므로, 해당 플레이어의 값을 detectedPlayer에 저장
+                detectedPlayer = hit.collider.gameObject;
                 return true;
-            }
 
+            }
         }
+        detectedPlayer = null;      
         return false;
     }
 
@@ -358,6 +357,7 @@ public class MonsterController : BattleSystem
         m_moveTween = GetComponent<MoveTween>();
         m_navAgent = GetComponent<NavMeshAgent>();
         m_renderers = GetComponentsInChildren<Renderer>();
+        m_player = FindObjectOfType<Player>();
     }
 
     void Update()
