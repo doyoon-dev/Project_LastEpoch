@@ -2340,6 +2340,18 @@ PrefabInstance:
       value: 181.00006
       objectReference: {fileID: 0}
     - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -2373,7 +2385,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 90
+      value: 198
       objectReference: {fileID: 0}
     - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9487,6 +9499,18 @@ PrefabInstance:
       value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 3006608773051774195, guid: a0a56a44c77e2e348a72128672d12691, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3006608773051774195, guid: a0a56a44c77e2e348a72128672d12691, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3006608773051774195, guid: a0a56a44c77e2e348a72128672d12691, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3006608773051774195, guid: a0a56a44c77e2e348a72128672d12691, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -9516,7 +9540,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3006608773051774195, guid: a0a56a44c77e2e348a72128672d12691, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -208
+      value: -432
       objectReference: {fileID: 0}
     - target: {fileID: 3006608773051774195, guid: a0a56a44c77e2e348a72128672d12691, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -9560,7 +9584,7 @@ PrefabInstance:
       objectReference: {fileID: 822364154}
     - target: {fileID: 3006608773656710724, guid: a0a56a44c77e2e348a72128672d12691, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0a56a44c77e2e348a72128672d12691, type: 3}
@@ -17256,12 +17280,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
