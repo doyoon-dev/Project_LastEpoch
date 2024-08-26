@@ -55,8 +55,9 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public void OnBeginDrag(PointerEventData eventData)
     {
         m_orgPos = transform.position;
-        //m_parentPos = transform.parent;
+        m_parentPos = transform.parent;
         m_dragOffset = (Vector2)transform.position - eventData.position;
+        transform.SetParent(transform.parent.parent);
         m_image.raycastTarget = false;
     }
 
@@ -68,7 +69,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public void OnEndDrag(PointerEventData eventData)
     {
         transform.position = m_orgPos;
-        //transform.SetParent(m_parentPos);
+        transform.SetParent(m_parentPos);
         m_image.raycastTarget = true;
     }
 

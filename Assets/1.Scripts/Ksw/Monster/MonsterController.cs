@@ -141,6 +141,7 @@ public class MonsterController : BattleSystem
         m_playerMask = playerMask;
         m_BackgroundMask = backgroundMask;
     }
+
     public void SetMonster(WaypointController waypoint)
     {
         gameObject.SetActive(true);
