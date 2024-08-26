@@ -30,7 +30,7 @@ public interface ISlotInterface : ICreateItem { } //IMakeSlotEmpty, IPlaceItem, 
 
 public class Slot : MonoBehaviour, IDropHandler//, ISlotInterface
 {
-    // 슬롯 한 칸 사이즈 원래 47이였는데 문제생겨서 27로 바꿈
+    // 슬롯 한 칸 사이즈 원래 47이였는데 문제생겨서 25, 24로 바꿈
     public const float m_tileSizeWidth = 25.0f;
     public const float m_tileSizeHeight = 24.0f;
 
@@ -63,6 +63,7 @@ public class Slot : MonoBehaviour, IDropHandler//, ISlotInterface
         //Vector3 itemPos = eventData.pointerDrag.GetComponent<IOrgPos>().m_orgPos;
 
         Vector2Int pos = GetTileGridPosition(item.transform.position);
+        Debug.Log(pos);
         //Vector2Int pos = GetTileGridPosition(Input.mousePosition);
         int posX = pos.x;
         int posY = pos.y;
@@ -78,6 +79,7 @@ public class Slot : MonoBehaviour, IDropHandler//, ISlotInterface
         // posX, posY 변수 : 아이템을 드랍한 슬롯의 위치의 x, y 좌표
         if (!m_inven.CheckAvailableSpace(item, posX, posY, item.m_itemData.itemWidth, item.m_itemData.itemHeight)) return;
 
+        // 아이템 이동하는 부분 잘 작동 안함
         IPlaceItem ipi = m_inven.GetComponent<IPlaceItem>();
         if(ipi != null)
         {
@@ -101,7 +103,10 @@ public class Slot : MonoBehaviour, IDropHandler//, ISlotInterface
     // Update is called once per frame
     void Update()
     {
-
+        //if(Input.GetMouseButtonDown(0))
+        //{
+        //    Debug.Log(GetTileGridPosition(Input.mousePosition));
+        //}
     }
 
     //void Init(int width, int height)
