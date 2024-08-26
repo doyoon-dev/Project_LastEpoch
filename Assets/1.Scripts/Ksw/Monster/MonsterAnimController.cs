@@ -12,6 +12,8 @@ public class MonsterAnimController : AnimController
         Idle,
         Run,
         Attack1,
+        Attack2,
+        Attack3,
         Hit,
         Die,
         Max
