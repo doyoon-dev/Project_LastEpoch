@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce51b55bcfe689e45b38e32ad739bbce, type: 3}
-  m_Name: Chest
+  m_Name: Helmet
   m_EditorClassIdentifier: 
-  itemType: 3
-  itemImagePrefab: {fileID: 0}
-  itemName: Chest
+  itemType: 0
+  itemImagePrefab: {fileID: 7902032457666372355, guid: 20cc772257513894594401026587d3b7, type: 3}
+  itemName: Helmet
   itemWidth: 2
-  itemHeight: 4
+  itemHeight: 2
   atkPower: 0
-  defense: 0
+  defense: 50
