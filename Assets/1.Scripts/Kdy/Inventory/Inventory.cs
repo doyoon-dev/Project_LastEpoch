@@ -25,8 +25,8 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
     // Item : InventoryItem
     #region 수정중
     // 슬롯 한 칸 사이즈
-    public const float m_tileSizeWidth = 47.0f;
-    public const float m_tileSizeHeight = 47.0f;
+    public const float m_tileSizeWidth = 25.0f;
+    public const float m_tileSizeHeight = 24.0f;
     [SerializeField]
     int m_slotSizeWidth = 14;       // 슬롯 가로 개수
     [SerializeField]
@@ -81,7 +81,8 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
     void Init(int width, int height)
     {
         m_itemSlot = new Item[width, height];
-        Vector2 size = new Vector2(width * m_tileSizeWidth, height * m_tileSizeHeight);
+        //Vector2 size = new Vector2(width * m_tileSizeWidth, height * m_tileSizeHeight);
+        Vector2 size = new Vector2(width * 47.0f, height * 47.0f);
         m_selectedItmeGrid.GetComponent<RectTransform>().sizeDelta = size;
     }
 
