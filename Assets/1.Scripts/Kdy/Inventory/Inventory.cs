@@ -6,7 +6,7 @@ using static ItemData;
 
 public interface IGetItemData
 {
-    void SetItemToInventory(GameObject itemPrefab, GameObject obj);
+    void SetItemToInventory(GameObject itemPrefab);
 }
 
 public interface IMakeSlotEmpty
@@ -25,8 +25,8 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
     // Item : InventoryItem
     #region 수정중
     // 슬롯 한 칸 사이즈
-    public const float m_tileSizeWidth = 25.0f;
-    public const float m_tileSizeHeight = 24.0f;
+    public const float m_tileSizeWidth = 47.0f;
+    public const float m_tileSizeHeight = 47.0f;
     [SerializeField]
     int m_slotSizeWidth = 14;       // 슬롯 가로 개수
     [SerializeField]
@@ -86,7 +86,7 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
         m_selectedItmeGrid.GetComponent<RectTransform>().sizeDelta = size;
     }
 
-    public void SetItemToInventory(GameObject itemImagePrefab, GameObject obj)
+    public void SetItemToInventory(GameObject itemImagePrefab)
     {
         //GameObject itemaa = ObjectPool.Inst.Pool<Item>(itemImagePrefab, null);
         //if (FindEmptySlot(itemaa.GetComponent<Item>()) == null)
@@ -102,7 +102,7 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
             // 아이템을 획득한 경우 : 슬롯에 자리가 없으니 아이템 획득 안되게 만들기
         }
         PlaceItem(itemImage, itemSlotSize.x, itemSlotSize.y);
-        ObjectPool.Inst.Push<Item>(obj);
+        //ObjectPool.Inst.Push<Item>(obj);
     }
 
     #region 240712 수정중
