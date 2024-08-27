@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce51b55bcfe689e45b38e32ad739bbce, type: 3}
-  m_Name: Zweihander
+  m_Name: Shield
   m_EditorClassIdentifier: 
-  itemType: 2
-  itemImagePrefab: {fileID: 6178653014876059792, guid: c7df0108b90679549a781d1dda25bce3, type: 3}
-  itemName: Zweihander
+  itemType: 0
+  itemImagePrefab: {fileID: 7564730545186980701, guid: 65bc71014f2f4b540b0bb94501aced27, type: 3}
+  itemName: Shield
   itemWidth: 2
   itemHeight: 4
-  atkPower: 100
-  defense: 0
+  atkPower: 0
+  defense: 100

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Chest
   m_EditorClassIdentifier: 
   itemType: 3
-  itemImagePrefab: {fileID: 0}
+  itemImagePrefab: {fileID: 3324046128257437528, guid: 9a3a648dbd087824cb3b73842e41c4f0, type: 3}
   itemName: Chest
   itemWidth: 2
   itemHeight: 4
   atkPower: 0
-  defense: 0
+  defense: 100

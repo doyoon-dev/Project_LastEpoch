@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce51b55bcfe689e45b38e32ad739bbce, type: 3}
-  m_Name: Zweihander
+  m_Name: Gloves
   m_EditorClassIdentifier: 
-  itemType: 2
-  itemImagePrefab: {fileID: 6178653014876059792, guid: c7df0108b90679549a781d1dda25bce3, type: 3}
-  itemName: Zweihander
+  itemType: 0
+  itemImagePrefab: {fileID: 8152502018427809719, guid: 520c604ae6740b84a8e34205dfe58243, type: 3}
+  itemName: Gloves
   itemWidth: 2
-  itemHeight: 4
-  atkPower: 100
-  defense: 0
+  itemHeight: 2
+  atkPower: 0
+  defense: 50
