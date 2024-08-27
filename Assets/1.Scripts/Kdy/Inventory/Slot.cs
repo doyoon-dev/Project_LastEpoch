@@ -62,7 +62,7 @@ public class Slot : MonoBehaviour, IDropHandler//, ISlotInterface
         // 원래 아이템 위치
         //Vector3 itemPos = eventData.pointerDrag.GetComponent<IOrgPos>().m_orgPos;
 
-        Vector2Int pos = GetTileGridPosition(item.transform.position);
+        Vector2Int pos = GetTileGridPosition(item.transform.position); 
         Debug.Log(pos);
         //Vector2Int pos = GetTileGridPosition(Input.mousePosition);
         int posX = pos.x;

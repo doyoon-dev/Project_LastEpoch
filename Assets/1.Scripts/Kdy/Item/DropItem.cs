@@ -40,9 +40,9 @@ public class DropItem : MonoBehaviour, ICheckDropItem, ICheckDropItemTest
         IGetItemData igd = inven.GetComponent<IGetItemData>();
         if(igd != null)
         {
-            igd.SetItemToInventory(m_itemImagePrefab, gameObject);
+            igd.SetItemToInventory(m_itemImagePrefab);
         }
-        // 오브젝트 풀링으로 몬스터에서 아이템 소환하고 여기서 아이템 다시 풀에 넣기
+        ObjectPool.Inst.Push<Item>(gameObject);
     }
 
     // 획득 아이템 인벤토리에 List에 저장하는 코드 테스트 중
