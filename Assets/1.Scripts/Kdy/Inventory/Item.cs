@@ -9,6 +9,11 @@ using UnityEngine.UI;
 using static ItemData;
 using static UnityEditor.Progress;
 
+public interface ISetInventory
+{
+    void SetInventory(Transform inven);
+}
+
 public interface IChangeParent
 {
     void ChangeParent(Transform parent);
@@ -29,8 +34,12 @@ public interface IEquipItemStat
     event UnityAction<ItemData, bool> m_equipItemStat;
 }
 
-public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IChangePos, IOrgPos, IEquipItemStat
+public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IChangePos, IOrgPos, IEquipItemStat, ISetInventory
 {
+    #region 아이템의 가로 세로 길이를 저장하는 변수 "실험 중"
+    public float m_itemWidth;
+    public float m_itemHeight;
+    #endregion
     public event UnityAction m_unEquipItem = null;
     public event UnityAction<ItemData, bool> m_equipItemStat = null;         // 아이템을 장착했을 때 유니티 이벤트 실행해서 BattleSystem에 있는 Stat 아이템 Stat에 따라 바꿔주기
     public Transform m_inventory = null;
@@ -38,6 +47,8 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public ItemData m_itemData;
     public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
     public int m_onGridPositionY;       // 인벤토리 내의 아이템 위치 y좌표
+    public Image m_frameImage;
+    
 
     public Transform m_orgPosition { get; private set; }  // 원래 위치
     public Vector3 m_orgPos { get; private set; }
@@ -113,7 +124,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     void Start()
     {
         gameObject.GetComponent<RectTransform>().localScale = Vector3.one;
-        m_inventory = transform.parent.parent.parent;    // 인벤토리 변수
+        //m_inventory = transform.parent.parent.parent;    // 인벤토리 변수
         m_image = gameObject.GetComponent<Image>();
 
         m_equipSlot = CheckItemSlotType(this);
@@ -270,5 +281,10 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     void ChangeParent(Transform parent)
     {
         m_parentPos = parent;
+    }
+
+    public void SetInventory(Transform inven)
+    {
+        m_inventory = inven;
     }
 }

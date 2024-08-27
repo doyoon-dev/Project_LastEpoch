@@ -93,7 +93,7 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
         //{
         //    return;
         //}
-        
+
         Item itemImage = Instantiate(itemImagePrefab).GetComponent<Item>();
         Vector2Int itemSlotSize = FindEmptySlot(itemImage).Value;
         if (itemSlotSize == null)
@@ -158,6 +158,11 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
         }
         RectTransform itemPos = itemImage.GetComponent<RectTransform>();
         itemPos.SetParent(m_selectedItmeGrid.GetComponent<RectTransform>());        // 아이템 오브젝트를 Slot 오브젝트의 자식 오브젝트로 만듬
+        ISetInventory isi = itemImage.GetComponent<ISetInventory>();
+        if(isi != null)
+        {
+            isi.SetInventory(gameObject.transform);
+        }
 
         // 슬롯에 아이템을 넣을 때 아이템 크기에 따라 차지하는 슬롯만큼 데이터 넣기
         for (int x = 0; x < itemImage.m_itemData.itemWidth; x++)
@@ -180,7 +185,7 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
         else
         {
             pos.x = posX * m_tileSizeWidth;
-            pos.y = -(posY * m_tileSizeHeight);
+            pos.y = -(posY * m_tileSizeHeight) - 2;
         }
         itemPos.localPosition = pos;
     }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce51b55bcfe689e45b38e32ad739bbce, type: 3}
   m_Name: Shield
   m_EditorClassIdentifier: 
-  itemType: 0
+  itemType: 4
   itemImagePrefab: {fileID: 7564730545186980701, guid: 65bc71014f2f4b540b0bb94501aced27, type: 3}
   itemName: Shield
   itemWidth: 2

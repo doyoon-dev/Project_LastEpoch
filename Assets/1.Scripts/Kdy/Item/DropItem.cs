@@ -37,12 +37,26 @@ public class DropItem : MonoBehaviour, ICheckDropItem, ICheckDropItemTest
 
     public void CheckDropItem(Inventory inven)
     {
-        IGetItemData igd = inven.GetComponent<IGetItemData>();
-        if(igd != null)
+        // 아이템을 인벤토리에 넣기 전에 공간이 있는지 확인하고
+        // 공간이 있으면 인벤토리에 넣고
+        // 공간이 없으면 아이템 획득 불가능하게 만들기
+        IFindEmptySlot ifes = inven.GetComponent<IFindEmptySlot>();
+        if (ifes != null)
         {
-            igd.SetItemToInventory(m_itemImagePrefab);
+            if (ifes.FindEmptySlot(m_itemImagePrefab.GetComponent<Item>()) != null)
+            {
+                IGetItemData igd = inven.GetComponent<IGetItemData>();
+                if (igd != null)
+                {
+                    igd.SetItemToInventory(m_itemImagePrefab);
+                }
+                ObjectPool.Inst.Push<Item>(gameObject);
+            }
+            else
+            {
+                // 슬롯 공간이 없을 경우 처리
+            }
         }
-        ObjectPool.Inst.Push<Item>(gameObject);
     }
 
     // 획득 아이템 인벤토리에 List에 저장하는 코드 테스트 중
