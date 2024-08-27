@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4611656215879996717
+--- !u!1 &77890630931205783
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,41 +8,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3797717876451807127}
-  - component: {fileID: 2614626124676967268}
-  - component: {fileID: 5570396426122577742}
-  - component: {fileID: 2388596296852568166}
-  - component: {fileID: 321672125037934304}
+  - component: {fileID: 747432272655553581}
+  - component: {fileID: 7608939492812343371}
+  - component: {fileID: 8191454740065336746}
+  - component: {fileID: 3552519415406291205}
+  - component: {fileID: 2249519712299309781}
   m_Layer: 8
-  m_Name: Healing_Potion
+  m_Name: knight_shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3797717876451807127
+--- !u!4 &747432272655553581
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4611656215879996717}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_GameObject: {fileID: 77890630931205783}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3327524714713571435}
+  - {fileID: 8097490785828521394}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2614626124676967268
+--- !u!114 &7608939492812343371
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4611656215879996717}
+  m_GameObject: {fileID: 77890630931205783}
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62eba52d3e9b0044385628da2ef87948, type: 3}
@@ -52,16 +52,16 @@ MonoBehaviour:
   m_itemMask:
     serializedVersion: 2
     m_Bits: 256
-  m_itemData: {fileID: 0}
+  m_itemData: {fileID: 11400000, guid: d334c21392467674aa038a78014a1661, type: 2}
   m_onGridPositionX: 0
   m_onGridPositionY: 0
---- !u!114 &5570396426122577742
+--- !u!114 &8191454740065336746
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4611656215879996717}
+  m_GameObject: {fileID: 77890630931205783}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3a86a611355fb447ba4de153dc84c2f, type: 3}
@@ -70,16 +70,16 @@ MonoBehaviour:
   m_itemMask:
     serializedVersion: 2
     m_Bits: 256
-  m_itemData: {fileID: 0}
+  m_itemData: {fileID: 11400000, guid: d334c21392467674aa038a78014a1661, type: 2}
   dropChance: 0
-  m_itemImagePrefab: {fileID: 5582768116593398518, guid: fd9ce09c7ec97ee46978dea5697f71e5, type: 3}
---- !u!54 &2388596296852568166
+  m_itemImagePrefab: {fileID: 7564730545186980701, guid: 65bc71014f2f4b540b0bb94501aced27, type: 3}
+--- !u!54 &3552519415406291205
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4611656215879996717}
+  m_GameObject: {fileID: 77890630931205783}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -89,20 +89,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &321672125037934304
+--- !u!65 &2249519712299309781
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4611656215879996717}
+  m_GameObject: {fileID: 77890630931205783}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.18333995, y: 0.3467102, z: 0.19207868}
-  m_Center: {x: -0.0035842657, y: 0.16210818, z: 0.0014475733}
---- !u!1 &7859802796201648299
+  m_Size: {x: 0.07171488, y: 0.6278019, z: 0.32715586}
+  m_Center: {x: -0.030521825, y: -0.069693565, z: -0.0015717745}
+--- !u!1 &7410712703338976789
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -110,46 +110,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3327524714713571435}
-  - component: {fileID: 8498886280766514273}
-  - component: {fileID: 2358062862423025824}
+  - component: {fileID: 8097490785828521394}
+  - component: {fileID: 4676961457511794472}
+  - component: {fileID: 5984159727535494669}
   m_Layer: 8
-  m_Name: Healing_Potion_0
+  m_Name: knight_shield_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3327524714713571435
+--- !u!4 &8097490785828521394
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7859802796201648299}
+  m_GameObject: {fileID: 7410712703338976789}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3797717876451807127}
+  m_Father: {fileID: 747432272655553581}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8498886280766514273
+--- !u!33 &4676961457511794472
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7859802796201648299}
-  m_Mesh: {fileID: 4561856418599758638, guid: 42427396f546e4b43b31f04b3ff14e0a, type: 3}
---- !u!23 &2358062862423025824
+  m_GameObject: {fileID: 7410712703338976789}
+  m_Mesh: {fileID: -6306315571503631554, guid: 1643c98eeaae0e2429593ba2c3669f67, type: 3}
+--- !u!23 &5984159727535494669
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7859802796201648299}
+  m_GameObject: {fileID: 7410712703338976789}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -163,7 +163,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7432bf112eac3ce4b949cceed9121211, type: 2}
+  - {fileID: 2100000, guid: 16b1eb7a46921a44c9ea0c56aeca32a3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
