@@ -8,22 +8,36 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     [Header("몬스터 소환 수")]
     [SerializeField]
     public int initialMonsterCount;
+
     [Header("소환 간격(초)")]
     [SerializeField]
     public float spawnInterval; // 몬스터 소환 간격 (초 단위)
+
     [Header("몬스터 소환 거리")]
     [SerializeField]
     private float spawnOffset; // 몬스터 간 거리 오프셋
-    /*
+
+    [Header("아이템 프리팹 목록")]
     [SerializeField]
-    private Player m_player;
-    */
-    public GameObject m_monsterPrefab;
+    private GameObject[] m_dropItemPrefabs;
+
+    [Header("아이템 데이터 목록")]
+    [SerializeField]
+    private ItemData[] m_itemDataArray;
+
+    [Header("아이템 드롭 확률 목록")]
+    [SerializeField]
+    private float[] m_dropChances;
+
+    [Header("몬스터 프리팹 목록")]
+    [SerializeField]
+    private GameObject[] m_monsterPrefabs;  
+
     public WaypointController waypointController;
     private Vector3 lastSpawnPosition = Vector3.zero; // 마지막 소환 위치 저장
-    
-   
-    
+
+
+
     void Start()
     {
         // 코루틴 시작: 일정 간격마다 몬스터 소환
@@ -43,15 +57,18 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     // 몬스터 소환 메서드
     void SpawnMonster()
     {
+        // 랜덤하게 몬스터 프리팹을 선택
+        int monsterIndex = Random.Range(0, m_monsterPrefabs.Length);
+        GameObject monsterPrefab = m_monsterPrefabs[monsterIndex];
+
         // 오브젝트 풀에서 몬스터를 가져옴
-        GameObject monster = ObjectPool.Inst.Pool<MonsterController>(m_monsterPrefab);
+        GameObject monster = ObjectPool.Inst.Pool<MonsterController>(monsterPrefab);
         MonsterController monsterController = monster.GetComponent<MonsterController>();
         NavMeshAgent navAgent = monster.GetComponent<NavMeshAgent>();
-       
+
 
         // 몬스터 초기화
-        //monsterController.InitMonster(m_player);
-        monsterController.SetMonster(waypointController);
+        monsterController.Initialize(this, waypointController);  // 매니저를 초기화 시 전달
 
         // NavMeshAgent의 장애물 회피 비활성화
         navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
@@ -59,7 +76,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         // 웨이포인트에서 랜덤 위치를 얻어옴
         Vector3 spawnPosition = waypointController.GetRandomWaypointPosition();
         monster.transform.position = spawnPosition;
-       
+
 
         // 이전 소환 위치와 동일한지 확인
         if (spawnPosition == lastSpawnPosition)
@@ -81,6 +98,11 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
 
     }
 
+    // 몬스터가 죽을 때 호출되는 메서드
+    public void HandleMonsterDeath(Vector3 position)
+    {
+        DropItem(position);
+    }
 
     // 특정 위치의 다음 웨이포인트 인덱스를 얻는 메서드
     int GetNextWaypointIndex(Vector3 currentPosition)
@@ -97,6 +119,29 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         return 0;
     }
 
+    // 아이템 드롭 메서드
+    private void DropItem(Vector3 position)
+    {
+        if (m_dropItemPrefabs.Length != m_dropChances.Length || m_dropItemPrefabs.Length != m_itemDataArray.Length)
+        {
+            Debug.LogError("아이템 프리팹, 드롭 확률, 아이템 데이터 배열의 길이가 일치하지 않습니다.");
+            return;
+        }
+
+        for (int i = 0; i < m_dropItemPrefabs.Length; i++)
+        {
+            float dropChance = m_dropChances[i];
+            if (UnityEngine.Random.Range(0f, 100f) <= dropChance)
+            {
+                GameObject dropItemObject = ObjectPool.Inst.Pool<DropItem>(m_dropItemPrefabs[i]);
+                DropItem dropItem = dropItemObject.GetComponent<DropItem>();
+
+                dropItem.Initialize(m_itemDataArray[i]);
+                dropItem.transform.position = position;
+                dropItem.gameObject.SetActive(true);
+            }
+        }
+    }
 
     // Update is called once per frame
     void Update()

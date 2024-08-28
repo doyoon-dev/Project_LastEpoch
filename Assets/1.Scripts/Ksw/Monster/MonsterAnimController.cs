@@ -13,7 +13,6 @@ public class MonsterAnimController : AnimController
         Run,
         Attack1,
         Attack2,
-        Attack3,
         Hit,
         Die,
         Max
