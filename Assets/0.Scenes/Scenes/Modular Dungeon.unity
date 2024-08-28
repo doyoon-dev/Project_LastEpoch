@@ -8113,8 +8113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62eba52d3e9b0044385628da2ef87948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_itemWidth: 0
-  m_itemHeight: 0
   m_inventory: {fileID: 0}
   m_itemMask:
     serializedVersion: 2
@@ -9375,7 +9373,7 @@ PrefabInstance:
     - target: {fileID: 5244370769833058608, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_dropItemPrefabs.Array.data[6]
       value: 
-      objectReference: {fileID: 6614892410114240419, guid: 1f7b82d0fdedff7419be4160cdcc1a52, type: 3}
+      objectReference: {fileID: 4159682687083724937, guid: 1f7b82d0fdedff7419be4160cdcc1a52, type: 3}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_RootOrder
       value: 5

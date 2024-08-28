@@ -36,10 +36,6 @@ public interface IEquipItemStat
 
 public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IChangePos, IOrgPos, IEquipItemStat, ISetInventory
 {
-    #region 아이템의 가로 세로 길이를 저장하는 변수 "실험 중"
-    public float m_itemWidth;
-    public float m_itemHeight;
-    #endregion
     public event UnityAction m_unEquipItem = null;
     public event UnityAction<ItemData, bool> m_equipItemStat = null;         // 아이템을 장착했을 때 유니티 이벤트 실행해서 BattleSystem에 있는 Stat 아이템 Stat에 따라 바꿔주기
     public Transform m_inventory = null;
@@ -86,6 +82,12 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        // 아이템 우클릭 했을 때
+        // 1. 장착슬롯이 비어있고 슬롯에 있는 아이템을 장착하기 위해 우클릭 했을 경우 [ if(m_equipSlot.m_item == null) ]
+        // 2. 장착슬롯에 있는 아이템을 해제하기 위해 장착 슬롯 아이템을 우클릭 했을 경우 [ if(m_equipSlot.m_item != null) || if(!m_equipSlot.GetComponent<IIsEquiped>().m_isEquiped)]
+        // 3. 아이템이 장착되어 있고 다른 아이템으로 교체하기위해 슬롯에 있는 같은 종류의 아이템을 우클릭 했을 경우 [ if(m_equipSlot.GetComponent<IIsEquiped>().m_isEquiped) ]
+        //     ==> 1.장착아이템 해제 후 빈슬롯에 넣음
+        //         2.슬롯에 있던 우클릭한 아이템 장착
         if (eventData.button == PointerEventData.InputButton.Right)
         {
             // m_isEquiped 변수는 현재 스크립트에 해당하는 아이템에만 적용돼서 이미 아이템을 장착한 상태여도 다른 아이템을 장착하면 그 아이템의 변수 m_isEquiped는 false 이므로
@@ -111,6 +113,8 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
             }
             else
             {
+                // 장착 중인 아이템을 우클릭해서 장착 해제 했을 경우
+                // 슬롯에 있는 다른아이템을 우클릭해서 교체를 위해 장착중인 아이템 해제 했을 경우 나뉘어야 함
                 UnEquipeItem(m_equipSlot.m_item);
             }
         }
@@ -255,8 +259,10 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     // 장비 장착 해제 함수
     void UnEquipeItem(Item equipItem)
     {
-        m_unEquipItem?.Invoke();
-        m_unEquipItem = null;
+        // 슬롯에 있는 아이템을 우클릭해서 장착 중인 아이템을 교체할 시
+        // 슬롯에 있는 아이템의 m_unEquipItem에 함수를 추가해주지 않아서 m_unEquipItem == null 이라 함수 실행 안됨
+        equipItem.m_unEquipItem?.Invoke();
+        equipItem.m_unEquipItem = null;
 
         m_equipSlot.m_item = null;
         IFindEmptySlot fes = m_inventory.transform.GetComponent<IFindEmptySlot>();

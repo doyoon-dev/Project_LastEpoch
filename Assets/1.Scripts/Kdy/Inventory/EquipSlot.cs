@@ -66,12 +66,12 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem, IIsEquiped
 
     void UnEquipedItem()
     {
-        ISetStatus iss = m_battleSystem.GetComponent<ISetStatus>();
-        if (iss != null)
-        {
-            // 아이템 교체시 에러나는 부분
-            m_item.m_equipItemStat += iss.SetStatus;
-        }
+        //ISetStatus iss = m_battleSystem.GetComponent<ISetStatus>();
+        //if (iss != null)
+        //{
+        //    // 아이템 교체시 에러나는 부분
+        //    m_item.m_equipItemStat += iss.SetStatus;
+        //}
         m_bgImage.gameObject.SetActive(true);
         m_isEquiped = false;
     }
