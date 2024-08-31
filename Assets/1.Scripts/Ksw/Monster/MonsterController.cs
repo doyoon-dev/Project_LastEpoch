@@ -18,24 +18,23 @@ public class MonsterController : BattleSystem
     }
     [SerializeField]
     BehaviourState m_state; //상태
+
     [Header("타겟 인식 범위")]
     [SerializeField]
     protected float m_detectDist;
+
     [Header("공격 거리")]
     [SerializeField]
     protected float m_attackDist;
+
     [Header("플레이어 인식 ")]
     [SerializeField]
     Player m_player;
-    private GameObject detectedPlayer;
+
+    [Header("웨이포인트")]
     [SerializeField]
     WaypointController m_waypointCtr;
-    [Header("아이템 프리팹")]
-    [SerializeField]
-    private GameObject m_dropItemPrefab;
-    [Header("아이템 데이터")]
-    [SerializeField]
-    private ItemData m_itemData;
+
     MoveTween m_moveTween;
     NavMeshAgent m_navAgent;
     MonsterAnimController m_monAnimCtr;
@@ -50,6 +49,9 @@ public class MonsterController : BattleSystem
     public LayerMask m_BackgroundMask;
     private Transform m_attacker;
     private SkillInform m_skillData;
+    private int m_currentAttackIndex;
+    private GameObject detectedPlayer;
+    private MonsterManager m_manager;  // 매니저 참조
 
     public bool IsDie { get { return m_state == BehaviourState.Die; } } //죽음 상태인지 체크
 
@@ -76,6 +78,11 @@ public class MonsterController : BattleSystem
         m_idleTime = m_idleDuration - duration;
     }
 
+    public void Initialize(MonsterManager manager, WaypointController waypoint)
+    {
+        m_manager = manager;
+        SetMonster(waypoint);
+    }
     void SetIdle(float duration)
     {
 
@@ -133,6 +140,27 @@ public class MonsterController : BattleSystem
             yield return null;
         }
 
+    }
+
+    IEnumerator Coroutine_CalculateTargetPath(int frame)
+    {
+        while (m_state == BehaviourState.Chase) // 몬스터의 상태가 Chase일 때 계속 반복
+        {
+            for (int i = 0; i < frame; i++) // 'frame' 만큼의 프레임 동안 대기
+            {
+                yield return null; // 한 프레임 대기 (코루틴을 일시 중지하고 다음 프레임까지 기다림)
+            }
+            m_navAgent.SetDestination(m_player.transform.position); // 플레이어의 현재 위치를 목표로 설정
+        }
+    }
+
+    // 데미지 후 다시 돌아오기
+    IEnumerator ResumeMovementAfterDamage()
+    {
+        yield return new WaitForSeconds(0.5f); // Hit 모션이 끝날 시간을 대기
+        m_navAgent.isStopped = false; // 이동 재개
+        SetState(BehaviourState.Patrol); // Patrol 상태로 전환하여 웨이포인트로 돌아가게 함
+        m_isPatrol = false; // Patrol을 재시작하도록 설정
     }
 
     // 레이어 마스크 설정 메서드
@@ -194,21 +222,6 @@ public class MonsterController : BattleSystem
         }
         return false;
     }
-    //죽었을 떄 몬스터 드랍 확률 
-    void DropItemOnDeath()
-    {
-        // 드롭 확률 (예: 50%)
-        float dropChance = 0.5f;
-        if (UnityEngine.Random.value <= dropChance)
-        {
-            GameObject dropItemObject = ObjectPool.Inst.Pool<DropItem>(m_dropItemPrefab);
-            DropItem dropItem = dropItemObject.GetComponent<DropItem>();
-
-            dropItem.Initialize(m_itemData); //드롭할 아이템 데이터 설정
-            dropItem.transform.position = transform.position;  // 드롭 위치 설정
-            dropItem.gameObject.SetActive(true); // 드롭 아이템 활성화
-        }
-    }
 
     public override void SetDamage(Transform attacker, SkillInform skillData)
     {
@@ -225,7 +238,7 @@ public class MonsterController : BattleSystem
         SetState(BehaviourState.Damaged);
         m_monAnimCtr.Play(MonsterAnimController.Motion.Hit, false);
         m_navAgent.ResetPath();
-        m_navAgent.isStopped = true;
+        m_navAgent.isStopped = true;// 데미지 받았을 때 이동 중지
         SetHitColor(0.5f);
 
         // 넉백 처리
@@ -236,6 +249,8 @@ public class MonsterController : BattleSystem
             var duration = SkillData.MaxKnockbackDuration * (skillData.knockback / SkillData.MaxKnockbackDist);
             m_moveTween.Play(transform.position, transform.position + dir * skillData.knockback, duration);
         }
+        // 데미지 처리 후 다시 이동 가능하도록 NavMeshAgent 재설정
+        StartCoroutine(ResumeMovementAfterDamage());
     }
 
     // 죽음 상태 처리
@@ -245,11 +260,28 @@ public class MonsterController : BattleSystem
         if (IsDie) return;      
         m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // 사망 애니메이션 재생
         StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과
-        m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정
-        DropItemOnDeath(); // 아이템 드롭                          
+        m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정                                                                                       
+        m_manager.HandleMonsterDeath(transform.position);// 매니저에게 몬스터가 죽었다고 알림
         SetState(BehaviourState.Die);
     }
 
+    //몬스터 차례대로 공격 모션
+    void MonAttackCombo()
+    {
+        // m_currentAttackIndex에 따라 공격 모션 선택
+        switch (m_currentAttackIndex)
+        {
+            case 0:
+                m_monAnimCtr.Play(MonsterAnimController.Motion.Attack1);
+                break;
+            case 1:
+                m_monAnimCtr.Play(MonsterAnimController.Motion.Attack2);
+                break;
+        }
+
+        // 다음 공격 모션으로 인덱스를 증가시킴 퍼센트 뒤에 숫자를 바꿀수록 공격 모션 추가
+        m_currentAttackIndex = (m_currentAttackIndex + 1) % 2; // 0, 1 를 반복
+    }
 
 
  
@@ -261,24 +293,31 @@ public class MonsterController : BattleSystem
             //Idle 상태
             case BehaviourState.Idle:
                 m_idleTime += Time.deltaTime;
-                if (m_idleTime > m_idleDuration)
+                if (m_idleTime > m_idleDuration * 0.5f)
                 {
                     if (FindTarget())
                     {
+                        // 타켓을 찾아 공격 가능하면 공격
                         if (CanAttack())
                         {
                             SetState(BehaviourState.Attack);
-                            m_monAnimCtr.Play(MonsterAnimController.Motion.Attack1);
+                            var dir = m_player.transform.position - transform.position;
+                            dir.y = 0f;
+                            transform.forward = dir.normalized;
+                            MonAttackCombo();
                             return;
                         }
+                        // 타켓을 찾아 공격 가능하지 않으면 쫓아가기
                         else
                         {
                             SetState(BehaviourState.Chase);
+                            StartCoroutine(Coroutine_CalculateTargetPath(30));
                             m_monAnimCtr.Play(MonsterAnimController.Motion.Run);
                             m_navAgent.stoppingDistance = m_attackDist;
                             m_idleTime = 0;
                         }
                     }
+                    // 타켓을 못 찾는 경우 
                     else
                     {
                         SetState(BehaviourState.Patrol);
