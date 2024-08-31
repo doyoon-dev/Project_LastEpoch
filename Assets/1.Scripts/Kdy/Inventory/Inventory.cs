@@ -6,7 +6,7 @@ using static ItemData;
 
 public interface IGetItemData
 {
-    void SetItemToInventory(GameObject itemPrefab, GameObject obj);
+    void SetItemToInventory(GameObject itemPrefab);
 }
 
 public interface IMakeSlotEmpty
@@ -25,8 +25,8 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
     // Item : InventoryItem
     #region 수정중
     // 슬롯 한 칸 사이즈
-    public const float m_tileSizeWidth = 25.0f;
-    public const float m_tileSizeHeight = 24.0f;
+    public const float m_tileSizeWidth = 47.0f;
+    public const float m_tileSizeHeight = 47.0f;
     [SerializeField]
     int m_slotSizeWidth = 14;       // 슬롯 가로 개수
     [SerializeField]
@@ -86,14 +86,14 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
         m_selectedItmeGrid.GetComponent<RectTransform>().sizeDelta = size;
     }
 
-    public void SetItemToInventory(GameObject itemImagePrefab, GameObject obj)
+    public void SetItemToInventory(GameObject itemImagePrefab)
     {
         //GameObject itemaa = ObjectPool.Inst.Pool<Item>(itemImagePrefab, null);
         //if (FindEmptySlot(itemaa.GetComponent<Item>()) == null)
         //{
         //    return;
         //}
-        
+
         Item itemImage = Instantiate(itemImagePrefab).GetComponent<Item>();
         Vector2Int itemSlotSize = FindEmptySlot(itemImage).Value;
         if (itemSlotSize == null)
@@ -102,7 +102,7 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
             // 아이템을 획득한 경우 : 슬롯에 자리가 없으니 아이템 획득 안되게 만들기
         }
         PlaceItem(itemImage, itemSlotSize.x, itemSlotSize.y);
-        ObjectPool.Inst.Push<Item>(obj);
+        //ObjectPool.Inst.Push<Item>(obj);
     }
 
     #region 240712 수정중
@@ -158,6 +158,11 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
         }
         RectTransform itemPos = itemImage.GetComponent<RectTransform>();
         itemPos.SetParent(m_selectedItmeGrid.GetComponent<RectTransform>());        // 아이템 오브젝트를 Slot 오브젝트의 자식 오브젝트로 만듬
+        ISetInventory isi = itemImage.GetComponent<ISetInventory>();
+        if(isi != null)
+        {
+            isi.SetInventory(gameObject.transform);
+        }
 
         // 슬롯에 아이템을 넣을 때 아이템 크기에 따라 차지하는 슬롯만큼 데이터 넣기
         for (int x = 0; x < itemImage.m_itemData.itemWidth; x++)
@@ -180,7 +185,7 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
         else
         {
             pos.x = posX * m_tileSizeWidth;
-            pos.y = -(posY * m_tileSizeHeight);
+            pos.y = -(posY * m_tileSizeHeight) - 2;
         }
         itemPos.localPosition = pos;
     }
