@@ -32,7 +32,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
 
     public WaypointController waypointController;
     private Vector3 lastSpawnPosition = Vector3.zero; // 마지막 소환 위치 저장
-
+  
 
 
     void Start()
@@ -46,14 +46,19 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     {
         while (true)
         {
-            SpawnMonster(); // 몬스터 소환
-            yield return new WaitForSeconds(spawnInterval); // 설정된 간격만큼 대기
+            // 설정된 수만큼 몬스터를 연속적으로 소환
+            for (int i = 0; i < initialMonsterCount; i++)
+            {
+                SpawnMonster();
+            }
+            yield return new WaitForSeconds(spawnInterval); // 설정된 간격만큼 대기 후 다시 소환
         }
     }
 
     // 몬스터 소환 메서드
     void SpawnMonster()
     {
+       
         // 랜덤하게 몬스터 프리팹을 선택
         int monsterIndex = Random.Range(0, m_monsterPrefabs.Length);
         GameObject monsterPrefab = m_monsterPrefabs[monsterIndex];

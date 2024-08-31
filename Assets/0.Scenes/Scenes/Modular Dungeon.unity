@@ -9711,7 +9711,7 @@ PrefabInstance:
       objectReference: {fileID: 7822105422140375201, guid: 40466a98fbbc9ae4eb3bedfa9b4bac44, type: 3}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9756,6 +9756,10 @@ PrefabInstance:
     - target: {fileID: 5244370769833058611, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5244370769833058611, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058613, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_playerUI
@@ -9881,7 +9885,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9063539012579615814, guid: 0f61ae1b8da7f484198895822f942369, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 9063539012579615814, guid: 0f61ae1b8da7f484198895822f942369, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10082,7 +10086,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3006608773051774196, guid: a0a56a44c77e2e348a72128672d12691, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3006608773078218689, guid: a0a56a44c77e2e348a72128672d12691, type: 3}
       propertyPath: m_battleSystem
@@ -15309,8 +15313,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb63ec6e4221fb44a5f7fba98d07275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMonsterCount: 5
-  spawnInterval: 15
+  initialMonsterCount: 1
+  spawnInterval: 5
   spawnOffset: 1
   m_dropItemPrefabs:
   - {fileID: 7822105422140375201, guid: 40466a98fbbc9ae4eb3bedfa9b4bac44, type: 3}
@@ -15335,7 +15339,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1268023194
 GameObject:
@@ -25290,7 +25294,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9075252592327570945, guid: e6c949088738ba74c9cb60ea63c1f10b, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 9075252592327570945, guid: e6c949088738ba74c9cb60ea63c1f10b, type: 3}
       propertyPath: m_LocalPosition.x
