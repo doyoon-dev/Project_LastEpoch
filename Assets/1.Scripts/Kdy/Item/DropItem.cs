@@ -23,7 +23,18 @@ public class DropItem : MonoBehaviour, ICheckDropItem, ICheckDropItemTest
 
     public UnityAction<string> m_getItemAct;
     public GameObject m_itemImagePrefab;
+
     // Start is called before the first frame update
+
+    public void Launch(Vector3 launchForce)
+    {
+        // Rigidbody 컴포넌트를 가져와서 힘을 가합니다.
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.AddForce(launchForce, ForceMode.Impulse);
+        }
+    }
     void Start()
     {
 

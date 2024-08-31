@@ -17,6 +17,10 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     [SerializeField]
     private float spawnOffset; // 몬스터 간 거리 오프셋
 
+    [Header("몬스터 프리팹 목록")]
+    [SerializeField]
+    private GameObject[] m_monsterPrefabs;
+
     [Header("아이템 프리팹 목록")]
     [SerializeField]
     private GameObject[] m_dropItemPrefabs;
@@ -25,10 +29,6 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     [Header("아이템 드롭 확률 목록")]
     [SerializeField]
     private float[] m_dropChances;
-
-    [Header("몬스터 프리팹 목록")]
-    [SerializeField]
-    private GameObject[] m_monsterPrefabs;  
 
     public WaypointController waypointController;
     private Vector3 lastSpawnPosition = Vector3.zero; // 마지막 소환 위치 저장
@@ -139,9 +139,19 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
                 DropItem dropItem = dropItemObject.GetComponent<DropItem>();
                 dropItem.transform.position = position;
                 dropItem.gameObject.SetActive(true);
+
+                // 아이템 살짝 튀어오르게 하는거 설정;
+                Vector3 launchForce = new Vector3(Random.Range(-1f, 1f), Random.Range(4f, 6f), Random.Range(-1f, 1f));
+                // 아이템을 튀어오르게 합니다.
+                dropItem.Launch(launchForce);
+
+
             }
         }
     }
+
+   
+
 
     // Update is called once per frame
     void Update()

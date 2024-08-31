@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.5580278, g: 0.6021815, b: 0.7169812, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: ca0e3fa8bd9e1044f97213a86d9c4982, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.32680222, g: 0.33326456, b: 0.3136305, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: f32871bff14c43b4d88911ac679c1c0a, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: e595e2407a99c1a4da9f96a47a8e82d8, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -106,15 +106,15 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 0.1
+    agentRadius: 0.5
     agentHeight: 2
-    agentSlope: 60
+    agentSlope: 45
     agentClimb: 0.4
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
-    cellSize: 0.033333335
+    cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
@@ -9625,7 +9625,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058611, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058613, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_playerUI
@@ -9928,7 +9928,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3006608773051774196, guid: a0a56a44c77e2e348a72128672d12691, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3006608773078218689, guid: a0a56a44c77e2e348a72128672d12691, type: 3}
       propertyPath: m_battleSystem
@@ -15158,15 +15158,23 @@ MonoBehaviour:
   initialMonsterCount: 1
   spawnInterval: 5
   spawnOffset: 1
-  m_dropItemPrefabs:
-  - {fileID: 7822105422140375201, guid: 40466a98fbbc9ae4eb3bedfa9b4bac44, type: 3}
-  - {fileID: 77890630931205783, guid: aae00e5a1e1f92c4895573e0d749c181, type: 3}
-  m_dropChances:
-  - 40
-  - 80
   m_monsterPrefabs:
   - {fileID: 8539942111360040700, guid: 0f61ae1b8da7f484198895822f942369, type: 3}
   - {fileID: 8555175228367498427, guid: e6c949088738ba74c9cb60ea63c1f10b, type: 3}
+  m_dropItemPrefabs:
+  - {fileID: 7822105422140375201, guid: 40466a98fbbc9ae4eb3bedfa9b4bac44, type: 3}
+  - {fileID: 77890630931205783, guid: aae00e5a1e1f92c4895573e0d749c181, type: 3}
+  - {fileID: 5039581001648236004, guid: 1381dce20d5e49645acb9683121741c1, type: 3}
+  - {fileID: 6523076733546536594, guid: 4f4436117eaaf8b4da3f5e55edf89f8b, type: 3}
+  - {fileID: 2922531801330175439, guid: b1502b7925c0d8e4e8e55e40d2df3041, type: 3}
+  - {fileID: 4558159749494629413, guid: 5379452705be23e41a9ced154a829745, type: 3}
+  m_dropChances:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   waypointController: {fileID: 1176403753}
 --- !u!4 &1262388510
 Transform:

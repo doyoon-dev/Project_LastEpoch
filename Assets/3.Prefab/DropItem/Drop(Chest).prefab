@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 6931444028422184483}
   - component: {fileID: 8659435036397428009}
   - component: {fileID: 8578800989630567842}
+  - component: {fileID: 710610085742721703}
   m_Layer: 8
-  m_Name: Sentinel_T50_Chest
+  m_Name: Drop(Chest)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,6 +104,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.54130524, y: 0.73432016, z: 0.2512165}
   m_Center: {x: 0.008350998, y: 0.49543023, z: 0.005416557}
+--- !u!136 &710610085742721703
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2922531801330175439}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.13745625
+  m_Height: 0.5016651
+  m_Direction: 1
+  m_Center: {x: -0, y: 0.25, z: 0.022177055}
 --- !u!1 &5212991355744213026
 GameObject:
   m_ObjectHideFlags: 0
