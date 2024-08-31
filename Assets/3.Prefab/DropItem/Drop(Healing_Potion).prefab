@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5039581001648236004
+--- !u!1 &4611656215879996717
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,41 +8,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5673375085197311838}
-  - component: {fileID: 635085991050959583}
-  - component: {fileID: 6221257330032884118}
-  - component: {fileID: 5549796887635861544}
-  - component: {fileID: 8501320638794814422}
+  - component: {fileID: 3797717876451807127}
+  - component: {fileID: 2614626124676967268}
+  - component: {fileID: 5570396426122577742}
+  - component: {fileID: 2388596296852568166}
+  - component: {fileID: 321672125037934304}
   m_Layer: 8
-  m_Name: bastard_sword
+  m_Name: Drop(Healing_Potion)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5673375085197311838
+--- !u!4 &3797717876451807127
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5039581001648236004}
+  m_GameObject: {fileID: 4611656215879996717}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.3, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2562568058074073155}
+  - {fileID: 3327524714713571435}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &635085991050959583
+--- !u!114 &2614626124676967268
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5039581001648236004}
+  m_GameObject: {fileID: 4611656215879996717}
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62eba52d3e9b0044385628da2ef87948, type: 3}
@@ -52,16 +52,16 @@ MonoBehaviour:
   m_itemMask:
     serializedVersion: 2
     m_Bits: 256
-  m_itemData: {fileID: 11400000, guid: f50777cfc8dcea4458e05b26710e8620, type: 2}
+  m_itemData: {fileID: 0}
   m_onGridPositionX: 0
   m_onGridPositionY: 0
---- !u!114 &6221257330032884118
+--- !u!114 &5570396426122577742
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5039581001648236004}
+  m_GameObject: {fileID: 4611656215879996717}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3a86a611355fb447ba4de153dc84c2f, type: 3}
@@ -70,16 +70,16 @@ MonoBehaviour:
   m_itemMask:
     serializedVersion: 2
     m_Bits: 256
-  m_itemData: {fileID: 11400000, guid: f50777cfc8dcea4458e05b26710e8620, type: 2}
+  m_itemData: {fileID: 0}
   dropChance: 0
-  m_itemImagePrefab: {fileID: 4738546326079335764, guid: 60bab98da76fcad4da0b20c752ffcee0, type: 3}
---- !u!54 &5549796887635861544
+  m_itemImagePrefab: {fileID: 5582768116593398518, guid: fd9ce09c7ec97ee46978dea5697f71e5, type: 3}
+--- !u!54 &2388596296852568166
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5039581001648236004}
+  m_GameObject: {fileID: 4611656215879996717}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -89,20 +89,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &8501320638794814422
+--- !u!65 &321672125037934304
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5039581001648236004}
+  m_GameObject: {fileID: 4611656215879996717}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.13539235, y: 0.69659996, z: 0.08230527}
-  m_Center: {x: -0.0015606061, y: 0.23640823, z: 0.0027429312}
---- !u!1 &5102713239756708782
+  m_Size: {x: 0.18333995, y: 0.3467102, z: 0.19207868}
+  m_Center: {x: -0.0035842657, y: 0.16210818, z: 0.0014475733}
+--- !u!1 &7859802796201648299
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -110,46 +110,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2562568058074073155}
-  - component: {fileID: 8052655281090073116}
-  - component: {fileID: 9018988749795531948}
+  - component: {fileID: 3327524714713571435}
+  - component: {fileID: 8498886280766514273}
+  - component: {fileID: 2358062862423025824}
   m_Layer: 8
-  m_Name: bastard_sword_0
+  m_Name: Healing_Potion_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2562568058074073155
+--- !u!4 &3327524714713571435
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5102713239756708782}
+  m_GameObject: {fileID: 7859802796201648299}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5673375085197311838}
+  m_Father: {fileID: 3797717876451807127}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8052655281090073116
+--- !u!33 &8498886280766514273
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5102713239756708782}
-  m_Mesh: {fileID: -3579005916090139727, guid: 1c58476628834ec42b1f1153be2959f4, type: 3}
---- !u!23 &9018988749795531948
+  m_GameObject: {fileID: 7859802796201648299}
+  m_Mesh: {fileID: 4561856418599758638, guid: 42427396f546e4b43b31f04b3ff14e0a, type: 3}
+--- !u!23 &2358062862423025824
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5102713239756708782}
+  m_GameObject: {fileID: 7859802796201648299}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -163,7 +163,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb9f4016201898a49a3e9a48b552151a, type: 2}
+  - {fileID: 2100000, guid: 7432bf112eac3ce4b949cceed9121211, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 8191454740065336746}
   - component: {fileID: 3552519415406291205}
   - component: {fileID: 2249519712299309781}
+  - component: {fileID: 4915315368134950993}
   m_Layer: 8
-  m_Name: knight_shield
+  m_Name: Drop(Knight_Shield)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,15 +28,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 77890630931205783}
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8097490785828521394}
+  - {fileID: 9089124916099811676}
+  - {fileID: 4849545143617425247}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7608939492812343371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52,7 +54,7 @@ MonoBehaviour:
   m_itemMask:
     serializedVersion: 2
     m_Bits: 256
-  m_itemData: {fileID: 11400000, guid: d334c21392467674aa038a78014a1661, type: 2}
+  m_itemData: {fileID: 11400000, guid: 17861f28bb517bb4eb709617492bb8d0, type: 2}
   m_onGridPositionX: 0
   m_onGridPositionY: 0
 --- !u!114 &8191454740065336746
@@ -70,9 +72,9 @@ MonoBehaviour:
   m_itemMask:
     serializedVersion: 2
     m_Bits: 256
-  m_itemData: {fileID: 11400000, guid: d334c21392467674aa038a78014a1661, type: 2}
+  m_itemData: {fileID: 11400000, guid: 17861f28bb517bb4eb709617492bb8d0, type: 2}
   dropChance: 0
-  m_itemImagePrefab: {fileID: 7564730545186980701, guid: 65bc71014f2f4b540b0bb94501aced27, type: 3}
+  m_itemImagePrefab: {fileID: 2572756901322260195, guid: 0fab80f909ce65c4996ea0dee748058f, type: 3}
 --- !u!54 &3552519415406291205
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -100,9 +102,22 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.07171488, y: 0.6278019, z: 0.32715586}
-  m_Center: {x: -0.030521825, y: -0.069693565, z: -0.0015717745}
---- !u!1 &7410712703338976789
+  m_Size: {x: 0.12592798, y: 0.33486462, z: 0.26521486}
+  m_Center: {x: 0.07631323, y: 0.1446209, z: -0.008742362}
+--- !u!65 &4915315368134950993
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77890630931205783}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.12592798, y: 0.33486462, z: 0.26521486}
+  m_Center: {x: -0.08, y: 0.1446209, z: 0}
+--- !u!1 &2108687947551805952
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -110,23 +125,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8097490785828521394}
-  - component: {fileID: 4676961457511794472}
-  - component: {fileID: 5984159727535494669}
+  - component: {fileID: 9089124916099811676}
+  - component: {fileID: 2136493644217101760}
+  - component: {fileID: 627459905232663866}
   m_Layer: 8
-  m_Name: knight_shield_0
+  m_Name: Sentinel_T50_Boots_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8097490785828521394
+--- !u!4 &9089124916099811676
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7410712703338976789}
+  m_GameObject: {fileID: 2108687947551805952}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -135,21 +150,21 @@ Transform:
   m_Father: {fileID: 747432272655553581}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4676961457511794472
+--- !u!33 &2136493644217101760
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7410712703338976789}
-  m_Mesh: {fileID: -6306315571503631554, guid: 1643c98eeaae0e2429593ba2c3669f67, type: 3}
---- !u!23 &5984159727535494669
+  m_GameObject: {fileID: 2108687947551805952}
+  m_Mesh: {fileID: 6207423230805396677, guid: 7491b0fc42b36c4419f1f270473d0e39, type: 3}
+--- !u!23 &627459905232663866
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7410712703338976789}
+  m_GameObject: {fileID: 2108687947551805952}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -163,7 +178,90 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 16b1eb7a46921a44c9ea0c56aeca32a3, type: 2}
+  - {fileID: 2100000, guid: f76e21f7a8adae7408c3860ab9fa4568, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3465286732768487672
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4849545143617425247}
+  - component: {fileID: 8732823781123470934}
+  - component: {fileID: 6804604578304955572}
+  m_Layer: 8
+  m_Name: Sentinel_T50_Boots_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4849545143617425247
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3465286732768487672}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 747432272655553581}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &8732823781123470934
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3465286732768487672}
+  m_Mesh: {fileID: -4329880396919101213, guid: 7491b0fc42b36c4419f1f270473d0e39, type: 3}
+--- !u!23 &6804604578304955572
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3465286732768487672}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: caa8ef6df365df346b83a04207432e78, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
