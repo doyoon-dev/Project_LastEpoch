@@ -7,7 +7,7 @@ using static UnityEngine.GraphicsBuffer;
 public class Player : BattleSystem
 {
     #region 아이템 드랍 실험
-    public GameObject m_dropItemPrefab;
+    public GameObject[] m_dropItemPrefabs;
     public ItemData m_itemData;
     #endregion
     [SerializeField]
@@ -42,12 +42,37 @@ public class Player : BattleSystem
 
     void ExDropItemOnDeath()
     {
-        GameObject dropItemObject = ObjectPool.Inst.Pool<DropItem>(m_dropItemPrefab);
+        int rnd = Random.Range(0, m_dropItemPrefabs.Length);
+        GameObject dropItemObject = ObjectPool.Inst.Pool<DropItem>(m_dropItemPrefabs[rnd]);
         DropItem dropItem = dropItemObject.GetComponent<DropItem>();
-
-        dropItem.Initialize(m_itemData); //드롭할 아이템 데이터 설정
+        ItemData dropItemData = dropItemObject.GetComponent<Item>().m_itemData;
+        dropItem.Initialize(dropItemData); //드롭할 아이템 데이터 설정
         dropItem.transform.position = transform.position;  // 드롭 위치 설정
         dropItem.gameObject.SetActive(true); // 드롭 아이템 활성화
+    }
+
+    public void ExCheckDropItem(Inventory inven)
+    {
+        int rnd = Random.Range(0, m_dropItemPrefabs.Length);
+        GameObject obj = m_dropItemPrefabs[rnd];
+
+        IFindEmptySlot ifes = inven.GetComponent<IFindEmptySlot>();
+        if (ifes != null)
+        {
+            if (ifes.FindEmptySlot(obj.GetComponent<Item>()) != null)
+            {
+                IGetItemData igd = inven.GetComponent<IGetItemData>();
+                if (igd != null)
+                {
+                    igd.SetItemToInventory(obj);
+                }
+                //ObjectPool.Inst.Push<Item>(gameObject);
+            }
+            else
+            {
+                // 슬롯 공간이 없을 경우 처리
+            }
+        }
     }
 
     // Update is called once per frame
@@ -68,7 +93,8 @@ public class Player : BattleSystem
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
-            ExDropItemOnDeath();
+            //ExDropItemOnDeath();
+            ExCheckDropItem(m_inventory);
         }
         #endregion
     }
