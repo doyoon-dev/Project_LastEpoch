@@ -44,7 +44,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public ItemData m_itemData;
     public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
     public int m_onGridPositionY;       // 인벤토리 내의 아이템 위치 y좌표
-    public Image m_frameImage;
+    public GameObject m_frameImage;
     
 
     public Transform m_orgPosition { get; private set; }  // 원래 위치
@@ -56,7 +56,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
 
     Item m_curItem;
     Vector2 m_dragOffset = Vector2.zero;
-    Image m_image;
+    public Image m_image;
     Transform m_parentPos;
     public bool m_equipedItem = false;
 
@@ -223,7 +223,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     void SetEquip()
     {
         //m_isEquiped = true;
-        m_frameImage.enabled = false;
+        m_frameImage.SetActive(false);
         m_equipedItem = true;
         EquipSlotItem(m_equipSlot);
         transform.SetParent(m_equipSlot.transform);

@@ -8489,6 +8489,7 @@ MonoBehaviour:
   m_onGridPositionX: 0
   m_onGridPositionY: 0
   m_frameImage: {fileID: 0}
+  m_equipedItem: 0
 --- !u!1001 &700297914
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15593,11 +15594,11 @@ MonoBehaviour:
   - {fileID: 4558159749494629413, guid: 5379452705be23e41a9ced154a829745, type: 3}
   m_dropChances:
   - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  - 100
+  - 100
+  - 100
+  - 100
+  - 100
   waypointController: {fileID: 1176403753}
 --- !u!4 &1262388510
 Transform:

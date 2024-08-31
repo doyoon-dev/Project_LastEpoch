@@ -203,8 +203,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62eba52d3e9b0044385628da2ef87948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_itemWidth: 0
-  m_itemHeight: 0
   m_inventory: {fileID: 0}
   m_itemMask:
     serializedVersion: 2
@@ -212,4 +210,6 @@ MonoBehaviour:
   m_itemData: {fileID: 11400000, guid: d334c21392467674aa038a78014a1661, type: 2}
   m_onGridPositionX: 0
   m_onGridPositionY: 0
-  m_frameImage: {fileID: 7477539493282123525}
+  m_frameImage: {fileID: 3773894054420502998}
+  m_image: {fileID: 6538511884432725719}
+  m_equipedItem: 0

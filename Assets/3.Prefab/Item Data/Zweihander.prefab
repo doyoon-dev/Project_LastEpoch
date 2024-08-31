@@ -127,8 +127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62eba52d3e9b0044385628da2ef87948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_itemWidth: 0
-  m_itemHeight: 0
   m_inventory: {fileID: 0}
   m_itemMask:
     serializedVersion: 2
@@ -136,6 +134,9 @@ MonoBehaviour:
   m_itemData: {fileID: 11400000, guid: 8584b251692971d48af0193b13b425d3, type: 2}
   m_onGridPositionX: 0
   m_onGridPositionY: 0
+  m_frameImage: {fileID: 7305472459977742701}
+  m_image: {fileID: 8977006826944911010}
+  m_equipedItem: 0
 --- !u!1 &7305472459977742701
 GameObject:
   m_ObjectHideFlags: 0

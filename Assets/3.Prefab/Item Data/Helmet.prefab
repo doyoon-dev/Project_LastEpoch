@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -127,16 +127,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62eba52d3e9b0044385628da2ef87948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_itemWidth: 0
-  m_itemHeight: 0
   m_inventory: {fileID: 0}
   m_itemMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_itemData: {fileID: 11400000, guid: 69dfbc0ec447e0f438e44693d5f2619b, type: 2}
   m_onGridPositionX: 0
   m_onGridPositionY: 0
-  m_frameImage: {fileID: 3449503892840583893}
+  m_frameImage: {fileID: 4611668332070400086}
+  m_image: {fileID: 3179139075565689307}
+  m_equipedItem: 0
 --- !u!1 &7963162611661637062
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
