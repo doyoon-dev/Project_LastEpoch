@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static ItemData;
 using static UnityEditor.Progress;
+using static UnityEngine.Rendering.VolumeComponent;
 
 public interface ISetInventory
 {
@@ -57,6 +58,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     Vector2 m_dragOffset = Vector2.zero;
     Image m_image;
     Transform m_parentPos;
+    public bool m_equipedItem = false;
 
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -93,16 +95,19 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
             // m_isEquiped 변수는 현재 스크립트에 해당하는 아이템에만 적용돼서 이미 아이템을 장착한 상태여도 다른 아이템을 장착하면 그 아이템의 변수 m_isEquiped는 false 이므로
             // 아래코드가 호출된다. -> 플레이어 쪽 또는 EquipSlot 쪽에 장착했을 때 변수를 만들어야함
             // 처음 아이템을 장착할 때 순서상 m_equipSlot이 할당이 안된 상태임
+            // 장착 아이템 없을 때 아이템 장착
+            IMakeSlotEmpty imse = m_inventory.GetComponent<IMakeSlotEmpty>();
             if (!m_equipSlot.GetComponent<IIsEquiped>().m_isEquiped)
             {
                 Item item = eventData.pointerClick.GetComponent<Item>();    // 슬롯에 있던 아이템
                 CheckItemSlotType(item);
                 // 아이템 장착할 때 아이템이 있던 슬롯 비우기
-                IMakeSlotEmpty imse = m_inventory.GetComponent<IMakeSlotEmpty>();
+                //IMakeSlotEmpty imse = m_inventory.GetComponent<IMakeSlotEmpty>();
                 if (imse != null)
                 {
                     imse.MakeSlotEmpty(item);
                 }
+                // 이부분 안쓰이는것 같아서 지워야 할 수 있음
                 if (m_equipSlot.m_item != null)   // 아이템 교체 함수 넣기 (m_equipSlot.m_item : 장비슬롯에 장착된 아이템)
                 {
                     // 장착아이템 교체
@@ -111,11 +116,26 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                 //EquipItem(item);
                 SetEquip();
             }
+            // 장착 아이템만 해제
+            else if(m_equipedItem)
+            {
+                if (imse != null)
+                {
+                    imse.MakeSlotEmpty(this);
+                }
+                UnEquipeItem(m_equipSlot.m_item);
+            }
+            // 아이템 교체
             else
             {
+                if (imse != null)
+                {
+                    imse.MakeSlotEmpty(this);
+                }
                 // 장착 중인 아이템을 우클릭해서 장착 해제 했을 경우
                 // 슬롯에 있는 다른아이템을 우클릭해서 교체를 위해 장착중인 아이템 해제 했을 경우 나뉘어야 함
                 UnEquipeItem(m_equipSlot.m_item);
+                SetEquip();
             }
         }
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -203,6 +223,8 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     void SetEquip()
     {
         //m_isEquiped = true;
+        m_frameImage.enabled = false;
+        m_equipedItem = true;
         EquipSlotItem(m_equipSlot);
         transform.SetParent(m_equipSlot.transform);
 
@@ -259,18 +281,28 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     // 장비 장착 해제 함수
     void UnEquipeItem(Item equipItem)
     {
+        IFindEmptySlot fes = m_inventory.transform.GetComponent<IFindEmptySlot>();
+        if (fes != null)
+        {
+            if(fes.FindEmptySlot(equipItem) == null) { return; }
+            else
+            {
+                equipItem.m_onGridPositionX = fes.FindEmptySlot(equipItem).Value.x;
+                equipItem.m_onGridPositionY = fes.FindEmptySlot(equipItem).Value.y;
+            }
+        }
         // 슬롯에 있는 아이템을 우클릭해서 장착 중인 아이템을 교체할 시
         // 슬롯에 있는 아이템의 m_unEquipItem에 함수를 추가해주지 않아서 m_unEquipItem == null 이라 함수 실행 안됨
         equipItem.m_unEquipItem?.Invoke();
         equipItem.m_unEquipItem = null;
 
         m_equipSlot.m_item = null;
-        IFindEmptySlot fes = m_inventory.transform.GetComponent<IFindEmptySlot>();
-        if (fes != null)
-        {
-            equipItem.m_onGridPositionX = fes.FindEmptySlot(equipItem).Value.x;
-            equipItem.m_onGridPositionY = fes.FindEmptySlot(equipItem).Value.y;
-        }
+        //IFindEmptySlot fes = m_inventory.transform.GetComponent<IFindEmptySlot>();
+        //if (fes != null)
+        //{
+        //    equipItem.m_onGridPositionX = fes.FindEmptySlot(equipItem).Value.x;
+        //    equipItem.m_onGridPositionY = fes.FindEmptySlot(equipItem).Value.y;
+        //}
         IPlaceItem pi = m_inventory.transform.GetComponent<IPlaceItem>();
         if (pi != null)
         {

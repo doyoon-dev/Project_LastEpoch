@@ -72,6 +72,8 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem, IIsEquiped
         //    // 아이템 교체시 에러나는 부분
         //    m_item.m_equipItemStat += iss.SetStatus;
         //}
+        m_item.m_equipedItem = false;
+        m_item.m_frameImage.enabled = true;
         m_bgImage.gameObject.SetActive(true);
         m_isEquiped = false;
     }
