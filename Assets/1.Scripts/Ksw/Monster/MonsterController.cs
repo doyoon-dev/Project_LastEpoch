@@ -142,6 +142,27 @@ public class MonsterController : BattleSystem
 
     }
 
+    IEnumerator Coroutine_CalculateTargetPath(int frame)
+    {
+        while (m_state == BehaviourState.Chase) // 몬스터의 상태가 Chase일 때 계속 반복
+        {
+            for (int i = 0; i < frame; i++) // 'frame' 만큼의 프레임 동안 대기
+            {
+                yield return null; // 한 프레임 대기 (코루틴을 일시 중지하고 다음 프레임까지 기다림)
+            }
+            m_navAgent.SetDestination(m_player.transform.position); // 플레이어의 현재 위치를 목표로 설정
+        }
+    }
+
+    // 데미지 후 다시 돌아오기
+    IEnumerator ResumeMovementAfterDamage()
+    {
+        yield return new WaitForSeconds(0.5f); // Hit 모션이 끝날 시간을 대기
+        m_navAgent.isStopped = false; // 이동 재개
+        SetState(BehaviourState.Patrol); // Patrol 상태로 전환하여 웨이포인트로 돌아가게 함
+        m_isPatrol = false; // Patrol을 재시작하도록 설정
+    }
+
     // 레이어 마스크 설정 메서드
     public void SetLayerMasks(LayerMask playerMask, LayerMask backgroundMask)
     {
@@ -217,7 +238,7 @@ public class MonsterController : BattleSystem
         SetState(BehaviourState.Damaged);
         m_monAnimCtr.Play(MonsterAnimController.Motion.Hit, false);
         m_navAgent.ResetPath();
-        m_navAgent.isStopped = true;
+        m_navAgent.isStopped = true;// 데미지 받았을 때 이동 중지
         SetHitColor(0.5f);
 
         // 넉백 처리
@@ -228,6 +249,8 @@ public class MonsterController : BattleSystem
             var duration = SkillData.MaxKnockbackDuration * (skillData.knockback / SkillData.MaxKnockbackDist);
             m_moveTween.Play(transform.position, transform.position + dir * skillData.knockback, duration);
         }
+        // 데미지 처리 후 다시 이동 가능하도록 NavMeshAgent 재설정
+        StartCoroutine(ResumeMovementAfterDamage());
     }
 
     // 죽음 상태 처리
@@ -278,6 +301,9 @@ public class MonsterController : BattleSystem
                         if (CanAttack())
                         {
                             SetState(BehaviourState.Attack);
+                            var dir = m_player.transform.position - transform.position;
+                            dir.y = 0f;
+                            transform.forward = dir.normalized;
                             MonAttackCombo();
                             return;
                         }
@@ -285,6 +311,7 @@ public class MonsterController : BattleSystem
                         else
                         {
                             SetState(BehaviourState.Chase);
+                            StartCoroutine(Coroutine_CalculateTargetPath(30));
                             m_monAnimCtr.Play(MonsterAnimController.Motion.Run);
                             m_navAgent.stoppingDistance = m_attackDist;
                             m_idleTime = 0;
