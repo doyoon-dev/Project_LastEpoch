@@ -21,9 +21,6 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     [SerializeField]
     private GameObject[] m_dropItemPrefabs;
 
-    [Header("아이템 데이터 목록")]
-    [SerializeField]
-    private ItemData[] m_itemDataArray;
 
     [Header("아이템 드롭 확률 목록")]
     [SerializeField]
@@ -122,7 +119,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     // 아이템 드롭 메서드
     private void DropItem(Vector3 position)
     {
-        if (m_dropItemPrefabs.Length != m_dropChances.Length || m_dropItemPrefabs.Length != m_itemDataArray.Length)
+        if (m_dropItemPrefabs.Length != m_dropChances.Length)
         {
             Debug.LogError("아이템 프리팹, 드롭 확률, 아이템 데이터 배열의 길이가 일치하지 않습니다.");
             return;
@@ -135,8 +132,6 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
             {
                 GameObject dropItemObject = ObjectPool.Inst.Pool<DropItem>(m_dropItemPrefabs[i]);
                 DropItem dropItem = dropItemObject.GetComponent<DropItem>();
-
-                dropItem.Initialize(m_itemDataArray[i]);
                 dropItem.transform.position = position;
                 dropItem.gameObject.SetActive(true);
             }
