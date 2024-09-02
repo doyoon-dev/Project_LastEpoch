@@ -2300,6 +2300,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1518358734}
     m_Modifications:
+    - target: {fileID: 3996918203830969842, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3996918203830969842, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
+      propertyPath: m_FontData.m_BestFit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3996918203830969842, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
+      propertyPath: m_FontData.m_RichText
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3996918203830969843, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3996918205501953457, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
       propertyPath: m_player
       value: 
@@ -2339,18 +2355,6 @@ PrefabInstance:
     - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
       propertyPath: m_SizeDelta.y
       value: 181.00006
-      objectReference: {fileID: 0}
-    - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8489,6 +8493,7 @@ MonoBehaviour:
   m_onGridPositionX: 0
   m_onGridPositionY: 0
   m_frameImage: {fileID: 0}
+  m_image: {fileID: 0}
   m_equipedItem: 0
 --- !u!1001 &700297914
 PrefabInstance:
@@ -9703,6 +9708,10 @@ PrefabInstance:
       propertyPath: m_itemData
       value: 
       objectReference: {fileID: 11400000, guid: 8584b251692971d48af0193b13b425d3, type: 2}
+    - target: {fileID: 5244370769833058608, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
+      propertyPath: m_playerUI
+      value: 
+      objectReference: {fileID: 159671948}
     - target: {fileID: 5244370769833058608, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_inventory
       value: 

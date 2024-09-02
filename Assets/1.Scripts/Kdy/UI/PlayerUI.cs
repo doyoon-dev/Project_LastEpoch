@@ -12,6 +12,7 @@ public class PlayerUI : MonoBehaviour
     public Text m_hpText;
     public Text m_mpText;
     public SkillCoolTime m_skillCoolTime;
+    public UsingPotion m_potionFlame;
 
     // Start is called before the first frame update
     void Start()

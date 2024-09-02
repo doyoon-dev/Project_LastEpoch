@@ -22,6 +22,7 @@ public class Player : BattleSystem
     public int attackDamage = 20;
     public float attackRange = 3f;
     public Inventory m_inventory;
+    public PlayerUI m_playerUI;
     public LayerMask m_enemyMask;
 
     int m_clickCnt = 0;
