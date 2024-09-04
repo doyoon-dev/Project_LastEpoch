@@ -37,6 +37,7 @@ public class Player : BattleSystem
         m_changeMp += SceneData.Inst.m_playerHpMpUI.ManaPoint;
         m_deadAlarm += () =>
         {
+            m_myAnim.SetTrigger("Die");
             Debug.Log("Á×À½");
         };
     }
