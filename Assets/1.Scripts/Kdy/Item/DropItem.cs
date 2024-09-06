@@ -24,8 +24,14 @@ public class DropItem : MonoBehaviour, ICheckDropItem, ICheckDropItemTest
     public UnityAction<string> m_getItemAct;
     public GameObject m_itemImagePrefab;
 
-    // Start is called before the first frame update
 
+    public float lifetime = 10f; // 인벤토리에 들어가지 않은 아이템이 사라지기 전까지의 시간(성원)
+    private Coroutine lifetimeCoroutine; //(성원)
+    private bool isPickedUp = false; // 아이템이 인벤토리에 들어갔는지 여부 확인(성원)
+
+
+    // Start is called before the first frame update
+    //아이템 발사하는 메서드
     public void Launch(Vector3 launchForce)
     {
         // Rigidbody 컴포넌트를 가져와서 힘을 가합니다.
@@ -37,13 +43,23 @@ public class DropItem : MonoBehaviour, ICheckDropItem, ICheckDropItemTest
     }
     void Start()
     {
-
+        // 아이템이 활성화될 때 생명주기 타이머 시작(성원)
+        lifetimeCoroutine = StartCoroutine(StartLifetimeTimer());
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    // 아이템의 생명주기를 관리하는 코루틴
+    private IEnumerator StartLifetimeTimer()
+    {
+        yield return new WaitForSeconds(lifetime); // 일정 시간 대기
+        if (!isPickedUp) // 아이템이 인벤토리에 들어가지 않은 경우에만 처리
+        {
+            ObjectPool.Inst.Push<DropItem>(gameObject); // 객체 풀로 아이템 반환
+        }
     }
 
     public void CheckDropItem(Inventory inven)
@@ -61,7 +77,10 @@ public class DropItem : MonoBehaviour, ICheckDropItem, ICheckDropItemTest
                 {
                     igd.SetItemToInventory(m_itemImagePrefab);
                 }
-                ObjectPool.Inst.Push<Item>(gameObject);
+
+                isPickedUp = true; // 아이템이 인벤토리에 들어갔음을 표시(성원)
+                ObjectPool.Inst.Push<Item>(gameObject); // 객체 풀로 아이템 반환
+                if (lifetimeCoroutine != null) StopCoroutine(lifetimeCoroutine); // 타이머 정지(성원)
             }
             else
             {
@@ -84,4 +103,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem, ICheckDropItemTest
     {
         m_itemData = itemData;
     }
+
+    
+
 }
