@@ -145,6 +145,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         m_deadAlarm?.Invoke();
     }
 
+    /*
     // 데미지 받음
     public void OnDamaged(float damage)
     {
@@ -155,15 +156,25 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
             Dead();
         }
     }
+    */
+
+    // OnDamaged에서 호출할 수 있도록 별도의 데미지 값을 받는 메서드 통합
+    public virtual void OnDamaged(float damage)
+    {
+        SetDamage(null, new SkillInform { Dmg = damage }); // skillData가 없는 경우 damage만 적용
+    }
+
 
     public virtual void SetDamage(Transform attacker, SkillInform skillData)
     {
-        //체력 깎이는거 
+        // 체력 깎이는 로직
         m_curHealPoint -= skillData.Dmg;
+
+        // 체력이 0 이하일 때 처리
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
-            
+            Dead(); // 사망 처리
         }
     }
 
