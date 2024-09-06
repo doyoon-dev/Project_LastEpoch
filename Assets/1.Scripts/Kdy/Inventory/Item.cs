@@ -147,21 +147,28 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.GetComponent<RectTransform>().localScale = Vector3.one;
-        //m_inventory = transform.parent.parent.parent;    // 인벤토리 변수
-        m_image = gameObject.GetComponent<Image>();
-
-        m_equipSlot = CheckItemSlotType(this);
-        ISetStatus iss = m_equipSlot.m_battleSystem.GetComponent<ISetStatus>();
-        if (iss != null)
+        if (m_itemData.itemType == ItemType.Potion)
         {
-            m_equipItemStat += iss.SetStatus;
+            return;
         }
-        //ISetItemEquipSlot isies = m_inventory.GetComponent<ISetItemEquipSlot>();
-        //if(isies != null)
-        //{
-        //    m_equipSlot = isies.SetItemEquipSlot(this);
-        //}
+        else
+        {
+            gameObject.GetComponent<RectTransform>().localScale = Vector3.one;
+            //m_inventory = transform.parent.parent.parent;    // 인벤토리 변수
+            m_image = gameObject.GetComponent<Image>();
+
+            m_equipSlot = CheckItemSlotType(this);
+            ISetStatus iss = m_equipSlot.m_battleSystem.GetComponent<ISetStatus>();
+            if (iss != null)
+            {
+                m_equipItemStat += iss.SetStatus;
+            }
+            //ISetItemEquipSlot isies = m_inventory.GetComponent<ISetItemEquipSlot>();
+            //if(isies != null)
+            //{
+            //    m_equipSlot = isies.SetItemEquipSlot(this);
+            //}
+        }
     }
 
     // Update is called once per frame

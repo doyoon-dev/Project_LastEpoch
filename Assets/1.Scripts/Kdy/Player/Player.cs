@@ -91,7 +91,7 @@ public class Player : BattleSystem
         #region 실험코드 나중에 지워야함
         if (Input.GetKeyDown(KeyCode.T))
         {
-            OnDamaged(50);
+            OnDamaged(13);
         }
         if (Input.GetKeyDown(KeyCode.K))
         {

@@ -10,6 +10,7 @@ public interface IGetPotion
 
 public class UsingPotion : MonoBehaviour, IGetPotion
 {
+    public PlayerUI m_playerUI;
     public GameObject m_potion = null;
     public int m_potionCnt = 0;
     public Text m_countText;
@@ -32,6 +33,7 @@ public class UsingPotion : MonoBehaviour, IGetPotion
             m_potion = potionImage;
             ObjectPool.Inst.Pool<GameObject>(potionImage);
             m_potionCnt++;
+            m_playerUI.m_usingPotionAct += m_playerUI.Recovery;
         }
         else
         {
@@ -52,6 +54,7 @@ public class UsingPotion : MonoBehaviour, IGetPotion
         }
         else
         {
+            // 포션 사용
             m_potionCnt--;
             m_countText.text = m_potion.ToString();
         }

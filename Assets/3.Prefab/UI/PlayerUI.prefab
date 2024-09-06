@@ -2607,6 +2607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b259960f535ed45bc6e25c06858c39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_playerUI: {fileID: 3996918205501953457}
   m_potion: {fileID: 0}
   m_potionCnt: 0
   m_countText: {fileID: 3996918205214002970}
@@ -3500,3 +3501,30 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5582768116593398519, guid: fd9ce09c7ec97ee46978dea5697f71e5, type: 3}
   m_PrefabInstance: {fileID: 8795000021672370375}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3996918203966599729 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5582768116593398518, guid: fd9ce09c7ec97ee46978dea5697f71e5, type: 3}
+  m_PrefabInstance: {fileID: 8795000021672370375}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6367083572474081317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3996918203966599729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62eba52d3e9b0044385628da2ef87948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_inventory: {fileID: 0}
+  m_itemMask:
+    serializedVersion: 2
+    m_Bits: 256
+  m_itemData: {fileID: 11400000, guid: 003a4c27795487f4991265f57aac8a96, type: 2}
+  m_onGridPositionX: 1
+  m_onGridPositionY: 1
+  m_frameImage: {fileID: 0}
+  m_image: {fileID: 0}
+  m_equipedItem: 0
