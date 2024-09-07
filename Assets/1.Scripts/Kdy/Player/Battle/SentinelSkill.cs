@@ -162,6 +162,7 @@ public class SentinelSkill : Skill
         IBattle ib;
         while (dist > 0)
         {
+            // 무기 콜라이더 지우고 박스로 플레이어 앞에 생성
             list = Physics.OverlapCapsule(m_warPathStartPos.position, m_warPathEndPos.position, 0.1f, m_enemyMask);
             foreach (Collider col in list)
             {
@@ -190,6 +191,7 @@ public class SentinelSkill : Skill
     // OnTrigger 함수로 무기 앞에 콜라이더 만들고 충돌 적 무시, 충돌 적 데미지 주기로 해야 할 지도
     public void LungeDamageBox()
     {
+        // 무기 콜라이더 지우고 박스로 플레이어 앞에 생성
         Collider[] list = Physics.OverlapCapsule(m_warPathStartPos.position, m_warPathEndPos.position, 0.1f, m_enemyMask);
         List<IBattle> enemyList = new List<IBattle>();
         foreach (Collider col in list)
