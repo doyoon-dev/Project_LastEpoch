@@ -35,6 +35,13 @@ public class MonsterController : BattleSystem
     [SerializeField]
     WaypointController m_waypointCtr;
 
+    [Header("공격범위")]
+    [SerializeField]
+    private Vector3 boxSize = new Vector3(2f, 2f, 2f);  // 공격 범위 크기 설정
+    [SerializeField]
+    private GameObject AttackArea;  // OverlapBox의 중심이 될 오브젝트 (몬스터의 위치)
+
+
     MoveTween m_moveTween;
     NavMeshAgent m_navAgent;
     MonsterAnimController m_monAnimCtr;
@@ -52,6 +59,7 @@ public class MonsterController : BattleSystem
     private int m_currentAttackIndex;
     private GameObject detectedPlayer;
     private MonsterManager m_manager;  // 매니저 참조
+    private float lastAttackTime = 0f;
 
     public bool IsDie { get { return m_state == BehaviourState.Die; } } //죽음 상태인지 체크
 
@@ -59,6 +67,11 @@ public class MonsterController : BattleSystem
 
     public MonsterAnimController.Motion GetMotion { get { return m_monAnimCtr.CurrentMotion; } }// 어느 포인트를 가고 있는지 체크
     #region Animation Event Methods
+
+    void AnimEvent_Attack()
+    {
+
+    }
     void AnimEvent_AttackFinished()
     {
         SetIdle(1f);
@@ -142,6 +155,12 @@ public class MonsterController : BattleSystem
 
     }
 
+    IEnumerator DamageAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // 일정 시간 대기 후
+        Attack();  // 공격 실행
+    }
+
     IEnumerator Coroutine_CalculateTargetPath(int frame)
     {
         while (m_state == BehaviourState.Chase) // 몬스터의 상태가 Chase일 때 계속 반복
@@ -163,6 +182,7 @@ public class MonsterController : BattleSystem
         m_isPatrol = false; // Patrol을 재시작하도록 설정
     }
 
+
     // 레이어 마스크 설정 메서드
     public void SetLayerMasks(LayerMask playerMask, LayerMask backgroundMask)
     {
@@ -179,12 +199,36 @@ public class MonsterController : BattleSystem
 
     bool CanAttack()
     {
+        // 타겟과의 거리 계산 및 공격 범위 확인
         var dist = transform.position - m_player.transform.position;
-        if (Mathf.Approximately(dist.sqrMagnitude, Mathf.Pow(m_attackDist, 2f)) || dist.sqrMagnitude < Mathf.Pow(m_attackDist, 2f))
+        return dist.sqrMagnitude < Mathf.Pow(m_attackDist, 2f);
+    }
+
+    // OverlapBox를 사용한 공격 범위 내 적 감지 및 데미지 입히기
+    public override void Attack()
+    {
+       
+
+        Collider[] playersInRange = Physics.OverlapBox(AttackArea.transform.position, boxSize * 0.5f, gameObject.transform.rotation, m_playerMask);
+
+        foreach (Collider player in playersInRange)
         {
-            return true;
+            Player targetPlayer = player.GetComponent<Player>();
+            if (targetPlayer != null)
+            {
+                targetPlayer.OnDamaged(m_stat.AttackDmg); // 플레이어에게 데미지 입힘 만약 스킬 데미지로 데미지 입히고 싶으면 (m_stat.AttackDmg)교체
+            }
         }
-        return false;
+    }
+
+
+    // Gizmos를 사용해 OverlapBox 범위를 시각적으로 확인
+    void OnDrawGizmos()
+    {
+        // 몬스터가 죽었을 때는 Gizmo를 그리지 않음
+        if (IsDie) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(AttackArea.transform.position, boxSize);
     }
 
     bool FindTarget()
@@ -253,6 +297,20 @@ public class MonsterController : BattleSystem
         StartCoroutine(ResumeMovementAfterDamage());
     }
 
+    void DamageToPlayer()
+    {
+        if (detectedPlayer != null)
+        {
+            Player player = detectedPlayer.GetComponent<Player>(); // 플레이어의 Player 컴포넌트를 가져오기
+
+            if (player != null)
+            {
+                player.OnDamaged(m_skillData.Dmg); // 플레이어에게 데미지를 입힘
+            }
+        }
+    }
+
+
     // 죽음 상태 처리
     void HandleDeath()
     {
@@ -263,6 +321,8 @@ public class MonsterController : BattleSystem
         m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정                                                                                       
         m_manager.HandleMonsterDeath(transform.position);// 매니저에게 몬스터가 죽었다고 알림
         SetState(BehaviourState.Die);
+        // 공격 범위 비활성화 (박스가 보이지 않도록 설정)
+        AttackArea.SetActive(false);
     }
 
     //몬스터 차례대로 공격 모션
@@ -273,9 +333,11 @@ public class MonsterController : BattleSystem
         {
             case 0:
                 m_monAnimCtr.Play(MonsterAnimController.Motion.Attack1);
+                StartCoroutine(DamageAfterDelay(0.5f)); // 첫 공격 후 0.5초 후 데미지 적용
                 break;
             case 1:
                 m_monAnimCtr.Play(MonsterAnimController.Motion.Attack2);
+                StartCoroutine(DamageAfterDelay(0.7f)); // 두 번째 공격 후 0.7초 후 데미지 적용
                 break;
         }
 
@@ -305,6 +367,7 @@ public class MonsterController : BattleSystem
                             dir.y = 0f;
                             transform.forward = dir.normalized;
                             MonAttackCombo();
+                            lastAttackTime = Time.time;  // 공격 시간 갱신
                             return;
                         }
                         // 타켓을 찾아 공격 가능하지 않으면 쫓아가기
@@ -397,12 +460,13 @@ public class MonsterController : BattleSystem
         m_navAgent = GetComponent<NavMeshAgent>();
         m_renderers = GetComponentsInChildren<Renderer>();
         m_player = FindObjectOfType<Player>();
+        
     }
 
     void Update()
     {
         BehaviourProcess();
-        
+       
     }
 
 

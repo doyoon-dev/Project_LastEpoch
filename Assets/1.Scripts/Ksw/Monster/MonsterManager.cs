@@ -21,19 +21,11 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     [SerializeField]
     private GameObject[] m_monsterPrefabs;
 
-    [Header("아이템 프리팹 목록")]
-    [SerializeField]
-    private GameObject[] m_dropItemPrefabs;
-
-
-    [Header("아이템 드롭 확률 목록")]
-    [SerializeField]
-    private float[] m_dropChances;
+    [Header("아이템 드롭 매니저")]
+    public ItemDropManager itemDropManager; // 아이템 드롭 매니저 
 
     public WaypointController waypointController;
     private Vector3 lastSpawnPosition = Vector3.zero; // 마지막 소환 위치 저장
-  
-
 
     void Start()
     {
@@ -103,7 +95,8 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     // 몬스터가 죽을 때 호출되는 메서드
     public void HandleMonsterDeath(Vector3 position)
     {
-        DropItem(position);
+        // 아이템 드롭 매니저에서 아이템 드롭 메서드 호출
+        itemDropManager.DropItems(position);
     }
 
     // 특정 위치의 다음 웨이포인트 인덱스를 얻는 메서드
@@ -121,37 +114,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         return 0;
     }
 
-    // 아이템 드롭 메서드
-    private void DropItem(Vector3 position)
-    {
-        if (m_dropItemPrefabs.Length != m_dropChances.Length)
-        {
-            Debug.LogError("아이템 프리팹, 드롭 확률, 아이템 데이터 배열의 길이가 일치하지 않습니다.");
-            return;
-        }
-
-        for (int i = 0; i < m_dropItemPrefabs.Length; i++)
-        {
-            float dropChance = m_dropChances[i];
-            if (UnityEngine.Random.Range(0f, 100f) <= dropChance)
-            {
-                GameObject dropItemObject = ObjectPool.Inst.Pool<DropItem>(m_dropItemPrefabs[i]);
-                DropItem dropItem = dropItemObject.GetComponent<DropItem>();
-                dropItem.transform.position = position;
-                dropItem.gameObject.SetActive(true);
-
-                // 아이템 살짝 튀어오르게 하는거 설정;
-                Vector3 launchForce = new Vector3(Random.Range(-1f, 1f), Random.Range(4f, 6f), Random.Range(-1f, 1f));
-                // 아이템을 튀어오르게 합니다.
-                dropItem.Launch(launchForce);
-
-
-            }
-        }
-    }
-
-   
-
+    
 
     // Update is called once per frame
     void Update()

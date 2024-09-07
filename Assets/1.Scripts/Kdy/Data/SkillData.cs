@@ -6,7 +6,7 @@ public struct SkillInform
 {
     public string Name;
     public int Mp;
-    public int Dmg;
+    public float Dmg;
     public float CoolTime;
     public int Channeling;
     public float knockback;
