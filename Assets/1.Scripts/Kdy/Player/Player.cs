@@ -103,17 +103,17 @@ public class Player : BattleSystem
     public override void OnDamaged(float damage)
     {
         Debug.Log($"플레이어가 {damage}의 데미지를 받았습니다.");  // 데미지 로그
-        m_curHp -= damage;  // 현재 체력에서 데미지를 뺌
+        m_curHealPoint -= damage;  // 현재 체력에서 데미지를 뺌
 
-        if (m_curHp <= 0)
+        if (m_curHealPoint <= 0)
         {
-            m_curHp = 0;
+            m_curHealPoint = 0;
             Debug.Log("플레이어가 죽었습니다.");
             Dead();  // 플레이어 사망 처리
         }
         else
         {
-            Debug.Log($"플레이어의 남은 체력: {m_curHp}");
+            Debug.Log($"플레이어의 남은 체력: {m_curHealPoint}");
         }
     }
 

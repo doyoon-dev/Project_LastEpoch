@@ -8,8 +8,16 @@ public interface IGetPotion
     void GetPotion(GameObject potionImage);
 }
 
-public class UsingPotion : MonoBehaviour, IGetPotion
+public interface IUsePotion
 {
+    void UsePotion();
+}
+
+public class UsingPotion : MonoBehaviour, IGetPotion, IUsePotion
+{
+    #region 실험용
+    public GameObject m_potionImage;
+    #endregion
     public PlayerUI m_playerUI;
     public GameObject m_potion = null;
     public int m_potionCnt = 0;
@@ -23,23 +31,31 @@ public class UsingPotion : MonoBehaviour, IGetPotion
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            GetPotion(m_potionImage);
+        }
     }
 
     public void GetPotion(GameObject potionImage)
     {
         if (m_potion == null)
         {
-            m_potion = potionImage;
-            ObjectPool.Inst.Pool<GameObject>(potionImage);
+            GameObject obj = ObjectPool.Inst.Pool<GameObject>(potionImage);
+            m_potion = obj;
+            m_potion.transform.SetParent(transform);
+            RectTransform objRect = m_potion.GetComponent<RectTransform>();
+            objRect.transform.localPosition = Vector3.zero;
+            objRect.transform.localScale = Vector3.one;
             m_potionCnt++;
-            m_playerUI.m_usingPotionAct += m_playerUI.Recovery;
+            m_countText.text = m_potionCnt.ToString();
+            //m_playerUI.m_usingPotionAct += m_playerUI.Recovery;
         }
         else
         {
             // 포션 개수(텍스트)만 증가
             m_potionCnt++;
-            m_countText.text = m_potion.ToString();
+            m_countText.text = m_potionCnt.ToString();
         }
     }
 
@@ -47,16 +63,18 @@ public class UsingPotion : MonoBehaviour, IGetPotion
     {
         if (m_potion == null) return;
 
-        if (m_potionCnt == 0)
+        if (m_potionCnt <= 1)
         {
-            m_potion = null;
+            m_potionCnt = 0;
+            m_countText.text = m_potionCnt.ToString();
             ObjectPool.Inst.Push<GameObject>(m_potion);
+            m_potion = null;
         }
         else
         {
             // 포션 사용
             m_potionCnt--;
-            m_countText.text = m_potion.ToString();
+            m_countText.text = m_potionCnt.ToString();
         }
     }
 }

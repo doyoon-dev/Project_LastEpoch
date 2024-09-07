@@ -60,10 +60,11 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
 {
     public BattleStat m_stat;
     public event UnityAction m_deadAlarm;
-    public event UnityAction<float, float> m_changeHp;
+    public event UnityAction<float, float, bool> m_changeHp;
     public event UnityAction<float, float> m_changeMp;
     protected IBattle m_target = null;
     public Item m_item;
+    bool m_recoveryCheck = false;
 
     public float m_curHp = 0.0f;
     public float m_curMp = 0.0f;
@@ -73,7 +74,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         set
         {
             m_curHp = Mathf.Clamp(value, 0.0f, m_stat.MaxHp);
-            m_changeHp?.Invoke(m_curHp / m_stat.MaxHp, m_stat.MaxHp);
+            m_changeHp?.Invoke(m_curHp / m_stat.MaxHp, m_stat.MaxHp, m_recoveryCheck);
         }
     }
     public float m_curMagicPoint
@@ -167,6 +168,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
 
     public virtual void SetDamage(Transform attacker, SkillInform skillData)
     {
+        m_recoveryCheck = false;
         // 체력 깎이는 로직
         m_curHealPoint -= skillData.Dmg;
 
@@ -175,6 +177,16 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         {
             m_curHealPoint = 0;
             Dead(); // 사망 처리
+        }
+    }
+
+    public void RecoveryHealPoint(float healpoint)
+    {
+        m_recoveryCheck = true;
+        m_curHealPoint += healpoint;
+        if (m_curHealPoint >= m_stat.MaxHp)
+        {
+            m_curHealPoint = m_stat.MaxHp;
         }
     }
 

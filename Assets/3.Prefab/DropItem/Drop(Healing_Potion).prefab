@@ -55,6 +55,9 @@ MonoBehaviour:
   m_itemData: {fileID: 0}
   m_onGridPositionX: 0
   m_onGridPositionY: 0
+  m_frameImage: {fileID: 0}
+  m_image: {fileID: 0}
+  m_equipedItem: 0
 --- !u!114 &5570396426122577742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,9 +73,10 @@ MonoBehaviour:
   m_itemMask:
     serializedVersion: 2
     m_Bits: 256
-  m_itemData: {fileID: 0}
+  m_itemData: {fileID: 11400000, guid: 003a4c27795487f4991265f57aac8a96, type: 2}
   dropChance: 0
   m_itemImagePrefab: {fileID: 5582768116593398518, guid: fd9ce09c7ec97ee46978dea5697f71e5, type: 3}
+  lifetime: 10
 --- !u!54 &2388596296852568166
 Rigidbody:
   m_ObjectHideFlags: 0

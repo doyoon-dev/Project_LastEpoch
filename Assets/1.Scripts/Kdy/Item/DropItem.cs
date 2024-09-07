@@ -25,7 +25,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
     public GameObject m_itemImagePrefab;
 
 
-    public float lifetime = 10f; // 인벤토리에 들어가지 않은 아이템이 사라지기 전까지의 시간(성원)
+    public float lifetime = 2f; // 인벤토리에 들어가지 않은 아이템이 사라지기 전까지의 시간(성원)
     private Coroutine lifetimeCoroutine; //(성원)
     private bool isPickedUp = false; // 아이템이 인벤토리에 들어갔는지 여부 확인(성원)
 
@@ -110,16 +110,6 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
         }
 
     }
-
-    // 획득 아이템 인벤토리에 List에 저장하는 코드 테스트 중
-    //public void CheckDropItemTest(Inventory inven)
-    //{
-    //    IGetItemToList igitl = inven.GetComponent<IGetItemToList>();
-    //    if(igitl != null)
-    //    {
-    //        igitl.GetItemToList(m_itemData);
-    //    }
-    //}
 
     public void Initialize(ItemData itemData)
     {
