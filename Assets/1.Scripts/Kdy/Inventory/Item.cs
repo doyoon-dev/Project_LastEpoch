@@ -44,7 +44,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public ItemData m_itemData;
     public int m_onGridPositionX;       // 인벤토리 내의 아이템 위치 x좌표
     public int m_onGridPositionY;       // 인벤토리 내의 아이템 위치 y좌표
-    public Image m_frameImage;
+    public GameObject m_frameImage;
     
 
     public Transform m_orgPosition { get; private set; }  // 원래 위치
@@ -56,7 +56,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
 
     Item m_curItem;
     Vector2 m_dragOffset = Vector2.zero;
-    Image m_image;
+    public Image m_image;
     Transform m_parentPos;
     public bool m_equipedItem = false;
 
@@ -147,21 +147,28 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.GetComponent<RectTransform>().localScale = Vector3.one;
-        //m_inventory = transform.parent.parent.parent;    // 인벤토리 변수
-        m_image = gameObject.GetComponent<Image>();
-
-        m_equipSlot = CheckItemSlotType(this);
-        ISetStatus iss = m_equipSlot.m_battleSystem.GetComponent<ISetStatus>();
-        if (iss != null)
+        if (m_itemData.itemType == ItemType.Potion)
         {
-            m_equipItemStat += iss.SetStatus;
+            return;
         }
-        //ISetItemEquipSlot isies = m_inventory.GetComponent<ISetItemEquipSlot>();
-        //if(isies != null)
-        //{
-        //    m_equipSlot = isies.SetItemEquipSlot(this);
-        //}
+        else
+        {
+            gameObject.GetComponent<RectTransform>().localScale = Vector3.one;
+            //m_inventory = transform.parent.parent.parent;    // 인벤토리 변수
+            m_image = gameObject.GetComponent<Image>();
+
+            m_equipSlot = CheckItemSlotType(this);
+            ISetStatus iss = m_equipSlot.m_battleSystem.GetComponent<ISetStatus>();
+            if (iss != null)
+            {
+                m_equipItemStat += iss.SetStatus;
+            }
+            //ISetItemEquipSlot isies = m_inventory.GetComponent<ISetItemEquipSlot>();
+            //if(isies != null)
+            //{
+            //    m_equipSlot = isies.SetItemEquipSlot(this);
+            //}
+        }
     }
 
     // Update is called once per frame
@@ -223,7 +230,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     void SetEquip()
     {
         //m_isEquiped = true;
-        m_frameImage.enabled = false;
+        m_frameImage.SetActive(false);
         m_equipedItem = true;
         EquipSlotItem(m_equipSlot);
         transform.SetParent(m_equipSlot.transform);

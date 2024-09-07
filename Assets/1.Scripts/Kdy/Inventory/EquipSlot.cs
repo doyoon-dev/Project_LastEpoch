@@ -73,7 +73,7 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem, IIsEquiped
         //    m_item.m_equipItemStat += iss.SetStatus;
         //}
         m_item.m_equipedItem = false;
-        m_item.m_frameImage.enabled = true;
+        m_item.m_frameImage.SetActive(true);
         m_bgImage.gameObject.SetActive(true);
         m_isEquiped = false;
     }

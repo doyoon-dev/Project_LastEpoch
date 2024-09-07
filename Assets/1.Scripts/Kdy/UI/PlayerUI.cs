@@ -1,17 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 
+
+public interface IUsingPotionAct
+{
+    event UnityAction m_usingPotionAct;
+}
+
 public class PlayerUI : MonoBehaviour
 {
+    public event UnityAction<float, bool> m_usingPotionAct = null;
     public Player m_player;
     public Image m_hpUI;
     public Image m_mpUI;
     public Text m_hpText;
     public Text m_mpText;
     public SkillCoolTime m_skillCoolTime;
+    public UsingPotion m_potionFlame;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +31,10 @@ public class PlayerUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            m_usingPotionAct?.Invoke(10, true);
+        }
     }
 
 
@@ -35,9 +47,11 @@ public class PlayerUI : MonoBehaviour
 
     public void HealthPoint(float value, float MaxHpValue)
     {
+        Debug.Log(value * 100);
         StopAllCoroutines();
         StartCoroutine(DecreaseHp(value, true));
-        m_hpText.text = Mathf.CeilToInt(value * MaxHpValue).ToString() + " / " + Mathf.CeilToInt(MaxHpValue).ToString();
+        //m_hpText.text = Mathf.CeilToInt(value * MaxHpValue).ToString() + " / " + Mathf.CeilToInt(MaxHpValue).ToString();
+        m_hpText.text = (value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
         //m_hpUI.fillAmount = value;
     }
 
@@ -48,7 +62,47 @@ public class PlayerUI : MonoBehaviour
         m_mpText.text = Mathf.CeilToInt(value * MaxMpValue).ToString() + " / " + Mathf.CeilToInt(MaxMpValue).ToString();
     }
 
-    IEnumerator DecreaseHp(float value, bool isHp)
+    // 실제 플레이어의 체력, 마나가 줄도록 만드는 코드 추가해야 함
+    IEnumerator DecreaseHp(float value, bool isHp)// value : 현재 데미지를 입은 후 플레이어의 체력
+    {
+        if (isHp)
+        {
+            float beforeHp = m_hpUI.fillAmount;
+            float hp = m_hpUI.fillAmount - value;
+            float val = 0;
+            //while (!Mathf.Approximately(m_hpUI.fillAmount, value))
+            //{
+
+            //    m_hpUI.fillAmount = Mathf.Lerp(m_hpUI.fillAmount, value, Time.deltaTime * 2);
+            //    yield return null;
+            //}
+            while (val <= hp)
+            {
+                val += Time.deltaTime * 0.5f;
+                // m_hpUI.fillAmount = (데미지를 입기 전 hp) - val;
+                m_hpUI.fillAmount = beforeHp - val;
+                yield return null;
+            }
+            
+            m_hpUI.fillAmount = value;
+        }
+        else
+        {
+            while (!Mathf.Approximately(m_mpUI.fillAmount, value))
+            {
+                m_mpUI.fillAmount = Mathf.Lerp(m_mpUI.fillAmount, value, Time.deltaTime * 2);
+                yield return null;
+            }
+            m_mpUI.fillAmount = value;
+        }
+    }
+
+    public void Recovery(float value, bool isHp)
+    {
+        StopAllCoroutines();
+        StartCoroutine(RecoveryHp(value, isHp));
+    }
+    IEnumerator RecoveryHp(float value, bool isHp)
     {
         if (isHp)
         {
