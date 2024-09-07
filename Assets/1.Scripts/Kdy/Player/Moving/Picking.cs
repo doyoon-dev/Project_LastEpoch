@@ -64,7 +64,7 @@ public class Picking : MonoBehaviour
                 ICheckDropItem icp = hit.transform.GetComponent<ICheckDropItem>();
                 if (icp != null)
                 {
-                    icp.CheckDropItem(m_player.m_inventory);
+                    icp.CheckDropItem(m_player.m_inventory, m_player.m_playerUI);
                 }
             }
         }

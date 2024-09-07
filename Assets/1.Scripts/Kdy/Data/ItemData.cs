@@ -26,4 +26,5 @@ public class ItemData : ScriptableObject
     public int itemHeight;
     public float atkPower;
     public float defense;
+    public float recoveryAmount;
 }

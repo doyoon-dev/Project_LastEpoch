@@ -22,6 +22,7 @@ public class Player : BattleSystem
     public int attackDamage = 20;
     public float attackRange = 3f;
     public Inventory m_inventory;
+    public PlayerUI m_playerUI;
     public LayerMask m_enemyMask;
 
     int m_clickCnt = 0;
@@ -36,6 +37,7 @@ public class Player : BattleSystem
         m_changeMp += SceneData.Inst.m_playerHpMpUI.ManaPoint;
         m_deadAlarm += () =>
         {
+            m_myAnim.SetTrigger("Die");
             Debug.Log("죽음");
         };
     }
@@ -89,7 +91,7 @@ public class Player : BattleSystem
         #region 실험코드 나중에 지워야함
         if (Input.GetKeyDown(KeyCode.T))
         {
-            OnDamaged(50);
+            OnDamaged(13);
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
