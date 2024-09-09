@@ -41,7 +41,7 @@ public class UsingPotion : MonoBehaviour, IGetPotion, IUsePotion
     {
         if (m_potion == null)
         {
-            GameObject obj = ObjectPool.Inst.Pool<GameObject>(potionImage);
+            GameObject obj = ObjectPool.Inst.Pull<GameObject>(potionImage);
             m_potion = obj;
             m_potion.transform.SetParent(transform);
             RectTransform objRect = m_potion.GetComponent<RectTransform>();

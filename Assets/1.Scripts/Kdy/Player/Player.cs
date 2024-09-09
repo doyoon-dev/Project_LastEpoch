@@ -45,7 +45,7 @@ public class Player : BattleSystem
     void ExDropItemOnDeath()
     {
         int rnd = Random.Range(0, m_dropItemPrefabs.Length);
-        GameObject dropItemObject = ObjectPool.Inst.Pool<DropItem>(m_dropItemPrefabs[rnd]);
+        GameObject dropItemObject = ObjectPool.Inst.Pull<DropItem>(m_dropItemPrefabs[rnd]);
         DropItem dropItem = dropItemObject.GetComponent<DropItem>();
         ItemData dropItemData = dropItemObject.GetComponent<Item>().m_itemData;
         dropItem.Initialize(dropItemData); //드롭할 아이템 데이터 설정

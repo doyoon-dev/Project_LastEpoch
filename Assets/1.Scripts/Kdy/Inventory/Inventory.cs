@@ -88,7 +88,7 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
 
     public void SetItemToInventory(GameObject itemImagePrefab)
     {
-        //GameObject itemaa = ObjectPool.Inst.Pool<Item>(itemImagePrefab, null);
+        //GameObject itemaa = ObjectPool.Inst.Pull<Item>(itemImagePrefab, null);
         //if (FindEmptySlot(itemaa.GetComponent<Item>()) == null)
         //{
         //    return;
