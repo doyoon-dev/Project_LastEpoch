@@ -46,8 +46,8 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
     }
     void Start()
     {
-        m_itemNameUIPrefabObj = ObjectPool.Inst.Pull<GameObject>(m_itemNameUIPrefab, SceneData.Inst.m_itemNameUIPos);
-        m_itemNameUIPrefabObj.GetComponent<ItemNameUI>().Initialize(m_itemNameUIPos, m_itemData, gameObject);
+        //m_itemNameUIPrefabObj = ObjectPool.Inst.Pull<GameObject>(m_itemNameUIPrefab, SceneData.Inst.m_itemNameUIPos);
+        //m_itemNameUIPrefabObj.GetComponent<ItemNameUI>().Initialize(m_itemNameUIPos, m_itemData, gameObject);
         // 아이템이 활성화될 때 생명주기 타이머 시작(성원)
         lifetimeCoroutine = StartCoroutine(StartLifetimeTimer());
     }
@@ -126,7 +126,8 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
 
     public void NameUI()
     {
-
+        m_itemNameUIPrefabObj = ObjectPool.Inst.Pull<GameObject>(m_itemNameUIPrefab, SceneData.Inst.m_itemNameUIPos);
+        m_itemNameUIPrefabObj.GetComponent<ItemNameUI>().Initialize(m_itemNameUIPos, m_itemData, gameObject);
     }
 
 }
