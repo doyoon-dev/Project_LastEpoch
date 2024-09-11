@@ -74,11 +74,19 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
-    public void ManaPoint(float value, float MaxMpValue)
+    public void ManaPoint(float value, float MaxMpValue, bool isUsingSkill)
     {
-        StopAllCoroutines();
-        StartCoroutine(DamagedResourcePoint(value, false));
-        m_mpText.text = Mathf.CeilToInt(value * MaxMpValue).ToString() + " / " + Mathf.CeilToInt(MaxMpValue).ToString();
+        if (isUsingSkill)
+        {
+            StopAllCoroutines();
+            StartCoroutine(DamagedResourcePoint(value, false));
+            m_mpText.text = Mathf.CeilToInt(value * MaxMpValue).ToString() + " / " + Mathf.CeilToInt(MaxMpValue).ToString();
+        }
+        else
+        {
+            Recovery(value, false);
+            m_mpText.text = (value * MaxMpValue).ToString() + " / " + (MaxMpValue).ToString();
+        }
     }
 
     // 실제 플레이어의 체력, 마나가 줄도록 만드는 코드 추가해야 함
@@ -116,6 +124,7 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+    // 수정 필요
     public void Recovery(float value, bool isHp)
     {
         StopAllCoroutines();
@@ -141,5 +150,17 @@ public class PlayerUI : MonoBehaviour
             }
             m_mpUI.fillAmount = value;
         }
+    }
+
+    // 마나 채우는 함수
+    // 스킬 사용했을 때 마나 감소하고, 중지했을 때 차도록 만들기
+    IEnumerator RecoveryManaPoint(bool isUsingSkill)
+    {
+        while (!isUsingSkill || m_mpUI.fillAmount >= 1)
+        {
+            m_mpUI.fillAmount += Time.deltaTime * 0.5f;
+            yield return null;
+        }
+        m_mpUI.fillAmount = 1;
     }
 }

@@ -73,38 +73,6 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer == m_wallMask)
-        {
-            m_mr = other.transform.GetComponentsInChildren<MeshRenderer>();
-            for (int i = 0; i < m_mr.Length; i++)
-            {
-                for (int j = 0; j < m_mr[i].materials.Length; j++)
-                {
-                    m_mr[i].enabled = false;
-                    //Color color = m_mr[i].materials[j].color;
-                    //m_initColor.a = color.a;
-                    //color.a -= Time.deltaTime;
-                    //m_mr[i].materials[j].color = color;
-                }
-            }
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.layer == m_wallMask)
-        {
-            m_mr = other.transform.GetComponentsInChildren<MeshRenderer>();
-            for (int i = 0; i < m_mr.Length; i++)
-            {
-                for (int j = 0; j < m_mr[i].materials.Length; j++)
-                {
-                    m_mr[i].enabled = true;
-                }
-            }
-        }
-    }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == m_wallMask)

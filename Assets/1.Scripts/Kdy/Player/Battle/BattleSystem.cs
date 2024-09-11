@@ -61,7 +61,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
     public BattleStat m_stat;
     public event UnityAction m_deadAlarm;
     public event UnityAction<float, float, bool> m_changeHp;
-    public event UnityAction<float, float> m_changeMp;
+    public event UnityAction<float, float, bool> m_changeMp;
     protected IBattle m_target = null;
     public Item m_item;
     bool m_recoveryCheck = false;
@@ -83,7 +83,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         set
         {
             m_curMp = Mathf.Clamp(value, 0.0f, m_stat.MaxMp);
-            m_changeMp?.Invoke(m_curMp / m_stat.MaxMp, m_stat.MaxMp);
+            m_changeMp?.Invoke(m_curMp / m_stat.MaxMp, m_stat.MaxMp, true);
         }
     }
     protected float m_curDamage

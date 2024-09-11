@@ -87,7 +87,7 @@ public class Player : BattleSystem
                 m_clickCnt++;
             }
         }
-
+        
         #region 실험코드 나중에 지워야함
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -97,6 +97,10 @@ public class Player : BattleSystem
         {
             //ExDropItemOnDeath();
             ExCheckDropItem(m_inventory);
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            m_curMagicPoint = 30;
         }
         #endregion
     }
