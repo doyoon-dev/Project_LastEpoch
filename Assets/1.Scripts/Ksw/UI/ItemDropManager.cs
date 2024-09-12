@@ -80,7 +80,7 @@ public class ItemDropManager : MonoBehaviour
             float dropChance = dropChances[i];
             if (Random.Range(0f, 100f) <= dropChance)
             {
-                GameObject dropItemObject = ObjectPool.Inst.Pool<DropItem>(itemPrefabs[i]);
+                GameObject dropItemObject = ObjectPool.Inst.Pull<DropItem>(itemPrefabs[i]);
                 DropItem dropItem = dropItemObject.GetComponent<DropItem>();
                 dropItem.transform.position = position;
                 dropItem.gameObject.SetActive(true);

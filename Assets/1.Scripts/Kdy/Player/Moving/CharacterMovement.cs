@@ -51,7 +51,7 @@ public class CharacterMovement : CharacterProperty
             float delta = Time.deltaTime * m_moveStat.moveSpeed;
             if(delta > dist) delta = dist;
             transform.Translate(dir * delta, Space.World);
-            m_cam.transform.Translate(dir * delta, Space.World);
+            //m_cam.transform.Translate(dir * delta, Space.World);
             dist -= delta;
             yield return null;
         }

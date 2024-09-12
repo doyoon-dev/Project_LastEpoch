@@ -60,7 +60,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         GameObject monsterPrefab = m_monsterPrefabs[monsterIndex];
 
         // 오브젝트 풀에서 몬스터를 가져옴
-        GameObject monster = ObjectPool.Inst.Pool<MonsterController>(monsterPrefab);
+        GameObject monster = ObjectPool.Inst.Pull<MonsterController>(monsterPrefab);
         MonsterController monsterController = monster.GetComponent<MonsterController>();
         NavMeshAgent navAgent = monster.GetComponent<NavMeshAgent>();
 

@@ -26,7 +26,7 @@ public class ObjectPool : MonoBehaviour
     Dictionary<string, Queue<GameObject>> m_myPool = new Dictionary<string, Queue<GameObject>>();
 
     // 오브젝트 풀에서 꺼내기
-    public GameObject Pool<T>(GameObject org, Transform parent = null)
+    public GameObject Pull<T>(GameObject org, Transform parent = null)
     {
         string name = typeof(T).Name;
         if (m_myPool.ContainsKey(name))
