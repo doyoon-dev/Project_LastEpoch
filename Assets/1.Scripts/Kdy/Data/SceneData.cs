@@ -7,6 +7,8 @@ public class SceneData : MonoBehaviour
     public static SceneData Inst = null;
 
     public PlayerUI m_playerHpMpUI;
+    public Transform m_itemNameUIPos;
+    public Inventory m_inventory;
 
     private void Awake()
     {

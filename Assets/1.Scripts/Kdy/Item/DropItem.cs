@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public interface ICheckDropItem
 {
-    void CheckDropItem(Inventory inven, PlayerUI ui);
+    void CheckDropItem(Inventory inven, PlayerUI ui, GameObject nameUI);
 }
 
 // 획득 아이템 인벤토리에 List에 저장하는 코드 테스트 중
@@ -17,6 +17,9 @@ public interface ICheckDropItemTest
 
 public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
 {
+    public Transform m_itemNameUIPos;
+    public GameObject m_itemNameUIPrefab;
+    GameObject m_itemNameUIPrefabObj;
     public LayerMask m_itemMask;
     public ItemData m_itemData;
     public float dropChance;//드랍 확률
@@ -25,7 +28,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
     public GameObject m_itemImagePrefab;
 
 
-    public float lifetime = 10f; // 인벤토리에 들어가지 않은 아이템이 사라지기 전까지의 시간(성원)
+    public float lifetime = 2f; // 인벤토리에 들어가지 않은 아이템이 사라지기 전까지의 시간(성원)
     private Coroutine lifetimeCoroutine; //(성원)
     private bool isPickedUp = false; // 아이템이 인벤토리에 들어갔는지 여부 확인(성원)
 
@@ -43,6 +46,8 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
     }
     void Start()
     {
+        //m_itemNameUIPrefabObj = ObjectPool.Inst.Pull<GameObject>(m_itemNameUIPrefab, SceneData.Inst.m_itemNameUIPos);
+        //m_itemNameUIPrefabObj.GetComponent<ItemNameUI>().Initialize(m_itemNameUIPos, m_itemData, gameObject);
         // 아이템이 활성화될 때 생명주기 타이머 시작(성원)
         lifetimeCoroutine = StartCoroutine(StartLifetimeTimer());
     }
@@ -58,11 +63,12 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
         yield return new WaitForSeconds(lifetime); // 일정 시간 대기
         if (!isPickedUp) // 아이템이 인벤토리에 들어가지 않은 경우에만 처리
         {
+            ObjectPool.Inst.Push<GameObject>(m_itemNameUIPrefabObj);
             ObjectPool.Inst.Push<DropItem>(gameObject); // 객체 풀로 아이템 반환
         }
     }
 
-    public void CheckDropItem(Inventory inven, PlayerUI ui)
+    public void CheckDropItem(Inventory inven, PlayerUI ui, GameObject nameUI)
     {
         if(m_itemData.itemType == ItemData.ItemType.Potion)
         {
@@ -77,6 +83,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
                 }
 
                 isPickedUp = true; // 아이템이 인벤토리에 들어갔음을 표시(성원)
+                
                 ObjectPool.Inst.Push<Item>(gameObject); // 객체 풀로 아이템 반환
                 if (lifetimeCoroutine != null) StopCoroutine(lifetimeCoroutine); // 타이머 정지(성원)
             }
@@ -100,6 +107,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
                     {
                         igd.SetItemToInventory(m_itemImagePrefab);
                     }
+                    ObjectPool.Inst.Push<GameObject>(nameUI);
                     ObjectPool.Inst.Push<Item>(gameObject);
                 }
                 else
@@ -111,21 +119,15 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
 
     }
 
-    // 획득 아이템 인벤토리에 List에 저장하는 코드 테스트 중
-    //public void CheckDropItemTest(Inventory inven)
-    //{
-    //    IGetItemToList igitl = inven.GetComponent<IGetItemToList>();
-    //    if(igitl != null)
-    //    {
-    //        igitl.GetItemToList(m_itemData);
-    //    }
-    //}
-
     public void Initialize(ItemData itemData)
     {
         m_itemData = itemData;
     }
 
-    
+    public void NameUI()
+    {
+        m_itemNameUIPrefabObj = ObjectPool.Inst.Pull<GameObject>(m_itemNameUIPrefab, SceneData.Inst.m_itemNameUIPos);
+        m_itemNameUIPrefabObj.GetComponent<ItemNameUI>().Initialize(m_itemNameUIPos, m_itemData, gameObject);
+    }
 
 }
