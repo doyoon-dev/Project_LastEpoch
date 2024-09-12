@@ -88,6 +88,8 @@ public class Player : BattleSystem
             }
         }
 
+     
+
         #region 실험코드 나중에 지워야함
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -99,6 +101,9 @@ public class Player : BattleSystem
             ExCheckDropItem(m_inventory);
         }
         #endregion
+
+
+
     }
     public override void OnDamaged(float damage)
     {

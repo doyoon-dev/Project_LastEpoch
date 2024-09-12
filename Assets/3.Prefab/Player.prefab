@@ -4143,7 +4143,7 @@ GameObject:
   - component: {fileID: 5244370769833058613}
   m_Layer: 9
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4253,11 +4253,20 @@ MonoBehaviour:
     MaxHp: 100
     MaxMp: 51
     AttackDmg: 20
-    AttackRange: 1
+    AttackRange: 0
     Defense: 0
   m_item: {fileID: 0}
   m_curHp: 0
   m_curMp: 0
+  m_dropItemPrefabs:
+  - {fileID: 4738546326079335764, guid: 60bab98da76fcad4da0b20c752ffcee0, type: 3}
+  - {fileID: 2572756901322260195, guid: 0fab80f909ce65c4996ea0dee748058f, type: 3}
+  - {fileID: 3324046128257437528, guid: 9a3a648dbd087824cb3b73842e41c4f0, type: 3}
+  - {fileID: 8152502018427809719, guid: 520c604ae6740b84a8e34205dfe58243, type: 3}
+  - {fileID: 7902032457666372355, guid: 20cc772257513894594401026587d3b7, type: 3}
+  - {fileID: 7564730545186980701, guid: 65bc71014f2f4b540b0bb94501aced27, type: 3}
+  - {fileID: 4159682687083724937, guid: 1f7b82d0fdedff7419be4160cdcc1a52, type: 3}
+  m_itemData: {fileID: 11400000, guid: 8584b251692971d48af0193b13b425d3, type: 2}
   m_weaponStartPoint: {fileID: 5244370769042063078}
   m_weaponEndPoint: {fileID: 5244370770216268804}
   weaponPoint: {fileID: 5244370770216268804}
@@ -4265,6 +4274,7 @@ MonoBehaviour:
   attackDamage: 20
   attackRange: 3
   m_inventory: {fileID: 0}
+  m_playerUI: {fileID: 0}
   m_enemyMask:
     serializedVersion: 2
     m_Bits: 128
