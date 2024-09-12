@@ -17,6 +17,10 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     [SerializeField]
     private float spawnOffset; // 몬스터 간 거리 오프셋
 
+    [Header("보스 몬스터 프리팹")]
+    [SerializeField]
+    private GameObject bossMonsterPrefab; // 보스 몬스터 프리팹 추가
+
     [Header("몬스터 프리팹 목록")]
     [SerializeField]
     private GameObject[] m_monsterPrefabs;
@@ -92,6 +96,25 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
 
     }
 
+    // 보스 몬스터 스폰 메서드 추가
+    public void SpawnBossMonster()
+    {
+        GameObject boss = ObjectPool.Inst.Pool<BossMonster>(bossMonsterPrefab);
+        BossMonster bossController = boss.GetComponent<BossMonster>();
+        NavMeshAgent navAgent = boss.GetComponent<NavMeshAgent>();
+
+        bossController.Initialize(this, waypointController);
+
+        navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+
+        // 보스는 특정 위치에 소환되게 할 수 있음
+        Vector3 bossSpawnPosition = waypointController.GetBossSpawnPoint(); // 보스 전용 스폰 지점
+        boss.transform.position = bossSpawnPosition;
+
+       
+    }
+
+
     // 몬스터가 죽을 때 호출되는 메서드
     public void HandleMonsterDeath(Vector3 position)
     {
@@ -123,6 +146,12 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         if (Input.GetKeyDown(KeyCode.V))
         {
             SpawnMonster();
+        }
+
+        // B 키를 눌렀을 때 보스 몬스터 소환
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            SpawnBossMonster();
         }
     }
 }

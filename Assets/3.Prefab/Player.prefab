@@ -4143,7 +4143,7 @@ GameObject:
   - component: {fileID: 5244370769833058613}
   m_Layer: 9
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4253,7 +4253,7 @@ MonoBehaviour:
     MaxHp: 100
     MaxMp: 51
     AttackDmg: 20
-    AttackRange: 1
+    AttackRange: 0
     Defense: 0
   m_item: {fileID: 0}
   m_curHp: 0

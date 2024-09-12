@@ -15,6 +15,8 @@ public class MonsterAnimController : AnimController
         Attack2,
         Hit,
         Die,
+        Gathering,
+        SpAttack,
         Max
     }
     Motion m_curMotion = Motion.None;
