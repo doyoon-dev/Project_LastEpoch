@@ -171,7 +171,7 @@ public class Player : BattleSystem
         }
     }
 
-    
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
