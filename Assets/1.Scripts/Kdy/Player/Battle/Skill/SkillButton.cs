@@ -17,7 +17,7 @@ public class SkillButton : MonoBehaviour, IGetSkillData, ISkillAction
 {
     public event UnityAction<KeyCode> m_skillAct;
     public KeyCode m_skillKeyCode;
-    public Player m_player;
+    public GameObject m_player;
     public GameObject m_skillObj;
 
     // Start is called before the first frame update
@@ -31,7 +31,11 @@ public class SkillButton : MonoBehaviour, IGetSkillData, ISkillAction
     {
         if(Input.GetKey(m_skillKeyCode))
         {
-            m_skillAct?.Invoke(m_skillKeyCode);
+            ISkill_Lunge isl = m_player.GetComponent<ISkill_Lunge>();
+            if(isl != null)
+            {
+                isl.Skill_Lunge(m_skillKeyCode);
+            }
         }
     }
 

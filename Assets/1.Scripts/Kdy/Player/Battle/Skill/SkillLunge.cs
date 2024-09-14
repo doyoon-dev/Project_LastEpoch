@@ -11,17 +11,6 @@ public class SkillLunge : MonoBehaviour
     void Start()
     {
         
-        //m_skillBtn = transform.parent.GetComponent<SkillButton>();
-        //if (m_player == null)
-        //{
-        //    Debug.Log("Not Player");
-        //    m_player = m_skillBtn.m_player;
-        //}
-        //ISkillAction isa = m_skillBtn.GetComponent<ISkillAction>();
-        //if (isa != null)
-        //{
-        //    isa.m_skillAct += Skill_Lunge;
-        //}
     }
 
     // Update is called once per frame
