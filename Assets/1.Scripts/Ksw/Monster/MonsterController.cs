@@ -230,11 +230,72 @@ public class MonsterController : BattleSystem
     {
         // 몬스터가 죽었을 때는 Gizmo를 그리지 않음
         if (IsDie) return;
+
+        // 감지 범위 (m_detectDist)를 시각적으로 표시
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, m_detectDist);
+
+        //공격 범위 시각화를 유지
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(AttackArea.transform.position, boxSize);
     }
 
+    // 플레이어 방향으로 고개 돌리기 메서드
+    protected IEnumerator LookAtPlayer()
+    {
+        if(m_player ==null) yield break;
 
+        Vector3 direction = (m_player.transform.position - transform.position).normalized;
+        direction.y = 0f; // 수평면에서만 회전하도록 Y축을 0으로 설정
+
+        //회전 각도 계산
+        float angle = Vector3.Angle(transform.forward, direction);
+        if (angle > 180.0f) angle -= 360.0f;
+
+        //회전 방향 결정 
+        float rotDir = 1.0f;
+        if (Vector3.Dot(transform.right, direction) < 0.0f)
+        {
+            rotDir = -1.0f;
+        }
+          while (angle > 0.0f)
+        {
+            float delta = Time.deltaTime * 360.0f * m_moveStat.rotSpeed;
+            if (delta > angle) delta = angle;
+            angle -= delta;
+            transform.Rotate(Vector3.up * rotDir * delta, Space.World);
+            yield return null;
+        }
+
+    }
+
+    protected bool FindTarget()
+    {
+        // 플레이어가 없으면 바로 false 반환
+        if (m_player == null)
+        {
+            return false;
+        }
+
+        // 감지 범위 내에 플레이어가 있는지 확인
+        Collider[] playersInRange = Physics.OverlapSphere(transform.position, m_detectDist, m_playerMask);
+
+        foreach (Collider player in playersInRange)
+        {
+            Player targetPlayer = player.GetComponent<Player>();
+            if (targetPlayer != null)
+            {
+                detectedPlayer = player.gameObject; // 감지된 플레이어 저장
+                StartCoroutine(LookAtPlayer());// 타겟을 찾으면 플레이어 쪽으로 고개 돌리기
+                return true; // 타겟을 찾았으면 true 반환
+            }
+        }
+
+        detectedPlayer = null; // 감지된 플레이어가 없으면 null로 설정
+        return false;
+    }
+    
+    /*
     protected bool FindTarget()
     {
         //플레이어가 없으면 바로 false 반환
@@ -249,9 +310,7 @@ public class MonsterController : BattleSystem
         float rayHeight = this is BossMonster ? 2.0f : 0.5f;  // 보스는 높이를 2.0f, 일반 몬스터는 0.5f로 설정
         var originPos = transform.position + Vector3.up * rayHeight;  // 레이 시작점
         var targetPos = m_player.transform.position + Vector3.up * 1.0f;  // 플레이어 목표점 (머리 부분)
-
         var dir = targetPos - originPos;
-
         Debug.DrawRay(originPos, dir.normalized * m_detectDist, Color.green); //레이 쏘는거 확인
 
         if (Physics.Raycast(originPos, dir.normalized, out hit, m_detectDist, m_playerMask | m_BackgroundMask))
@@ -266,6 +325,7 @@ public class MonsterController : BattleSystem
         detectedPlayer = null;
         return false;
     }
+    */
 
     protected bool CheckArea(Vector3 target, float area)
     {
@@ -346,15 +406,9 @@ public class MonsterController : BattleSystem
         AttackArea.SetActive(false);
     }
 
-    //몬스터 차례대로 공격 모션
+    // 몬스터 차례대로 공격 모션
     protected void MonAttackCombo()
     {
-        //플레이어 방향쪽으로 헤드 돌리기
-        var dir = m_player.transform.position - transform.position;
-        dir.y = 0f;
-        Quaternion targetRotation = Quaternion.LookRotation(dir.normalized);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 360 * Time.deltaTime); // 회전 속도를 360도로 설정 (필요에 따라 조절 가능)
-
         // m_currentAttackIndex에 따라 공격 모션 선택
         switch (m_currentAttackIndex)
         {
@@ -367,7 +421,7 @@ public class MonsterController : BattleSystem
                 StartCoroutine(DamageAfterDelay(0.7f)); // 두 번째 공격 후 0.7초 후 데미지 적용
                 break;
         }
-
+        StartCoroutine(LookAtPlayer()); // 공격 전에 항상 플레이어를 바라보게 함
         // 다음 공격 모션으로 인덱스를 증가시킴 퍼센트 뒤에 숫자를 바꿀수록 공격 모션 추가
         m_currentAttackIndex = (m_currentAttackIndex + 1) % 2; // 0, 1 를 반복
     }
@@ -491,7 +545,6 @@ public class MonsterController : BattleSystem
     void Update()
     {
         BehaviourProcess();
-
     }
 
 
