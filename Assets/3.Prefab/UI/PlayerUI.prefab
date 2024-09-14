@@ -3060,47 +3060,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &8324343081671180894 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7032612885542639861, guid: 92103189a7d061f40bbcbe0535e8412e, type: 3}
-  m_PrefabInstance: {fileID: 1305724780278143659}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2411990166024800489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8324343081671180894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2521267416011a5499337bb2a4c6cc0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_useSkill:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BattleSystem, Assembly-CSharp
-        m_MethodName: UsedSkill
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_usingSkill: 0
-  m_player: {fileID: 0}
-  m_playerUI: {fileID: 3996918205501953457}
-  m_myAnim: {fileID: 0}
-  m_warPathStartPos: {fileID: 0}
-  m_warPathEndPos: {fileID: 0}
-  m_enemyMask:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!224 &8422873350589435248 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7420475791069911003, guid: 92103189a7d061f40bbcbe0535e8412e, type: 3}
@@ -3201,6 +3160,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skill_Lunge
       objectReference: {fileID: 0}
+    - target: {fileID: 7865920746580458127, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
+      propertyPath: m_playerUI
+      value: 
+      objectReference: {fileID: 3996918205501953457}
+    - target: {fileID: 7865920746580458127, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
+      propertyPath: m_enemyMask.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865920746580458127, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
+      propertyPath: m_useSkill.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865920746580458127, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
+      propertyPath: m_useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865920746580458127, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
+      propertyPath: m_useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UsedSkill
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865920746580458127, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
+      propertyPath: m_useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BattleSystem, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865920746580458127, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
+      propertyPath: m_useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
 --- !u!224 &2348801915682590646 stripped
@@ -3219,47 +3206,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &6591091645902810766 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5724186680087783523, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
-  m_PrefabInstance: {fileID: 1443447228633138925}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &538475815120887897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6591091645902810766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2521267416011a5499337bb2a4c6cc0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_useSkill:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BattleSystem, Assembly-CSharp
-        m_MethodName: UsedSkill
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_usingSkill: 0
-  m_player: {fileID: 0}
-  m_playerUI: {fileID: 3996918205501953457}
-  m_myAnim: {fileID: 0}
-  m_warPathStartPos: {fileID: 0}
-  m_warPathEndPos: {fileID: 0}
-  m_enemyMask:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1001 &7535474236619737356
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3373,44 +3319,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &8162887530517710935 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1863090642359058779, guid: 01f3960c0a6e0f645941d9c9a1da7777, type: 3}
-  m_PrefabInstance: {fileID: 7535474236619737356}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8400501006759727497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8162887530517710935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2521267416011a5499337bb2a4c6cc0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_useSkill:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BattleSystem, Assembly-CSharp
-        m_MethodName: UsedSkill
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_usingSkill: 0
-  m_player: {fileID: 0}
-  m_playerUI: {fileID: 3996918205501953457}
-  m_myAnim: {fileID: 0}
-  m_warPathStartPos: {fileID: 0}
-  m_warPathEndPos: {fileID: 0}
-  m_enemyMask:
-    serializedVersion: 2
-    m_Bits: 128

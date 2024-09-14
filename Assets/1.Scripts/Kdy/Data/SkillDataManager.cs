@@ -12,7 +12,7 @@ public struct SkillInform
     public float knockback;
 };
 
-public class SkillData : MonoBehaviour
+public class SkillDataManager : MonoBehaviour
 {
     public static Dictionary<string, SkillInform> m_skillData = new Dictionary<string, SkillInform>();
     
