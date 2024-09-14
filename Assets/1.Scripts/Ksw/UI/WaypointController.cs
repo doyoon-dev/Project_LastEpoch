@@ -8,6 +8,7 @@ using UnityEngine;
 public class WaypointController : MonoBehaviour
 {
     public Waypoint[] m_waypoints;
+    public Transform bossSpawnPoint; // 보스 몬스터 전용 스폰 지점
 
     void OnDrawGizmos()
     {
@@ -38,4 +39,19 @@ public class WaypointController : MonoBehaviour
         int randomIndex = Random.Range(0, m_waypoints.Length);
         return m_waypoints[randomIndex].transform.position;
     }
+    // 보스 몬스터 전용 스폰 지점 반환
+    public Vector3 GetBossSpawnPoint()
+    {
+        if (bossSpawnPoint != null)
+        {
+            return bossSpawnPoint.position;
+        }
+        else
+        {
+            // 보스 스폰 지점이 설정되지 않은 경우 기본 위치를 반환하거나 예외 처리
+            Debug.LogWarning("보스 스폰 지점이 설정되지 않았습니다. 기본 위치를 반환합니다.");
+            return Vector3.zero;
+        }
+    }
+
 }

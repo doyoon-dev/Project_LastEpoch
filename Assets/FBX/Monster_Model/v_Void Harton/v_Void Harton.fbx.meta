@@ -45,10 +45,30 @@ ModelImporter:
   - first:
       74: 4932879807566067322
     second: SlowChannelPart
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Harton Hair
+    second: {fileID: 2100000, guid: 30288a09bd03cab47ad2f1b9685c69ca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Void Spear
+    second: {fileID: 2100000, guid: cbf682e6e78399246a40835a2852308e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VoidHarton_mat
+    second: {fileID: 2100000, guid: 237f21cef6b69684eada41b4731dde5e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: void harton voidyness
+    second: {fileID: 2100000, guid: a5ea1c28e6309474c9aee6bd79372ffa, type: 2}
   materials:
     materialImportMode: 1
-    materialName: 0
+    materialName: 1
     materialSearch: 1
     materialLocation: 1
   animations:
@@ -130,7 +150,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 50
+    globalScale: 0.5
     rootMotionBoneName: HartonCrabKing
     hasTranslationDoF: 0
     hasExtraRoot: 0

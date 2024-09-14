@@ -17,7 +17,7 @@ public interface IIsMoving
 
 public class CharacterMovement : CharacterProperty
 {
-    [SerializeField] MoveStat m_moveStat;
+    [SerializeField] public MoveStat m_moveStat;
     [SerializeField] Camera m_cam;
     // Start is called before the first frame update
     void Start()
