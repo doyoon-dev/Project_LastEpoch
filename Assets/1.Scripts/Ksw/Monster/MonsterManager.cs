@@ -99,7 +99,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     // 보스 몬스터 스폰 메서드 추가
     public void SpawnBossMonster()
     {
-        GameObject boss = ObjectPool.Inst.Pool<BossMonster>(bossMonsterPrefab);
+        GameObject boss = ObjectPool.Inst.Pull<BossMonster>(bossMonsterPrefab);
         BossMonster bossController = boss.GetComponent<BossMonster>();
         NavMeshAgent navAgent = boss.GetComponent<NavMeshAgent>();
 

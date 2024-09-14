@@ -2272,10 +2272,11 @@ MonoBehaviour:
   m_curHp: 100
   m_curMp: 0
   m_state: 0
-  m_detectDist: 7
+  m_detectDist: 6
   m_attackDist: 3
+  m_chaseDist: 10
   m_waypointCtr: {fileID: 0}
-  boxSize: {x: 3, y: 2, z: 4}
+  boxSize: {x: 2.5, y: 2.5, z: 2.5}
   AttackArea: {fileID: 743081150931467700}
   m_playerMask:
     serializedVersion: 2
@@ -2342,10 +2343,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.0154568
-  m_Height: 2.4428737
+  m_Radius: 1.498064
+  m_Height: 2.996128
   m_Direction: 1
-  m_Center: {x: 0.088154554, y: 1.2564112, z: -0.01999998}
+  m_Center: {x: 0.088154554, y: 1.2564111, z: -0.08322334}
 --- !u!195 &8813861907267086167
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2355,7 +2356,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 2880857684377986955}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1
+  m_Radius: 1.8
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -2364,7 +2365,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1
-  m_Height: 2.5
+  m_Height: 2.51
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4

@@ -100,6 +100,11 @@ public class BossMonster : MonsterController
         }
     }
 
+    void BossMonComboAttack()
+    {
+
+    }
+
     // 랜덤 이동 시작
     void StartRoaming()
     {
@@ -107,13 +112,13 @@ public class BossMonster : MonsterController
         float rnd = Random.Range(0.0f, 360.0f);  // 360도 방향 중 무작위 선택
         Vector3 rndDir = Quaternion.Euler(0, rnd, 0) * Vector3.forward * Random.Range(0.0f, 7.0f);  // 랜덤 방향과 거리 설정
         Vector3 rndPos = startPos + rndDir;  // 시작 위치에서 이동할 목표 위치 계산
-        MoveToPos(rndPos, () => { StartCoroutine(DelayChangeNormal(Random.Range(1.5f, 4.0f))); });  // 이동 후 일정 시간 후에 다시 Idle 상태로
+        MoveToPos(rndPos, () => { StartCoroutine(DelayChangeIdle(Random.Range(1.5f, 4.0f))); });  // 이동 후 일정 시간 후에 다시 Idle 상태로
     }
 
 
 
     // 일정 시간 후 다시 Normal 상태로 전환하는 코루틴
-    IEnumerator DelayChangeNormal(float t)
+    IEnumerator DelayChangeIdle(float t)
     {
         yield return new WaitForSeconds(t);  // t초 대기
         SetIdle(1f);  // 다시 Idle 상태로
@@ -152,10 +157,14 @@ public class BossMonster : MonsterController
         m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // 사망 애니메이션 재생
         StopAllCoroutines();  // 현재 실행 중인 모든 코루틴 정지
         m_navAgent.isStopped = true;  // 네비게이션 에이전트 중지
-
-        m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정
         SetState(BehaviourState.Die);  // 상태를 Die로 변경
         AttackArea.SetActive(false);  // 공격 범위 비활성화
+        // 모든 콜라이더 비활성화
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (Collider collider in colliders)
+        {
+            collider.enabled = false;
+        }
         StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과
     }
 
