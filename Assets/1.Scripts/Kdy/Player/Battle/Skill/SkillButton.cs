@@ -18,7 +18,7 @@ public class SkillButton : MonoBehaviour, IGetSkillData, ISkillAction
     public event UnityAction<KeyCode> m_skillAct;
     public KeyCode m_skillKeyCode;
     public Player m_player;
-    GameObject m_skillObj;
+    public GameObject m_skillObj;
 
     // Start is called before the first frame update
     void Start()

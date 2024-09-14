@@ -13,7 +13,7 @@ public class SentinelSkill : Skill
     [SerializeField]
     Transform m_warPathEndPos;
     public LayerMask m_enemyMask;
-    
+    public Dictionary<string, SkillButton> m_skillBtns = new Dictionary<string, SkillButton>();
     bool m_warPathUse = false;
     bool m_lungeUse = false;
 
@@ -50,14 +50,19 @@ public class SentinelSkill : Skill
         base.R_SkillInputKey();
     }
 
+    void SkillCheck()
+    {
+
+    }
+
     // 출정 스킬(윈드밀)
     public virtual void Skill_WarPath(KeyCode inputKey)
     {
         // 스킬 키 누르고 있으면 마나를 다 쓸 때 까지 스킬 발동
         // 마우스 방향으로 이동가능
-        if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillData.m_skillData["WindMill"].Mp)
+        if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillDataManager.m_skillData["WindMill"].Mp)
         {
-            UsingSkillMp(SkillData.m_skillData["WindMill"].Mp * Time.deltaTime * SkillData.m_skillData["WindMill"].Channeling);
+            UsingSkillMp(SkillDataManager.m_skillData["WindMill"].Mp * Time.deltaTime * SkillDataManager.m_skillData["WindMill"].Channeling);
             if(!m_warPathUse)
             {
                 m_usingSkill = true;
@@ -74,7 +79,7 @@ public class SentinelSkill : Skill
             }
             
         }
-        if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillData.m_skillData["WindMill"].Mp)
+        if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillData["WindMill"].Mp)
         {
             m_myAnim.SetBool("SkillWarPath", false);
             m_warPathUse = false;
@@ -103,7 +108,7 @@ public class SentinelSkill : Skill
             IBattle ib = col.GetComponent<IBattle>();
             if (ib != null)
             {
-                ib.OnDamaged(SkillData.m_skillData["WindMill"].Dmg);
+                ib.OnDamaged(SkillDataManager.m_skillData["WindMill"].Dmg);
             }
         }
     }
@@ -122,9 +127,13 @@ public class SentinelSkill : Skill
         if (!m_usingSkill)
         {
             //if (Input.GetKeyDown(inputKey) && !m_lungeUse && m_player.m_curMagicPoint >= SkillData.m_skillData["Lunge"].Mp)
-            if (!m_lungeUse && m_player.m_curMagicPoint >= SkillData.m_skillData["Lunge"].Mp)
+            if (!m_lungeUse && m_player.m_curMagicPoint >= SkillDataManager.m_skillData["Lunge"].Mp)
             {
-                UsingSkillMp(SkillData.m_skillData["Lunge"].Mp);
+                if (m_player != null)
+                {
+                    Debug.Log("Player!!");
+                }
+                UsingSkillMp(SkillDataManager.m_skillData["Lunge"].Mp);
                 m_usingSkill = true;
                 IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
                 if (iusa != null)
@@ -135,7 +144,7 @@ public class SentinelSkill : Skill
                 ICoolTime ict = m_playerUI.m_skillCoolTime.GetComponent<ICoolTime>();
                 if (ict != null)
                 {
-                    ict.CoolTime(inputKey, SkillData.m_skillData["Lunge"].CoolTime);
+                    ict.CoolTime(inputKey, SkillDataManager.m_skillData["Lunge"].CoolTime);
                 }
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
@@ -187,7 +196,7 @@ public class SentinelSkill : Skill
         }
         for (int i = 0; i < enemyList.Count; i++)
         {
-            enemyList[i].OnDamaged(SkillData.m_skillData["Lunge"].Dmg);
+            enemyList[i].OnDamaged(SkillDataManager.m_skillData["Lunge"].Dmg);
             enemyList.Remove(enemyList[i]);
         }
         m_player.GetComponent<Collider>().isTrigger = false;
@@ -210,7 +219,7 @@ public class SentinelSkill : Skill
             Debug.Log("추가 : " + enemyList.Count);
             if (ib != null)
             {
-                ib.OnDamaged(SkillData.m_skillData["Lunge"].Dmg);
+                ib.OnDamaged(SkillDataManager.m_skillData["Lunge"].Dmg);
                 enemyList.Remove(ib);
                 Debug.Log("제거 : " + enemyList.Count);
             }

@@ -290,7 +290,7 @@ public class MonsterController : BattleSystem
         {
             var dir = (transform.position - attacker.position).normalized;
             dir.y = 0f;
-            var duration = SkillData.MaxKnockbackDuration * (skillData.knockback / SkillData.MaxKnockbackDist);
+            var duration = SkillDataManager.MaxKnockbackDuration * (skillData.knockback / SkillDataManager.MaxKnockbackDist);
             m_moveTween.Play(transform.position, transform.position + dir * skillData.knockback, duration);
         }
         // 데미지 처리 후 다시 이동 가능하도록 NavMeshAgent 재설정

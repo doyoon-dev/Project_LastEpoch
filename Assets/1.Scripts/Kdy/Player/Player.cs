@@ -222,7 +222,7 @@ public class Player : BattleSystem
             IDamageable id = col.GetComponent<IDamageable>();
             if (id != null)
             {
-                id.SetDamage(gameObject.transform, SkillData.m_skillData["Normal"]);
+                id.SetDamage(gameObject.transform, SkillDataManager.m_skillData["Normal"]);
             }
         }
     }
