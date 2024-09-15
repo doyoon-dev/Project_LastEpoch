@@ -64,6 +64,8 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
     public event UnityAction<float, float, bool> m_changeMp;
     protected IBattle m_target = null;
     public Item m_item;
+    
+
     bool m_recoveryCheck = false;
 
     public float m_curHp = 0.0f;
@@ -171,7 +173,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         m_recoveryCheck = false;
         // 체력 깎이는 로직
         m_curHealPoint -= skillData.Dmg;
-
+        
         // 체력이 0 이하일 때 처리
         if (m_curHealPoint <= 0)
         {

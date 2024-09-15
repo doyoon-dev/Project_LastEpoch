@@ -19,6 +19,7 @@ public class Player : BattleSystem
     [SerializeField]
     GameObject obj;
 
+    public GameObject m_hitEffect;
     public int attackDamage = 20;
     public float attackRange = 3f;
     public Inventory m_inventory;
@@ -108,7 +109,11 @@ public class Player : BattleSystem
     {
         Debug.Log($"플레이어가 {damage}의 데미지를 받았습니다.");  // 데미지 로그
         m_curHealPoint -= damage;  // 현재 체력에서 데미지를 뺌
-
+        // 수정필요
+        GameObject obj = Instantiate(m_hitEffect);
+        obj.transform.position = transform.position;
+        ParticleSystem ps = obj.GetComponentInChildren<ParticleSystem>();
+        ps.Play();
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
