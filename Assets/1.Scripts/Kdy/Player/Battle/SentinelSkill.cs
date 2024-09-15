@@ -4,7 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SentinelSkill : Skill
+public interface ISkill_Lunge
+{
+    void Skill_Lunge(KeyCode inputKey);
+}
+
+public class SentinelSkill : Skill, ISkill_Lunge
 {
     [SerializeField]
     Animator m_myAnim;
@@ -56,7 +61,7 @@ public class SentinelSkill : Skill
     }
 
     // 출정 스킬(윈드밀)
-    public virtual void Skill_WarPath(KeyCode inputKey)
+    public void Skill_WarPath(KeyCode inputKey)
     {
         // 스킬 키 누르고 있으면 마나를 다 쓸 때 까지 스킬 발동
         // 마우스 방향으로 이동가능
@@ -122,17 +127,13 @@ public class SentinelSkill : Skill
     }
 
     // 돌격 스킬
-    public virtual void Skill_Lunge(KeyCode inputKey)
+    public void Skill_Lunge(KeyCode inputKey)
     {
         if (!m_usingSkill)
         {
             //if (Input.GetKeyDown(inputKey) && !m_lungeUse && m_player.m_curMagicPoint >= SkillData.m_skillData["Lunge"].Mp)
             if (!m_lungeUse && m_player.m_curMagicPoint >= SkillDataManager.m_skillData["Lunge"].Mp)
             {
-                if (m_player != null)
-                {
-                    Debug.Log("Player!!");
-                }
                 UsingSkillMp(SkillDataManager.m_skillData["Lunge"].Mp);
                 m_usingSkill = true;
                 IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
