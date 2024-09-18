@@ -29,14 +29,14 @@ public class SkillButton : MonoBehaviour, IGetSkillData, ISkillAction
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(m_skillKeyCode))
-        {
-            ISkill_Lunge isl = m_player.GetComponent<ISkill_Lunge>();
-            if(isl != null)
-            {
-                isl.Skill_Lunge(m_skillKeyCode);
-            }
-        }
+        //if(Input.GetKey(m_skillKeyCode))
+        //{
+        //    ISkill_Lunge isl = m_player.GetComponent<ISkill_Lunge>();
+        //    if(isl != null)
+        //    {
+        //        isl.Skill_Lunge(m_skillKeyCode);
+        //    }
+        //}
     }
 
     public void GetSkillData(GameObject data)

@@ -30,6 +30,7 @@ public class SkillDataManager : MonoBehaviour
     private void Awake()
     {
         m_skillData.Add("Normal", new SkillInform() { Name = "Normal", Mp = 0, Dmg = 29, CoolTime = 0, Channeling = 0, knockback = 0 }) ;
+        m_skillData.Add("ErasingStrike", new SkillInform() { Name = "ErasingStrike", Mp = 10, Dmg = 29, CoolTime = 3.0f, Channeling = 0, knockback = 0 });
         m_skillData.Add("WindMill", new SkillInform() { Name = "WindMill", Mp = 1, Dmg = 29, CoolTime = 0.5f, Channeling = 10, knockback = 0 });
         m_skillData.Add("Lunge", new SkillInform() { Name = "Lunge", Mp = 8, Dmg = 15, CoolTime = 4.0f, Channeling = 0, knockback = 0 });
     }

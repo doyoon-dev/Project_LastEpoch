@@ -17,11 +17,15 @@ public class SentinelSkill : Skill, ISkill_Lunge
     Transform m_warPathStartPos;
     [SerializeField]
     Transform m_warPathEndPos;
+
+    public GameObject m_effectPos;
+    public GameObject m_skillEffect;
     public LayerMask m_enemyMask;
     public LayerMask m_backgroundMask;
     public Dictionary<string, SkillButton> m_skillBtns = new Dictionary<string, SkillButton>();
     bool m_warPathUse = false;
     bool m_lungeUse = false;
+    bool m_strikeUse = false;
 
     // Start is called before the first frame update
     void Start()
@@ -32,8 +36,17 @@ public class SentinelSkill : Skill, ISkill_Lunge
     // Update is called once per frame
     void Update()
     {
-        Skill_WarPath(KeyCode.W);
+        if (Input.GetKey(KeyCode.Q))
+        {
+            Skill_ErasingStrike(KeyCode.Q);
+        }
         
+        Skill_WarPath(KeyCode.W);
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            Skill_Lunge(KeyCode.E);
+        }
         //Skill_Lunge(KeyCode.E);
     }
 
@@ -60,6 +73,62 @@ public class SentinelSkill : Skill, ISkill_Lunge
     void SkillCheck()
     {
 
+    }
+
+    // Q 스킬
+    public void Skill_ErasingStrike(KeyCode inputKey)
+    {
+        if (!m_usingSkill)
+        {
+            if (m_player.m_curMagicPoint >= SkillDataManager.m_skillData["ErasingStrike"].Mp && !m_strikeUse)
+            {
+                m_player.StopAllCoroutines();
+                m_myAnim.SetTrigger("SkillStrike");
+                m_strikeUse = true;
+                UsingSkillMp(SkillDataManager.m_skillData["ErasingStrike"].Mp);
+                m_usingSkill = true;
+                IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
+                if (iusa != null)
+                {
+                    iusa.m_usableSkillAct += () => { m_strikeUse = false; };
+                }
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+                {
+                    Vector3 dir = hit.point - transform.position;
+                    dir.y = 0;
+                    transform.forward = dir;
+                }
+                ICoolTime ict = m_playerUI.m_skillCoolTime.GetComponent<ICoolTime>();
+                if (ict != null)
+                {
+                    ict.CoolTime(inputKey, SkillDataManager.m_skillData["ErasingStrike"].CoolTime);
+                }
+
+            }
+        }
+    }
+
+    public void SKill_ErasingStrike_Damage()
+    {
+        Collider[] list = Physics.OverlapBox(m_warPathStartPos.position, new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity, m_enemyMask);
+        foreach (Collider col in list)
+        {
+            IBattle ib = col.GetComponent<IBattle>();
+            if (ib != null)
+            {
+                ib.OnDamaged(SkillDataManager.m_skillData["ErasingStrike"].Dmg);
+            }
+        }
+    }
+    public void Skill_ErasingStrike_EffectOn()
+    {
+        m_skillEffect.SetActive(true);
+    }
+    public void Skill_ErasingStrike_EffectOff()
+    {
+        m_skillEffect.SetActive(false);
+        m_usingSkill = false;
     }
 
     // 출정 스킬(윈드밀)

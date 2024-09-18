@@ -40,7 +40,7 @@ public class Picking : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask | m_enemyMask))
                 {
-                    // 몬스터 클릭 됐을 때 -> BattleSystem의 MoveToAttack 실행
+                    // 몬스터 우클릭 됐을 때 -> BattleSystem의 MoveToAttack 실행
                     if ((1 << hit.transform.gameObject.layer & m_enemyMask) != 0)
                     {
                         m_moveAttackAct?.Invoke(hit.transform);

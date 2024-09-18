@@ -12,6 +12,9 @@ public class AnimEvent : MonoBehaviour
     public UnityEvent m_atkEvent;
     public UnityEvent m_skillWarPath;
     public UnityEvent m_skillLunge;
+    public UnityEvent m_skillStrikeAtk;
+    public UnityEvent m_skillStrikeEffectOn;
+    public UnityEvent m_skillStrikeEffectOff;
 
     // Start is called before the first frame update
     void Start()
@@ -53,5 +56,20 @@ public class AnimEvent : MonoBehaviour
     public void Skill_Lunge()
     {
         m_skillLunge?.Invoke();
+    }
+
+    public void Skill_StrikeDmg()
+    {
+        m_skillStrikeAtk?.Invoke();
+    }
+
+    public void Skill_StrikeOn()
+    {
+        m_skillStrikeEffectOn?.Invoke();
+    }
+
+    public void Skill_StrikeOff()
+    {
+        m_skillStrikeEffectOff?.Invoke();
     }
 }
