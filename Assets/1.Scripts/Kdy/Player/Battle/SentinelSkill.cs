@@ -185,6 +185,8 @@ public class SentinelSkill : Skill, ISkill_Lunge
             if (ib != null)
             {
                 ib.OnDamaged(SkillDataManager.m_skillData["WindMill"].Dmg);
+                // 나중에 합칠 때 아래 코드 씀
+                //ib.OnDamaged(SkillDataManager.m_skillData["WindMill"].Dmg, SkillDataManager.m_skillData["WindMill"]);
             }
         }
     }

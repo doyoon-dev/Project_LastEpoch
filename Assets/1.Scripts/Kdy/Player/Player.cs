@@ -228,6 +228,7 @@ public class Player : BattleSystem
             if (id != null)
             {
                 id.SetDamage(gameObject.transform, SkillDataManager.m_skillData["Normal"]);
+                //id.SetDamage(gameObject.transform, m_stat.AttackDmg);
             }
         }
     }
