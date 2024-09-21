@@ -169,8 +169,6 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         SetDamage(null, new SkillInform { Dmg = damage }); // skillData가 없는 경우 damage만 적용
     }
 
-    
-
     public virtual void SetDamage(Transform attacker, SkillInform skillData)
     {
         m_recoveryCheck = false;

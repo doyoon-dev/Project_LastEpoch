@@ -9966,6 +9966,10 @@ PrefabInstance:
       propertyPath: m_inventory
       value: 
       objectReference: {fileID: 834145223}
+    - target: {fileID: 5244370769833058608, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
+      propertyPath: m_skillData
+      value: 
+      objectReference: {fileID: 11400000, guid: 5c27871a507135e4bb9732c0e5371cfc, type: 2}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -12003,6 +12007,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c3ad2ef220befa4fb43513017e225e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_skillDatas:
+  - {fileID: 11400000, guid: eb1faffda9601fd4ba04dcc3c013e073, type: 2}
+  - {fileID: 11400000, guid: 5c27871a507135e4bb9732c0e5371cfc, type: 2}
+  - {fileID: 11400000, guid: 3cf38474be6997b48a0f699462aab933, type: 2}
+  - {fileID: 11400000, guid: 010a091a40fb8f640af7892620a67c31, type: 2}
   attackArea: 0
   attack: 0
   knockback: 0
