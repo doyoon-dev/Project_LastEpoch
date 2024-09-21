@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 610938c3d906a084a9fc75470c2233ba, type: 3}
-  m_Name: Normal
+  m_Name: MonsterDmg
   m_EditorClassIdentifier: 
-  Name: Normal
+  Name: MonsterDmg
   Mp: 0
-  Dmg: 20
+  Dmg: 0
   CoolTime: 0
   Channeling: 0
   knockback: 0

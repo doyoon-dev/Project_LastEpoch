@@ -259,7 +259,7 @@ public class MonsterController : BattleSystem
             Player targetPlayer = player.GetComponent<Player>();
             if (targetPlayer != null)
             {
-                targetPlayer.OnDamaged(m_stat.AttackDmg); // 플레이어에게 데미지 입힘
+                targetPlayer.SetDamage(SkillDataManager.m_skillDataDic["MonsterDmg"]); // 플레이어에게 데미지 입힘
                                                           // 만약 스킬 데미지로 데미지 입히고 싶으면 (m_skillData.AttackDmg)교체
 
                                                                                                                  
@@ -378,7 +378,7 @@ public class MonsterController : BattleSystem
         return false;
     }
 
-    public override void SetDamage(SkillInform skillData)
+    public override void SetDamage(SkillData skillData)
     {
         if (IsDie) return;  // 이미 죽어있다면 처리하지 않음
         if (m_state == BehaviourState.Damaged) return;  // 중복 Hit 애니메이션 방지
@@ -449,22 +449,6 @@ public class MonsterController : BattleSystem
         }
     }
 
-    /*
-    void DamageToPlayer()
-    {
-        if (detectedPlayer != null)
-        {
-            Player player = detectedPlayer.GetComponent<Player>(); // 플레이어의 Player 컴포넌트를 가져오기
-
-            if (player != null)
-            {
-                // SkillInform을 만들어서 전달
-                SkillInform skillData = new SkillInform { Dmg = m_skillData.Dmg, knockback = 0 };
-                player.OnDamaged(m_skillData.Dmg, skillData, transform); // 필요한 매개변수를 모두 전달
-            }
-        }
-    }
-    */
 
 
     protected virtual void HandleDeath()//죽음 상태 처리

@@ -11989,7 +11989,7 @@ GameObject:
   - component: {fileID: 914126518}
   - component: {fileID: 914126517}
   m_Layer: 0
-  m_Name: SkillData
+  m_Name: SkillDataManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12012,6 +12012,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5c27871a507135e4bb9732c0e5371cfc, type: 2}
   - {fileID: 11400000, guid: 3cf38474be6997b48a0f699462aab933, type: 2}
   - {fileID: 11400000, guid: 010a091a40fb8f640af7892620a67c31, type: 2}
+  - {fileID: 11400000, guid: 85c0020ac6bb8ad4582fa9b48f741747, type: 2}
   attackArea: 0
   attack: 0
   knockback: 0
@@ -15863,6 +15864,10 @@ MonoBehaviour:
   - {fileID: 8539942111360040700, guid: 0f61ae1b8da7f484198895822f942369, type: 3}
   - {fileID: 8555175228367498427, guid: e6c949088738ba74c9cb60ea63c1f10b, type: 3}
   itemDropManager: {fileID: 251983557}
+  healthBarUI: {fileID: 1927796344, guid: 9d371ad26e755dc499713e9991c57a1f, type: 3}
+  headHealthBarPrefab: {fileID: 5673138961310684263, guid: 471869703d1778a479a94eeef0cd5b69, type: 3}
+  monsterNames: []
+  bossMonsterName: 
   waypointController: {fileID: 1176403753}
 --- !u!4 &1262388510
 Transform:
@@ -36844,6 +36849,9 @@ MonoBehaviour:
   m_BackgroundMask:
     serializedVersion: 2
     m_Bits: 64
+  healthBarUI: {fileID: 0}
+  headHealthBar: {fileID: 0}
+  monsterName: 
   m_isPatrol: 0
 --- !u!114 &8079128884417010097
 MonoBehaviour:
