@@ -94,8 +94,6 @@ MonoBehaviour:
   monNameText: {fileID: 6304507911130039351}
   healthImage: {fileID: 6304507910982215398}
   healthBarUI: {fileID: 6304507910942402162}
-  headHealthBarUI: {fileID: 0}
-  headHealthImage: {fileID: 0}
 --- !u!1 &6304507910982215392
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +165,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0.16666667
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -251,4 +249,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: text
+  m_Text: Unknown Monster

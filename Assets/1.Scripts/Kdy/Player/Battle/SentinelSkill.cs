@@ -80,12 +80,12 @@ public class SentinelSkill : Skill, ISkill_Lunge
     {
         if (!m_usingSkill)
         {
-            if (m_player.m_curMagicPoint >= SkillDataManager.m_skillData["ErasingStrike"].Mp && !m_strikeUse)
+            if (m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["ErasingStrike"].Mp && !m_strikeUse)
             {
                 m_player.StopAllCoroutines();
                 m_myAnim.SetTrigger("SkillStrike");
                 m_strikeUse = true;
-                UsingSkillMp(SkillDataManager.m_skillData["ErasingStrike"].Mp);
+                UsingSkillMp(SkillDataManager.m_skillDataDic["ErasingStrike"].Mp);
                 m_usingSkill = true;
                 IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
                 if (iusa != null)
@@ -102,7 +102,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
                 ICoolTime ict = m_playerUI.m_skillCoolTime.GetComponent<ICoolTime>();
                 if (ict != null)
                 {
-                    ict.CoolTime(inputKey, SkillDataManager.m_skillData["ErasingStrike"].CoolTime);
+                    ict.CoolTime(inputKey, SkillDataManager.m_skillDataDic["ErasingStrike"].CoolTime);
                 }
 
             }
@@ -114,10 +114,10 @@ public class SentinelSkill : Skill, ISkill_Lunge
         Collider[] list = Physics.OverlapBox(m_warPathStartPos.position, new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity, m_enemyMask);
         foreach (Collider col in list)
         {
-            IBattle ib = col.GetComponent<IBattle>();
+            IDamageable ib = col.GetComponent<IDamageable>();
             if (ib != null)
             {
-                ib.OnDamaged(SkillDataManager.m_skillData["ErasingStrike"].Dmg);
+                ib.SetDamage(SkillDataManager.m_skillDataDic["ErasingStrike"]);
             }
         }
     }
@@ -136,9 +136,9 @@ public class SentinelSkill : Skill, ISkill_Lunge
     {
         // 스킬 키 누르고 있으면 마나를 다 쓸 때 까지 스킬 발동
         // 마우스 방향으로 이동가능
-        if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillDataManager.m_skillData["WindMill"].Mp)
+        if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
-            UsingSkillMp(SkillDataManager.m_skillData["WindMill"].Mp * Time.deltaTime * SkillDataManager.m_skillData["WindMill"].Channeling);
+            UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
             if(!m_warPathUse)
             {
                 m_usingSkill = true;
@@ -155,7 +155,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
             }
             
         }
-        if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillData["WindMill"].Mp)
+        if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
             m_myAnim.SetBool("SkillWarPath", false);
             m_warPathUse = false;
@@ -184,7 +184,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
             IBattle ib = col.GetComponent<IBattle>();
             if (ib != null)
             {
-                ib.OnDamaged(SkillDataManager.m_skillData["WindMill"].Dmg);
+                ib.SetDamage(SkillDataManager.m_skillDataDic["Warpath"]);
                 // 나중에 합칠 때 아래 코드 씀
                 //ib.OnDamaged(SkillDataManager.m_skillData["WindMill"].Dmg, SkillDataManager.m_skillData["WindMill"]);
             }
@@ -205,9 +205,9 @@ public class SentinelSkill : Skill, ISkill_Lunge
         if (!m_usingSkill)
         {
             //if (Input.GetKeyDown(inputKey) && !m_lungeUse && m_player.m_curMagicPoint >= SkillData.m_skillData["Lunge"].Mp)
-            if (!m_lungeUse && m_player.m_curMagicPoint >= SkillDataManager.m_skillData["Lunge"].Mp)
+            if (!m_lungeUse && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Lunge"].Mp)
             {
-                UsingSkillMp(SkillDataManager.m_skillData["Lunge"].Mp);
+                UsingSkillMp(SkillDataManager.m_skillDataDic["Lunge"].Mp);
                 m_usingSkill = true;
                 IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
                 if (iusa != null)
@@ -218,7 +218,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
                 ICoolTime ict = m_playerUI.m_skillCoolTime.GetComponent<ICoolTime>();
                 if (ict != null)
                 {
-                    ict.CoolTime(inputKey, SkillDataManager.m_skillData["Lunge"].CoolTime);
+                    ict.CoolTime(inputKey, SkillDataManager.m_skillDataDic["Lunge"].CoolTime);
                 }
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
@@ -257,7 +257,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
                 ib = col.GetComponent<IBattle>();
                 if (ib != null)
                 {
-                    ib.OnDamaged(SkillDataManager.m_skillData["Lunge"].Dmg);
+                    ib.SetDamage(SkillDataManager.m_skillDataDic["Lunge"]);
                 }
             }
             float delta = 5.0f * Time.deltaTime;
