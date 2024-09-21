@@ -76,14 +76,14 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
             if (igp != null)
             {
                 igp.GetPotion(m_itemImagePrefab);
-                IGetItemData igd = inven.GetComponent<IGetItemData>();
-                if (igd != null)
-                {
-                    igd.SetItemToInventory(m_itemImagePrefab);
-                }
+                //IGetItemData igd = inven.GetComponent<IGetItemData>();
+                //if (igd != null)
+                //{
+                //    igd.SetItemToInventory(m_itemImagePrefab);
+                //}
 
                 isPickedUp = true; // 아이템이 인벤토리에 들어갔음을 표시(성원)
-                
+                ObjectPool.Inst.Push<GameObject>(nameUI);
                 ObjectPool.Inst.Push<Item>(gameObject); // 객체 풀로 아이템 반환
                 if (lifetimeCoroutine != null) StopCoroutine(lifetimeCoroutine); // 타이머 정지(성원)
             }
@@ -107,7 +107,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
                     {
                         igd.SetItemToInventory(m_itemImagePrefab);
                     }
-                    //ObjectPool.Inst.Push<GameObject>(nameUI);
+                    ObjectPool.Inst.Push<GameObject>(nameUI);
                     ObjectPool.Inst.Push<Item>(gameObject);
                 }
                 else
