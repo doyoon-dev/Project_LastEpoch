@@ -4,7 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SentinelSkill : Skill
+public interface ISkill_Lunge
+{
+    void Skill_Lunge(KeyCode inputKey);
+}
+
+public class SentinelSkill : Skill, ISkill_Lunge
 {
     [SerializeField]
     Animator m_myAnim;
@@ -12,10 +17,15 @@ public class SentinelSkill : Skill
     Transform m_warPathStartPos;
     [SerializeField]
     Transform m_warPathEndPos;
+
+    public GameObject m_effectPos;
+    public GameObject m_skillEffect;
     public LayerMask m_enemyMask;
+    public LayerMask m_backgroundMask;
     public Dictionary<string, SkillButton> m_skillBtns = new Dictionary<string, SkillButton>();
     bool m_warPathUse = false;
     bool m_lungeUse = false;
+    bool m_strikeUse = false;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +36,17 @@ public class SentinelSkill : Skill
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.Q))
+        {
+            Skill_ErasingStrike(KeyCode.Q);
+        }
+        
         Skill_WarPath(KeyCode.W);
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            Skill_Lunge(KeyCode.E);
+        }
         //Skill_Lunge(KeyCode.E);
     }
 
@@ -55,8 +75,64 @@ public class SentinelSkill : Skill
 
     }
 
+    // Q 스킬
+    public void Skill_ErasingStrike(KeyCode inputKey)
+    {
+        if (!m_usingSkill)
+        {
+            if (m_player.m_curMagicPoint >= SkillDataManager.m_skillData["ErasingStrike"].Mp && !m_strikeUse)
+            {
+                m_player.StopAllCoroutines();
+                m_myAnim.SetTrigger("SkillStrike");
+                m_strikeUse = true;
+                UsingSkillMp(SkillDataManager.m_skillData["ErasingStrike"].Mp);
+                m_usingSkill = true;
+                IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
+                if (iusa != null)
+                {
+                    iusa.m_usableSkillAct += () => { m_strikeUse = false; };
+                }
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+                {
+                    Vector3 dir = hit.point - transform.position;
+                    dir.y = 0;
+                    transform.forward = dir;
+                }
+                ICoolTime ict = m_playerUI.m_skillCoolTime.GetComponent<ICoolTime>();
+                if (ict != null)
+                {
+                    ict.CoolTime(inputKey, SkillDataManager.m_skillData["ErasingStrike"].CoolTime);
+                }
+
+            }
+        }
+    }
+
+    public void SKill_ErasingStrike_Damage()
+    {
+        Collider[] list = Physics.OverlapBox(m_warPathStartPos.position, new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity, m_enemyMask);
+        foreach (Collider col in list)
+        {
+            IBattle ib = col.GetComponent<IBattle>();
+            if (ib != null)
+            {
+                ib.OnDamaged(SkillDataManager.m_skillData["ErasingStrike"].Dmg);
+            }
+        }
+    }
+    public void Skill_ErasingStrike_EffectOn()
+    {
+        m_skillEffect.SetActive(true);
+    }
+    public void Skill_ErasingStrike_EffectOff()
+    {
+        m_skillEffect.SetActive(false);
+        m_usingSkill = false;
+    }
+
     // 출정 스킬(윈드밀)
-    public virtual void Skill_WarPath(KeyCode inputKey)
+    public void Skill_WarPath(KeyCode inputKey)
     {
         // 스킬 키 누르고 있으면 마나를 다 쓸 때 까지 스킬 발동
         // 마우스 방향으로 이동가능
@@ -108,9 +184,9 @@ public class SentinelSkill : Skill
             IBattle ib = col.GetComponent<IBattle>();
             if (ib != null)
             {
-                //ib.OnDamaged(SkillDataManager.m_skillData["WindMill"].Dmg);
-                SkillInform skillData = SkillDataManager.m_skillData["WindMill"];
-                ib.OnDamaged(skillData.Dmg, skillData);
+                ib.OnDamaged(SkillDataManager.m_skillData["WindMill"].Dmg);
+                // 나중에 합칠 때 아래 코드 씀
+                //ib.OnDamaged(SkillDataManager.m_skillData["WindMill"].Dmg, SkillDataManager.m_skillData["WindMill"]);
             }
         }
     }
@@ -124,23 +200,19 @@ public class SentinelSkill : Skill
     }
 
     // 돌격 스킬
-    public virtual void Skill_Lunge(KeyCode inputKey)
+    public void Skill_Lunge(KeyCode inputKey)
     {
         if (!m_usingSkill)
         {
             //if (Input.GetKeyDown(inputKey) && !m_lungeUse && m_player.m_curMagicPoint >= SkillData.m_skillData["Lunge"].Mp)
             if (!m_lungeUse && m_player.m_curMagicPoint >= SkillDataManager.m_skillData["Lunge"].Mp)
             {
-                if (m_player != null)
-                {
-                    Debug.Log("Player!!");
-                }
                 UsingSkillMp(SkillDataManager.m_skillData["Lunge"].Mp);
                 m_usingSkill = true;
                 IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
                 if (iusa != null)
                 {
-                    iusa.m_usableSkillAct += () => { m_usingSkill = false; };
+                    iusa.m_usableSkillAct += () => { m_lungeUse = false; };
                 }
                 m_lungeUse = true;
                 ICoolTime ict = m_playerUI.m_skillCoolTime.GetComponent<ICoolTime>();
@@ -149,9 +221,9 @@ public class SentinelSkill : Skill
                     ict.CoolTime(inputKey, SkillDataManager.m_skillData["Lunge"].CoolTime);
                 }
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
                 {
-                    StopAllCoroutines();
+                    m_player.StopAllCoroutines();
                     Vector3 dir = hit.point - m_player.transform.position;
                     m_player.transform.forward = dir;
                     StartCoroutine(LungeMove(dir));
@@ -169,6 +241,7 @@ public class SentinelSkill : Skill
     {
         m_player.GetComponent<Collider>().isTrigger = true;
         m_player.GetComponent<Rigidbody>().isKinematic = true;
+        m_myAnim.SetBool("Move", false);
         m_myAnim.SetBool("SkillLunge", true);
         float dist = 2;
         dir.Normalize();
@@ -178,16 +251,13 @@ public class SentinelSkill : Skill
         IBattle ib;
         while (dist > 0)
         {
-            // 무기 콜라이더 지우고 박스로 플레이어 앞에 생성
-            list = Physics.OverlapCapsule(m_warPathStartPos.position, m_warPathEndPos.position, 0.1f, m_enemyMask);
-            // 아래 오버랩으로 사용
-            Collider[] alist = Physics.OverlapBox(m_warPathStartPos.position, new Vector3(0.5f, 0.5f, 0.5f));
+            list = Physics.OverlapBox(m_warPathStartPos.position, new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity, m_enemyMask);
             foreach (Collider col in list)
             {
                 ib = col.GetComponent<IBattle>();
-                if (!enemyList.Contains(ib))
+                if (ib != null)
                 {
-                    enemyList.Add(ib);
+                    ib.OnDamaged(SkillDataManager.m_skillData["Lunge"].Dmg);
                 }
             }
             float delta = 5.0f * Time.deltaTime;
@@ -196,39 +266,30 @@ public class SentinelSkill : Skill
             m_player.transform.Translate(dir * delta, Space.World);
             yield return null;
         }
-        for (int i = 0; i < enemyList.Count; i++)
-        {
-            //enemyList[i].OnDamaged(SkillDataManager.m_skillData["Lunge"].Dmg);
-            SkillInform skillData = SkillDataManager.m_skillData["Lunge"];
-            enemyList[i].OnDamaged(skillData.Dmg, skillData);
-            enemyList.Remove(enemyList[i]);
-        }
+        m_usingSkill = false;
+        m_myAnim.SetBool("SkillLunge", false);
         m_player.GetComponent<Collider>().isTrigger = false;
         m_player.GetComponent<Rigidbody>().isKinematic = false;
-        m_lungeUse = false;
-        m_myAnim.SetBool("SkillLunge", false);
     }
 
     // 돌진 스킬 데미지 박스
     // OnTrigger 함수로 무기 앞에 콜라이더 만들고 충돌 적 무시, 충돌 적 데미지 주기로 해야 할 지도
-    public void LungeDamageBox()
-    {
-        // 무기 콜라이더 지우고 박스로 플레이어 앞에 생성
-        Collider[] list = Physics.OverlapCapsule(m_warPathStartPos.position, m_warPathEndPos.position, 0.1f, m_enemyMask);
-        List<IBattle> enemyList = new List<IBattle>();
-        foreach (Collider col in list)
-        {
-            IBattle ib = col.GetComponent<IBattle>();
-            enemyList.Add(ib);
-            Debug.Log("추가 : " + enemyList.Count);
-            if (ib != null)
-            {
-                SkillInform skillData = SkillDataManager.m_skillData["Lunge"];
-                ib.OnDamaged(skillData.Dmg, skillData);
-                //ib.OnDamaged(SkillDataManager.m_skillData["Lunge"].Dmg);
-                enemyList.Remove(ib);
-                Debug.Log("제거 : " + enemyList.Count);
-            }
-        }
-    }
+    //public void LungeDamageBox()
+    //{
+    //    // 무기 콜라이더 지우고 박스로 플레이어 앞에 생성
+    //    Collider[] list = Physics.OverlapCapsule(m_warPathStartPos.position, m_warPathEndPos.position, 0.1f, m_enemyMask);
+    //    List<IBattle> enemyList = new List<IBattle>();
+    //    foreach (Collider col in list)
+    //    {
+    //        IBattle ib = col.GetComponent<IBattle>();
+    //        enemyList.Add(ib);
+    //        Debug.Log("추가 : " + enemyList.Count);
+    //        if (ib != null)
+    //        {
+    //            ib.OnDamaged(SkillDataManager.m_skillData["Lunge"].Dmg);
+    //            enemyList.Remove(ib);
+    //            Debug.Log("제거 : " + enemyList.Count);
+    //        }
+    //    }
+    //}
 }

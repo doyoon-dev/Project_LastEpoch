@@ -7,9 +7,13 @@ using static UnityEngine.GraphicsBuffer;
 public class Player : BattleSystem
 {
     #region 아이템 드랍 실험
+
     public GameObject[] m_dropItemPrefabs;
     public ItemData m_itemData;
+    public Dictionary<string, SkillData[]> m_skillData = new Dictionary<string, SkillData[]>();
+
     #endregion
+
     [SerializeField]
     Transform m_weaponStartPoint;
     [SerializeField]
@@ -19,6 +23,7 @@ public class Player : BattleSystem
     [SerializeField]
     GameObject obj;
 
+    public GameObject m_hitEffect;
     public int attackDamage = 20;
     public float attackRange = 3f;
     public Inventory m_inventory;
@@ -91,7 +96,7 @@ public class Player : BattleSystem
         #region 실험코드 나중에 지워야함
         if (Input.GetKeyDown(KeyCode.T))
         {
-            OnDamaged(13);  // SkillInform을 추가로 전달;
+            
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -108,7 +113,11 @@ public class Player : BattleSystem
     {
         Debug.Log($"플레이어가 {damage}의 데미지를 받았습니다.");  // 데미지 로그
         m_curHealPoint -= damage;  // 현재 체력에서 데미지를 뺌
-
+        // 수정필요
+        GameObject obj = Instantiate(m_hitEffect);
+        obj.transform.position = transform.position;
+        ParticleSystem ps = obj.GetComponentInChildren<ParticleSystem>();
+        ps.Play();
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
@@ -219,12 +228,11 @@ public class Player : BattleSystem
         Collider[] box = Physics.OverlapBox(obj.transform.position, boxSize * 0.5f, gameObject.transform.rotation, m_enemyMask);
         foreach (Collider col in box)
         {
-           
             IDamageable id = col.GetComponent<IDamageable>();
             if (id != null)
             {
-                //id.OnDamaged(gameObject.transform, SkillDataManager.m_skillData["Normal"]);
-                id.SetDamage(SkillDataManager.m_skillData["Normal"]);
+                id.SetDamage(gameObject.transform, SkillDataManager.m_skillData["Normal"]);
+                //id.SetDamage(gameObject.transform, m_stat.AttackDmg);
             }
         }
     }
