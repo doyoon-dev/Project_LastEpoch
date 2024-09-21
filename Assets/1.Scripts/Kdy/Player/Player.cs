@@ -7,9 +7,13 @@ using static UnityEngine.GraphicsBuffer;
 public class Player : BattleSystem
 {
     #region 아이템 드랍 실험
+
     public GameObject[] m_dropItemPrefabs;
     public ItemData m_itemData;
+    public Dictionary<string, SkillData[]> m_skillData = new Dictionary<string, SkillData[]>();
+
     #endregion
+
     [SerializeField]
     Transform m_weaponStartPoint;
     [SerializeField]
@@ -92,7 +96,7 @@ public class Player : BattleSystem
         #region 실험코드 나중에 지워야함
         if (Input.GetKeyDown(KeyCode.T))
         {
-            OnDamaged(13);
+            
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
