@@ -88,7 +88,8 @@ public class CharacterMovement : CharacterProperty
     public void MoveToEnemy(Transform target, float range, UnityAction act)
     {
         StopAllCoroutines();
-        StartCoroutine(MovingToEnemy(target, range, act));
+        //StartCoroutine(MovingToEnemy(target, range, act));
+        StartCoroutine(MovingEnemy(target, range, act));
     }
 
     // 적과 거리가 있을 때 적 앞까지 이동 후 공격
@@ -108,7 +109,7 @@ public class CharacterMovement : CharacterProperty
                 float delta = Time.deltaTime * m_moveStat.moveSpeed;
                 if (delta > dist) delta = dist;
                 if(!m_myAnim.GetBool("IsAttacking")) transform.Translate(dir * delta, Space.World);
-                m_cam.transform.Translate(dir * delta, Space.World);
+                //m_cam.transform.Translate(dir * delta, Space.World);
             }
             else
             {
@@ -119,7 +120,25 @@ public class CharacterMovement : CharacterProperty
             yield return null;
         }
     }
-
+    public IEnumerator MovingEnemy(Transform target, float range, UnityAction act)
+    {
+        Vector3 dir = target.position - transform.position;
+        float dist = dir.magnitude - range;
+        dir.Normalize();
+        dir.y = 0;
+        StartCoroutine(Rotating(dir));
+        while (dist > 0.1f)
+        {
+            m_myAnim.SetBool("Move", true);
+            float delta = Time.deltaTime * m_moveStat.moveSpeed;
+            if (delta > dist) delta = dist;
+            if (!m_myAnim.GetBool("IsAttacking")) transform.Translate(dir * delta, Space.World);
+            yield return null;
+        }
+        m_myAnim.SetBool("Move", false);
+        act?.Invoke();
+        target = null;
+    }
     public void FollowingEnemy(Vector3 target, float range, UnityAction act)
     {
         StopAllCoroutines();

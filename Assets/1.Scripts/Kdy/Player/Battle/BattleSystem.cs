@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
@@ -64,6 +65,8 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
     public event UnityAction<float, float, bool> m_changeMp;
     protected IBattle m_target = null;
     public Item m_item;
+    
+
     bool m_recoveryCheck = false;
 
     public float m_curHp = 0.0f;
@@ -159,19 +162,21 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
     }
     */
 
+
     // OnDamaged에서 호출할 수 있도록 별도의 데미지 값을 받는 메서드 통합
     public virtual void OnDamaged(float damage)
     {
         SetDamage(null, new SkillInform { Dmg = damage }); // skillData가 없는 경우 damage만 적용
     }
 
+    
 
     public virtual void SetDamage(Transform attacker, SkillInform skillData)
     {
         m_recoveryCheck = false;
         // 체력 깎이는 로직
         m_curHealPoint -= skillData.Dmg;
-
+        
         // 체력이 0 이하일 때 처리
         if (m_curHealPoint <= 0)
         {
