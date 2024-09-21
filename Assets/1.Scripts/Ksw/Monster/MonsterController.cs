@@ -35,6 +35,8 @@ public class MonsterController : BattleSystem
     [SerializeField]
     WaypointController m_waypointCtr;
 
+
+
     [Header("공격범위")]
     [SerializeField]
     protected Vector3 boxSize = new Vector3(2f, 2f, 2f);  // 공격 범위 크기 설정
@@ -56,15 +58,19 @@ public class MonsterController : BattleSystem
     public LayerMask m_BackgroundMask;
     Transform m_attacker;
     Coroutine m_hitColorCoroutine;
-    SkillInform m_skillData;
     int m_currentAttackIndex;
     int m_curWaypoint;
+    public HealthBarUI healthBarUI;
+    public HeadHealthBar headHealthBar; // 머리 위 체력바 참조
+    public string monsterName;
    
 
     public bool m_isPatrol; //patrol 여부확인
     public bool IsDie { get { return m_state == BehaviourState.Die; } } // Die 여부확인
 
     private Transform playerTransform;
+    private Coroutine hideHealthBarCoroutine;
+
 
     public MonsterAnimController.Motion GetMotion { get { return m_monAnimCtr.CurrentMotion; } }// 어느 포인트를 가고 있는지 체크
     #region Animation Event Methods
@@ -91,11 +97,20 @@ public class MonsterController : BattleSystem
     {
         m_idleTime = m_idleDuration - duration;
     }
+    public void SetHeadHealthBar(HeadHealthBar healthBar)
+    {
+        headHealthBar = healthBar;
+    }
 
-    public void Initialize(MonsterManager manager, WaypointController waypoint)
+    public void Initialize(MonsterManager manager, WaypointController waypoint, HealthBarUI healthBar)
     {
         m_manager = manager;
         SetMonster(waypoint);
+       
+        healthBarUI = healthBar; // 체력바 초기화
+        healthBarUI.HideHealthBar();  // 체력바를 강제로 숨기기
+        healthBarUI.Initialize(monsterName, m_stat.MaxHp);  // 몬스터 이름과 최대 체력 설정
+
     }
     protected virtual void SetIdle(float duration)
     {
@@ -116,6 +131,8 @@ public class MonsterController : BattleSystem
         m_hitColorCoroutine = StartCoroutine(Coroutine_SetHitColor(duration));//동작 여러개 들어올수 있음
 
     }
+
+    
     //몬스터 맞았을 때 색상
     protected IEnumerator Coroutine_SetHitColor(float duration)
     {
@@ -156,6 +173,22 @@ public class MonsterController : BattleSystem
 
     }
 
+    // 일정 시간이 지나면 체력바를 숨기는 코루틴
+    private IEnumerator HideHealthBarAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // 중앙 체력바 숨기기
+        healthBarUI.HideHealthBar();
+
+        // 머리 위 체력바가 있을 경우 숨기기
+        if (headHealthBar != null)
+        {
+            headHealthBar.HideHeadHealthBar();
+        }
+    }
+
+
     protected IEnumerator DamageAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay); // 일정 시간 대기 후
@@ -170,7 +203,17 @@ public class MonsterController : BattleSystem
             {
                 yield return null; // 한 프레임 대기 (코루틴을 일시 중지하고 다음 프레임까지 기다림)
             }
-            m_navAgent.SetDestination(m_player.transform.position); // 플레이어의 현재 위치를 목표로 설정
+            // NavMeshAgent가 활성 상태인지 확인
+            if (m_navAgent != null && m_navAgent.isActiveAndEnabled)
+            {
+                // 플레이어의 현재 위치를 목표로 설정
+                m_navAgent.SetDestination(m_player.transform.position);
+            }
+            else
+            {
+                // NavMeshAgent가 비활성화되었으면 코루틴 중지
+                yield break;
+            }
         }
     }
 
@@ -209,8 +252,6 @@ public class MonsterController : BattleSystem
     // OverlapBox를 사용한 공격 범위 내 적 감지 및 데미지 입히기
     public override void Attack()
     {
-
-
         Collider[] playersInRange = Physics.OverlapBox(AttackArea.transform.position, boxSize * 0.5f, gameObject.transform.rotation, m_playerMask);
 
         foreach (Collider player in playersInRange)
@@ -220,6 +261,8 @@ public class MonsterController : BattleSystem
             {
                 targetPlayer.OnDamaged(m_stat.AttackDmg); // 플레이어에게 데미지 입힘
                                                           // 만약 스킬 데미지로 데미지 입히고 싶으면 (m_skillData.AttackDmg)교체
+
+                                                                                                                 
             }
         }
     }
@@ -252,18 +295,16 @@ public class MonsterController : BattleSystem
         float angle = Vector3.Angle(transform.forward, direction);
         if (angle > 180.0f) angle -= 360.0f;
 
-        //회전 방향 결정 
-        float rotDir = 1.0f;
-        if (Vector3.Dot(transform.right, direction) < 0.0f)
-        {
-            rotDir = -1.0f;
-        }
-          while (angle > 0.0f)
+        float rotDir = Vector3.Dot(transform.right, direction) < 0.0f ? -1.0f : 1.0f;
+
+        while (angle > 0.1f) // 너무 작은 각도일 때는 무시
         {
             float delta = Time.deltaTime * 360.0f * m_moveStat.rotSpeed;
             if (delta > angle) delta = angle;
+
             angle -= delta;
             transform.Rotate(Vector3.up * rotDir * delta, Space.World);
+
             yield return null;
         }
 
@@ -337,17 +378,47 @@ public class MonsterController : BattleSystem
         return false;
     }
 
-    public override void SetDamage(Transform attacker, SkillInform skillData)
+    public override void SetDamage(SkillInform skillData)
     {
         if (IsDie) return;  // 이미 죽어있다면 처리하지 않음
         if (m_state == BehaviourState.Damaged) return;  // 중복 Hit 애니메이션 방지
 
         // 현재 체력 감소
         m_curHealPoint -= skillData.Dmg;
+
+        // MonsterManager에게 현재 공격받고 있는 몬스터를 설정
+        MonsterManager.Instance.SetCurrentTargetMonster(this);
+
+        // **머리 위 체력바가 있을 경우 업데이트**
+        if (headHealthBar != null)
+        {
+            headHealthBar.UpdateHeadHealth((int)m_curHealPoint, m_stat.MaxHp); // 머리 위 체력바 갱신
+            headHealthBar.ShowHeadHealthBar(); // 머리 위 체력바 활성화
+        }
+        
+        // 중앙 체력바 업데이트
+        healthBarUI.UpdateHealth((int)m_curHealPoint, m_stat.MaxHp);
+
+        // 중앙 체력바를 활성화
+        healthBarUI.ShowHealthBar();
+
+        // 이미 실행 중인 체력바 숨기기 코루틴이 있다면 정지
+        if (hideHealthBarCoroutine != null)
+        {
+            StopCoroutine(hideHealthBarCoroutine);
+        }
+        // 20초 후 체력바를 비활성화하는 코루틴 실행
+        hideHealthBarCoroutine = StartCoroutine(HideHealthBarAfterDelay(20f));
+
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
             HandleDeath();  // 체력이 0이 되면 사망 처리
+            healthBarUI.HideHealthBar();  // 체력바 숨기기
+            if (headHealthBar != null)
+            {
+                headHealthBar.HideHeadHealthBar();  // 머리 위 체력바 숨기기
+            }
             return;
         }
 
@@ -368,7 +439,7 @@ public class MonsterController : BattleSystem
             // 넉백 처리 (일반 몬스터)
             if (skillData.knockback > 0f)
             {
-                var dir = (transform.position - attacker.position).normalized;
+                var dir = (transform.position - m_player.transform.position).normalized;
                 dir.y = 0f;
                 var duration = SkillDataManager.MaxKnockbackDuration * (skillData.knockback / SkillDataManager.MaxKnockbackDist);
                 m_moveTween.Play(transform.position, transform.position + dir * skillData.knockback, duration);
@@ -378,6 +449,7 @@ public class MonsterController : BattleSystem
         }
     }
 
+    /*
     void DamageToPlayer()
     {
         if (detectedPlayer != null)
@@ -386,11 +458,13 @@ public class MonsterController : BattleSystem
 
             if (player != null)
             {
-                player.OnDamaged(m_skillData.Dmg); // 플레이어에게 데미지를 입힘
+                // SkillInform을 만들어서 전달
+                SkillInform skillData = new SkillInform { Dmg = m_skillData.Dmg, knockback = 0 };
+                player.OnDamaged(m_skillData.Dmg, skillData, transform); // 필요한 매개변수를 모두 전달
             }
         }
     }
-
+    */
 
 
     protected virtual void HandleDeath()//죽음 상태 처리
@@ -399,11 +473,29 @@ public class MonsterController : BattleSystem
         if (IsDie) return;
         m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // 사망 애니메이션 재생
         StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과
+                                                    // NavMeshAgent 비활성화
+        if (m_navAgent != null)
+        {
+            m_navAgent.enabled = false;
+        }
+
+        // Collider 비활성화 (필요한 Collider를 전부 비활성화)
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (Collider col in colliders)
+        {
+            col.enabled = false;
+        }
         m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정                                                                                       
         m_manager.HandleMonsterDeath(transform.position);// 매니저에게 몬스터가 죽었다고 알림
         SetState(BehaviourState.Die);
         // 공격 범위 비활성화 (박스가 보이지 않도록 설정)
         AttackArea.SetActive(false);
+        // **머리 위 체력바와 캔버스 비활성화**
+        if (headHealthBar != null)
+        {
+            headHealthBar.HideHeadHealthBar();  // 체력바 비활성화
+            headHealthBar.gameObject.SetActive(false);  // 캔버스 자체도 비활성화
+        }
     }
 
     // 몬스터 차례대로 공격 모션

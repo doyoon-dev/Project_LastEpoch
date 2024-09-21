@@ -92,7 +92,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
@@ -105,7 +105,67 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 23
+      lastFrame: 100
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: mesh_ston_01
+        weight: 1
+      - path: mesh_ston_02
+        weight: 1
+      - path: mesh_ston_03
+        weight: 1
+      - path: mesh_ston_04
+        weight: 1
+      - path: mesh_ston_05
+        weight: 1
+      - path: mesh_ston_06
+        weight: 1
+      - path: mesh_ston_07
+        weight: 1
+      - path: mesh_ston_09
+        weight: 1
+      - path: mesh_ston_09 1
+        weight: 1
+      - path: mesh_ston_10
+        weight: 1
+      - path: mesh_ston_11
+        weight: 1
+      - path: mesh_ston_12
+        weight: 1
+      - path: mesh_ston_13
+        weight: 1
+      - path: mesh_ston_14
+        weight: 1
+      - path: mesh_ston_15
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
