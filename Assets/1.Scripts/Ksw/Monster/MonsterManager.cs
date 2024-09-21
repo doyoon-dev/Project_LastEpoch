@@ -28,8 +28,26 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     [Header("아이템 드롭 매니저")]
     public ItemDropManager itemDropManager; // 아이템 드롭 매니저 
 
+    [Header("체력바 UI")]
+    [SerializeField]
+    private HealthBarUI healthBarUI;
+
+    [Header("머리 위 체력바 프리팹")]
+    [SerializeField]
+    private GameObject headHealthBarPrefab; 
+
+    [Header("몬스터 이름 목록")]
+    [SerializeField]
+    private string[] monsterNames;  // 몬스터 이름 목록
+
+    [Header("보스 몬스터 이름")]
+    [SerializeField]
+    private string bossMonsterName;  
+
     public WaypointController waypointController;
     private Vector3 lastSpawnPosition = Vector3.zero; // 마지막 소환 위치 저장
+    private MonsterController currentTargetMonster;  // 현재 공격받고 있는 몬스터
+
 
     void Start()
     {
@@ -64,13 +82,42 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         MonsterController monsterController = monster.GetComponent<MonsterController>();
         NavMeshAgent navAgent = monster.GetComponent<NavMeshAgent>();
 
-
-        // 몬스터 초기화
-        monsterController.Initialize(this, waypointController);  // 매니저를 초기화 시 전달
-
         // NavMeshAgent의 장애물 회피 비활성화
         navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
+        // 몬스터 이름 설정 (MonsterManager 인스펙터에서 설정한 이름을 사용)
+        if (monsterIndex < monsterNames.Length)
+        {
+            monsterController.monsterName = monsterNames[monsterIndex];
+        }
+        else
+        {
+            monsterController.monsterName = "Unknown Monster";
+        }
+
+        // 몬스터 초기화
+        monsterController.Initialize(this, waypointController, healthBarUI);  // 매니저를 초기화 시 전달
+
+
+        // HeadHealthBar도 오브젝트 풀에서 GameObject로 가져옴
+        GameObject headHealthBarObj = ObjectPool.Inst.Pull<GameObject>(headHealthBarPrefab);  // HeadHealthBar 프리팹 가져오기
+
+        // **머리 위 체력바 초기화**
+        HeadHealthBar headHealthBar = monster.GetComponentInChildren<HeadHealthBar>();  // 몬스터에서 HeadHealthBar 컴포넌트 찾기
+        if (headHealthBar != null)
+        {
+            headHealthBar.Initialize(monsterController.m_stat.MaxHp);  // 머리 위 체력바 초기화
+            monsterController.SetHeadHealthBar(headHealthBar);  // 몬스터 컨트롤러에 머리 위 체력바 연결
+            headHealthBar.HideHeadHealthBar();  // 체력바 숨기기 (초기 상태에서)
+        }
+        
+
+        // 중앙 체력바 숨김
+        if (monsterController.healthBarUI != null)
+        {
+            monsterController.healthBarUI.HideHealthBar();
+        }
+        
         // 웨이포인트에서 랜덤 위치를 얻어옴
         Vector3 spawnPosition = waypointController.GetRandomWaypointPosition();
         monster.transform.position = spawnPosition;
@@ -95,7 +142,44 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         lastSpawnPosition = spawnPosition;
 
     }
+    // 현재 공격받고 있는 몬스터 설정 (중앙 체력바)
+    public void SetCurrentTargetMonster(MonsterController monster)
+    {
+        // 현재 타겟 몬스터와 새 타겟이 다를 때만 변경
+        if (currentTargetMonster != monster)
+        {
+            // 기존 몬스터의 체력바 숨기기
+            if (currentTargetMonster != null)
+            {
+                currentTargetMonster.healthBarUI.HideHealthBar();  // 중앙 체력바 숨기기
+                currentTargetMonster.headHealthBar.HideHeadHealthBar();  // 머리 위 체력바 숨기기
+            }
 
+            // 새 타겟 몬스터 설정
+            currentTargetMonster = monster;
+
+            // 중앙 체력바 설정
+            currentTargetMonster.healthBarUI.ShowHealthBar();  // 중앙 체력바 활성화
+            currentTargetMonster.healthBarUI.Initialize(monster.monsterName, monster.m_stat.MaxHp);  // 중앙 체력바 초기화
+
+            // **머리 위 체력바 설정**
+            if (currentTargetMonster.headHealthBar != null)
+            {
+                currentTargetMonster.headHealthBar.ShowHeadHealthBar();  // 머리 위 체력바 활성화
+                currentTargetMonster.headHealthBar.UpdateHeadHealth((int)monster.m_curHealPoint, monster.m_stat.MaxHp);  // 머리 위 체력바 갱신
+            }
+        }
+    }
+
+    // 현재 타겟 몬스터 초기화 (공격 중지 or 사망 시)
+    public void ClearCurrentTargetMonster()
+    {
+        if (currentTargetMonster != null)
+        {
+            currentTargetMonster.healthBarUI.HideHealthBar();
+            currentTargetMonster = null;
+        }
+    }
     // 보스 몬스터 스폰 메서드 추가
     public void SpawnBossMonster()
     {
@@ -103,7 +187,12 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         BossMonster bossController = boss.GetComponent<BossMonster>();
         NavMeshAgent navAgent = boss.GetComponent<NavMeshAgent>();
 
-        bossController.Initialize(this, waypointController);
+        // 보스 몬스터 이름을 인스펙터에서 설정한 값으로 적용
+        bossController.monsterName = bossMonsterName;
+
+        bossController.Initialize(this, waypointController, healthBarUI);
+
+        bossController.healthBarUI.HideHealthBar();  // 보스 소환 시 체력바 숨기기
 
         navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 

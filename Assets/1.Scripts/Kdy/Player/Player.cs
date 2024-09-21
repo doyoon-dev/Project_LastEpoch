@@ -91,7 +91,7 @@ public class Player : BattleSystem
         #region 실험코드 나중에 지워야함
         if (Input.GetKeyDown(KeyCode.T))
         {
-            OnDamaged(13);
+            OnDamaged(13);  // SkillInform을 추가로 전달;
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -219,10 +219,12 @@ public class Player : BattleSystem
         Collider[] box = Physics.OverlapBox(obj.transform.position, boxSize * 0.5f, gameObject.transform.rotation, m_enemyMask);
         foreach (Collider col in box)
         {
+           
             IDamageable id = col.GetComponent<IDamageable>();
             if (id != null)
             {
-                id.SetDamage(gameObject.transform, SkillDataManager.m_skillData["Normal"]);
+                //id.OnDamaged(gameObject.transform, SkillDataManager.m_skillData["Normal"]);
+                id.SetDamage(SkillDataManager.m_skillData["Normal"]);
             }
         }
     }

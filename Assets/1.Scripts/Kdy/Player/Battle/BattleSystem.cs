@@ -26,9 +26,10 @@ public interface IUsedSkill
 {
     void UsedSkill(float skillMp);
 }
+
 public interface IDamageable
 {
-    void SetDamage(Transform attacker, SkillInform skillData);
+    void SetDamage(SkillInform skillData);
 }
 public interface IOnDamaged
 {
@@ -68,7 +69,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
 
     public float m_curHp = 0.0f;
     public float m_curMp = 0.0f;
-    protected float m_curHealPoint
+    public float m_curHealPoint
     {
         get { return m_curHp; }
         set
@@ -129,6 +130,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         //Rotate(pos);
         m_myAnim.SetBool("Attack", true);
         if(m_target != null) m_target.OnDamaged(m_stat.AttackDmg);
+        
     }
 
     public void AttackAnim()
@@ -139,6 +141,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
     public virtual void Attack()
     {
         if (m_target != null) m_target.OnDamaged(m_stat.AttackDmg);
+       
     }
 
     public void Dead()
@@ -159,27 +162,30 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
     }
     */
 
-    // OnDamaged에서 호출할 수 있도록 별도의 데미지 값을 받는 메서드 통합
-    public virtual void OnDamaged(float damage)
-    {
-        SetDamage(null, new SkillInform { Dmg = damage }); // skillData가 없는 경우 damage만 적용
-    }
+   
+
+   
+   // OnDamaged에서 호출할 수 있도록 별도의 데미지 값을 받는 메서드 통합
+   public virtual void OnDamaged(float damage)
+   {
+       SetDamage(new SkillInform { Dmg = damage }); // skillData가 없는 경우 damage만 적용
+   }
 
 
-    public virtual void SetDamage(Transform attacker, SkillInform skillData)
-    {
-        m_recoveryCheck = false;
-        // 체력 깎이는 로직
-        m_curHealPoint -= skillData.Dmg;
+   public virtual void SetDamage(SkillInform skillData)
+   {
+       m_recoveryCheck = false;
+       // 체력 깎이는 로직
+       m_curHealPoint -= skillData.Dmg;
 
-        // 체력이 0 이하일 때 처리
-        if (m_curHealPoint <= 0)
-        {
-            m_curHealPoint = 0;
-            Dead(); // 사망 처리
-        }
-    }
-
+       // 체력이 0 이하일 때 처리
+       if (m_curHealPoint <= 0)
+       {
+           m_curHealPoint = 0;
+           Dead(); // 사망 처리
+       }
+   }
+  
     public void RecoveryHealPoint(float healpoint)
     {
         m_recoveryCheck = true;

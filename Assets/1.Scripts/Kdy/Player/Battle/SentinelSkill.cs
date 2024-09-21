@@ -108,7 +108,9 @@ public class SentinelSkill : Skill
             IBattle ib = col.GetComponent<IBattle>();
             if (ib != null)
             {
-                ib.OnDamaged(SkillDataManager.m_skillData["WindMill"].Dmg);
+                //ib.OnDamaged(SkillDataManager.m_skillData["WindMill"].Dmg);
+                SkillInform skillData = SkillDataManager.m_skillData["WindMill"];
+                ib.OnDamaged(skillData.Dmg, skillData);
             }
         }
     }
@@ -196,7 +198,9 @@ public class SentinelSkill : Skill
         }
         for (int i = 0; i < enemyList.Count; i++)
         {
-            enemyList[i].OnDamaged(SkillDataManager.m_skillData["Lunge"].Dmg);
+            //enemyList[i].OnDamaged(SkillDataManager.m_skillData["Lunge"].Dmg);
+            SkillInform skillData = SkillDataManager.m_skillData["Lunge"];
+            enemyList[i].OnDamaged(skillData.Dmg, skillData);
             enemyList.Remove(enemyList[i]);
         }
         m_player.GetComponent<Collider>().isTrigger = false;
@@ -219,7 +223,9 @@ public class SentinelSkill : Skill
             Debug.Log("추가 : " + enemyList.Count);
             if (ib != null)
             {
-                ib.OnDamaged(SkillDataManager.m_skillData["Lunge"].Dmg);
+                SkillInform skillData = SkillDataManager.m_skillData["Lunge"];
+                ib.OnDamaged(skillData.Dmg, skillData);
+                //ib.OnDamaged(SkillDataManager.m_skillData["Lunge"].Dmg);
                 enemyList.Remove(ib);
                 Debug.Log("제거 : " + enemyList.Count);
             }
