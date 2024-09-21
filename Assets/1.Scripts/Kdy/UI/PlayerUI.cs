@@ -58,14 +58,12 @@ public class PlayerUI : MonoBehaviour
     {
         if (healCheck)
         {
-            Debug.Log(value * 100);
             Recovery(value, true);
             //m_hpText.text = Mathf.CeilToInt(value * MaxHpValue).ToString() + " / " + Mathf.CeilToInt(MaxHpValue).ToString();
             m_hpText.text = (value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
         }
         else
         {
-            Debug.Log(value * 100);
             StopAllCoroutines();
             StartCoroutine(DamagedResourcePoint(value, true));
             //m_hpText.text = Mathf.CeilToInt(value * MaxHpValue).ToString() + " / " + Mathf.CeilToInt(MaxHpValue).ToString();

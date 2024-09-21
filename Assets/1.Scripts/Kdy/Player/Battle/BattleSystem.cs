@@ -29,11 +29,7 @@ public interface IUsedSkill
 }
 public interface IDamageable
 {
-    void SetDamage(Transform attacker, SkillInform skillData);
-}
-public interface IOnDamaged
-{
-    void OnDamaged(float damage);
+    void SetDamage(SkillData skillData);
 }
 
 public interface ITransform
@@ -51,13 +47,13 @@ public interface ISetStatus
     void SetStatus(ItemData itemData, bool equip);
 }
 
-public interface IBattle : IOnDamaged, ITransform, IUsedSkill, IEquipItemSetting, ISetStatus
+public interface IBattle : ITransform, IUsedSkill, IEquipItemSetting, ISetStatus, IDamageable
 {
 
 }
 
 // 공격하고, 데미지 받는 스크립트
-public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
+public class BattleSystem : MovePath, IDeadAlarm, IBattle
 {
     public BattleStat m_stat;
     public event UnityAction m_deadAlarm;
@@ -71,7 +67,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
 
     public float m_curHp = 0.0f;
     public float m_curMp = 0.0f;
-    protected float m_curHealPoint
+    public float m_curHealPoint
     {
         get { return m_curHp; }
         set
@@ -110,7 +106,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         
     }
 
-    protected void Initalize()
+    public virtual void Initalize()
     {
         m_curHealPoint = m_stat.MaxHp;
         m_curMagicPoint = m_stat.MaxMp;
@@ -131,7 +127,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
         StopAllCoroutines();
         //Rotate(pos);
         m_myAnim.SetBool("Attack", true);
-        if(m_target != null) m_target.OnDamaged(m_stat.AttackDmg);
+        if(m_target != null) m_target.SetDamage(SkillDataManager.m_skillDataDic["Normal"]);
     }
 
     public void AttackAnim()
@@ -141,7 +137,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
 
     public virtual void Attack()
     {
-        if (m_target != null) m_target.OnDamaged(m_stat.AttackDmg);
+        if (m_target != null) m_target.SetDamage(SkillDataManager.m_skillDataDic["Normal"]);
     }
 
     public void Dead()
@@ -163,13 +159,8 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle, IDamageable
     */
 
 
-    // OnDamaged에서 호출할 수 있도록 별도의 데미지 값을 받는 메서드 통합
-    public virtual void OnDamaged(float damage)
-    {
-        SetDamage(null, new SkillInform { Dmg = damage }); // skillData가 없는 경우 damage만 적용
-    }
 
-    public virtual void SetDamage(Transform attacker, SkillInform skillData)
+    public virtual void SetDamage(SkillData skillData)
     {
         m_recoveryCheck = false;
         // 체력 깎이는 로직

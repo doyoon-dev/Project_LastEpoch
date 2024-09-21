@@ -96,6 +96,7 @@ public class Player : BattleSystem
         #region 실험코드 나중에 지워야함
         if (Input.GetKeyDown(KeyCode.T))
         {
+            SkillDataManager.m_skillDataDic["Normal"].Dmg = 30;
             
         }
         if (Input.GetKeyDown(KeyCode.K))
@@ -109,10 +110,17 @@ public class Player : BattleSystem
         }
         #endregion
     }
-    public override void OnDamaged(float damage)
+
+    public override void Initalize()
     {
-        Debug.Log($"플레이어가 {damage}의 데미지를 받았습니다.");  // 데미지 로그
-        m_curHealPoint -= damage;  // 현재 체력에서 데미지를 뺌
+        base.Initalize();
+        SkillDataManager.m_skillDataDic["Normal"].Dmg = m_stat.AttackDmg;
+    }
+
+    public override void SetDamage(SkillData damage)
+    {
+        //Debug.Log($"플레이어가 {damage}의 데미지를 받았습니다.");  // 데미지 로그
+        m_curHealPoint -= damage.Dmg;  // 현재 체력에서 데미지를 뺌
         // 수정필요
         GameObject obj = Instantiate(m_hitEffect);
         obj.transform.position = transform.position;
@@ -121,12 +129,12 @@ public class Player : BattleSystem
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
-            Debug.Log("플레이어가 죽었습니다.");
+            //Debug.Log("플레이어가 죽었습니다.");
             Dead();  // 플레이어 사망 처리
         }
         else
         {
-            Debug.Log($"플레이어의 남은 체력: {m_curHealPoint}");
+            //Debug.Log($"플레이어의 남은 체력: {m_curHealPoint}");
         }
     }
 
@@ -231,8 +239,7 @@ public class Player : BattleSystem
             IDamageable id = col.GetComponent<IDamageable>();
             if (id != null)
             {
-                id.SetDamage(gameObject.transform, SkillDataManager.m_skillData["Normal"]);
-                //id.SetDamage(gameObject.transform, m_stat.AttackDmg);
+                id.SetDamage(SkillDataManager.m_skillDataDic["Normal"]);
             }
         }
     }

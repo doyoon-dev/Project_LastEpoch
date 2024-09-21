@@ -14,7 +14,6 @@ public struct SkillInform
 
 public class SkillDataManager : MonoBehaviour
 {
-    public static Dictionary<string, SkillInform> m_skillData = new Dictionary<string, SkillInform>();
     public static Dictionary<string, SkillData> m_skillDataDic = new Dictionary<string, SkillData>();
     [SerializeField]
     SkillData[] m_skillDatas;
@@ -31,14 +30,10 @@ public class SkillDataManager : MonoBehaviour
 
     private void Awake()
     {
-        m_skillData.Add("Normal", new SkillInform() { Name = "Normal", Mp = 0, Dmg = 29, CoolTime = 0, Channeling = 0, knockback = 0 });
-        m_skillData.Add("ErasingStrike", new SkillInform() { Name = "ErasingStrike", Mp = 10, Dmg = 29, CoolTime = 3.0f, Channeling = 0, knockback = 0 });
-        m_skillData.Add("WindMill", new SkillInform() { Name = "WindMill", Mp = 1, Dmg = 29, CoolTime = 0.5f, Channeling = 10, knockback = 0 });
-        m_skillData.Add("Lunge", new SkillInform() { Name = "Lunge", Mp = 8, Dmg = 15, CoolTime = 4.0f, Channeling = 0, knockback = 0 });
-
         m_skillDataDic.Add(m_skillDatas[0].name, m_skillDatas[0]);
         m_skillDataDic.Add(m_skillDatas[1].name, m_skillDatas[1]);
         m_skillDataDic.Add(m_skillDatas[2].name, m_skillDatas[2]);
         m_skillDataDic.Add(m_skillDatas[3].name, m_skillDatas[3]);
+        m_skillDataDic.Add(m_skillDatas[4].name, m_skillDatas[4]);
     }
 }
