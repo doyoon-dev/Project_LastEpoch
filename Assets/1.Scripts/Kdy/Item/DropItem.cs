@@ -34,6 +34,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
 
 
     // Start is called before the first frame update
+    /*
     //아이템 발사하는 메서드
     public void Launch(Vector3 launchForce)
     {
@@ -44,6 +45,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
             rb.AddForce(launchForce, ForceMode.Impulse);
         }
     }
+    */
     void Start()
     {
         //m_itemNameUIPrefabObj = ObjectPool.Inst.Pull<GameObject>(m_itemNameUIPrefab, SceneData.Inst.m_itemNameUIPos);

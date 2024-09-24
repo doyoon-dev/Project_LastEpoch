@@ -85,10 +85,11 @@ public class ItemDropManager : MonoBehaviour
                 dropItem.transform.position = position;
                 dropItem.gameObject.SetActive(true);
 
+                /*
                 // 아이템 살짝 튀어오르게 하는거 설정
                 Vector3 launchForce = new Vector3(Random.Range(-1f, 1f), Random.Range(4f, 6f), Random.Range(-1f, 1f));
                 dropItem.Launch(launchForce);
-
+                */
                
             }
         }

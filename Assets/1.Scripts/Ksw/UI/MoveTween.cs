@@ -58,6 +58,7 @@ public class MoveTween : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.O))
         {
             m_from = transform.position;
@@ -72,5 +73,6 @@ public class MoveTween : MonoBehaviour
             m_duration = 0.5f;
             Play();
         }
+        */
     }
 }
