@@ -163,6 +163,10 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     public virtual void SetDamage(SkillData skillData)
     {
         m_recoveryCheck = false;
+        if (m_stat.Defense > 0)
+        {
+
+        }
         // 체력 깎이는 로직
         m_curHealPoint -= skillData.Dmg;
         
