@@ -32,13 +32,15 @@ public interface IOrgPos
 
 public interface IEquipItemStat
 {
-    event UnityAction<ItemData, bool> m_equipItemStat;
+    //event UnityAction<ItemData, bool> m_equipItemStat;
+    event UnityAction<ItemData> m_equipItemStat;
 }
 
 public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IChangePos, IOrgPos, IEquipItemStat, ISetInventory
 {
     public event UnityAction m_unEquipItem = null;
-    public event UnityAction<ItemData, bool> m_equipItemStat = null;         // 아이템을 장착했을 때 유니티 이벤트 실행해서 BattleSystem에 있는 Stat 아이템 Stat에 따라 바꿔주기
+    //public event UnityAction<ItemData, bool> m_equipItemStat = null;         // 아이템을 장착했을 때 유니티 이벤트 실행해서 BattleSystem에 있는 Stat 아이템 Stat에 따라 바꿔주기
+    public event UnityAction<ItemData> m_equipItemStat = null;
     public Transform m_inventory = null;
     public LayerMask m_itemMask;
     public ItemData m_itemData;
@@ -158,11 +160,12 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
             m_image = gameObject.GetComponent<Image>();
 
             m_equipSlot = CheckItemSlotType(this);
-            ISetStatus iss = m_equipSlot.m_battleSystem.GetComponent<ISetStatus>();
-            if (iss != null)
-            {
-                m_equipItemStat += iss.SetStatus;
-            }
+            //ISetStatus iss = m_equipSlot.m_battleSystem.GetComponent<ISetStatus>();
+            //if (iss != null)
+            //{
+            //    m_equipItemStat += iss.SetStatus;
+            //}
+            
             //ISetItemEquipSlot isies = m_inventory.GetComponent<ISetItemEquipSlot>();
             //if(isies != null)
             //{
@@ -229,6 +232,11 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     // 장비 장착했을 때 아이템 위치 설정
     void SetEquip()
     {
+        IEquipItemStatUI iss = m_equipSlot.m_playerStatUI.GetComponent<IEquipItemStatUI>();
+        if (iss != null)
+        {
+            m_equipItemStat += iss.EquipItemStat;
+        }
         //m_isEquiped = true;
         m_frameImage.SetActive(false);
         m_equipedItem = true;
@@ -240,7 +248,8 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         //{
         //    m_equipItemStat += iss.SetStatus;
         //}
-        m_equipItemStat?.Invoke(m_itemData, true);            // BattleSystem 에서 캐릭터 Stat 바궈주는 이벤트
+        //m_equipItemStat?.Invoke(m_itemData, true);            // BattleSystem 에서 캐릭터 Stat 바궈주는 이벤트
+        m_equipItemStat?.Invoke(m_itemData);
         m_equipItemStat = null;
 
         //IEquipItemSetting ieis = m_equipSlot.m_battleSystem.GetComponent<IEquipItemSetting>();

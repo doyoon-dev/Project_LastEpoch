@@ -278,6 +278,15 @@ public class SentinelSkill : Skill, ISkill_Lunge
         m_player.GetComponent<Rigidbody>().isKinematic = false;
     }
 
+    void RecoverMp(bool isUsingSkill)
+    {
+        IRecoveryMP irmp = m_player.m_playerUI.GetComponent<IRecoveryMP>();
+        if (irmp != null)
+        {
+            irmp.RecoveryMP(isUsingSkill);
+        }
+    }
+
     // 돌진 스킬 데미지 박스
     // OnTrigger 함수로 무기 앞에 콜라이더 만들고 충돌 적 무시, 충돌 적 데미지 주기로 해야 할 지도
     //public void LungeDamageBox()

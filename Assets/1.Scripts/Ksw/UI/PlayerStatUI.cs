@@ -3,7 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerStatUI : MonoBehaviour
+public interface IEquipItemStatUI
+{
+    void EquipItemStat(ItemData itemData);
+}
+
+public interface IUnEquipItemStatUI
+{
+    void UnequipItemStat(ItemData itemData);
+}
+
+public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI
 {
     [SerializeField]
     private Player s_player;

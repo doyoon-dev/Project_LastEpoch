@@ -5,13 +5,18 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 
+public interface IRecoveryMP
+{
+    void RecoveryMP(bool isUsingSkill);
+}
 
+// 현재 안씀
 public interface IUsingPotionAct
 {
     event UnityAction m_usingPotionAct;
 }
 
-public class PlayerUI : MonoBehaviour
+public class PlayerUI : MonoBehaviour, IRecoveryMP
 {
     //public event UnityAction<float> m_usingPotionAct = null;
     public UnityEvent<float> m_usingPotionAct = null;
@@ -82,7 +87,8 @@ public class PlayerUI : MonoBehaviour
         }
         else
         {
-            Recovery(value, false);
+            RecoveryMP(isUsingSkill);
+            //Recovery(value, false);
             m_mpText.text = (value * MaxMpValue).ToString() + " / " + (MaxMpValue).ToString();
         }
     }
@@ -150,12 +156,26 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+    public void RecoveryMP(bool isUsingSkill)
+    {
+        // 체력 회복 문제있으면 StopCoroutine(RecoveryManaPoint(isUsingSkill)); 로 바꾸기
+        StopAllCoroutines();
+        StartCoroutine(RecoveryManaPoint(isUsingSkill));
+    }
+
     // 마나 채우는 함수
     // 스킬 사용했을 때 마나 감소하고, 중지했을 때 차도록 만들기
     IEnumerator RecoveryManaPoint(bool isUsingSkill)
     {
         while (!isUsingSkill || m_mpUI.fillAmount >= 1)
         {
+            yield return new WaitForSeconds(0.5f);
+            m_player.m_curMagicPoint += Time.deltaTime * 0.5f;
+            if (m_player.m_curMagicPoint >= m_player.m_stat.MaxHp)
+            {
+                m_player.m_curMagicPoint = m_player.m_stat.MaxHp;
+                break;
+            }
             m_mpUI.fillAmount += Time.deltaTime * 0.5f;
             yield return null;
         }

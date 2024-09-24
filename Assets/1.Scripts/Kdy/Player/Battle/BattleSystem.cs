@@ -162,13 +162,12 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
 
     public virtual void SetDamage(SkillData skillData)
     {
+        float dmg = 0;
         m_recoveryCheck = false;
-        if (m_stat.Defense > 0)
-        {
+        dmg = skillData.Dmg - (skillData.Dmg * (m_stat.Defense * 0.01f));
 
-        }
         // 체력 깎이는 로직
-        m_curHealPoint -= skillData.Dmg;
+        m_curHealPoint -= dmg;
         
         // 체력이 0 이하일 때 처리
         if (m_curHealPoint <= 0)
@@ -185,6 +184,15 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         if (m_curHealPoint >= m_stat.MaxHp)
         {
             m_curHealPoint = m_stat.MaxHp;
+        }
+    }
+
+    public void RecoveryManaPoint(float manapoint)
+    {
+        m_curMagicPoint += manapoint;
+        if (m_curMagicPoint >= m_stat.MaxHp)
+        {
+            m_curMagicPoint = m_stat.MaxHp;
         }
     }
 
