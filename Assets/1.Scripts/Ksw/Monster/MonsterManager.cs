@@ -145,28 +145,41 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     // 현재 공격받고 있는 몬스터 설정 (중앙 체력바)
     public void SetCurrentTargetMonster(MonsterController monster)
     {
+        if (monster == null)
+        {
+            Debug.LogWarning("Trying to set null monster as current target.");
+            return;
+        }
         // 현재 타겟 몬스터와 새 타겟이 다를 때만 변경
         if (currentTargetMonster != monster)
         {
             // 기존 몬스터의 체력바 숨기기
             if (currentTargetMonster != null)
             {
-                currentTargetMonster.healthBarUI.HideHealthBar();  // 중앙 체력바 숨기기
-                currentTargetMonster.headHealthBar.HideHeadHealthBar();  // 머리 위 체력바 숨기기
+                if (currentTargetMonster.healthBarUI != null)
+                {
+                    currentTargetMonster.healthBarUI.HideHealthBar();// 중앙 체력바 숨기기
+                }
+
+                if (currentTargetMonster.headHealthBar != null)
+                {
+                    currentTargetMonster.headHealthBar.HideHeadHealthBar();  // 머리 위 체력바 숨기기
+                }
             }
 
             // 새 타겟 몬스터 설정
             currentTargetMonster = monster;
 
-            // 중앙 체력바 설정
-            currentTargetMonster.healthBarUI.ShowHealthBar();  // 중앙 체력바 활성화
-            currentTargetMonster.healthBarUI.Initialize(monster.monsterName, monster.m_stat.MaxHp);  // 중앙 체력바 초기화
-
+            if (currentTargetMonster.healthBarUI != null)
+            {
+                currentTargetMonster.healthBarUI.ShowHealthBar();// 중앙 체력바 활성화
+                currentTargetMonster.healthBarUI.Initialize(monster.monsterName, monster.m_stat.MaxHp);// 중앙 체력바 갱신
+            }
             // **머리 위 체력바 설정**
             if (currentTargetMonster.headHealthBar != null)
             {
-                currentTargetMonster.headHealthBar.ShowHeadHealthBar();  // 머리 위 체력바 활성화
-                currentTargetMonster.headHealthBar.UpdateHeadHealth((int)monster.m_curHealPoint, monster.m_stat.MaxHp);  // 머리 위 체력바 갱신
+                currentTargetMonster.headHealthBar.ShowHeadHealthBar();// 머리 위 체력바 활성화
+                currentTargetMonster.headHealthBar.UpdateHeadHealth((int)monster.m_curHealPoint, monster.m_stat.MaxHp);// 머리 위 체력바 갱신
             }
         }
     }

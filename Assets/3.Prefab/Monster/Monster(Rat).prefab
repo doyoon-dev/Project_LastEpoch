@@ -2614,9 +2614,9 @@ MonoBehaviour:
   m_curHp: 60
   m_curMp: 0
   m_state: 0
-  m_detectDist: 3
+  m_detectDist: 2
   m_attackDist: 1.2
-  m_chaseDist: 10
+  m_chaseDist: 7
   m_waypointCtr: {fileID: 0}
   boxSize: {x: 1, y: 1, z: 1}
   AttackArea: {fileID: 8255628561778141796}
