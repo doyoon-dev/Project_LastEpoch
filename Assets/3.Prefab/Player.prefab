@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &419016404
 Transform:
   m_ObjectHideFlags: 0
@@ -9921,7 +9921,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 1.6
-      minScalar: 0.8
+      minScalar: 0.0001
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -9973,8 +9973,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 3
-      minScalar: 0.2
+      scalar: 10
+      minScalar: 7
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -14690,7 +14690,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1471949278
 Transform:
   m_ObjectHideFlags: 0
@@ -14962,7 +14962,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 0, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -15405,7 +15405,7 @@ ParticleSystem:
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
-    donutRadius: 0.4
+    donutRadius: 0.25
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
@@ -18854,7 +18854,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.5471698, g: 0, b: 0.023414927, a: 1}
+      maxColor: {r: 0.6981132, g: 0, b: 0.029919157, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -23942,7 +23942,9 @@ MonoBehaviour:
   m_warPathStartPos: {fileID: 5244370769042063078}
   m_warPathEndPos: {fileID: 5244370769486884012}
   m_effectPos: {fileID: 0}
-  m_skillEffect: {fileID: 699179249}
+  m_erasingStrikeEffect: {fileID: 699179249}
+  m_warpathEffect: {fileID: 419016403}
+  m_lungeEffect: {fileID: 1471949277}
   m_enemyMask:
     serializedVersion: 2
     m_Bits: 128

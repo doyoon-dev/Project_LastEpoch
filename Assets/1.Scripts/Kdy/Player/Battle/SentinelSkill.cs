@@ -19,7 +19,9 @@ public class SentinelSkill : Skill, ISkill_Lunge
     Transform m_warPathEndPos;
 
     public GameObject m_effectPos;
-    public GameObject m_skillEffect;
+    public GameObject m_erasingStrikeEffect;
+    public GameObject m_warpathEffect;
+    public GameObject m_lungeEffect;
     public LayerMask m_enemyMask;
     public LayerMask m_backgroundMask;
     public Dictionary<string, SkillButton> m_skillBtns = new Dictionary<string, SkillButton>();
@@ -123,11 +125,11 @@ public class SentinelSkill : Skill, ISkill_Lunge
     }
     public void Skill_ErasingStrike_EffectOn()
     {
-        m_skillEffect.SetActive(true);
+        m_erasingStrikeEffect.SetActive(true);
     }
     public void Skill_ErasingStrike_EffectOff()
     {
-        m_skillEffect.SetActive(false);
+        m_erasingStrikeEffect.SetActive(false);
         m_usingSkill = false;
     }
 
@@ -141,12 +143,13 @@ public class SentinelSkill : Skill, ISkill_Lunge
             UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
             if(!m_warPathUse)
             {
+                m_warpathEffect.SetActive(true);
                 m_usingSkill = true;
                 m_warPathUse = true;
                 m_myAnim.SetBool("SkillWarPath", true);
             }
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
             {
                 Vector3 dir = hit.point - transform.position;
                 dir.y = 0;
@@ -157,6 +160,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         }
         if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
+            m_warpathEffect.SetActive(false);
             m_myAnim.SetBool("SkillWarPath", false);
             m_warPathUse = false;
             m_usingSkill = false;
@@ -207,6 +211,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
             //if (Input.GetKeyDown(inputKey) && !m_lungeUse && m_player.m_curMagicPoint >= SkillData.m_skillData["Lunge"].Mp)
             if (!m_lungeUse && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Lunge"].Mp)
             {
+                m_lungeEffect.SetActive(true);
                 UsingSkillMp(SkillDataManager.m_skillDataDic["Lunge"].Mp);
                 m_usingSkill = true;
                 IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
@@ -266,6 +271,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
             m_player.transform.Translate(dir * delta, Space.World);
             yield return null;
         }
+        m_lungeEffect.SetActive(false);
         m_usingSkill = false;
         m_myAnim.SetBool("SkillLunge", false);
         m_player.GetComponent<Collider>().isTrigger = false;
