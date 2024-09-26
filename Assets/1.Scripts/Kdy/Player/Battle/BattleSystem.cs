@@ -47,7 +47,12 @@ public interface ISetStatus
     void SetStatus(ItemData itemData, bool equip);
 }
 
-public interface IBattle : ITransform, IUsedSkill, IEquipItemSetting, ISetStatus, IDamageable
+public interface IRecoveryManaPoint
+{
+    void RecoveryManaPoint(bool isUsingSkill);
+}
+
+public interface IBattle : ITransform, IUsedSkill, IEquipItemSetting, ISetStatus, IDamageable, IRecoveryManaPoint
 {
 
 }
@@ -64,6 +69,8 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     
 
     bool m_recoveryCheck = false;
+    public bool m_recoveryMpCheck = false;
+    public Skill m_skillObj;
 
     public float m_curHp = 0.0f;
     public float m_curMp = 0.0f;
@@ -82,7 +89,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         set
         {
             m_curMp = Mathf.Clamp(value, 0.0f, m_stat.MaxMp);
-            m_changeMp?.Invoke(m_curMp / m_stat.MaxMp, m_stat.MaxMp, true);
+            m_changeMp?.Invoke(m_curMp / m_stat.MaxMp, m_stat.MaxMp, m_skillObj.m_usingSkill);
         }
     }
     protected float m_curDamage
@@ -187,12 +194,30 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         }
     }
 
-    public void RecoveryManaPoint(float manapoint)
+    public void RecoveryManaPoint(bool isUsingSkill)
     {
-        m_curMagicPoint += manapoint;
-        if (m_curMagicPoint >= m_stat.MaxHp)
+        //m_recoveryMpCheck = isUsingSkill;
+        //m_curMagicPoint += manapoint;
+        //if (m_curMagicPoint >= m_stat.MaxHp)
+        //{
+        //    m_curMagicPoint = m_stat.MaxHp;
+        //}
+        StopAllCoroutines();
+        StartCoroutine(ManaPointCoroutine(isUsingSkill));
+    }
+
+    IEnumerator ManaPointCoroutine(bool isUsingSkill)
+    {
+        //m_recoveryMpCheck = isUsingSkill;
+        while (!isUsingSkill && m_curMagicPoint < m_stat.MaxHp)
         {
-            m_curMagicPoint = m_stat.MaxHp;
+            m_curMagicPoint += Time.deltaTime * 10;
+            if (m_curMagicPoint >= m_stat.MaxHp)
+            {
+                m_curMagicPoint = m_stat.MaxHp;
+                break;
+            }
+            yield return null;
         }
     }
 

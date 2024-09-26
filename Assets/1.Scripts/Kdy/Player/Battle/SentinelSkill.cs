@@ -89,6 +89,8 @@ public class SentinelSkill : Skill, ISkill_Lunge
                 m_strikeUse = true;
                 UsingSkillMp(SkillDataManager.m_skillDataDic["ErasingStrike"].Mp);
                 m_usingSkill = true;
+
+
                 IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
                 if (iusa != null)
                 {
@@ -131,6 +133,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
     {
         m_erasingStrikeEffect.SetActive(false);
         m_usingSkill = false;
+        RecoverMp(m_usingSkill);
     }
 
     // 출정 스킬(윈드밀)
@@ -164,6 +167,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
             m_myAnim.SetBool("SkillWarPath", false);
             m_warPathUse = false;
             m_usingSkill = false;
+            RecoverMp(m_usingSkill);
         }
     }
 
@@ -276,16 +280,18 @@ public class SentinelSkill : Skill, ISkill_Lunge
         m_myAnim.SetBool("SkillLunge", false);
         m_player.GetComponent<Collider>().isTrigger = false;
         m_player.GetComponent<Rigidbody>().isKinematic = false;
+        RecoverMp(m_usingSkill);
     }
 
     void RecoverMp(bool isUsingSkill)
     {
-        IRecoveryMP irmp = m_player.m_playerUI.GetComponent<IRecoveryMP>();
-        if (irmp != null)
+        IBattle ib = m_player.GetComponent<IBattle>();
+        if (ib != null)
         {
-            irmp.RecoveryMP(isUsingSkill);
+            ib.RecoveryManaPoint(isUsingSkill);
         }
     }
+
 
     // 돌진 스킬 데미지 박스
     // OnTrigger 함수로 무기 앞에 콜라이더 만들고 충돌 적 무시, 충돌 적 데미지 주기로 해야 할 지도

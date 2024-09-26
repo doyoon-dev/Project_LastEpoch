@@ -59,103 +59,100 @@ public class PlayerUI : MonoBehaviour, IRecoveryMP
         m_mpText.text = m_player.GetComponent<BattleSystem>().m_stat.MaxMp + " / " + m_player.GetComponent<BattleSystem>().m_stat.MaxMp;
     }
 
+    // 플레이어의 체력이 회복, 감소함에 따라 함수 실행
     public void HealthPoint(float value, float MaxHpValue, bool healCheck)
     {
+        // 체력 회복 UI 함수 실행
         if (healCheck)
         {
-            Recovery(value, true);
-            //m_hpText.text = Mathf.CeilToInt(value * MaxHpValue).ToString() + " / " + Mathf.CeilToInt(MaxHpValue).ToString();
+            RecoveryHp(value);
             m_hpText.text = (value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
         }
+        // 체력 감소 UI 함수 실행
         else
         {
             StopAllCoroutines();
-            StartCoroutine(DamagedResourcePoint(value, true));
-            //m_hpText.text = Mathf.CeilToInt(value * MaxHpValue).ToString() + " / " + Mathf.CeilToInt(MaxHpValue).ToString();
+            StartCoroutine(DamagedHealPoint(value));
             m_hpText.text = (value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
-            //m_hpUI.fillAmount = value;
         }
     }
 
+    // 플레이어의 마나가 회복, 감소함에 따라 함수 실행
     public void ManaPoint(float value, float MaxMpValue, bool isUsingSkill)
     {
+        // 마나 감소 UI 함수 실행
         if (isUsingSkill)
         {
             StopAllCoroutines();
-            StartCoroutine(DamagedResourcePoint(value, false));
-            m_mpText.text = Mathf.CeilToInt(value * MaxMpValue).ToString() + " / " + Mathf.CeilToInt(MaxMpValue).ToString();
+            StartCoroutine(UsingManaPoint(value));
+            //m_mpText.text = (value * MaxMpValue).ToString() + " / " + (MaxMpValue).ToString();
+            m_mpText.text = Mathf.FloorToInt(value * MaxMpValue).ToString() + " / " + (MaxMpValue).ToString();
         }
+        // 마나 회복 UI 함수 실행
         else
         {
             RecoveryMP(isUsingSkill);
-            //Recovery(value, false);
-            m_mpText.text = (value * MaxMpValue).ToString() + " / " + (MaxMpValue).ToString();
+            //m_mpText.text = (value * MaxMpValue).ToString() + " / " + (MaxMpValue).ToString();
+            //m_mpText.text = Mathf.FloorToInt(value * MaxMpValue).ToString() + " / " + (MaxMpValue).ToString();
         }
     }
 
-    // 실제 플레이어의 체력, 마나가 줄도록 만드는 코드 추가해야 함
-    IEnumerator DamagedResourcePoint(float value, bool isHp)// value : 현재 데미지를 입은 후 플레이어의 체력
+
+    #region UI 자원 감소 함수
+    // 플레이어의 체력 UI 감소
+    IEnumerator DamagedHealPoint(float value)// value : 현재 데미지를 입은 후 플레이어의 체력 || 스킬 사용 마나
     {
-        if (isHp)
+        float beforeHp = m_hpUI.fillAmount;
+        float hp = m_hpUI.fillAmount - value;
+        float val = 0;
+        while (val <= hp)
         {
-            float beforeHp = m_hpUI.fillAmount;
-            float hp = m_hpUI.fillAmount - value;
-            float val = 0;
-            //while (!Mathf.Approximately(m_hpUI.fillAmount, value))
-            //{
+            val += Time.deltaTime * 0.5f;
+            m_hpUI.fillAmount = beforeHp - val;
+            yield return null;
+        }
 
-            //    m_hpUI.fillAmount = Mathf.Lerp(m_hpUI.fillAmount, value, Time.deltaTime * 2);
-            //    yield return null;
-            //}
-            while (val <= hp)
-            {
-                val += Time.deltaTime * 0.5f;
-                // m_hpUI.fillAmount = (데미지를 입기 전 hp) - val;
-                m_hpUI.fillAmount = beforeHp - val;
-                yield return null;
-            }
-            
-            m_hpUI.fillAmount = value;
-        }
-        else
-        {
-            while (!Mathf.Approximately(m_mpUI.fillAmount, value))
-            {
-                m_mpUI.fillAmount = Mathf.Lerp(m_mpUI.fillAmount, value, Time.deltaTime * 2);
-                yield return null;
-            }
-            m_mpUI.fillAmount = value;
-        }
+        m_hpUI.fillAmount = value;
     }
 
-    // 수정 필요
-    public void Recovery(float value, bool isHp)
+    // 플레이어 마나 UI 감소
+    IEnumerator UsingManaPoint(float value)
+    {
+        float beforeMp = m_mpUI.fillAmount;
+        float mp = m_mpUI.fillAmount - value;
+        float val = 0;
+        while (val <= mp)
+        {
+            val += Time.deltaTime * 0.5f;
+            m_mpUI.fillAmount = beforeMp - val;
+            yield return null;
+        }
+
+        m_mpUI.fillAmount = value;
+    }
+    #endregion
+
+
+    #region UI 자원 회복 함수
+    // 체력 회복 UI
+    public void RecoveryHp(float value)
     {
         StopAllCoroutines();
-        StartCoroutine(RecoveryResourcePoint(value, isHp));
+        StartCoroutine(RecoveryHealPoint(value));
     }
-    IEnumerator RecoveryResourcePoint(float value, bool isHp)
+    // 체력 회복 UI 코루틴
+    IEnumerator RecoveryHealPoint(float value)
     {
-        if (isHp)
+        while (!Mathf.Approximately(m_hpUI.fillAmount, value))
         {
-            while (!Mathf.Approximately(m_hpUI.fillAmount, value))
-            {
-                m_hpUI.fillAmount = Mathf.Lerp(m_hpUI.fillAmount, value, Time.deltaTime * 2);
-                yield return null;
-            }
-            m_hpUI.fillAmount = value;
+            m_hpUI.fillAmount = Mathf.Lerp(m_hpUI.fillAmount, value, Time.deltaTime * 2);
+            yield return null;
         }
-        else
-        {
-            while (!Mathf.Approximately(m_mpUI.fillAmount, value))
-            {
-                m_mpUI.fillAmount = Mathf.Lerp(m_mpUI.fillAmount, value, Time.deltaTime * 2);
-                yield return null;
-            }
-            m_mpUI.fillAmount = value;
-        }
+        m_hpUI.fillAmount = value;
     }
 
+
+    // 마나 회복 UI
     public void RecoveryMP(bool isUsingSkill)
     {
         // 체력 회복 문제있으면 StopCoroutine(RecoveryManaPoint(isUsingSkill)); 로 바꾸기
@@ -163,22 +160,20 @@ public class PlayerUI : MonoBehaviour, IRecoveryMP
         StartCoroutine(RecoveryManaPoint(isUsingSkill));
     }
 
-    // 마나 채우는 함수
-    // 스킬 사용했을 때 마나 감소하고, 중지했을 때 차도록 만들기
+    // 마나 회복 UI 코루틴
     IEnumerator RecoveryManaPoint(bool isUsingSkill)
     {
-        while (!isUsingSkill || m_mpUI.fillAmount >= 1)
+        while (!isUsingSkill && m_mpUI.fillAmount < 1)
         {
-            yield return new WaitForSeconds(0.5f);
-            m_player.m_curMagicPoint += Time.deltaTime * 0.5f;
-            if (m_player.m_curMagicPoint >= m_player.m_stat.MaxHp)
-            {
-                m_player.m_curMagicPoint = m_player.m_stat.MaxHp;
-                break;
-            }
-            m_mpUI.fillAmount += Time.deltaTime * 0.5f;
+            m_mpUI.fillAmount += Time.deltaTime * 0.1f;
+            m_mpText.text = Mathf.FloorToInt(m_mpUI.fillAmount * m_player.m_stat.MaxMp).ToString() + " / " + (m_player.m_stat.MaxMp).ToString();
             yield return null;
         }
-        m_mpUI.fillAmount = 1;
+        if (m_mpUI.fillAmount >= 1)
+        {
+            m_mpUI.fillAmount = 1;
+            m_mpText.text = Mathf.FloorToInt(m_mpUI.fillAmount * m_player.m_stat.MaxMp).ToString() + " / " + (m_player.m_stat.MaxMp).ToString();
+        }
     }
+    #endregion
 }
