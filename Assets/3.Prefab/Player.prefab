@@ -23855,6 +23855,8 @@ MonoBehaviour:
     AttackRange: 5
     Defense: 0
   m_item: {fileID: 0}
+  m_recoveryMpCheck: 0
+  m_skillObj: {fileID: 5244370769833058613}
   m_curHp: 0
   m_curMp: 0
   m_dropItemPrefabs:

@@ -87,8 +87,9 @@ public class SentinelSkill : Skill, ISkill_Lunge
                 m_player.StopAllCoroutines();
                 m_myAnim.SetTrigger("SkillStrike");
                 m_strikeUse = true;
-                UsingSkillMp(SkillDataManager.m_skillDataDic["ErasingStrike"].Mp);
                 m_usingSkill = true;
+                UsingSkillMp(SkillDataManager.m_skillDataDic["ErasingStrike"].Mp);
+                
 
 
                 IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
@@ -143,11 +144,12 @@ public class SentinelSkill : Skill, ISkill_Lunge
         // 마우스 방향으로 이동가능
         if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
+            m_usingSkill = true;
             UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
             if(!m_warPathUse)
             {
                 m_warpathEffect.SetActive(true);
-                m_usingSkill = true;
+                
                 m_warPathUse = true;
                 m_myAnim.SetBool("SkillWarPath", true);
             }
@@ -216,8 +218,9 @@ public class SentinelSkill : Skill, ISkill_Lunge
             if (!m_lungeUse && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Lunge"].Mp)
             {
                 m_lungeEffect.SetActive(true);
-                UsingSkillMp(SkillDataManager.m_skillDataDic["Lunge"].Mp);
                 m_usingSkill = true;
+                UsingSkillMp(SkillDataManager.m_skillDataDic["Lunge"].Mp);
+                
                 IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
                 if (iusa != null)
                 {
