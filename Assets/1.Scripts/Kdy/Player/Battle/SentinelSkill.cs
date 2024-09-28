@@ -18,6 +18,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
     [SerializeField]
     Transform m_warPathEndPos;
 
+    public UnityEvent m_stopMovingAct;
     public GameObject m_effectPos;
     public GameObject m_erasingStrikeEffect;
     public GameObject m_warpathEffect;
@@ -84,6 +85,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         {
             if (m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["ErasingStrike"].Mp && !m_strikeUse)
             {
+                StopAllCoroutines();
                 m_player.StopAllCoroutines();
                 m_myAnim.SetTrigger("SkillStrike");
                 m_strikeUse = true;
@@ -137,31 +139,38 @@ public class SentinelSkill : Skill, ISkill_Lunge
         RecoverMp(m_usingSkill);
     }
 
-    // 출정 스킬(윈드밀)
+    // 출정 스킬(W 스킬 : 윈드밀)
     public void Skill_WarPath(KeyCode inputKey)
     {
         // 스킬 키 누르고 있으면 마나를 다 쓸 때 까지 스킬 발동
         // 마우스 방향으로 이동가능
         if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
+            
+            m_myAnim.SetBool("Move", false);
             m_usingSkill = true;
+            RecoverMp(m_usingSkill);
             UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
-            if(!m_warPathUse)
+            if (!m_warPathUse)
             {
                 m_warpathEffect.SetActive(true);
-                
+
                 m_warPathUse = true;
                 m_myAnim.SetBool("SkillWarPath", true);
             }
+            
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask) && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
             {
+                StopAllCoroutines();
                 Vector3 dir = hit.point - transform.position;
                 dir.y = 0;
                 dir.Normalize();
+                m_stopMovingAct?.Invoke();
                 transform.Translate(dir * Time.deltaTime * 2.0f);
             }
-            
+
+
         }
         if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
@@ -259,7 +268,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         dir.Normalize();
         dir.y = 0;
         Collider[] list;
-        List<IBattle> enemyList = new List<IBattle>();
+        //List<IBattle> enemyList = new List<IBattle>();
         IBattle ib;
         while (dist > 0)
         {

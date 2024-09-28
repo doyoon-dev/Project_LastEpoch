@@ -42,8 +42,12 @@ public class Player : BattleSystem
         m_changeMp += SceneData.Inst.m_playerHpMpUI.ManaPoint;
         m_deadAlarm += () =>
         {
+            gameObject.GetComponent<Collider>().isTrigger = true;
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            gameObject.layer = 0;
             m_myAnim.SetTrigger("Die");
-            Debug.Log("Á×À½");
+            
+            //Debug.Log("Á×À½");
         };
     }
 

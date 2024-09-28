@@ -2456,6 +2456,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerStat
       objectReference: {fileID: 0}
+    - target: {fileID: 60509958080153779, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
 --- !u!224 &156591134 stripped
@@ -5234,14 +5238,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 412117469}
-  m_LocalRotation: {x: 0.3696438, y: -0.23911758, z: 0.099045746, w: 0.89239913}
-  m_LocalPosition: {x: 0.6, y: 3.4, z: 31.01}
+  m_LocalRotation: {x: 0.3596048, y: -0.31598538, z: 0.13088542, w: 0.8681629}
+  m_LocalPosition: {x: 1.4, y: 3.7, z: 31.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 45, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: -40, z: 0}
 --- !u!114 &412117474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5254,8 +5258,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23855fa9ca45ef147a994a90a8ae6bae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_offsetX: 1.55
-  m_offsetY: 3.43
+  m_offsetX: 2
+  m_offsetY: 3.76
   m_offsetZ: 2.68
   m_camSpeed: 5
   m_player: {fileID: 172759218}
@@ -5274,7 +5278,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &417965263
 PrefabInstance:

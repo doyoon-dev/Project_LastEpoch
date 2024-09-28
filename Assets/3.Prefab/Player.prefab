@@ -23943,6 +23943,21 @@ MonoBehaviour:
   m_myAnim: {fileID: 5244370768580197507}
   m_warPathStartPos: {fileID: 5244370769042063078}
   m_warPathEndPos: {fileID: 5244370769486884012}
+  m_stopMovingAct:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5244370769833058608}
+        m_TargetAssemblyTypeName: CharacterMovement, Assembly-CSharp
+        m_MethodName: StopCoroutineFunc
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_effectPos: {fileID: 0}
   m_erasingStrikeEffect: {fileID: 699179249}
   m_warpathEffect: {fileID: 419016403}
