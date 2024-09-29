@@ -112,6 +112,10 @@ public class Player : BattleSystem
         {
             m_curMagicPoint = 30;
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SoundManager.Inst.PlaySfx("ATTACK1");
+        }
         #endregion
     }
 
