@@ -23738,6 +23738,7 @@ GameObject:
   - component: {fileID: 5244370769833058614}
   - component: {fileID: 5244370769833058615}
   - component: {fileID: 5244370769833058613}
+  - component: {fileID: 822364160}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -23855,7 +23856,7 @@ MonoBehaviour:
     AttackRange: 5
     Defense: 0
   m_item: {fileID: 0}
-  m_recoveryMpCheck: 0
+  m_recoveryCheck: 0
   m_skillObj: {fileID: 5244370769833058613}
   m_curHp: 0
   m_curMp: 0
@@ -23947,7 +23948,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5244370769833058608}
-        m_TargetAssemblyTypeName: CharacterMovement, Assembly-CSharp
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: StopCoroutineFunc
         m_Mode: 1
         m_Arguments:
@@ -23968,6 +23969,19 @@ MonoBehaviour:
   m_backgroundMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &822364160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5244370769833058611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 442067c63890b8b42b05136d1528a3a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_player: {fileID: 5244370769833058608}
 --- !u!1 &5244370770216268805
 GameObject:
   m_ObjectHideFlags: 0

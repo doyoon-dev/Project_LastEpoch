@@ -39,6 +39,10 @@ public class SentinelSkill : Skill, ISkill_Lunge
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            m_stopMovingAct?.Invoke();
+        }
         if (Input.GetKey(KeyCode.Q))
         {
             Skill_ErasingStrike(KeyCode.Q);
@@ -139,6 +143,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         RecoverMp(m_usingSkill);
     }
 
+    
     // 출정 스킬(W 스킬 : 윈드밀)
     public void Skill_WarPath(KeyCode inputKey)
     {
@@ -146,9 +151,9 @@ public class SentinelSkill : Skill, ISkill_Lunge
         // 마우스 방향으로 이동가능
         if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
-            
             m_myAnim.SetBool("Move", false);
             m_usingSkill = true;
+
             RecoverMp(m_usingSkill);
             UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
             if (!m_warPathUse)
@@ -158,19 +163,21 @@ public class SentinelSkill : Skill, ISkill_Lunge
                 m_warPathUse = true;
                 m_myAnim.SetBool("SkillWarPath", true);
             }
-            
+
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask) && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
             {
                 StopAllCoroutines();
-                Vector3 dir = hit.point - transform.position;
-                dir.y = 0;
-                dir.Normalize();
-                m_stopMovingAct?.Invoke();
-                transform.Translate(dir * Time.deltaTime * 2.0f);
+                Vector3 skillDir = hit.point - transform.position;
+                
+                skillDir.y = 0;
+                Debug.DrawRay(transform.position, skillDir, Color.red);
+                skillDir.Normalize();
+                
+
+                transform.Translate(skillDir * Time.deltaTime * 2.0f);
             }
-
-
         }
         if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
@@ -297,7 +304,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
 
     void RecoverMp(bool isUsingSkill)
     {
-        IBattle ib = m_player.GetComponent<IBattle>();
+        IRecoveryManaPoint ib = m_player.GetComponent<IRecoveryManaPoint>();
         if (ib != null)
         {
             ib.RecoveryManaPoint(isUsingSkill);

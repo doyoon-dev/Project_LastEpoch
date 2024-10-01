@@ -47,12 +47,9 @@ public interface ISetStatus
     void SetStatus(ItemData itemData, bool equip);
 }
 
-public interface IRecoveryManaPoint
-{
-    void RecoveryManaPoint(bool isUsingSkill);
-}
 
-public interface IBattle : ITransform, IUsedSkill, IEquipItemSetting, ISetStatus, IDamageable, IRecoveryManaPoint
+
+public interface IBattle : ITransform, IUsedSkill, IEquipItemSetting, ISetStatus, IDamageable
 {
 
 }
@@ -68,8 +65,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     public Item m_item;
     
 
-    bool m_recoveryCheck = false;
-    public bool m_recoveryMpCheck = false;
+    public bool m_recoveryCheck = false;
     public Skill m_skillObj;
 
     public float m_curHp = 0.0f;
@@ -184,42 +180,42 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         }
     }
 
-    public void RecoveryHealPoint(float healpoint)
-    {
-        m_recoveryCheck = true;
-        m_curHealPoint += healpoint;
-        if (m_curHealPoint >= m_stat.MaxHp)
-        {
-            m_curHealPoint = m_stat.MaxHp;
-        }
-    }
+    //public void RecoveryHealPoint(float healpoint)
+    //{
+    //    m_recoveryCheck = true;
+    //    m_curHealPoint += healpoint;
+    //    if (m_curHealPoint >= m_stat.MaxHp)
+    //    {
+    //        m_curHealPoint = m_stat.MaxHp;
+    //    }
+    //}
 
-    public void RecoveryManaPoint(bool isUsingSkill)
-    {
-        //m_recoveryMpCheck = isUsingSkill;
-        //m_curMagicPoint += manapoint;
-        //if (m_curMagicPoint >= m_stat.MaxHp)
-        //{
-        //    m_curMagicPoint = m_stat.MaxHp;
-        //}
-        StopAllCoroutines();
-        StartCoroutine(ManaPointCoroutine(isUsingSkill));
-    }
+    //public void RecoveryManaPoint(bool isUsingSkill)
+    //{
+    //    //m_recoveryMpCheck = isUsingSkill;
+    //    //m_curMagicPoint += manapoint;
+    //    //if (m_curMagicPoint >= m_stat.MaxHp)
+    //    //{
+    //    //    m_curMagicPoint = m_stat.MaxHp;
+    //    //}
+    //    StopAllCoroutines();
+    //    StartCoroutine(ManaPointCoroutine(isUsingSkill));
+    //}
 
-    IEnumerator ManaPointCoroutine(bool isUsingSkill)
-    {
-        //m_recoveryMpCheck = isUsingSkill;
-        while (!isUsingSkill && m_curMagicPoint < m_stat.MaxHp)
-        {
-            m_curMagicPoint += Time.deltaTime * 10;
-            if (m_curMagicPoint >= m_stat.MaxHp)
-            {
-                m_curMagicPoint = m_stat.MaxHp;
-                break;
-            }
-            yield return null;
-        }
-    }
+    //IEnumerator ManaPointCoroutine(bool isUsingSkill)
+    //{
+    //    //m_recoveryMpCheck = isUsingSkill;
+    //    while (!isUsingSkill && m_curMagicPoint < m_stat.MaxHp)
+    //    {
+    //        m_curMagicPoint += Time.deltaTime * 10;
+    //        if (m_curMagicPoint >= m_stat.MaxHp)
+    //        {
+    //            m_curMagicPoint = m_stat.MaxHp;
+    //            break;
+    //        }
+    //        yield return null;
+    //    }
+    //}
 
     public void UsedSkill(float skillMp)
     {

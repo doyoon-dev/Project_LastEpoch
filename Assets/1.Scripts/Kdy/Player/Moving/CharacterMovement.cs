@@ -165,9 +165,4 @@ public class CharacterMovement : CharacterProperty
         m_myAnim.SetBool("Move", false);
         act?.Invoke();
     }
-
-    public void StopCoroutineFunc()
-    {
-        StopAllCoroutines();
-    }
 }
