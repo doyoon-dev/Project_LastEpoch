@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -47,8 +49,22 @@ public class SentinelSkill : Skill, ISkill_Lunge
         {
             Skill_ErasingStrike(KeyCode.Q);
         }
-        
+
         Skill_WarPath(KeyCode.W);
+
+        //if (Input.GetKey(KeyCode.W))
+        //{
+        //    StopAllCoroutines();
+        //    StartCoroutine(MoveWarPath());
+        //}
+        //if (Input.GetKeyUp(KeyCode.W) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
+        //{
+        //    m_warpathEffect.SetActive(false);
+        //    m_myAnim.SetBool("SkillWarPath", false);
+        //    m_warPathUse = false;
+        //    m_usingSkill = false;
+        //    RecoverMp(m_usingSkill);
+        //}
 
         if (Input.GetKey(KeyCode.E))
         {
@@ -89,6 +105,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         {
             if (m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["ErasingStrike"].Mp && !m_strikeUse)
             {
+                m_myAnim.SetBool("Move", false);
                 StopAllCoroutines();
                 m_player.StopAllCoroutines();
                 m_myAnim.SetTrigger("SkillStrike");
@@ -97,18 +114,17 @@ public class SentinelSkill : Skill, ISkill_Lunge
                 UsingSkillMp(SkillDataManager.m_skillDataDic["ErasingStrike"].Mp);
                 
 
-
                 IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
                 if (iusa != null)
                 {
                     iusa.m_usableSkillAct += () => { m_strikeUse = false; };
                 }
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
                 {
-                    Vector3 dir = hit.point - transform.position;
+                    Vector3 dir = hit.point - m_player.transform.position;
                     dir.y = 0;
-                    transform.forward = dir;
+                    m_player.transform.forward = dir;
                 }
                 ICoolTime ict = m_playerUI.m_skillCoolTime.GetComponent<ICoolTime>();
                 if (ict != null)
@@ -151,9 +167,21 @@ public class SentinelSkill : Skill, ISkill_Lunge
         // 마우스 방향으로 이동가능
         if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
+            //StopAllCoroutines();
             m_myAnim.SetBool("Move", false);
             m_usingSkill = true;
-
+            m_stopMovingAct?.Invoke();
+            #region 실험 코드
+            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            //if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
+            //{
+            //    Vector3 skillDir = hit.point - m_player.transform.position;
+            //    skillDir.y = 0;
+            //    skillDir.Normalize();
+            //    transform.forward = skillDir;
+            //    transform.Translate(skillDir * Time.deltaTime * 2.0f);
+            //}
+            #endregion
             RecoverMp(m_usingSkill);
             UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
             if (!m_warPathUse)
@@ -164,17 +192,16 @@ public class SentinelSkill : Skill, ISkill_Lunge
                 m_myAnim.SetBool("SkillWarPath", true);
             }
 
-
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask) && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
             {
                 StopAllCoroutines();
-                Vector3 skillDir = hit.point - transform.position;
-                
+
+                Vector3 skillDir = hit.point - m_player.transform.position;
+
                 skillDir.y = 0;
                 Debug.DrawRay(transform.position, skillDir, Color.red);
                 skillDir.Normalize();
-                
 
                 transform.Translate(skillDir * Time.deltaTime * 2.0f);
             }
@@ -186,6 +213,40 @@ public class SentinelSkill : Skill, ISkill_Lunge
             m_warPathUse = false;
             m_usingSkill = false;
             RecoverMp(m_usingSkill);
+        }
+    }
+
+    IEnumerator MoveWarPath()
+    {
+        m_myAnim.SetBool("Move", false);
+        m_usingSkill = true;
+        m_stopMovingAct?.Invoke();
+        if (!m_warPathUse)
+        {
+            m_warpathEffect.SetActive(true);
+
+            m_warPathUse = true;
+            m_myAnim.SetBool("SkillWarPath", true);
+        }
+        while (m_warPathUse && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
+        {
+            RecoverMp(m_usingSkill);
+            UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
+            
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
+            {
+                Vector3 skillDir = hit.point - m_player.transform.position;
+                skillDir.y = 0;
+                Debug.DrawRay(transform.position, skillDir, Color.red);
+                skillDir.Normalize();
+                while (m_warPathUse && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
+                {
+                    transform.Translate(skillDir * Time.deltaTime * 2.0f);
+                    yield return null;
+                }
+            }
+            yield return null;
         }
     }
 

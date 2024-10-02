@@ -11,17 +11,7 @@ public class RecoverResource : MonoBehaviour, IRecoveryManaPoint
 {
     [SerializeField]
     Player m_player;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void RecoveryHealPoint(float healpoint)
     {

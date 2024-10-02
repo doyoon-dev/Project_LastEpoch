@@ -38,7 +38,7 @@ public class CharacterMovement : CharacterProperty
     }
 
     // ¿Ãµø
-    public IEnumerator Moving(Vector3 target)
+    public virtual IEnumerator Moving(Vector3 target)
     {
         Vector3 dir = target - transform.position;
         float dist = dir.magnitude;

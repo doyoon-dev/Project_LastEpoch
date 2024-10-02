@@ -82,16 +82,4 @@ public class Skill : MonoBehaviour, IUsingSkill
         }
     }
 
-    // 스킬 사용 가능한지 체크하는 함수
-    public bool IsSkillUsable(SkillDataManager skillData)
-    {
-
-        return false;
-    }
-    
-    // 쿨타임
-    public void SkillCoolTime(SkillDataManager skillData)
-    {
-
-    }
 }

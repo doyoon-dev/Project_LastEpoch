@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class MovePath : CharacterMovement
 {
     NavMeshPath m_path;
-    
     // 네비게이션 길 이동
     public void MoveToPathByNav(Vector3 pos)
     {
@@ -34,4 +33,5 @@ public class MovePath : CharacterMovement
             yield return StartCoroutine(Moving(pathList[curPath++]));
         }
     }
+
 }

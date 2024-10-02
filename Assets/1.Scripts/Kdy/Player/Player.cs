@@ -192,6 +192,27 @@ public class Player : BattleSystem
         }
     }
 
+
+    public override IEnumerator Moving(Vector3 target)
+    {
+        Vector3 dir = target - transform.position;
+        float dist = dir.magnitude;
+        dir.Normalize();
+        dir.y = 0;
+        m_myAnim.SetBool("Move", true);
+        StartCoroutine(Rotating(dir));
+        while (dist > 0.0f)
+        {
+            float delta = Time.deltaTime * m_moveStat.moveSpeed;
+            if (delta > dist) delta = dist;
+            transform.Translate(dir * delta, Space.World);
+            //m_cam.transform.Translate(dir * delta, Space.World);
+            dist -= delta;
+            yield return null;
+        }
+        m_myAnim.SetBool("Move", false);
+    }
+
     public void StopCoroutineFunc()
     {
         StopAllCoroutines();
