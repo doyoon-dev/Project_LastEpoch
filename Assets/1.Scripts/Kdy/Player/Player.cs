@@ -192,7 +192,6 @@ public class Player : BattleSystem
         }
     }
 
-
     public override IEnumerator Moving(Vector3 target)
     {
         Vector3 dir = target - transform.position;

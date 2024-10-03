@@ -41,31 +41,12 @@ public class SentinelSkill : Skill, ISkill_Lunge
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            m_stopMovingAct?.Invoke();
-        }
         if (Input.GetKey(KeyCode.Q))
         {
             Skill_ErasingStrike(KeyCode.Q);
         }
 
         Skill_WarPath(KeyCode.W);
-
-        //if (Input.GetKey(KeyCode.W))
-        //{
-        //    StopAllCoroutines();
-        //    StartCoroutine(MoveWarPath());
-        //}
-        //if (Input.GetKeyUp(KeyCode.W) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
-        //{
-        //    m_warpathEffect.SetActive(false);
-        //    m_myAnim.SetBool("SkillWarPath", false);
-        //    m_warPathUse = false;
-        //    m_usingSkill = false;
-        //    RecoverMp(m_usingSkill);
-        //}
-
         if (Input.GetKey(KeyCode.E))
         {
             Skill_Lunge(KeyCode.E);
@@ -159,29 +140,79 @@ public class SentinelSkill : Skill, ISkill_Lunge
         RecoverMp(m_usingSkill);
     }
 
-    
+
     // 출정 스킬(W 스킬 : 윈드밀)
+    //public void Skill_WarPath(KeyCode inputKey)
+    //{
+    //    // 스킬 키 누르고 있으면 마나를 다 쓸 때 까지 스킬 발동
+    //    // 마우스 방향으로 이동가능
+    //    if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
+    //    {
+    //        //StopAllCoroutines();
+    //        m_myAnim.SetBool("Move", false);
+    //        m_usingSkill = true;
+    //        m_stopMovingAct?.Invoke();
+    //        #region 실험 코드
+    //        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //        //if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
+    //        //{
+    //        //    Vector3 skillDir = hit.point - m_player.transform.position;
+    //        //    skillDir.y = 0;
+    //        //    skillDir.Normalize();
+    //        //    transform.forward = skillDir;
+    //        //    transform.Translate(skillDir * Time.deltaTime * 2.0f);
+    //        //}
+    //        #endregion
+    //        RecoverMp(m_usingSkill);
+    //        UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
+    //        if (!m_warPathUse)
+    //        {
+    //            m_warpathEffect.SetActive(true);
+
+    //            m_warPathUse = true;
+    //            m_myAnim.SetBool("SkillWarPath", true);
+    //        }
+
+    //        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
+    //        {
+    //            StopAllCoroutines();
+
+    //            Vector3 skillDir = hit.point - m_player.transform.position;
+
+    //            skillDir.y = 0;
+    //            Debug.DrawRay(transform.position, skillDir, Color.red);
+    //            skillDir.Normalize();
+
+    //            transform.Translate(skillDir * Time.deltaTime * 2.0f);
+    //        }
+    //    }
+    //    if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
+    //    {
+    //        m_warpathEffect.SetActive(false);
+    //        m_myAnim.SetBool("SkillWarPath", false);
+    //        m_warPathUse = false;
+    //        m_usingSkill = false;
+    //        RecoverMp(m_usingSkill);
+    //    }
+    //}
+
     public void Skill_WarPath(KeyCode inputKey)
     {
         // 스킬 키 누르고 있으면 마나를 다 쓸 때 까지 스킬 발동
         // 마우스 방향으로 이동가능
         if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
+            if (m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
+            {
+                m_stopMovingAct?.Invoke();
+                return;
+            }
+
             //StopAllCoroutines();
             m_myAnim.SetBool("Move", false);
             m_usingSkill = true;
             m_stopMovingAct?.Invoke();
-            #region 실험 코드
-            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
-            //{
-            //    Vector3 skillDir = hit.point - m_player.transform.position;
-            //    skillDir.y = 0;
-            //    skillDir.Normalize();
-            //    transform.forward = skillDir;
-            //    transform.Translate(skillDir * Time.deltaTime * 2.0f);
-            //}
-            #endregion
             RecoverMp(m_usingSkill);
             UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
             if (!m_warPathUse)
@@ -195,15 +226,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
             {
-                StopAllCoroutines();
-
-                Vector3 skillDir = hit.point - m_player.transform.position;
-
-                skillDir.y = 0;
-                Debug.DrawRay(transform.position, skillDir, Color.red);
-                skillDir.Normalize();
-
-                transform.Translate(skillDir * Time.deltaTime * 2.0f);
+                SkillMove(hit.point);
             }
         }
         if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
@@ -216,39 +239,27 @@ public class SentinelSkill : Skill, ISkill_Lunge
         }
     }
 
-    IEnumerator MoveWarPath()
+    public void SkillMove(Vector3 target)
     {
-        m_myAnim.SetBool("Move", false);
-        m_usingSkill = true;
-        m_stopMovingAct?.Invoke();
-        if (!m_warPathUse)
-        {
-            m_warpathEffect.SetActive(true);
+        StopAllCoroutines();
+        StartCoroutine(SkillMoving(target));
+    }
 
-            m_warPathUse = true;
-            m_myAnim.SetBool("SkillWarPath", true);
-        }
-        while (m_warPathUse && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
+    public IEnumerator SkillMoving(Vector3 target)
+    {
+        Vector3 dir = target - transform.position;
+        dir.Normalize();
+        dir.y = 0;
+
+        while (gameObject.GetComponent<SentinelSkill>().m_usingSkill && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
-            RecoverMp(m_usingSkill);
-            UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
-            
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
-            {
-                Vector3 skillDir = hit.point - m_player.transform.position;
-                skillDir.y = 0;
-                Debug.DrawRay(transform.position, skillDir, Color.red);
-                skillDir.Normalize();
-                while (m_warPathUse && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
-                {
-                    transform.Translate(skillDir * Time.deltaTime * 2.0f);
-                    yield return null;
-                }
-            }
+            float delta = Time.deltaTime * m_player.m_moveStat.moveSpeed;
+            transform.Translate(dir * delta, Space.World);
             yield return null;
         }
     }
+
+
 
     // 출정 스킬 데미지 박스
     public void DamageBox()
