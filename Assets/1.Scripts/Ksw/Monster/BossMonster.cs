@@ -27,6 +27,8 @@ public class BossMonster : MonsterController
                         if (CanAttack())
                         {
                             SetState(BehaviourState.Attack);
+                            m_navAgent.isStopped = true;  // 공격 시 이동 중지\
+                            StartCoroutine(LookAtPlayer());
                             MonAttackCombo();
                             lastAttackTime = Time.time;  // 공격 시간 갱신
                             return;
@@ -38,6 +40,7 @@ public class BossMonster : MonsterController
                             SetState(BehaviourState.Chase);
                             StartCoroutine(Coroutine_CalculateTargetPath(30));
                             m_monAnimCtr.Play(MonsterAnimController.Motion.Run);
+                            m_navAgent.isStopped = false;  // 추적 시 이동 재개
                             m_navAgent.stoppingDistance = m_attackDist;
                             m_idleTime = 0;
                         }
@@ -45,22 +48,41 @@ public class BossMonster : MonsterController
                     // 타켓을 못 찾는 경우 
                     else
                     {
-                        SetState(BehaviourState.Patrol);                        
+                        SetState(BehaviourState.Patrol);
+                        m_navAgent.isStopped = false;  // 추적 시 이동 재개
                     }
                 }
                 break;
 
             //공격 상태
             case BehaviourState.Attack:
-               
+
                 break;
 
             //추적 상태
             case BehaviourState.Chase:
+                // 플레이어 위치로 추적
                 m_navAgent.SetDestination(m_player.transform.position);
-                if (CheckArea(m_player.transform.position, Mathf.Pow(m_navAgent.stoppingDistance, 2f)))
+
+                // 플레이어와의 거리를 계산
+                float distanceToPlayer = Vector3.Distance(m_player.transform.position, transform.position);
+
+                // 추적 거리를 벗어나면 추적 중지
+                if (distanceToPlayer > m_chaseDist)
                 {
-                    SetIdle(1f);
+                    SetIdle(1f);  // Idle 상태로 전환
+                }
+                else if (CheckArea(m_player.transform.position, Mathf.Pow(m_navAgent.stoppingDistance, 2f)))
+                {
+                    SetIdle(1f);  // 플레이어 근처에 도착하면 Idle 상태로 전환
+                }
+                else
+                {
+                    // 플레이어를 향해 고개를 돌림 (현재 이동 방향 기준)
+                    Vector3 directionToPlayer = (m_player.transform.position - transform.position).normalized;
+                    directionToPlayer.y = 0f;  // 수평 회전만 적용
+                    Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);  // 회전 속도는 필요에 따라 조정
                 }
                 break;
 
@@ -100,10 +122,7 @@ public class BossMonster : MonsterController
         }
     }
 
-    void BossMonComboAttack()
-    {
 
-    }
 
     // 랜덤 이동 시작
     void StartRoaming()
@@ -148,26 +167,26 @@ public class BossMonster : MonsterController
         m_idleTime = 0;  // Idle 시간 초기화
         m_idleDuration = duration;  // 새로운 Idle 대기 시간 설정
     }
-
+    
     // 죽음 처리 기능 추가
     protected override void HandleDeath()
     {
         if (IsDie) return;// 이미 죽은 상태에서 다시 처리하지 않도록 함
         m_manager.HandleMonsterDeath(transform.position);// 매니저에게 몬스터가 죽었다고 알림
-        m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // 사망 애니메이션 재생
+        m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // 사망 애니메이션 재생  
         StopAllCoroutines();  // 현재 실행 중인 모든 코루틴 정지
         m_navAgent.isStopped = true;  // 네비게이션 에이전트 중지
-        SetState(BehaviourState.Die);  // 상태를 Die로 변경
-        AttackArea.SetActive(false);  // 공격 범위 비활성화
+        StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과
         // 모든 콜라이더 비활성화
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (Collider collider in colliders)
         {
             collider.enabled = false;
         }
-        StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과
+        m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정        
+        SetState(BehaviourState.Die);  // 상태를 Die로 변경
         ShutDownHealthBars();
-
+        AttackArea.SetActive(false);
 
     }
 

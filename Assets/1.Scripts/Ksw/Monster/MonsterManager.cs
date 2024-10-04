@@ -98,6 +98,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         // 몬스터 초기화
         monsterController.Initialize(this, waypointController, healthBarUI);  // 매니저를 초기화 시 전달
 
+        
 
         // HeadHealthBar도 오브젝트 풀에서 GameObject로 가져옴
         GameObject headHealthBarObj = ObjectPool.Inst.Pull<GameObject>(headHealthBarPrefab);  // HeadHealthBar 프리팹 가져오기
@@ -196,19 +197,20 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     // 보스 몬스터 스폰 메서드 추가
     public void SpawnBossMonster()
     {
+        // 오브젝트 풀에서 보스 몬스터를 가져옴
         GameObject boss = ObjectPool.Inst.Pull<BossMonster>(bossMonsterPrefab);
         BossMonster bossController = boss.GetComponent<BossMonster>();
         NavMeshAgent navAgent = boss.GetComponent<NavMeshAgent>();
 
         // 보스 몬스터 이름을 인스펙터에서 설정한 값으로 적용
         bossController.monsterName = bossMonsterName;
-
+        // 보스 몬스터 초기화
         bossController.Initialize(this, waypointController, healthBarUI);
-
-        bossController.healthBarUI.HideHealthBar();  // 보스 소환 시 체력바 숨기기
+        // 보스 소환 시 체력바 숨기기
+        bossController.healthBarUI.HideHealthBar();  
 
         navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
-
+        
         // 보스는 특정 위치에 소환되게 할 수 있음
         Vector3 bossSpawnPosition = waypointController.GetBossSpawnPoint(); // 보스 전용 스폰 지점
         boss.transform.position = bossSpawnPosition;
