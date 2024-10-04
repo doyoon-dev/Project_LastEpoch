@@ -7,10 +7,11 @@ using UnityEngine.EventSystems;
 
 public class Picking : MonoBehaviour
 {
+    public GameObject m_clickEffect;
     public LayerMask m_moveMask;
     public LayerMask m_enemyMask;
     public LayerMask m_itemMask;
-    public UnityEvent<Vector3> m_moveAct;
+    public UnityEvent<Vector3, GameObject> m_moveAct;
     public UnityEvent<Vector3> m_attackAct;
     public UnityEvent<Transform> m_moveAttackAct;
     public Animator m_anim;
@@ -32,7 +33,9 @@ public class Picking : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask | m_enemyMask))
                 {
-                    m_moveAct?.Invoke(hit.point);
+                    GameObject obj = ObjectPool.Inst.Pull<GameObject>(m_clickEffect);
+                    obj.transform.position = hit.point;
+                    m_moveAct?.Invoke(hit.point, obj);
                 }
             }
             if (Input.GetMouseButtonDown(1) && !m_anim.GetBool("IsAttacking") && !m_skillUsed.UsingSkill())

@@ -31,14 +31,14 @@ public class CharacterMovement : CharacterProperty
         
     }
 
-    public void Move(Vector3 target)
+    public void Move(Vector3 target, GameObject obj)
     {
         StopAllCoroutines();
-        StartCoroutine(Moving(target));
+        StartCoroutine(Moving(target, obj));
     }
 
     // ¿Ãµø
-    public virtual IEnumerator Moving(Vector3 target)
+    public virtual IEnumerator Moving(Vector3 target, GameObject obj)
     {
         Vector3 dir = target - transform.position;
         float dist = dir.magnitude;
@@ -55,7 +55,9 @@ public class CharacterMovement : CharacterProperty
             dist -= delta;
             yield return null;
         }
+        ObjectPool.Inst.Push<GameObject>(obj);
         m_myAnim.SetBool("Move", false);
+        
     }
 
     public void Rotate(Vector3 pos)

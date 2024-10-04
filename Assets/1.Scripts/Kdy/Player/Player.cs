@@ -192,7 +192,7 @@ public class Player : BattleSystem
         }
     }
 
-    public override IEnumerator Moving(Vector3 target)
+    public override IEnumerator Moving(Vector3 target, GameObject obj)
     {
         Vector3 dir = target - transform.position;
         float dist = dir.magnitude;
@@ -209,7 +209,9 @@ public class Player : BattleSystem
             dist -= delta;
             yield return null;
         }
+        ObjectPool.Inst.Push<GameObject>(obj);
         m_myAnim.SetBool("Move", false);
+        
     }
 
     public void StopCoroutineFunc()
