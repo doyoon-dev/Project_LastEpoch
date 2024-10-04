@@ -61,8 +61,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     public event UnityAction<float, float, bool> m_changeMp;
     protected IBattle m_target = null;
     public Item m_item;
-    
-
+    public GameObject damageTextPrefab;
     bool m_recoveryCheck = false;
 
     public float m_curHp = 0.0f;
@@ -97,7 +96,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     // Start is called before the first frame update
     void Start()
     {
-        
+       
     }
 
     // Update is called once per frame
@@ -145,32 +144,20 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         m_deadAlarm?.Invoke();
     }
 
-    /*
-    // 데미지 받음
-    public void OnDamaged(float damage)
-    {
-        m_curHealPoint -= damage;
-        if (m_curHealPoint <= 0)
-        {
-            m_curHealPoint = 0;
-            Dead();
-        }
-    }
-    */
-
-
-
+ 
+    // 데미지를 받을 때 호출되는 함수
     public virtual void SetDamage(SkillData skillData)
     {
         m_recoveryCheck = false;
-        if (m_stat.Defense > 0)
-        {
 
-        }
-        // 체력 깎이는 로직
-        m_curHealPoint -= skillData.Dmg;
-        
-        // 체력이 0 이하일 때 처리
+        // 데미지 계산
+        float damage = Mathf.Max(0, skillData.Dmg - m_stat.Defense);
+        m_curHealPoint -= damage;
+
+        // 데미지 텍스트 표시
+        ShowDamageText(damage);
+
+        // 체력이 0 이하일 때 사망 처리
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
@@ -178,6 +165,28 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         }
     }
 
+    
+    public void ShowDamageText(float damage)
+    {
+        if (damageTextPrefab != null)
+        {
+            // 몬스터나 캐릭터의 위치에서 텍스트를 표시할 위치를 동적으로 설정
+            Vector3 damageTextWorldPosition = transform.position + Vector3.up * 1.5f;  // 적절한 위치 설정
+
+            // 데미지 텍스트 생성
+            GameObject damageTextInstance = Instantiate(damageTextPrefab, damageTextWorldPosition, Quaternion.identity);
+
+            DamageUI damageTextController = damageTextInstance.GetComponent<DamageUI>();
+
+            if (damageTextController != null)
+            {
+                damageTextController.SetDamage(damage);
+                damageTextController.DestroyAfter(0.5f);
+            }
+        }
+
+    }
+    
     public void RecoveryHealPoint(float healpoint)
     {
         m_recoveryCheck = true;
