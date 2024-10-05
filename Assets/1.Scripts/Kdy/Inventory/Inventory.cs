@@ -36,7 +36,12 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
 
     [SerializeField]
     GameObject m_inventory;
+    [SerializeField]
+    GameObject m_invenOnPos;
+    [SerializeField]
+    GameObject m_invenOffPos;
     bool m_isInvenOpen = false;
+    bool m_isInvenPushKey = false;
 
     public Slot m_selectedItmeGrid;
     public EquipSlot m_equipSlot;
@@ -60,13 +65,16 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
         {
             if (!m_isInvenOpen)
             {
+                StopAllCoroutines();
                 m_inventory.SetActive(true);
+                StartCoroutine(MovingInventory(m_invenOnPos));
             }
             else
             {
-                m_inventory.SetActive(false);
+                StopAllCoroutines();
+                StartCoroutine(MovingInventory(m_invenOffPos));
             }
-            m_isInvenOpen = !m_isInvenOpen;
+            
         }
         if (m_selectedItmeGrid == null) { return; }
 
@@ -84,6 +92,7 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
         //Vector2 size = new Vector2(width * m_tileSizeWidth, height * m_tileSizeHeight);
         Vector2 size = new Vector2(width * 47.0f, height * 47.0f);
         m_selectedItmeGrid.GetComponent<RectTransform>().sizeDelta = size;
+        transform.position = m_invenOffPos.transform.position;
     }
 
     public void SetItemToInventory(GameObject itemImagePrefab)
@@ -103,6 +112,26 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
         }
         PlaceItem(itemImage, itemSlotSize.x, itemSlotSize.y);
         //ObjectPool.Inst.Push<Item>(obj);
+    }
+
+    IEnumerator MovingInventory(GameObject obj)
+    {
+        Vector2 dir = obj.transform.position - transform.position;
+        float dist = dir.magnitude;
+        dir.Normalize();
+        while (dist > 0)
+        {
+            float delta = Time.deltaTime * 600.0f;
+            if(delta > dist) delta = dist;
+            transform.Translate(dir * delta);
+            dist -= delta;
+            yield return null;
+        }
+        m_isInvenOpen = !m_isInvenOpen;
+        if(!m_isInvenOpen)
+        {
+            m_inventory.SetActive(false);
+        }
     }
 
     #region 240712 ¼öÁ¤Áß
