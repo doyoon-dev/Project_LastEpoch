@@ -268,16 +268,7 @@ public class MonsterController : BattleSystem
     #endregion
 
     #region Mon Attack methods
-    /*
-    public bool CanAttack()
-    {
-        // 타겟과의 거리 계산 및 공격 범위 확인
-        var dist = transform.position - m_player.transform.position;
-        // 항상 플레이어를 바라보도록 설정 (거리와 상관없이)
-        StartCoroutine(LookAtPlayer());
-        return dist.sqrMagnitude < Mathf.Pow(m_attackDist, 2f);
-    }
-    */
+   
     public bool CanAttack()
     {
         // 타겟과의 거리 계산 및 공격 범위 확인
@@ -291,7 +282,7 @@ public class MonsterController : BattleSystem
         float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
 
         // 시야각을 설정 
-        float maxViewAngle = 45f;
+        float maxViewAngle = 60f;
 
         // 공격 범위 안에 있고, 시야각 내에 있을 때만 공격 가능
         if (dist.sqrMagnitude < Mathf.Pow(m_attackDist, 2f) && angleToPlayer <= maxViewAngle)
@@ -521,7 +512,7 @@ public class MonsterController : BattleSystem
         }
     }
    
-    public void Initialize(MonsterManager manager, WaypointController waypoint, HealthBarUI healthBar)
+    public void Initialize(MonsterManager manager, WaypointController waypoint, HealthBarUI healthBar, GameObject damageUIPrefab)
     {
         m_manager = manager;
         SetMonster(waypoint);
@@ -538,7 +529,13 @@ public class MonsterController : BattleSystem
         {
             Debug.LogWarning("HealthBarUI is null during initialization.");
         }
+        // 데미지 UI 프리팹 설정
+        this.damageUIPrefab = damageUIPrefab;
 
+        if (this.damageUIPrefab == null)
+        {
+            Debug.LogWarning("DamageUIPrefab is not assigned during initialization.");
+        }
     }
 
     
@@ -664,15 +661,13 @@ public class MonsterController : BattleSystem
             case BehaviourState.Idle:
                 m_idleTime += Time.deltaTime;
                 if (m_idleTime > m_idleDuration * 0.5f)
-                {
+                {                                     
                     if (FindTarget())
                     {
                         // 타켓을 찾아 공격 가능하면 공격
                         if (CanAttack())
                         {
-                            SetState(BehaviourState.Attack);
-                            m_navAgent.isStopped = true;  // 공격 시 이동 중지
-                            StartCoroutine(LookAtPlayer());
+                            SetState(BehaviourState.Attack);                          
                             MonAttackCombo();
                             lastAttackTime = Time.time;  // 공격 시간 갱신
                             return;
@@ -684,7 +679,6 @@ public class MonsterController : BattleSystem
                             SetState(BehaviourState.Chase);
                             StartCoroutine(Coroutine_CalculateTargetPath(30));
                             m_monAnimCtr.Play(MonsterAnimController.Motion.Run);
-                            m_navAgent.isStopped = false;  // 추적 시 이동 재개
                             m_navAgent.stoppingDistance = m_attackDist;                          
                             m_idleTime = 0;
                         }
@@ -693,11 +687,11 @@ public class MonsterController : BattleSystem
                     else
                     {
                         SetState(BehaviourState.Patrol);
-                        m_monAnimCtr.Play(MonsterAnimController.Motion.Run);
-                        m_navAgent.isStopped = false;  // 순찰 시 이동 재개
+                        m_monAnimCtr.Play(MonsterAnimController.Motion.Run);                      
                         m_navAgent.stoppingDistance = m_navAgent.radius; //navagent radius만큼 정지
 
                     }
+                    
                 }
                 break;
 
@@ -708,26 +702,13 @@ public class MonsterController : BattleSystem
             case BehaviourState.Chase:
                 // 플레이어 위치로 추적
                 m_navAgent.SetDestination(m_player.transform.position);
-
-                // 플레이어와의 거리를 계산
-                float distanceToPlayer = Vector3.Distance(m_player.transform.position, transform.position);
-
-                // 추적 거리를 벗어나면 추적 중지
-                if (distanceToPlayer > m_chaseDist)
+                // 수동으로 회전 처리 추가
+                var direction = (m_player.transform.position - transform.position).normalized;
+                direction.y = 0f; // 수평 회전만 적용
+                transform.forward = Vector3.Slerp(transform.forward, direction, Time.deltaTime * 5f); // 회전 속도 조절
+                if (CheckArea(m_player.transform.position, m_navAgent.stoppingDistance))
                 {
-                    SetIdle(1f);  // Idle 상태로 전환
-                }
-                else if (CheckArea(m_player.transform.position, Mathf.Pow(m_navAgent.stoppingDistance, 2f)))
-                {
-                    SetIdle(1f);  // 플레이어 근처에 도착하면 Idle 상태로 전환
-                }
-                else
-                {
-                    // 플레이어를 향해 고개를 돌림 (현재 이동 방향 기준)
-                    Vector3 directionToPlayer = (m_player.transform.position - transform.position).normalized;
-                    directionToPlayer.y = 0f;  // 수평 회전만 적용
-                    Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 2.0f);  // 회전 속도는 필요에 따라 조정
+                    SetIdle(1f);
                 }
                 break;
 
@@ -756,6 +737,7 @@ public class MonsterController : BattleSystem
                         if (CheckArea(m_waypointCtr.m_waypoints[m_curWaypoint].transform.position, Mathf.Pow(m_navAgent.stoppingDistance, 2f)))
                         {
                             m_isPatrol = false;
+                            SetState(BehaviourState.Idle);  // 명확하게 상태 전환
                             SetIdle(1f);
                         }
 
@@ -787,7 +769,7 @@ public class MonsterController : BattleSystem
         m_navAgent = GetComponent<NavMeshAgent>();
         m_renderers = GetComponentsInChildren<Renderer>();
         m_player = FindObjectOfType<Player>();
-
+        m_navAgent.updateRotation = true;
     }
 
     void Update()
