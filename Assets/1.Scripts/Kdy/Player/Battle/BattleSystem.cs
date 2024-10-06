@@ -61,9 +61,10 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     public event UnityAction<float, float, bool> m_changeMp;
     protected IBattle m_target = null;
     public Item m_item;
-    public GameObject damageTextPrefab;
     bool m_recoveryCheck = false;
-
+    // 데미지 텍스트가 뜰 위치를 직접 참조할 변수 추가
+    public Transform damageTextPosition; // 몬스터나 플레이어 프리팹에 빈 오브젝트를 할당
+    public GameObject damageUIPrefab;
     public float m_curHp = 0.0f;
     public float m_curMp = 0.0f;
     public float m_curHealPoint
@@ -165,28 +166,31 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         }
     }
 
-    
+
     public void ShowDamageText(float damage)
     {
-        if (damageTextPrefab != null)
+        if (damageUIPrefab != null && damageTextPosition != null)
         {
-            // 몬스터나 캐릭터의 위치에서 텍스트를 표시할 위치를 동적으로 설정
-            Vector3 damageTextWorldPosition = transform.position + Vector3.up * 1.5f;  // 적절한 위치 설정
-
             // 데미지 텍스트 생성
-            GameObject damageTextInstance = Instantiate(damageTextPrefab, damageTextWorldPosition, Quaternion.identity);
-
-            DamageUI damageTextController = damageTextInstance.GetComponent<DamageUI>();
+            GameObject damageUIInstance = Instantiate(damageUIPrefab, damageTextPosition.position, Quaternion.identity);
+            DamageUI damageTextController = damageUIInstance.GetComponent<DamageUI>();
 
             if (damageTextController != null)
             {
                 damageTextController.SetDamage(damage);
-                damageTextController.DestroyAfter(0.5f);
+                Destroy(damageUIInstance, 2f);  // 여기서 2초 뒤에 파괴
             }
         }
+        else
+        {
+            if (damageUIPrefab == null)
+                Debug.LogError("damageUIPrefab이 할당되지 않았습니다.");
 
+            if (damageTextPosition == null)
+                Debug.LogError("DamageTextPosition이 할당되지 않았습니다.");
+        }
     }
-    
+
     public void RecoveryHealPoint(float healpoint)
     {
         m_recoveryCheck = true;

@@ -27,8 +27,6 @@ public class BossMonster : MonsterController
                         if (CanAttack())
                         {
                             SetState(BehaviourState.Attack);
-                            m_navAgent.isStopped = true;  // 공격 시 이동 중지\
-                            StartCoroutine(LookAtPlayer());
                             MonAttackCombo();
                             lastAttackTime = Time.time;  // 공격 시간 갱신
                             return;
@@ -40,7 +38,6 @@ public class BossMonster : MonsterController
                             SetState(BehaviourState.Chase);
                             StartCoroutine(Coroutine_CalculateTargetPath(30));
                             m_monAnimCtr.Play(MonsterAnimController.Motion.Run);
-                            m_navAgent.isStopped = false;  // 추적 시 이동 재개
                             m_navAgent.stoppingDistance = m_attackDist;
                             m_idleTime = 0;
                         }
@@ -49,8 +46,11 @@ public class BossMonster : MonsterController
                     else
                     {
                         SetState(BehaviourState.Patrol);
-                        m_navAgent.isStopped = false;  // 추적 시 이동 재개
+                        m_monAnimCtr.Play(MonsterAnimController.Motion.Run);
+                        m_navAgent.stoppingDistance = m_navAgent.radius; //navagent radius만큼 정지
+
                     }
+
                 }
                 break;
 
@@ -61,6 +61,7 @@ public class BossMonster : MonsterController
 
             //추적 상태
             case BehaviourState.Chase:
+             
                 // 플레이어 위치로 추적
                 m_navAgent.SetDestination(m_player.transform.position);
 
