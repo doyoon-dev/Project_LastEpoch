@@ -221,13 +221,6 @@ public class MonsterController : BattleSystem
             // ObjectPool에서 피 흘리는 이펙트 프리팹을 꺼냄
             GameObject bloodEffect = ObjectPool.Inst.Pull<GameObject>(bloodEffectPrefab);
 
-            // 이미 활성화된 상태이면 새로 스폰하지 않음
-            if (bloodEffect.activeInHierarchy)
-            {
-                return;
-            }
-
-            // 보스 몬스터일 경우 피 이펙트 위치를 더 높게 설정
             if (this is BossMonster)
             {
                 position += new Vector3(0, 2.0f, 0);  // 피 이펙트를 더 위로 이동 (필요에 따라 값 조정 가능)
@@ -235,10 +228,18 @@ public class MonsterController : BattleSystem
 
             // 피 이펙트의 위치와 상태 초기화
             bloodEffect.transform.position = position;
-            bloodEffect.SetActive(true);  // **이펙트를 활성화**
+            //bloodEffect.SetActive(true);  // **이펙트를 활성화**
 
             // 일정 시간이 지나면 다시 오브젝트 풀로 반환
             StartCoroutine(ReturnBloodEffectToPool(bloodEffect, 1f));
+            // 이미 활성화된 상태이면 새로 스폰하지 않음
+            if (bloodEffect.activeInHierarchy)
+            {
+                return;
+            }
+
+            // 보스 몬스터일 경우 피 이펙트 위치를 더 높게 설정
+            
         }
     }
 
@@ -260,7 +261,7 @@ public class MonsterController : BattleSystem
         }
 
         // 이펙트를 비활성화하고 오브젝트 풀로 반환
-        effect.SetActive(false);
+        //effect.SetActive(false);
         ObjectPool.Inst.Push<GameObject>(effect);
     }
 

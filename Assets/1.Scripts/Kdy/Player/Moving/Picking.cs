@@ -37,7 +37,7 @@ public class Picking : MonoBehaviour
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask | m_enemyMask))
                 {
                     m_clickEffectObj = ObjectPool.Inst.Pull<GameObject>(m_clickEffect);
-                    
+
                     if (m_effectDic.ContainsKey(m_clickEffect.name))
                     {
                         ObjectPool.Inst.Push<GameObject>(m_effectDic[m_clickEffect.name]);
@@ -61,13 +61,13 @@ public class Picking : MonoBehaviour
                     // 몬스터 우클릭 됐을 때 -> BattleSystem의 MoveToAttack 실행
                     if ((1 << hit.transform.gameObject.layer & m_enemyMask) != 0)
                     {
-                        SetOffClickEffect();
+                        //SetOffClickEffect();
                         m_moveAttackAct?.Invoke(hit.transform);
                     }
                     // 배경 클릭 됐을 때 - 마우스 클릭 방향으로 회전 후 제자리에서 공격
                     else
                     {
-                        SetOffClickEffect();
+                        //SetOffClickEffect();
                         m_attackAct?.Invoke(hit.point);
                     }
                 }
