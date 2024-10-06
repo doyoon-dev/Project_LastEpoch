@@ -4,7 +4,12 @@ using UnityEditor;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class Player : BattleSystem
+public interface ISetClickEffect
+{
+    void SetClickEffect(GameObject obj);
+}
+
+public class Player : BattleSystem, ISetClickEffect
 {
     #region 아이템 드랍 실험
 
@@ -29,6 +34,7 @@ public class Player : BattleSystem
     public Inventory m_inventory;
     public PlayerUI m_playerUI;
     public LayerMask m_enemyMask;
+    public GameObject m_clickEffect;
 
     int m_clickCnt = 0;
     bool m_isComboCheck = false;
@@ -214,8 +220,18 @@ public class Player : BattleSystem
         
     }
 
+    public void SetClickEffect(GameObject obj)
+    {
+        m_clickEffect = obj;
+    }
+
     public void StopCoroutineFunc()
     {
+        if (m_clickEffect != null)
+        {
+            ObjectPool.Inst.Push<GameObject>(m_clickEffect);
+            m_clickEffect = null;
+        }
         StopAllCoroutines();
     }
 

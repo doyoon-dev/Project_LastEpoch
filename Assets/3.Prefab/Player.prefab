@@ -22776,7 +22776,6 @@ Transform:
   m_Father: {fileID: 6974624179227952328}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: -2.0014052, y: -168.35841, z: -170.89397}
-  m_LocalEulerAnglesHint: {x: 4.8747697, y: 179.7701, z: 137.63574}
 --- !u!1 &4541228566141880096
 GameObject:
   m_ObjectHideFlags: 0
@@ -23947,6 +23946,7 @@ MonoBehaviour:
   m_enemyMask:
     serializedVersion: 2
     m_Bits: 128
+  m_clickEffect: {fileID: 0}
 --- !u!136 &5244370769833058614
 CapsuleCollider:
   m_ObjectHideFlags: 0
