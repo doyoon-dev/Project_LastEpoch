@@ -13,9 +13,9 @@ public interface IGetSkillData
     void GetSkillData(GameObject data);
 }
 
-public class SkillButton : MonoBehaviour, IGetSkillData, ISkillAction
+public class SkillButton : MonoBehaviour, IGetSkillData
 {
-    public event UnityAction<KeyCode> m_skillAct;
+    //public event UnityAction<KeyCode> m_skillAct;
     public KeyCode m_skillKeyCode;
     public GameObject m_player;
     public GameObject m_skillObj;

@@ -42,8 +42,12 @@ public class Player : BattleSystem
         m_changeMp += SceneData.Inst.m_playerHpMpUI.ManaPoint;
         m_deadAlarm += () =>
         {
+            gameObject.GetComponent<Collider>().isTrigger = true;
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            gameObject.layer = 0;
             m_myAnim.SetTrigger("Die");
-            Debug.Log("Á×À½");
+            
+            //Debug.Log("Á×À½");
         };
     }
 
@@ -188,6 +192,32 @@ public class Player : BattleSystem
         }
     }
 
+    public override IEnumerator Moving(Vector3 target, GameObject obj)
+    {
+        Vector3 dir = target - transform.position;
+        float dist = dir.magnitude;
+        dir.Normalize();
+        dir.y = 0;
+        m_myAnim.SetBool("Move", true);
+        StartCoroutine(Rotating(dir));
+        while (dist > 0.0f)
+        {
+            float delta = Time.deltaTime * m_moveStat.moveSpeed;
+            if (delta > dist) delta = dist;
+            transform.Translate(dir * delta, Space.World);
+            //m_cam.transform.Translate(dir * delta, Space.World);
+            dist -= delta;
+            yield return null;
+        }
+        ObjectPool.Inst.Push<GameObject>(obj);
+        m_myAnim.SetBool("Move", false);
+        
+    }
+
+    public void StopCoroutineFunc()
+    {
+        StopAllCoroutines();
+    }
 
     private void OnDrawGizmos()
     {
@@ -244,6 +274,15 @@ public class Player : BattleSystem
         }
     }
     
+    public void FirstMoveSound()
+    {
+        SoundManager.Inst.PlaySfx("move1");
+    }
+
+    public void SecondMoveSound()
+    {
+        SoundManager.Inst.PlaySfx("move2");
+    }
 
     //private void OnDrawGizmos()
     //{

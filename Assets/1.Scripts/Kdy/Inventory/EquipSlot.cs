@@ -38,6 +38,7 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem, IIsEquiped
     public ItemType m_itemType;
     public Item m_item = null;
     public BattleSystem m_battleSystem;
+    public PlayerStatUI m_playerStatUI;
     public bool m_isEquiped { get; private set; }
 
 
@@ -76,5 +77,10 @@ public class EquipSlot : MonoBehaviour, ISetEquipItem, IIsEquiped
         m_item.m_frameImage.SetActive(true);
         m_bgImage.gameObject.SetActive(true);
         m_isEquiped = false;
+        IUnEquipItemStatUI iue = m_playerStatUI.GetComponent<IUnEquipItemStatUI>();
+        if (iue != null)
+        {
+            iue.UnequipItemStat(m_item.m_itemData);
+        }
     }
 }

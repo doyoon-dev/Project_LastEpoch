@@ -19,6 +19,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         //m_mr = GetComponentsInChildren<MeshRenderer>();
+        SoundManager.Inst.PlayBgm("BGM");
     }
 
     private void OnDrawGizmo()
