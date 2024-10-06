@@ -16069,6 +16069,7 @@ MonoBehaviour:
   m_playerHpMpUI: {fileID: 159671948}
   m_itemNameUIPos: {fileID: 174468287}
   m_inventory: {fileID: 834145223}
+  m_dmgText: {fileID: 0}
 --- !u!4 &1308659345
 Transform:
   m_ObjectHideFlags: 0
@@ -28509,6 +28510,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Option
       objectReference: {fileID: 0}
+    - target: {fileID: 2581875868057597274, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2581875868057597275, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -28599,47 +28604,47 @@ PrefabInstance:
       objectReference: {fileID: 1576894112}
     - target: {fileID: 2581875868317371180, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875868317371180, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875868417018535, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875868417018535, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875868417018535, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875868487598936, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875868487598936, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875868487598936, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875868534025183, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875868534025183, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875868534025183, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875868554705384, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -28647,19 +28652,19 @@ PrefabInstance:
       objectReference: {fileID: 1576894112}
     - target: {fileID: 2581875868783772503, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875868783772503, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875869140474885, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2581875869140474885, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60fed7dfd50f34c42aa34c1edcce6a8e, type: 3}
