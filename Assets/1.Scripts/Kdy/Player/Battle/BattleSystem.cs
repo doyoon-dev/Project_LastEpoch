@@ -65,7 +65,6 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     public Item m_item;
     public bool m_recoveryCheck = false;
     public Skill m_skillObj;
-    bool m_recoveryCheck = false;
     // 데미지 텍스트가 뜰 위치를 직접 참조할 변수 추가
     public Transform damageTextPosition; // 몬스터나 플레이어 프리팹에 빈 오브젝트를 할당
     public GameObject damageUIPrefab;
@@ -173,15 +172,6 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
 
     public void ShowDamageText(float damage)
     {
-        float dmg = 0;
-        m_recoveryCheck = false;
-        dmg = skillData.Dmg - (skillData.Dmg * (m_stat.Defense * 0.01f));
-
-        // 체력 깎이는 로직
-        m_curHealPoint -= dmg;
-        
-        // 체력이 0 이하일 때 처리
-        if (m_curHealPoint <= 0)
         if (damageUIPrefab != null && damageTextPosition != null)
         {
             // 데미지 텍스트 생성
