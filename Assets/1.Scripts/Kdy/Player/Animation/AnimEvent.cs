@@ -15,6 +15,8 @@ public class AnimEvent : MonoBehaviour
     public UnityEvent m_skillStrikeAtk;
     public UnityEvent m_skillStrikeEffectOn;
     public UnityEvent m_skillStrikeEffectOff;
+    public UnityEvent m_firstMoveSound;
+    public UnityEvent m_secondMoveSound;
 
     // Start is called before the first frame update
     void Start()
@@ -71,5 +73,15 @@ public class AnimEvent : MonoBehaviour
     public void Skill_StrikeOff()
     {
         m_skillStrikeEffectOff?.Invoke();
+    }
+
+    public void FirstMoveSound()
+    {
+        m_firstMoveSound?.Invoke();
+    }
+
+    public void SecondMoveSound()
+    {
+        m_secondMoveSound?.Invoke();
     }
 }

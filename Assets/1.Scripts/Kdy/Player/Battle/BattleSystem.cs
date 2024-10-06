@@ -22,7 +22,7 @@ public interface IDeadAlarm
     event UnityAction m_deadAlarm;
 }
 
-// ÀÎÅÍÆäÀÌ½º ÇÊ¿ä ¾ø¾î¼­ Áö¿ö¾ß µÉ ¼ö ÀÖÀ½
+// ì¸í„°í˜ì´ìŠ¤ í•„ìš” ì—†ì–´ì„œ ì§€ì›Œì•¼ ë  ìˆ˜ ìˆìŒ
 public interface IUsedSkill
 {
     void UsedSkill(float skillMp);
@@ -47,12 +47,14 @@ public interface ISetStatus
     void SetStatus(ItemData itemData, bool equip);
 }
 
+
+
 public interface IBattle : ITransform, IUsedSkill, IEquipItemSetting, ISetStatus, IDamageable
 {
 
 }
 
-// °ø°İÇÏ°í, µ¥¹ÌÁö ¹Ş´Â ½ºÅ©¸³Æ®
+// ê³µê²©í•˜ê³ , ë°ë¯¸ì§€ ë°›ëŠ” ìŠ¤í¬ë¦½íŠ¸
 public class BattleSystem : MovePath, IDeadAlarm, IBattle
 {
     public BattleStat m_stat;
@@ -61,9 +63,11 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     public event UnityAction<float, float, bool> m_changeMp;
     protected IBattle m_target = null;
     public Item m_item;
+    public bool m_recoveryCheck = false;
+    public Skill m_skillObj;
     bool m_recoveryCheck = false;
-    // µ¥¹ÌÁö ÅØ½ºÆ®°¡ ¶ã À§Ä¡¸¦ Á÷Á¢ ÂüÁ¶ÇÒ º¯¼ö Ãß°¡
-    public Transform damageTextPosition; // ¸ó½ºÅÍ³ª ÇÃ·¹ÀÌ¾î ÇÁ¸®ÆÕ¿¡ ºó ¿ÀºêÁ§Æ®¸¦ ÇÒ´ç
+    // ë°ë¯¸ì§€ í…ìŠ¤íŠ¸ê°€ ëœ° ìœ„ì¹˜ë¥¼ ì§ì ‘ ì°¸ì¡°í•  ë³€ìˆ˜ ì¶”ê°€
+    public Transform damageTextPosition; // ëª¬ìŠ¤í„°ë‚˜ í”Œë ˆì´ì–´ í”„ë¦¬íŒ¹ì— ë¹ˆ ì˜¤ë¸Œì íŠ¸ë¥¼ í• ë‹¹
     public GameObject damageUIPrefab;
     public float m_curHp = 0.0f;
     public float m_curMp = 0.0f;
@@ -82,7 +86,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         set
         {
             m_curMp = Mathf.Clamp(value, 0.0f, m_stat.MaxMp);
-            m_changeMp?.Invoke(m_curMp / m_stat.MaxMp, m_stat.MaxMp, true);
+            m_changeMp?.Invoke(m_curMp / m_stat.MaxMp, m_stat.MaxMp, m_skillObj.m_usingSkill);
         }
     }
     protected float m_curDamage
@@ -112,11 +116,11 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         m_curMagicPoint = m_stat.MaxMp;
     }
 
-    // °ø°İ
-    // ¸¶¿ì½º ¿ìÅ¬¸¯ ÇÑ ¹æÇâÀ¸·Î È¸Àü ÈÄ °ø°İ
-    // ¸ó½ºÅÍ ¿ìÅ¬¸¯(°è¼Ó Å¬¸¯ÇÒ ¶§ µµ) ½Ã ¸ó½ºÅÍÇÑÅ× ÀÌµ¿ ÈÄ °ø°İ ¹üÀ§ ¾È¿¡ ¸ó½ºÅÍ°¡ µé¾î¿À¸é °ø°İ
+    // ê³µê²©
+    // ë§ˆìš°ìŠ¤ ìš°í´ë¦­ í•œ ë°©í–¥ìœ¼ë¡œ íšŒì „ í›„ ê³µê²©
+    // ëª¬ìŠ¤í„° ìš°í´ë¦­(ê³„ì† í´ë¦­í•  ë•Œ ë„) ì‹œ ëª¬ìŠ¤í„°í•œí…Œ ì´ë™ í›„ ê³µê²© ë²”ìœ„ ì•ˆì— ëª¬ìŠ¤í„°ê°€ ë“¤ì–´ì˜¤ë©´ ê³µê²©
 
-    // Á¦ÀÚ¸® °ø°İ
+    // ì œìë¦¬ ê³µê²©
     public virtual void OnAttack(Vector3 pos)
     {
         if (m_myAnim.GetBool("Move")) m_myAnim.SetBool("Move", false);
@@ -146,60 +150,96 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     }
 
  
-    // µ¥¹ÌÁö¸¦ ¹ŞÀ» ¶§ È£ÃâµÇ´Â ÇÔ¼ö
+    // ë°ë¯¸ì§€ë¥¼ ë°›ì„ ë•Œ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
     public virtual void SetDamage(SkillData skillData)
     {
         m_recoveryCheck = false;
 
-        // µ¥¹ÌÁö °è»ê
+        // ë°ë¯¸ì§€ ê³„ì‚°
         float damage = Mathf.Max(0, skillData.Dmg - m_stat.Defense);
         m_curHealPoint -= damage;
 
-        // µ¥¹ÌÁö ÅØ½ºÆ® Ç¥½Ã
+        // ë°ë¯¸ì§€ í…ìŠ¤íŠ¸ í‘œì‹œ
         ShowDamageText(damage);
 
-        // Ã¼·ÂÀÌ 0 ÀÌÇÏÀÏ ¶§ »ç¸Á Ã³¸®
+        // ì²´ë ¥ì´ 0 ì´í•˜ì¼ ë•Œ ì‚¬ë§ ì²˜ë¦¬
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
-            Dead(); // »ç¸Á Ã³¸®
+            Dead(); // ì‚¬ë§ ì²˜ë¦¬
         }
     }
 
 
     public void ShowDamageText(float damage)
     {
+        float dmg = 0;
+        m_recoveryCheck = false;
+        dmg = skillData.Dmg - (skillData.Dmg * (m_stat.Defense * 0.01f));
+
+        // ì²´ë ¥ ê¹ì´ëŠ” ë¡œì§
+        m_curHealPoint -= dmg;
+        
+        // ì²´ë ¥ì´ 0 ì´í•˜ì¼ ë•Œ ì²˜ë¦¬
+        if (m_curHealPoint <= 0)
         if (damageUIPrefab != null && damageTextPosition != null)
         {
-            // µ¥¹ÌÁö ÅØ½ºÆ® »ı¼º
+            // ë°ë¯¸ì§€ í…ìŠ¤íŠ¸ ìƒì„±
             GameObject damageUIInstance = Instantiate(damageUIPrefab, damageTextPosition.position, Quaternion.identity);
             DamageUI damageTextController = damageUIInstance.GetComponent<DamageUI>();
 
             if (damageTextController != null)
             {
                 damageTextController.SetDamage(damage);
-                Destroy(damageUIInstance, 2f);  // ¿©±â¼­ 2ÃÊ µÚ¿¡ ÆÄ±«
+                Destroy(damageUIInstance, 2f);  // ì—¬ê¸°ì„œ 2ì´ˆ ë’¤ì— íŒŒê´´
             }
         }
         else
         {
             if (damageUIPrefab == null)
-                Debug.LogError("damageUIPrefabÀÌ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+                Debug.LogError("damageUIPrefabì´ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
 
             if (damageTextPosition == null)
-                Debug.LogError("DamageTextPositionÀÌ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+                Debug.LogError("DamageTextPositionì´ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
         }
     }
 
-    public void RecoveryHealPoint(float healpoint)
-    {
-        m_recoveryCheck = true;
-        m_curHealPoint += healpoint;
-        if (m_curHealPoint >= m_stat.MaxHp)
-        {
-            m_curHealPoint = m_stat.MaxHp;
-        }
-    }
+    //public void RecoveryHealPoint(float healpoint)
+    //{
+    //    m_recoveryCheck = true;
+    //    m_curHealPoint += healpoint;
+    //    if (m_curHealPoint >= m_stat.MaxHp)
+    //    {
+    //        m_curHealPoint = m_stat.MaxHp;
+    //    }
+    //}
+
+    //public void RecoveryManaPoint(bool isUsingSkill)
+    //{
+    //    //m_recoveryMpCheck = isUsingSkill;
+    //    //m_curMagicPoint += manapoint;
+    //    //if (m_curMagicPoint >= m_stat.MaxHp)
+    //    //{
+    //    //    m_curMagicPoint = m_stat.MaxHp;
+    //    //}
+    //    StopAllCoroutines();
+    //    StartCoroutine(ManaPointCoroutine(isUsingSkill));
+    //}
+
+    //IEnumerator ManaPointCoroutine(bool isUsingSkill)
+    //{
+    //    //m_recoveryMpCheck = isUsingSkill;
+    //    while (!isUsingSkill && m_curMagicPoint < m_stat.MaxHp)
+    //    {
+    //        m_curMagicPoint += Time.deltaTime * 10;
+    //        if (m_curMagicPoint >= m_stat.MaxHp)
+    //        {
+    //            m_curMagicPoint = m_stat.MaxHp;
+    //            break;
+    //        }
+    //        yield return null;
+    //    }
+    //}
 
     public void UsedSkill(float skillMp)
     {
@@ -210,11 +250,11 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         }
     }
 
-    // Item ½ºÅ©¸²Æ®¿¡¼­ Àåºñ ÀåÂøÇßÀ» ¶§ ÀÌº¥Æ® ÇÔ¼ö¿¡ Ãß°¡ÇÒ ÇÔ¼ö
+    // Item ìŠ¤í¬ë¦¼íŠ¸ì—ì„œ ì¥ë¹„ ì¥ì°©í–ˆì„ ë•Œ ì´ë²¤íŠ¸ í•¨ìˆ˜ì— ì¶”ê°€í•  í•¨ìˆ˜
     public void SetStatus(ItemData itemData, bool equip)
     {
         //m_curDamage += itemData.atkPower;
-        // µ¥¹ÌÁö¿Í ¹æ¾î·ÂÀº ³ªÁß¿¡ °è»ê½Ä ¸¸µé¸é ÇÁ·ÎÆÛÆ¼·Î ¹Ù²ã¼­ Àû¿ëµÇ°Ô ¸¸µé ¿¹Á¤
+        // ë°ë¯¸ì§€ì™€ ë°©ì–´ë ¥ì€ ë‚˜ì¤‘ì— ê³„ì‚°ì‹ ë§Œë“¤ë©´ í”„ë¡œí¼í‹°ë¡œ ë°”ê¿”ì„œ ì ìš©ë˜ê²Œ ë§Œë“¤ ì˜ˆì •
         if (equip)
         {
             m_stat.AttackDmg += itemData.atkPower;
@@ -225,7 +265,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
             m_stat.AttackDmg -= itemData.atkPower;
             m_stat.Defense -= itemData.defense;
         }
-        //Debug.Log("      °ø°İ·Â :   " + m_stat.AttackDmg + "      ¹æ¾î·Â :   " + m_stat.Defense);
+        //Debug.Log("      ê³µê²©ë ¥ :   " + m_stat.AttackDmg + "      ë°©ì–´ë ¥ :   " + m_stat.Defense);
     }
 
     public void EquipItemSetting(Item item)
