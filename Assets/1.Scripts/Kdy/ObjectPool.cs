@@ -36,6 +36,7 @@ public class ObjectPool : MonoBehaviour
                 GameObject obj = m_myPool[name].Dequeue();
                 obj.SetActive(true);
                 obj.transform.SetParent(parent);
+
                 return obj;
             }
         }

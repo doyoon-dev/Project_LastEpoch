@@ -42,7 +42,15 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
 
     [Header("보스 몬스터 이름")]
     [SerializeField]
-    private string bossMonsterName;  
+    private string bossMonsterName;
+
+    [Header("데미지 UI 프리팹")]
+    [SerializeField]
+    private GameObject damageUIPrefab;  // 데미지 UI 프리팹 추가
+
+    [Header("소환 이펙트 프리팹")]
+    [SerializeField]
+    private GameObject summonEffectPrefab;  // 소환 이펙트 프리팹
 
     public WaypointController waypointController;
     private Vector3 lastSpawnPosition = Vector3.zero; // 마지막 소환 위치 저장
@@ -79,6 +87,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
 
         // 오브젝트 풀에서 몬스터를 가져옴
         GameObject monster = ObjectPool.Inst.Pull<MonsterController>(monsterPrefab);
+        monster.SetActive(true); // 오브젝트 활성화
         MonsterController monsterController = monster.GetComponent<MonsterController>();
         NavMeshAgent navAgent = monster.GetComponent<NavMeshAgent>();
 
@@ -96,8 +105,8 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         }
 
         // 몬스터 초기화
-        monsterController.Initialize(this, waypointController, healthBarUI);  // 매니저를 초기화 시 전달
-
+        monsterController.Initialize(this, waypointController, healthBarUI, damageUIPrefab);  // 매니저를 초기화 시 전달
+    
 
         // HeadHealthBar도 오브젝트 풀에서 GameObject로 가져옴
         GameObject headHealthBarObj = ObjectPool.Inst.Pull<GameObject>(headHealthBarPrefab);  // HeadHealthBar 프리팹 가져오기
@@ -196,6 +205,24 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     // 보스 몬스터 스폰 메서드 추가
     public void SpawnBossMonster()
     {
+        StartCoroutine(SpawnBossWithEffect());
+    }
+
+    IEnumerator SpawnBossWithEffect()
+    {
+        // 보스 소환 위치를 설정
+        Vector3 bossSpawnPosition = waypointController.GetBossSpawnPoint(); // 보스 전용 스폰 지점
+
+        // **소환 이펙트 생성**
+        GameObject summonEffect = Instantiate(summonEffectPrefab, bossSpawnPosition, Quaternion.identity);
+
+        // 일정 시간 대기 (예: 3초 대기)
+        yield return new WaitForSeconds(0.5f);
+
+        // 소환 이펙트 제거
+        Destroy(summonEffect);
+
+        // 오브젝트 풀에서 보스 몬스터를 가져옴
         GameObject boss = ObjectPool.Inst.Pull<BossMonster>(bossMonsterPrefab);
         BossMonster bossController = boss.GetComponent<BossMonster>();
         NavMeshAgent navAgent = boss.GetComponent<NavMeshAgent>();
@@ -203,17 +230,16 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         // 보스 몬스터 이름을 인스펙터에서 설정한 값으로 적용
         bossController.monsterName = bossMonsterName;
 
-        bossController.Initialize(this, waypointController, healthBarUI);
+        // 보스 몬스터 초기화
+        bossController.Initialize(this, waypointController, healthBarUI, damageUIPrefab);
 
-        bossController.healthBarUI.HideHealthBar();  // 보스 소환 시 체력바 숨기기
+        // 보스 소환 시 체력바 숨기기
+        bossController.healthBarUI.HideHealthBar();
 
         navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
-        // 보스는 특정 위치에 소환되게 할 수 있음
-        Vector3 bossSpawnPosition = waypointController.GetBossSpawnPoint(); // 보스 전용 스폰 지점
+        // 보스를 지정된 위치에 소환
         boss.transform.position = bossSpawnPosition;
-
-       
     }
 
 

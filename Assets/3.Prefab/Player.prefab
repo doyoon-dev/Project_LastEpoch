@@ -22776,6 +22776,38 @@ Transform:
   m_Father: {fileID: 6974624179227952328}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: -2.0014052, y: -168.35841, z: -170.89397}
+  m_LocalEulerAnglesHint: {x: 4.8747697, y: 179.7701, z: 137.63574}
+--- !u!1 &4541228566141880096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8545217828143808989}
+  m_Layer: 0
+  m_Name: DamageTextPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8545217828143808989
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4541228566141880096}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.25, y: 1.0206949, z: 0.05150023}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5244370769833058610}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4554709524494872603
 GameObject:
   m_ObjectHideFlags: 0
@@ -23792,6 +23824,7 @@ Transform:
   - {fileID: 3113122756266338706}
   - {fileID: 699179250}
   - {fileID: 419016404}
+  - {fileID: 8545217828143808989}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -23882,13 +23915,15 @@ MonoBehaviour:
   m_cam: {fileID: 0}
   m_stat:
     MaxHp: 100
-    MaxMp: 51
+    MaxMp: 100
     AttackDmg: 20
     AttackRange: 5
     Defense: 0
   m_item: {fileID: 0}
   m_recoveryCheck: 0
   m_skillObj: {fileID: 5244370769833058613}
+  damageTextPosition: {fileID: 8545217828143808989}
+  damageUIPrefab: {fileID: 0}
   m_curHp: 0
   m_curMp: 0
   m_dropItemPrefabs:

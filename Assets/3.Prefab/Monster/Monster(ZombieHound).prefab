@@ -1877,6 +1877,37 @@ Transform:
   m_Father: {fileID: 1313923717084828962}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5403679259725059050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7092431542080236831}
+  m_Layer: 7
+  m_Name: DamageTextPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7092431542080236831
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5403679259725059050}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9063539012579615814}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5713964596145212681
 GameObject:
   m_ObjectHideFlags: 0
@@ -2653,6 +2684,7 @@ Transform:
   - {fileID: 3645577064910745023}
   - {fileID: 8619257799727611002}
   - {fileID: 1714154559765235502}
+  - {fileID: 7092431542080236831}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
@@ -2679,15 +2711,18 @@ MonoBehaviour:
     AttackRange: 1
     Defense: 0
   m_item: {fileID: 0}
+  damageTextPosition: {fileID: 7092431542080236831}
+  damageUIPrefab: {fileID: 0}
   m_curHp: 50
   m_curMp: 0
   m_state: 0
   m_detectDist: 2
-  m_attackDist: 1.2
-  m_chaseDist: 7
+  m_attackDist: 1
+  m_chaseDist: 2.5
   m_waypointCtr: {fileID: 0}
   boxSize: {x: 1, y: 1, z: 1}
   AttackArea: {fileID: 2975331073465117184}
+  bloodEffectPrefab: {fileID: 196484, guid: f8867ff3174b1f14bbc920645899d501, type: 3}
   m_playerMask:
     serializedVersion: 2
     m_Bits: 512
@@ -2770,11 +2805,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0.5
+  m_AngularSpeed: 180
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1
