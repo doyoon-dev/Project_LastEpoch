@@ -55,7 +55,7 @@ public class CharacterMovement : CharacterProperty
             dist -= delta;
             yield return null;
         }
-        ObjectPool.Inst.Push<GameObject>(obj);
+        //ObjectPool.Inst.Push<GameObject>(obj);
         m_myAnim.SetBool("Move", false);
         
     }
