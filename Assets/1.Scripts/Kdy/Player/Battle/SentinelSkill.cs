@@ -337,20 +337,60 @@ public class SentinelSkill : Skill, ISkill_Lunge
     }
 
     // 돌격 스킬 이동 함수
+    //IEnumerator LungeMove(Vector3 dir)
+    //{
+    //    m_player.GetComponent<Collider>().isTrigger = true;
+    //    m_player.GetComponent<Rigidbody>().isKinematic = true;
+    //    m_myAnim.SetBool("Move", false);
+    //    m_myAnim.SetBool("SkillLunge", true);
+    //    float dist = 2;
+    //    dir.Normalize();
+    //    dir.y = 0;
+    //    Collider[] list;
+    //    //List<IBattle> enemyList = new List<IBattle>();
+    //    IBattle ib;
+    //    while (dist > 0)
+    //    {
+    //        list = Physics.OverlapBox(m_warPathStartPos.position, new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity, m_enemyMask);
+    //        foreach (Collider col in list)
+    //        {
+    //            ib = col.GetComponent<IBattle>();
+    //            if (ib != null)
+    //            {
+    //                ib.SetDamage(SkillDataManager.m_skillDataDic["Lunge"]);
+    //            }
+    //        }
+    //        float delta = 5.0f * Time.deltaTime;
+    //        if (delta > dist) delta = dist;
+    //        dist -= delta;
+    //        m_player.transform.Translate(dir * delta, Space.World);
+    //        yield return null;
+    //    }
+    //    m_lungeEffect.SetActive(false);
+    //    m_usingSkill = false;
+    //    m_myAnim.SetBool("SkillLunge", false);
+    //    m_player.GetComponent<Collider>().isTrigger = false;
+    //    m_player.GetComponent<Rigidbody>().isKinematic = false;
+    //    RecoverMp(m_usingSkill);
+    //}
+
+    #region 실험중
     IEnumerator LungeMove(Vector3 dir)
     {
         m_player.GetComponent<Collider>().isTrigger = true;
         m_player.GetComponent<Rigidbody>().isKinematic = true;
         m_myAnim.SetBool("Move", false);
         m_myAnim.SetBool("SkillLunge", true);
-        float dist = 2;
+        float time = 0;
         dir.Normalize();
         dir.y = 0;
         Collider[] list;
         //List<IBattle> enemyList = new List<IBattle>();
         IBattle ib;
-        while (dist > 0)
+        while (time < 0.6f)
         {
+            time += Time.deltaTime;
+            float delta = 5.0f * Time.deltaTime;
             list = Physics.OverlapBox(m_warPathStartPos.position, new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity, m_enemyMask);
             foreach (Collider col in list)
             {
@@ -360,9 +400,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
                     ib.SetDamage(SkillDataManager.m_skillDataDic["Lunge"]);
                 }
             }
-            float delta = 5.0f * Time.deltaTime;
-            if (delta > dist) delta = dist;
-            dist -= delta;
+
             m_player.transform.Translate(dir * delta, Space.World);
             yield return null;
         }
@@ -373,6 +411,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         m_player.GetComponent<Rigidbody>().isKinematic = false;
         RecoverMp(m_usingSkill);
     }
+    #endregion
 
     void RecoverMp(bool isUsingSkill)
     {
