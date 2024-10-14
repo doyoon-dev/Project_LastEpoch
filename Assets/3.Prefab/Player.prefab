@@ -23909,8 +23909,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moveStat:
-    moveSpeed: 2
-    rotSpeed: 2
+    moveSpeed: 3
+    rotSpeed: 3
   m_cam: {fileID: 0}
   m_stat:
     MaxHp: 100
