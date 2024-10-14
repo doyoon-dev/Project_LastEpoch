@@ -106,13 +106,12 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
 
         // 몬스터 초기화
         monsterController.Initialize(this, waypointController, healthBarUI, damageUIPrefab);  // 매니저를 초기화 시 전달
-    
 
-        // HeadHealthBar도 오브젝트 풀에서 GameObject로 가져옴
-        GameObject headHealthBarObj = ObjectPool.Inst.Pull<GameObject>(headHealthBarPrefab);  // HeadHealthBar 프리팹 가져오기
+        // 헤드 헬스바 설정
+        GameObject headHealthBarObj = ObjectPool.Inst.Pull<GameObject>(SceneData.Inst.headHealthBarPrefab);
+        headHealthBarObj.transform.SetParent(SceneData.Inst.headHealthBarParent, false); 
+        HeadHealthBar headHealthBar = headHealthBarObj.GetComponent<HeadHealthBar>();
 
-        // **머리 위 체력바 초기화**
-        HeadHealthBar headHealthBar = monster.GetComponentInChildren<HeadHealthBar>();  // 몬스터에서 HeadHealthBar 컴포넌트 찾기
         if (headHealthBar != null)
         {
             headHealthBar.Initialize(monsterController.m_stat.MaxHp);  // 머리 위 체력바 초기화

@@ -169,26 +169,6 @@ public class BossMonster : MonsterController
         m_idleDuration = duration;  // 새로운 Idle 대기 시간 설정
     }
     
-    // 죽음 처리 기능 추가
-    protected override void HandleDeath()
-    {
-        if (IsDie) return;// 이미 죽은 상태에서 다시 처리하지 않도록 함
-        m_manager.HandleMonsterDeath(transform.position);// 매니저에게 몬스터가 죽었다고 알림
-        m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // 사망 애니메이션 재생  
-        StopAllCoroutines();  // 현재 실행 중인 모든 코루틴 정지
-        m_navAgent.isStopped = true;  // 네비게이션 에이전트 중지
-        StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과
-        // 모든 콜라이더 비활성화
-        Collider[] colliders = GetComponentsInChildren<Collider>();
-        foreach (Collider collider in colliders)
-        {
-            collider.enabled = false;
-        }
-        m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정        
-        SetState(BehaviourState.Die);  // 상태를 Die로 변경
-        ShutDownHealthBars();
-        AttackArea.SetActive(false);
-
-    }
+   
 
 }

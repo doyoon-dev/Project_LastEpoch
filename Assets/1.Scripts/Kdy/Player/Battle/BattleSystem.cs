@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 using static ItemData;
-
+using TMPro;
 [System.Serializable]
 public struct BattleStat
 {
@@ -65,8 +65,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     public Item m_item;
     public bool m_recoveryCheck = false;
     public Skill m_skillObj;
-    // 데미지 텍스트가 뜰 위치를 직접 참조할 변수 추가
-    public Transform damageTextPosition; // 몬스터나 플레이어 프리팹에 빈 오브젝트를 할당
+    public Transform damageTextPosition; 
     public GameObject damageUIPrefab;
     public float m_curHp = 0.0f;
     public float m_curMp = 0.0f;
@@ -159,7 +158,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         m_curHealPoint -= damage;
 
         // 데미지 텍스트 표시
-        ShowDamageText(damage);
+        ShowDamageText(damage, Color.white);
 
         // 체력이 0 이하일 때 사망 처리
         if (m_curHealPoint <= 0)
@@ -169,30 +168,38 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         }
     }
 
-
-    public void ShowDamageText(float damage)
+    public void ShowDamageText(float damage, Color color)
     {
-        if (damageUIPrefab != null && damageTextPosition != null)
+        if (SceneData.Inst.damageUIPrefab != null && damageTextPosition != null)
         {
-            // 데미지 텍스트 생성
-            GameObject damageUIInstance = Instantiate(damageUIPrefab, damageTextPosition.position, Quaternion.identity);
-            DamageUI damageTextController = damageUIInstance.GetComponent<DamageUI>();
+            // 월드 좌표에서 스크린 좌표로 변환
+            Vector3 screenPosition = Camera.main.WorldToScreenPoint(damageTextPosition.position);
 
-            if (damageTextController != null)
-            {
-                damageTextController.SetDamage(damage);
-                Destroy(damageUIInstance, 2f);  // 여기서 2초 뒤에 파괴
-            }
+            // SceneData에서 가져온 damageUIPrefab을 생성하고 캔버스의 자식으로 설정
+            GameObject damageUIInstance = Instantiate(SceneData.Inst.damageUIPrefab, screenPosition, Quaternion.identity, SceneData.Inst.canvasTransform);
+
+            // damageUIInstance에서 DamageUI 스크립트를 가져와서 데미지 값을 설정
+            DamageUI damageUIScript = damageUIInstance.GetComponent<DamageUI>();
+            damageUIScript.DMUISetDamage(damage);
+            // 데미지 위치 설정
+            damageUIScript.DMUISetPosition(damageTextPosition);
+            // 색상 설정
+            damageUIScript.SetDamageTextColor(color);
+            // 일정 시간 후 오브젝트 풀로 되돌리기 (DamageUI 내에서 ReturnToPoolAfter 사용)
+            damageUIScript.DestroyAfter(3f);
         }
         else
         {
-            if (damageUIPrefab == null)
-                Debug.LogError("damageUIPrefab이 할당되지 않았습니다.");
+            if (SceneData.Inst.damageUIPrefab == null)
+                Debug.LogError("damageUIPrefab이 SceneData에 할당되지 않았습니다.");
 
             if (damageTextPosition == null)
                 Debug.LogError("DamageTextPosition이 할당되지 않았습니다.");
         }
     }
+
+
+
 
     //public void RecoveryHealPoint(float healpoint)
     //{
