@@ -139,7 +139,7 @@ public class Player : BattleSystem, ISetClickEffect
         obj.transform.position = transform.position;
         ParticleSystem ps = obj.GetComponentInChildren<ParticleSystem>();
         ps.Play();
-        //ShowDamageText(damage.Dmg, Color.red);
+        ShowDamageText(damage.Dmg, Color.red);
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
