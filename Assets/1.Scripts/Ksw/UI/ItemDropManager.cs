@@ -78,7 +78,7 @@ public class ItemDropManager : MonoBehaviour
         for (int i = 0; i < itemPrefabs.Length; i++)
         {
             float dropChance = dropChances[i];
-            if (Random.Range(0f, 10f) <= dropChance)
+            if (Random.Range(0f, 100f) <= dropChance)
             {
                 GameObject dropItemObject = ObjectPool.Inst.Pull<DropItem>(itemPrefabs[i]);
                 DropItem dropItem = dropItemObject.GetComponent<DropItem>();
