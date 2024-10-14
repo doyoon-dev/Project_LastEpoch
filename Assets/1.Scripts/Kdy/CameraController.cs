@@ -74,6 +74,25 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    public void CameraShakeFunc()
+    {
+        StopAllCoroutines();
+        StartCoroutine(CameraShake());
+    }
+
+    IEnumerator CameraShake()
+    {
+        Vector3 initPos = transform.position;
+        float shakeTime = 0;
+        while (shakeTime < 0.12f)
+        {
+            shakeTime += Time.deltaTime;
+            transform.position = Random.onUnitSphere * shakeTime + transform.position;
+            yield return null;
+        }
+        transform.position = initPos;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == m_wallMask)
