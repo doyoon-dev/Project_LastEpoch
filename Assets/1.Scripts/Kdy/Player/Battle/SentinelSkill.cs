@@ -321,7 +321,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
                     ict.CoolTime(inputKey, SkillDataManager.m_skillDataDic["Lunge"].CoolTime);
                 }
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_backgroundMask))
                 {
                     m_player.StopAllCoroutines();
                     Vector3 dir = hit.point - m_player.transform.position;
