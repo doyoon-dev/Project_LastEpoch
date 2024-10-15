@@ -24,10 +24,6 @@ public class CameraController : MonoBehaviour
         SoundManager.Inst.PlayBgm("BGM");
     }
 
-    private void OnDrawGizmo()
-    {
-        Gizmos.DrawLine(transform.forward, m_player.transform.position);
-    }
 
     // Update is called once per frame
     void Update()
@@ -63,11 +59,11 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(transform.position, m_player.transform.position);
-        Gizmos.color = Color.yellow;
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawLine(transform.position, m_player.transform.position);
+    //    Gizmos.color = Color.yellow;
+    //}
 
     public void CameraShakeFunc()
     {
@@ -87,37 +83,4 @@ public class CameraController : MonoBehaviour
         }
         transform.position = initPos;
     }
-
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.layer == m_wallMask)
-    //    {
-    //        m_mr = collision.transform.GetComponentsInChildren<MeshRenderer>();
-    //        for (int i = 0; i < m_mr.Count; i++)
-    //        {
-    //            for (int j = 0; j < m_mr[i].materials.Length; j++)
-    //            {
-    //                m_mr[i].enabled = false;
-    //                //Color color = m_mr[i].materials[j].color;
-    //                //m_initColor.a = color.a;
-    //                //color.a -= Time.deltaTime;
-    //                //m_mr[i].materials[j].color = color;
-    //            }
-    //        }
-    //    }
-    //}
-    //private void OnCollisionExit(Collision collision)
-    //{
-    //    if (collision.gameObject.layer == m_wallMask)
-    //    {
-    //        m_mr = collision.transform.GetComponentsInChildren<MeshRenderer>();
-    //        for (int i = 0; i < m_mr.Count; i++)
-    //        {
-    //            for (int j = 0; j < m_mr[i].materials.Length; j++)
-    //            {
-    //                m_mr[i].enabled = true;
-    //            }
-    //        }
-    //    }
-    //}
 }
