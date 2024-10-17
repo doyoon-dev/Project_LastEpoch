@@ -28,6 +28,8 @@ public class Player : BattleSystem, ISetClickEffect
     Transform weaponPoint;
     [SerializeField]
     GameObject obj;
+    [SerializeField]
+    GameObject m_atkParticle;
 
     public UnityEvent m_camShake;
     public GameObject m_hitEffect;
@@ -200,6 +202,20 @@ public class Player : BattleSystem, ISetClickEffect
         {
             m_myAnim.SetBool("ComboCheck", true);
         }
+    }
+
+    public void AttackEffectOn()
+    {
+        ParticleSystem ps = m_atkParticle.GetComponentInChildren<ParticleSystem>();
+        m_atkParticle.SetActive(true);
+        ps.Play();
+    }
+
+    public void AttackEffectOff()
+    {
+        ParticleSystem ps = m_atkParticle.GetComponentInChildren<ParticleSystem>();
+        ps.Stop();
+        m_atkParticle.SetActive(false);
     }
 
     public override IEnumerator Moving(Vector3 target, GameObject obj)
