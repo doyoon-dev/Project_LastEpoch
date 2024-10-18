@@ -41273,6 +41273,22 @@ PrefabInstance:
       propertyPath: m_masterSlider
       value: 
       objectReference: {fileID: 544593084}
+    - target: {fileID: 8668297321737929104, guid: 9fda461c7019ee84397be7de6e3b69eb, type: 3}
+      propertyPath: m_sfxClips.Array.size
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8668297321737929104, guid: 9fda461c7019ee84397be7de6e3b69eb, type: 3}
+      propertyPath: m_sfxClips.Array.data[9]
+      value: 
+      objectReference: {fileID: 8300000, guid: d98b9f2f359b77c4dad6308ec670fe41, type: 3}
+    - target: {fileID: 8668297321737929104, guid: 9fda461c7019ee84397be7de6e3b69eb, type: 3}
+      propertyPath: m_sfxClips.Array.data[10]
+      value: 
+      objectReference: {fileID: 8300000, guid: 928dbb50313b4774cac68ae251724ac7, type: 3}
+    - target: {fileID: 8668297321737929104, guid: 9fda461c7019ee84397be7de6e3b69eb, type: 3}
+      propertyPath: m_sfxClips.Array.data[11]
+      value: 
+      objectReference: {fileID: 8300000, guid: 9de055ad0d8f97242bb9927d866606b0, type: 3}
     - target: {fileID: 8668297321737929105, guid: 9fda461c7019ee84397be7de6e3b69eb, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -41320,6 +41336,10 @@ PrefabInstance:
     - target: {fileID: 8668297321737929134, guid: 9fda461c7019ee84397be7de6e3b69eb, type: 3}
       propertyPath: m_Name
       value: SoundManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8668297321737929135, guid: 9fda461c7019ee84397be7de6e3b69eb, type: 3}
+      propertyPath: Loop
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9fda461c7019ee84397be7de6e3b69eb, type: 3}

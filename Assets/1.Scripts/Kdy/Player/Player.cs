@@ -206,6 +206,7 @@ public class Player : BattleSystem, ISetClickEffect
 
     public void AttackEffectOn()
     {
+        SoundManager.Inst.PlaySfx("ATTACK1");
         ParticleSystem ps = m_atkParticle.GetComponentInChildren<ParticleSystem>();
         m_atkParticle.SetActive(true);
         ps.Play();

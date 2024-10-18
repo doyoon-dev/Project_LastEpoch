@@ -131,6 +131,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
     }
     public void Skill_ErasingStrike_EffectOn()
     {
+        SoundManager.Inst.PlaySfx("ErasingStrike_Sound");
         m_erasingStrikeEffect.SetActive(true);
     }
     public void Skill_ErasingStrike_EffectOff()
@@ -140,75 +141,25 @@ public class SentinelSkill : Skill, ISkill_Lunge
         RecoverMp(m_usingSkill);
     }
 
-
-    // 출정 스킬(W 스킬 : 윈드밀)
-    //public void Skill_WarPath(KeyCode inputKey)
-    //{
-    //    // 스킬 키 누르고 있으면 마나를 다 쓸 때 까지 스킬 발동
-    //    // 마우스 방향으로 이동가능
-    //    if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
-    //    {
-    //        //StopAllCoroutines();
-    //        m_myAnim.SetBool("Move", false);
-    //        m_usingSkill = true;
-    //        m_stopMovingAct?.Invoke();
-    //        #region 실험 코드
-    //        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    //        //if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
-    //        //{
-    //        //    Vector3 skillDir = hit.point - m_player.transform.position;
-    //        //    skillDir.y = 0;
-    //        //    skillDir.Normalize();
-    //        //    transform.forward = skillDir;
-    //        //    transform.Translate(skillDir * Time.deltaTime * 2.0f);
-    //        //}
-    //        #endregion
-    //        RecoverMp(m_usingSkill);
-    //        UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
-    //        if (!m_warPathUse)
-    //        {
-    //            m_warpathEffect.SetActive(true);
-
-    //            m_warPathUse = true;
-    //            m_myAnim.SetBool("SkillWarPath", true);
-    //        }
-
-    //        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    //        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
-    //        {
-    //            StopAllCoroutines();
-
-    //            Vector3 skillDir = hit.point - m_player.transform.position;
-
-    //            skillDir.y = 0;
-    //            Debug.DrawRay(transform.position, skillDir, Color.red);
-    //            skillDir.Normalize();
-
-    //            transform.Translate(skillDir * Time.deltaTime * 2.0f);
-    //        }
-    //    }
-    //    if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
-    //    {
-    //        m_warpathEffect.SetActive(false);
-    //        m_myAnim.SetBool("SkillWarPath", false);
-    //        m_warPathUse = false;
-    //        m_usingSkill = false;
-    //        RecoverMp(m_usingSkill);
-    //    }
-    //}
-
+    bool m_isSoundPlay = false;
     public void Skill_WarPath(KeyCode inputKey)
     {
         // 스킬 키 누르고 있으면 마나를 다 쓸 때 까지 스킬 발동
         // 마우스 방향으로 이동가능
         if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
+            if (!m_isSoundPlay)
+            {
+                SoundManager.Inst.PlaySfx("WarPath_Sound_Start");
+                SoundManager.Inst.PlaySfx("WarPath_Sound_Playing");
+                SoundManager.Inst.m_sfxAudioSource.loop = true;
+                m_isSoundPlay = true;
+            }
             if (m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
             {
                 m_stopMovingAct?.Invoke();
                 return;
             }
-
             //StopAllCoroutines();
             m_myAnim.SetBool("Move", false);
             m_usingSkill = true;
@@ -231,6 +182,9 @@ public class SentinelSkill : Skill, ISkill_Lunge
         }
         if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
+            m_isSoundPlay = false;
+            SoundManager.Inst.PlaySfx("WarPath_Sound_End");
+            SoundManager.Inst.m_sfxAudioSource.loop = false;
             m_warpathEffect.SetActive(false);
             m_myAnim.SetBool("SkillWarPath", false);
             m_warPathUse = false;
@@ -276,7 +230,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         //}
 
         // 충돌 문제 생기면 위에 걸로 아니면 이거 써도 됨
-        Collider[] list = Physics.OverlapCapsule(m_warPathStartPos.position, m_warPathEndPos.position, 0.07f, m_enemyMask);
+        Collider[] list = Physics.OverlapBox(m_warPathStartPos.position, new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity, m_enemyMask);
         foreach (Collider col in list)
         {
             IBattle ib = col.GetComponent<IBattle>();
@@ -381,6 +335,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         m_player.GetComponent<Rigidbody>().isKinematic = true;
         m_myAnim.SetBool("Move", false);
         m_myAnim.SetBool("SkillLunge", true);
+        SoundManager.Inst.PlaySfx("Lunge_Sound");
         float time = 0;
         dir.Normalize();
         dir.y = 0;

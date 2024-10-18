@@ -10,7 +10,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     AudioMixer m_audioMixer;
     [SerializeField]
-    AudioSource m_sfxAudioSource;
+    public AudioSource m_sfxAudioSource;
     [SerializeField]
     AudioSource m_bgmAudioSource;
     [SerializeField]
@@ -48,6 +48,7 @@ public class SoundManager : MonoBehaviour
             {
                 m_sfxAudioSource.clip = m_sfxClips[i];
                 m_sfxAudioSource.Play();
+                //m_sfxAudioSource.PlayOneShot(m_sfxAudioSource.clip);
             }
         }
     }
@@ -83,5 +84,10 @@ public class SoundManager : MonoBehaviour
         float sound = m_gameSlider.value;
         if (sound == -40.0f) m_audioMixer.SetFloat("GAME", -80);
         else m_audioMixer.SetFloat("GAME", sound);
+    }
+
+    public void StopSfxSound()
+    {
+        m_sfxAudioSource.Stop();
     }
 }
