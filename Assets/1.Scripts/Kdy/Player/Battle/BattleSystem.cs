@@ -151,6 +151,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     // 데미지를 받을 때 호출되는 함수
     public virtual void SetDamage(SkillData skillData)
     {
+        
         m_recoveryCheck = false;
 
         // 데미지 계산

@@ -31,6 +31,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
     bool m_warPathUse = false;
     bool m_lungeUse = false;
     bool m_strikeUse = false;
+    bool m_isSoundPlay = false;
 
     // Start is called before the first frame update
     void Start()
@@ -141,7 +142,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         RecoverMp(m_usingSkill);
     }
 
-    bool m_isSoundPlay = false;
+    
     public void Skill_WarPath(KeyCode inputKey)
     {
         // 스킬 키 누르고 있으면 마나를 다 쓸 때 까지 스킬 발동
@@ -152,7 +153,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
             {
                 SoundManager.Inst.PlaySfx("WarPath_Sound_Start");
                 SoundManager.Inst.PlaySfx("WarPath_Sound_Playing");
-                SoundManager.Inst.m_sfxAudioSource.loop = true;
+                //SoundManager.Inst.m_sfxAudioSource.loop = true;
                 m_isSoundPlay = true;
             }
             if (m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
@@ -183,8 +184,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
             m_isSoundPlay = false;
-            SoundManager.Inst.PlaySfx("WarPath_Sound_End");
-            SoundManager.Inst.m_sfxAudioSource.loop = false;
+            //SoundManager.Inst.m_sfxAudioSource.loop = false;
             m_warpathEffect.SetActive(false);
             m_myAnim.SetBool("SkillWarPath", false);
             m_warPathUse = false;

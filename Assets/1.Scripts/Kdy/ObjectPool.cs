@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
@@ -28,8 +29,8 @@ public class ObjectPool : MonoBehaviour
     // 오브젝트 풀에서 꺼내기
     public GameObject Pull<T>(GameObject org, Transform parent = null)
     {
-        //string name = typeof(T).Name;
-        string name = org.name;
+        string name = typeof(T).Name;
+        //string name = org.name;
         if (m_myPool.ContainsKey(name))
         {
             if (m_myPool[name].Count > 0)
@@ -48,8 +49,14 @@ public class ObjectPool : MonoBehaviour
     public void Push<T>(GameObject obj)
     {
         obj.SetActive(false);
-        //string name = typeof(T).Name;
-        string name = obj.name;
+        string name = typeof(T).Name;
+        //int index = obj.name.IndexOf("(Clone)");
+        //if(index > 0)
+        //{
+        //    obj.name = obj.name.Substring(0, index);
+        //}
+        //string name = obj.name;
+        
         if (!m_myPool.ContainsKey(name))
         {
             m_myPool[name] = new Queue<GameObject>();
