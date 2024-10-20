@@ -40,45 +40,16 @@ public class Picking : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask | m_enemyMask))
                 {
-                    m_clickEffectObj = ObjectPool.Inst.Pull<ClickEffectPool>(m_clickEffect);
-                    if (m_effectList.Contains(m_clickEffectObj))
-                    {
-                        IPushObject ipo = m_effectList[0].gameObject.GetComponent<IPushObject>();
-                        if (ipo != null)
-                        {
-                            ipo.PushObject();
-                        }
-                        m_effectList.Remove(m_effectList[0]);
-                    }
-                    m_effectList.Add(m_clickEffectObj);
-                    Debug.Log(m_effectList.Count);
-                    //if (m_effectDic.ContainsKey(m_clickEffect.name))
-                    //{
-                    //    ObjectPool.Inst.Push<ClickEffectPool>(m_effectDic[m_clickEffect.name]);
-                    //    m_effectDic.Remove(m_clickEffect.name);
-                    //}
-                    //m_effectDic.Add(m_clickEffect.name, m_clickEffectObj);
-                    //ISetClickEffect isce = gameObject.GetComponent<ISetClickEffect>();
-                    //if (isce != null)
-                    //{
-                    //    //isce.SetClickEffect(m_effectDic[m_clickEffect.name]);
-                    //    isce.SetClickEffect(m_clickEffectObj);
-                    //}
+                    //m_clickEffectObj = ObjectPool.Inst.Pull<ClickEffectPool>(m_clickEffect);
+                    GameObject obj = ObjectPool.Inst.Pull<ClickEffectPool>(m_clickEffect);
+                    string name = typeof(ClickEffectPool).Name;
+                    SetClickEffectOff(name);
+                    m_effectDic.Add(name, obj);
+                    m_player.m_clickEffectPush += SetClickEffectOff;
 
-                    //if (m_effectDic.ContainsKey(m_clickEffect.name))
-                    //{
-                    //    IPushObject ipo = m_clickEffectObj.GetComponent<IPushObject>();
-                    //    if (ipo != null)
-                    //    {
-                    //        ipo.PushObject();
-                    //    }
-                    //    m_effectDic.Remove(m_clickEffect.name);
-                    //}
-                    //m_effectDic.Add(m_clickEffect.name, m_clickEffectObj);
-
-                    m_effectList[0].transform.position = hit.point;
+                    m_effectDic[name].transform.position = hit.point;
                     //m_moveAct?.Invoke(hit.point, m_effectDic[m_clickEffect.name]);
-                    m_moveAct?.Invoke(hit.point, m_effectList[0]);
+                    m_moveAct?.Invoke(hit.point, m_effectDic[name]);
                 }
             }
             if (Input.GetMouseButtonDown(1) && !m_anim.GetBool("IsAttacking") && !m_skillUsed.UsingSkill())
@@ -86,16 +57,17 @@ public class Picking : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask | m_enemyMask))
                 {
+                    string name = typeof(ClickEffectPool).Name;
                     // 몬스터 우클릭 됐을 때 -> BattleSystem의 MoveToAttack 실행
                     if ((1 << hit.transform.gameObject.layer & m_enemyMask) != 0)
                     {
-                        //SetOffClickEffect();
+                        SetClickEffectOff(name);
                         m_moveAttackAct?.Invoke(hit.transform);
                     }
                     // 배경 클릭 됐을 때 - 마우스 클릭 방향으로 회전 후 제자리에서 공격
                     else
                     {
-                        //SetOffClickEffect();
+                        SetClickEffectOff(name);
                         m_attackAct?.Invoke(hit.point);
                     }
                 }
@@ -133,16 +105,16 @@ public class Picking : MonoBehaviour
         //}
     }
 
-    public void SetOffClickEffect()
+    public void SetClickEffectOff(string name)
     {
-        ObjectPool.Inst.Push<GameObject>(m_clickEffectObj);
-        //ObjectPool.Inst.Push<GameObject>(m_effectDic[m_clickEffect.name]);
-        //m_effectDic.Remove(m_clickEffect.name);
-    }
-
-    IEnumerator PushEffect(GameObject obj)
-    {
-        yield return new WaitForSeconds(1.0f);
-        ObjectPool.Inst.Push<GameObject>(obj);
+        if (m_effectDic.ContainsKey(name))
+        {
+            IPushObject ipo = m_effectDic[name].gameObject.GetComponent<IPushObject>();
+            if (ipo != null)
+            {
+                ipo.PushObject();
+            }
+            m_effectDic.Remove(name);
+        } 
     }
 }

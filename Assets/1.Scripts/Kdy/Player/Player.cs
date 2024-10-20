@@ -31,6 +31,7 @@ public class Player : BattleSystem, ISetClickEffect
     [SerializeField]
     GameObject m_atkParticle;
 
+    public event UnityAction<string> m_clickEffectPush;
     public UnityEvent m_camShake;
     public GameObject m_hitEffect;
     public int attackDamage = 20;
@@ -160,19 +161,20 @@ public class Player : BattleSystem, ISetClickEffect
     public void AttackTarget(Transform target)//(Transform target)
     {
         m_target = target.GetComponent<IBattle>();
-        IDeadAlarm alarm = target.GetComponent<IDeadAlarm>();
-        if (alarm != null)
-        {
-            alarm.m_deadAlarm += () =>
-            {
-                StopAllCoroutines();
-                m_target = null;
-            };
-        }
+        //IDeadAlarm alarm = target.GetComponent<IDeadAlarm>();
+        //if (alarm != null)
+        //{
+        //    alarm.m_deadAlarm += () =>
+        //    {
+        //        StopAllCoroutines();
+        //        m_target = null;
+        //    };
+        //}
         //FollowingEnemy(target.position, m_stat.attackRange, null);
         MoveToEnemy(m_target.transform, m_stat.AttackRange, AttackAnim);
     }
 
+    #region 콤보체크
     // 첫 공격 이후 다음 공격 모션 바뀜
     void FirstAttack()
     {
@@ -204,6 +206,7 @@ public class Player : BattleSystem, ISetClickEffect
             m_myAnim.SetBool("ComboCheck", true);
         }
     }
+    #endregion
 
     public void AttackEffectOn()
     {
@@ -237,11 +240,7 @@ public class Player : BattleSystem, ISetClickEffect
             dist -= delta;
             yield return null;
         }
-        IPushObject ipo = obj.GetComponent<IPushObject>();
-        if (ipo != null)
-        {
-            ipo.PushObject();
-        }
+        m_clickEffectPush?.Invoke(typeof(ClickEffectPool).Name);
         m_myAnim.SetBool("Move", false);
         
     }
@@ -261,12 +260,6 @@ public class Player : BattleSystem, ISetClickEffect
         StopAllCoroutines();
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(obj.transform.position, boxSize);
-    }
-
     //public override void OnAttack(Vector3 pos)
     //{
     //    base.OnAttack(pos);
@@ -283,25 +276,6 @@ public class Player : BattleSystem, ISetClickEffect
     //        }
     //    }
     //}
-    /* //몬스터 피격 연결코드 임시 (안됨)
-    void Attack()
-    {
-        Ray ray = new Ray(transform.position, transform.forward);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, attackRange, m_enemyMask))
-        {
-            IDamageable damageable = hit.collider.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                // 가상의 SkillData 객체를 생성하여 전달
-                SkillData skillData = new SkillData { knockback = 5f }; // 실제로는 스킬 데이터 설정
-                damageable.SetDamage(transform, skillData);
-            }
-        }
-    }
-    */
-
 
     public override void Attack()
     {
@@ -325,11 +299,4 @@ public class Player : BattleSystem, ISetClickEffect
     {
         SoundManager.Inst.PlaySfx("move2");
     }
-
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.green;
-    //    Gizmos.DrawSphere(m_weaponEndPoint.position, 0.7f);
-    //}
-
 }

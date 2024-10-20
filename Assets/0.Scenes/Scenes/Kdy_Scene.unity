@@ -14808,7 +14808,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8492186141576145929, guid: 471869703d1778a479a94eeef0cd5b69, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 471869703d1778a479a94eeef0cd5b69, type: 3}
@@ -14824,10 +14824,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 419016403, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058608, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_cam
       value: 
@@ -41277,6 +41273,10 @@ PrefabInstance:
       propertyPath: m_masterSlider
       value: 
       objectReference: {fileID: 544593084}
+    - target: {fileID: 8668297321737929104, guid: 9fda461c7019ee84397be7de6e3b69eb, type: 3}
+      propertyPath: m_sfxClips.Array.data[10]
+      value: 
+      objectReference: {fileID: 8300000, guid: e89c7181658a95340ade40f7a965a4e2, type: 3}
     - target: {fileID: 8668297321737929105, guid: 9fda461c7019ee84397be7de6e3b69eb, type: 3}
       propertyPath: m_RootOrder
       value: 11
