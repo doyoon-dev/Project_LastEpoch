@@ -51,7 +51,7 @@ public class Picking : MonoBehaviour
                         m_effectList.Remove(m_effectList[0]);
                     }
                     m_effectList.Add(m_clickEffectObj);
-                    Debug.Log(m_effectList.Count);
+                    //Debug.Log(m_effectList.Count);
                     //if (m_effectDic.ContainsKey(m_clickEffect.name))
                     //{
                     //    ObjectPool.Inst.Push<ClickEffectPool>(m_effectDic[m_clickEffect.name]);

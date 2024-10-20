@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HealthBarUI : MonoBehaviour
 {
-    public Text monNameText; // 몬스터 이름 표시
+    public TextMeshProUGUI monNameText; // 몬스터 이름 표시
     public Image healthImage; // 체력바
     public GameObject healthBarUI; // 중앙체력바 ui 오브젝트
 
