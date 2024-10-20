@@ -1,9 +1,20 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering.Universal;
 public class BossMonster : MonsterController
 {
     private Vector3 startPos; // 시작 위치 저장
+    private int currentPhase = 1;
+    public float[] phaseThresholds = { 0.75f, 0.5f, 0.25f };  // 각 페이즈가 전환되는 체력 비율
+    private bool isGathering = false;
+    private float gatheringDuration = 3.0f; //힘을 모으는 시간
+    private float specialAttackCooldown = 10.0f; // 스페셜 어택 쿨다운
+    private float specialAttackMoveDistance = 9.0f; // 스페셜 어택 시 이동할 거리
+    private float specialAttackSpeed = 5.0f; // 스페셜 어택 시 이동 속도
+    private float lastSpecialAttackTime = -10f;  // 마지막 스페셜 어택 시간을 초기화
+
+
 
     protected override void Start()
     {
@@ -11,9 +22,13 @@ public class BossMonster : MonsterController
         startPos = transform.position; // 시작 위치 초기화
     }
 
+
     //행동 프로세스
     public override void BehaviourProcess()
     {
+        // 페이즈에 따른 전환 확인
+        CheckPhaseTransition();
+
         switch (m_state)
         {
             //Idle 상태
@@ -61,7 +76,7 @@ public class BossMonster : MonsterController
 
             //추적 상태
             case BehaviourState.Chase:
-             
+
                 // 플레이어 위치로 추적
                 m_navAgent.SetDestination(m_player.transform.position);
 
@@ -116,13 +131,77 @@ public class BossMonster : MonsterController
 
             case BehaviourState.Damaged:
                 break;
-
+            // 힘을 모으는 상태 (Gathering)
+            case BehaviourState.Gathering:
+                StartCoroutine(GatheringCoroutine());
+                break;
+            // 스페셜 어택 상태
+            case BehaviourState.SpecialAttack:
+                // 스페셜 어택 실행
+                ExecuteSpecialAttack();
+                break;
             case BehaviourState.Die:
                 HandleDeath();
                 return;
         }
     }
 
+
+    //현재 페이즈
+    private void CheckPhaseTransition()
+    {
+        float healthPercentage = m_curHealPoint / m_stat.MaxHp;
+        if (currentPhase < phaseThresholds.Length && healthPercentage <= phaseThresholds[currentPhase - 1])
+        {
+            SetState(BehaviourState.Gathering);
+            currentPhase++;
+        }
+    }
+
+
+
+    // 힘 모으는 거
+    private IEnumerator GatheringCoroutine()
+    {
+        if (!isGathering)
+        {
+            isGathering = true;
+            m_monAnimCtr.Play(MonsterAnimController.Motion.Gathering);
+            yield return new WaitForSeconds(gatheringDuration);//힘 모으는 시간 대기
+            SetState(BehaviourState.SpecialAttack); // 스페셜 어택 상태로 전환
+            isGathering = false;
+        }
+    }
+
+    private void ExecuteSpecialAttack()
+    {
+        // 스페셜 어택 쿨다운이 지났을 경우
+        if (Time.time - lastSpecialAttackTime >= specialAttackCooldown)
+        {
+            // 스페셜 어택 애니메이션 재생
+            m_monAnimCtr.Play(MonsterAnimController.Motion.SpAttack);
+            lastSpecialAttackTime = Time.time;  // 마지막 스페셜 어택 시간 갱신
+
+            //이동하면서 공격
+            StartCoroutine(MoveForwardSpecialAttack(specialAttackMoveDistance, specialAttackSpeed));
+        }
+    }
+
+    //이동하면서 스폐셜 공격 코루틴
+    private IEnumerator MoveForwardSpecialAttack(float totalMoveDistance, float moveSpeedPerSecond)
+    {
+        float accumulatedDistance = 0f;  // 누적된 이동 거리
+
+        while (accumulatedDistance < totalMoveDistance)
+        {
+            // 매 프레임 이동할 거리 계산
+            float distanceThisFrame = moveSpeedPerSecond * Time.deltaTime;
+            transform.Translate(Vector3.forward * distanceThisFrame);  // 앞으로 이동
+            accumulatedDistance += distanceThisFrame;  // 누적 이동 거리 업데이트
+
+            yield return null;
+        }
+    }
 
 
     // 랜덤 이동 시작
@@ -168,7 +247,7 @@ public class BossMonster : MonsterController
         m_idleTime = 0;  // Idle 시간 초기화
         m_idleDuration = duration;  // 새로운 Idle 대기 시간 설정
     }
-    
-   
+
+
 
 }
