@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.EventSystems;
@@ -18,7 +19,10 @@ public class Picking : MonoBehaviour
     public Player m_player;
     IUsingSkill m_skillUsed;
     GameObject m_clickEffectObj;
-    Dictionary<string, GameObject> m_effectDic = new Dictionary<string, GameObject>();
+    public Dictionary<string, GameObject> m_effectDic = new Dictionary<string, GameObject>();
+    public Dictionary<GameObject, GameObject> m_clickEffectDic = new Dictionary<GameObject, GameObject>();
+    List<GameObject> m_effectList = new List<GameObject>();
+    int m_effectCount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -36,21 +40,45 @@ public class Picking : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask | m_enemyMask))
                 {
-                    m_clickEffectObj = ObjectPool.Inst.Pull<GameObject>(m_clickEffect);
+                    m_clickEffectObj = ObjectPool.Inst.Pull<ClickEffectPool>(m_clickEffect);
+                    if (m_effectList.Contains(m_clickEffectObj))
+                    {
+                        IPushObject ipo = m_effectList[0].gameObject.GetComponent<IPushObject>();
+                        if (ipo != null)
+                        {
+                            ipo.PushObject();
+                        }
+                        m_effectList.Remove(m_effectList[0]);
+                    }
+                    m_effectList.Add(m_clickEffectObj);
+                    Debug.Log(m_effectList.Count);
+                    //if (m_effectDic.ContainsKey(m_clickEffect.name))
+                    //{
+                    //    ObjectPool.Inst.Push<ClickEffectPool>(m_effectDic[m_clickEffect.name]);
+                    //    m_effectDic.Remove(m_clickEffect.name);
+                    //}
+                    //m_effectDic.Add(m_clickEffect.name, m_clickEffectObj);
+                    //ISetClickEffect isce = gameObject.GetComponent<ISetClickEffect>();
+                    //if (isce != null)
+                    //{
+                    //    //isce.SetClickEffect(m_effectDic[m_clickEffect.name]);
+                    //    isce.SetClickEffect(m_clickEffectObj);
+                    //}
 
-                    if (m_effectDic.ContainsKey(m_clickEffect.name))
-                    {
-                        ObjectPool.Inst.Push<GameObject>(m_effectDic[m_clickEffect.name]);
-                        m_effectDic.Remove(m_clickEffect.name);
-                    }
-                    m_effectDic.Add(m_clickEffect.name, m_clickEffectObj);
-                    ISetClickEffect isce = gameObject.GetComponent<ISetClickEffect>();
-                    if (isce != null)
-                    {
-                        isce.SetClickEffect(m_effectDic[m_clickEffect.name]);
-                    }
-                    m_clickEffectObj.transform.position = hit.point;
-                    m_moveAct?.Invoke(hit.point, m_effectDic[m_clickEffect.name]);
+                    //if (m_effectDic.ContainsKey(m_clickEffect.name))
+                    //{
+                    //    IPushObject ipo = m_clickEffectObj.GetComponent<IPushObject>();
+                    //    if (ipo != null)
+                    //    {
+                    //        ipo.PushObject();
+                    //    }
+                    //    m_effectDic.Remove(m_clickEffect.name);
+                    //}
+                    //m_effectDic.Add(m_clickEffect.name, m_clickEffectObj);
+
+                    m_effectList[0].transform.position = hit.point;
+                    //m_moveAct?.Invoke(hit.point, m_effectDic[m_clickEffect.name]);
+                    m_moveAct?.Invoke(hit.point, m_effectList[0]);
                 }
             }
             if (Input.GetMouseButtonDown(1) && !m_anim.GetBool("IsAttacking") && !m_skillUsed.UsingSkill())
@@ -107,7 +135,14 @@ public class Picking : MonoBehaviour
 
     public void SetOffClickEffect()
     {
-        ObjectPool.Inst.Push<GameObject>(m_effectDic[m_clickEffect.name]);
-        m_effectDic.Remove(m_clickEffect.name);
+        ObjectPool.Inst.Push<GameObject>(m_clickEffectObj);
+        //ObjectPool.Inst.Push<GameObject>(m_effectDic[m_clickEffect.name]);
+        //m_effectDic.Remove(m_clickEffect.name);
+    }
+
+    IEnumerator PushEffect(GameObject obj)
+    {
+        yield return new WaitForSeconds(1.0f);
+        ObjectPool.Inst.Push<GameObject>(obj);
     }
 }

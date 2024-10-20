@@ -28,6 +28,8 @@ public class Player : BattleSystem, ISetClickEffect
     Transform weaponPoint;
     [SerializeField]
     GameObject obj;
+    [SerializeField]
+    GameObject m_atkParticle;
 
     public UnityEvent m_camShake;
     public GameObject m_hitEffect;
@@ -131,6 +133,7 @@ public class Player : BattleSystem, ISetClickEffect
 
     public override void SetDamage(SkillData damage)
     {
+        SoundManager.Inst.PlaySfx("Hit_Sound");
         m_camShake?.Invoke();
         //Debug.Log($"플레이어가 {damage}의 데미지를 받았습니다.");  // 데미지 로그
         m_curHealPoint -= damage.Dmg;  // 현재 체력에서 데미지를 뺌
@@ -202,6 +205,21 @@ public class Player : BattleSystem, ISetClickEffect
         }
     }
 
+    public void AttackEffectOn()
+    {
+        SoundManager.Inst.PlaySfx("ATTACK1");
+        ParticleSystem ps = m_atkParticle.GetComponentInChildren<ParticleSystem>();
+        m_atkParticle.SetActive(true);
+        ps.Play();
+    }
+
+    public void AttackEffectOff()
+    {
+        ParticleSystem ps = m_atkParticle.GetComponentInChildren<ParticleSystem>();
+        ps.Stop();
+        m_atkParticle.SetActive(false);
+    }
+
     public override IEnumerator Moving(Vector3 target, GameObject obj)
     {
         Vector3 dir = target - transform.position;
@@ -219,7 +237,11 @@ public class Player : BattleSystem, ISetClickEffect
             dist -= delta;
             yield return null;
         }
-        ObjectPool.Inst.Push<GameObject>(obj);
+        IPushObject ipo = obj.GetComponent<IPushObject>();
+        if (ipo != null)
+        {
+            ipo.PushObject();
+        }
         m_myAnim.SetBool("Move", false);
         
     }

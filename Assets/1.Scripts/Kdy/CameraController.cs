@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 
@@ -12,7 +13,8 @@ public class CameraController : MonoBehaviour
     public GameObject m_player;
     public LayerMask m_wallMask;
 
-    public MeshRenderer[] m_mr;
+    //public MeshRenderer[] m_mr;
+    public List<MeshRenderer> m_mr = new List<MeshRenderer>();
     Color m_initColor;
 
     // Start is called before the first frame update
@@ -22,10 +24,6 @@ public class CameraController : MonoBehaviour
         SoundManager.Inst.PlayBgm("BGM");
     }
 
-    private void OnDrawGizmo()
-    {
-        Gizmos.DrawLine(transform.forward, m_player.transform.position);
-    }
 
     // Update is called once per frame
     void Update()
@@ -35,44 +33,37 @@ public class CameraController : MonoBehaviour
         Vector3 dir = m_player.transform.position - transform.position;
         dir.Normalize();
         Ray ray = Camera.main.ScreenPointToRay(dir);
-
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_wallMask))
         {
-            m_mr = hit.transform.GetComponentsInChildren<MeshRenderer>();
-            for (int i = 0; i < m_mr.Length; i++)
+            if (!m_mr.Contains(hit.transform.GetComponentInChildren<MeshRenderer>()))
             {
-                for (int j = 0; j < m_mr[i].materials.Length; j++)
+                for (int i = 0; i < m_mr.Count; i++)
+                {
+                    m_mr[i].enabled = true;
+                    m_mr.Remove(m_mr[i]);
+                }
+                m_mr.Add(hit.transform.GetComponentInChildren<MeshRenderer>());
+                for (int i = 0; i < m_mr.Count; i++)
                 {
                     m_mr[i].enabled = false;
-                    //Color color = m_mr[i].materials[j].color;
-                    //m_initColor.a = color.a;
-                    //color.a -= Time.deltaTime;
-                    //m_mr[i].materials[j].color = color;
                 }
             }
         }
         else
         {
-            for (int i = 0; i < m_mr.Length; i++)
+            for (int i = 0; i < m_mr.Count; i++)
             {
-                for (int j = 0; j < m_mr[i].materials.Length; j++)
-                {
-                    //Color color = m_mr[i].materials[j].color;
-
-                    //if (255.0f > color.a)
-                    //{
-                    //    color.a += Time.deltaTime;
-                    //}
-                    //else
-                    //{
-                    //    color.a = 255.0f;
-                    //}
-                    //m_mr[i].materials[j].color = color;
-                    m_mr[i].enabled = true;
-                }
+                m_mr[i].enabled = true;
+                m_mr.Remove(m_mr[i]);
             }
         }
     }
+
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawLine(transform.position, m_player.transform.position);
+    //    Gizmos.color = Color.yellow;
+    //}
 
     public void CameraShakeFunc()
     {
@@ -91,38 +82,5 @@ public class CameraController : MonoBehaviour
             yield return null;
         }
         transform.position = initPos;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.layer == m_wallMask)
-        {
-            m_mr = collision.transform.GetComponentsInChildren<MeshRenderer>();
-            for (int i = 0; i < m_mr.Length; i++)
-            {
-                for (int j = 0; j < m_mr[i].materials.Length; j++)
-                {
-                    m_mr[i].enabled = false;
-                    //Color color = m_mr[i].materials[j].color;
-                    //m_initColor.a = color.a;
-                    //color.a -= Time.deltaTime;
-                    //m_mr[i].materials[j].color = color;
-                }
-            }
-        }
-    }
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.layer == m_wallMask)
-        {
-            m_mr = collision.transform.GetComponentsInChildren<MeshRenderer>();
-            for (int i = 0; i < m_mr.Length; i++)
-            {
-                for (int j = 0; j < m_mr[i].materials.Length; j++)
-                {
-                    m_mr[i].enabled = true;
-                }
-            }
-        }
     }
 }
