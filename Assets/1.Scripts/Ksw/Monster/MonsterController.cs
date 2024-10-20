@@ -13,6 +13,8 @@ public class MonsterController : BattleSystem
         Chase,
         Patrol,
         Damaged,
+        Gathering,
+        SpecialAttack,
         Die,
         Max
     }
@@ -110,7 +112,7 @@ public class MonsterController : BattleSystem
 
     void AnimEvent_Attack()
     {
-        //Attack();
+        Attack();
     }
     void AnimEvent_AttackFinished()
     {
@@ -120,6 +122,12 @@ public class MonsterController : BattleSystem
     {
         SetIdle(1f);
     }
+    void AnimEvent_SpecialAttackFinished()
+    {
+        // 스페셜 어택이 끝났으므로 Idle 상태로 전환
+        SetIdle(1f);
+    }
+
     #endregion
     #region Mon Effect Methods
 
@@ -174,6 +182,7 @@ public class MonsterController : BattleSystem
         }
 
     }
+    
     void OnDrawGizmos() // Gizmos를 사용해 OverlapBox 범위를 시각적으로 확인
     {
         // 몬스터가 죽었을 때는 Gizmo를 그리지 않음
@@ -192,7 +201,7 @@ public class MonsterController : BattleSystem
         Gizmos.DrawWireSphere(transform.position, m_chaseDist);
 
     }
-
+    
     #endregion
     #region SetMethods
     protected void SetState(BehaviourState state)
@@ -349,7 +358,8 @@ public class MonsterController : BattleSystem
     {
         if (IsDie) return;
         if (m_state == BehaviourState.Damaged) return;
-
+        if (m_state == BehaviourState.Gathering) return; // Gathering 상태에서는 데미지를 받지 않음
+        if (m_state == BehaviourState.SpecialAttack) return;//Special 상태에서도 데미지를 받지 않음
         // 피 흘리는 이펙트 소환
         SpawnBleedEffect(transform.position);
 
