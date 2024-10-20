@@ -184,7 +184,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
             m_isSoundPlay = false;
-            //SoundManager.Inst.m_sfxAudioSource.loop = false;
+            //SoundManager.Inst.StopSfxSound("WarPath_Sound_Playing");
             m_warpathEffect.SetActive(false);
             m_myAnim.SetBool("SkillWarPath", false);
             m_warPathUse = false;
