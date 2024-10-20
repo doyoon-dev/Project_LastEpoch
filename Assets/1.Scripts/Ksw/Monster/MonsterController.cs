@@ -363,6 +363,9 @@ public class MonsterController : BattleSystem
         // 피 흘리는 이펙트 소환
         SpawnBleedEffect(transform.position);
 
+        // 맞는 사운드
+        SoundManager.Inst.PlaySfx("Hit_Sound");
+
         // 데미지 값 확인
         float damage = skillData.Dmg;
 
