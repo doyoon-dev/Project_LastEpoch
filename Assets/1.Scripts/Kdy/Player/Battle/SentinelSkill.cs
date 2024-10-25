@@ -259,6 +259,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
             {
                 m_lungeEffect.SetActive(true);
                 m_usingSkill = true;
+                SoundManager.Inst.PlaySfx("Lunge_Sound");
                 UsingSkillMp(SkillDataManager.m_skillDataDic["Lunge"].Mp);
                 
                 IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();

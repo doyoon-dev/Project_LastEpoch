@@ -18,11 +18,8 @@ public class Picking : MonoBehaviour
     public Animator m_anim;
     public Player m_player;
     IUsingSkill m_skillUsed;
-    GameObject m_clickEffectObj;
     public Dictionary<string, GameObject> m_effectDic = new Dictionary<string, GameObject>();
     public Dictionary<GameObject, GameObject> m_clickEffectDic = new Dictionary<GameObject, GameObject>();
-    List<GameObject> m_effectList = new List<GameObject>();
-    int m_effectCount = 0;
 
     // Start is called before the first frame update
     void Start()
