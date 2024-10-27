@@ -132,7 +132,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         if(m_target != null) m_target.SetDamage(SkillDataManager.m_skillDataDic["Normal"]);
     }
 
-    public void AttackAnim()
+    public virtual void AttackAnim()
     {
         m_myAnim.SetBool("Attack", true);
     }

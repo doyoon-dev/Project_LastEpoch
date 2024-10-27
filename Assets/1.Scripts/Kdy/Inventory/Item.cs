@@ -232,6 +232,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     // 장비 장착했을 때 아이템 위치 설정
     void SetEquip()
     {
+        SoundManager.Inst.PlaySfx("GetItem");
         IEquipItemStatUI iss = m_equipSlot.m_playerStatUI.GetComponent<IEquipItemStatUI>();
         if (iss != null)
         {

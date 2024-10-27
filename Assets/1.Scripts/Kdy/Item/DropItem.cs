@@ -107,6 +107,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
                     IGetItemData igd = inven.GetComponent<IGetItemData>();
                     if (igd != null)
                     {
+                        SoundManager.Inst.PlaySfx("GetItem");
                         igd.SetItemToInventory(m_itemImagePrefab);
                     }
                     ObjectPool.Inst.Push<GameObject>(nameUI);
