@@ -37,16 +37,22 @@ public class Picking : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_moveMask | m_enemyMask))
                 {
-                    //m_clickEffectObj = ObjectPool.Inst.Pull<ClickEffectPool>(m_clickEffect);
                     GameObject obj = ObjectPool.Inst.Pull<ClickEffectPool>(m_clickEffect);
                     string name = typeof(ClickEffectPool).Name;
                     SetClickEffectOff(name);
                     m_effectDic.Add(name, obj);
                     m_player.m_clickEffectPush += SetClickEffectOff;
-
-                    m_effectDic[name].transform.position = hit.point;
-                    //m_moveAct?.Invoke(hit.point, m_effectDic[m_clickEffect.name]);
-                    m_moveAct?.Invoke(hit.point, m_effectDic[name]);
+                    if (((1 << hit.transform.gameObject.layer & m_moveMask) != 0))
+                    {
+                        m_effectDic[name].transform.position = hit.point;
+                        m_moveAct?.Invoke(hit.point, m_effectDic[name]);
+                    }
+                    else
+                    {
+                        SetClickEffectOff(name);
+                        m_moveAct?.Invoke(hit.point, null);
+                    }
+                    
                 }
             }
             if (Input.GetMouseButtonDown(1) && !m_anim.GetBool("IsAttacking") && !m_skillUsed.UsingSkill())
