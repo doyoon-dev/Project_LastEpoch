@@ -47,8 +47,9 @@ public class MonsterController : BattleSystem
     [SerializeField]
     public GameObject bleedEffectPrefab; // 피흘리는 이펙트 프리팹
 
-    public GameObject bloodSpletterPrefab;
-
+    [Header("핏자국 이펙트 프리팹")]
+    [SerializeField]
+    public GameObject bloodSplatterPrefab;
 
     protected Player m_player;   
     protected NavMeshAgent m_navAgent;
@@ -71,7 +72,10 @@ public class MonsterController : BattleSystem
     public HeadHealthBar headHealthBar; // 머리 위 체력바 참조
     public string monsterName;
     public bool m_isPatrol; //patrol 여부확인
-    public bool IsDie { get { return m_state == BehaviourState.Die; } } // Die 여부확인
+    public bool isLookingAtPlayer = false;
+
+    //public bool IsDie { get { return m_state == BehaviourState.Die; } } // Die 여부확인
+    public bool IsDie = false;
     protected Coroutine hideHealthBarCoroutine;
 
     #region Blank Methods
@@ -114,19 +118,34 @@ public class MonsterController : BattleSystem
     {
         Attack();
     }
+
+    void AnimEvent_Attack2()
+    {
+        Attack2();
+    }
+
     void AnimEvent_AttackFinished()
     {
         SetIdle(1f);
     }
+
+
     void AnimEvent_HitFinished()
     {
         SetIdle(1f);
     }
+    /*
+    void AnimEvent_SpecialAttack()
+    {
+        SpecialAttack();
+    }
+  
     void AnimEvent_SpecialAttackFinished()
     {
         // 스페셜 어택이 끝났으므로 Idle 상태로 전환
         SetIdle(1f);
     }
+     */
 
     #endregion
     #region Mon Effect Methods
@@ -182,7 +201,7 @@ public class MonsterController : BattleSystem
         }
 
     }
-    
+
     void OnDrawGizmos() // Gizmos를 사용해 OverlapBox 범위를 시각적으로 확인
     {
         // 몬스터가 죽었을 때는 Gizmo를 그리지 않음
@@ -204,7 +223,7 @@ public class MonsterController : BattleSystem
     
     #endregion
     #region SetMethods
-    protected void SetState(BehaviourState state)
+    protected virtual void SetState(BehaviourState state)
     {
         m_state = state;
     }
@@ -234,53 +253,10 @@ public class MonsterController : BattleSystem
     }
     #endregion
 
- 
+
     #region Mon Attack Methods
-   
-    public bool CanAttack()
-    {
-        // 타겟과의 거리 계산 및 공격 범위 확인
-        var dist = transform.position - m_player.transform.position;
 
-        // 항상 플레이어를 바라보도록 설정 (거리와 상관없이)
-        StartCoroutine(LookAtPlayer());
-
-        // 보스 몬스터일 경우 시야각을 적용
-        if (this is BossMonster)
-        {
-            Vector3 directionToPlayer = (m_player.transform.position - transform.position).normalized;
-            float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
-            float maxViewAngle = 90f;
-
-            // 공격 범위 안에 있고, 시야각 내에 있을 때만 공격 가능
-            if (dist.sqrMagnitude < Mathf.Pow(m_attackDist, 2f) && angleToPlayer <= maxViewAngle)
-            {
-                return true;
-            }
-        }
-        // 일반 몬스터는 시야각을 적용하지 않음
-        else
-        {
-            // 공격 범위 안에 있을 때만 공격 가능
-            if (dist.sqrMagnitude < Mathf.Pow(m_attackDist, 2f))
-            {
-                // 몬스터와 플레이어 사이의 방향을 계산
-                Vector3 directionToPlayer = (m_player.transform.position - transform.position).normalized;
-                float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
-
-                // 플레이어가 몬스터의 정면(예: 60도 이내)에 있을 때만 공격 가능
-                float maxViewAngle = 60f;
-                if (angleToPlayer <= maxViewAngle)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
-    // OverlapBox를 사용한 공격 범위 내 적 감지 및 데미지 입히기
+    // 플레이어한테 공격
     public override void Attack()
     {
         Collider[] playersInRange = Physics.OverlapSphere(AttackArea.transform.position, m_attackDist, m_playerMask);
@@ -295,7 +271,52 @@ public class MonsterController : BattleSystem
             }
         }
     }
-    
+    public void Attack2()
+    {
+        Collider[] playersInRange = Physics.OverlapSphere(AttackArea.transform.position, m_attackDist, m_playerMask);
+
+        foreach (Collider player in playersInRange)
+        {
+            Player targetPlayer = player.GetComponent<Player>();
+            if (targetPlayer != null)
+            {
+                targetPlayer.SetDamage(SkillDataManager.m_skillDataDic["MonsterDmg2"]); // 플레이어에게 데미지 입힘
+
+            }
+        }
+    }
+
+    //공격 가능여부
+    protected virtual bool CanAttack()
+    {
+        
+        var dist = transform.position - m_player.transform.position;
+
+        // 항상 플레이어를 바라보도록 설정 (거리와 상관없이)
+        StartCoroutine(LookAtPlayer());
+
+
+        // 공격 범위 안에 있을 때만 공격 가능
+        if (dist.sqrMagnitude < Mathf.Pow(m_attackDist, 2f))
+        {
+            // 몬스터와 플레이어 사이의 방향을 계산
+            Vector3 directionToPlayer = (m_player.transform.position - transform.position).normalized;
+            float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
+
+            // 플레이어가 몬스터의 정면(예: 60도 이내)에 있을 때만 공격 가능
+            float maxViewAngle = 60f;
+            if (angleToPlayer <= maxViewAngle)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+ 
+
+
     // 몬스터 차례대로 공격 모션
     protected void MonAttackCombo()
     {
@@ -357,26 +378,22 @@ public class MonsterController : BattleSystem
     public override void SetDamage(SkillData skillData)
     {
         if (IsDie) return;
-        if (m_state == BehaviourState.Damaged) return;
-        if (m_state == BehaviourState.Gathering) return; // Gathering 상태에서는 데미지를 받지 않음
-        if (m_state == BehaviourState.SpecialAttack) return;//Special 상태에서도 데미지를 받지 않음
+        if (m_state == BehaviourState.Gathering || m_state == BehaviourState.SpecialAttack || m_state == BehaviourState.Damaged) return;
+
         // 피 흘리는 이펙트 소환
         SpawnBleedEffect(transform.position);
 
         // 맞는 사운드
         SoundManager.Inst.PlaySfx("Hit_Sound");
 
-        // 데미지 값 확인
-        float damage = skillData.Dmg;
-
         // 체력 감소 처리
-        m_curHealPoint -= damage;
+        m_curHealPoint -= skillData.Dmg;
 
         // MonsterManager에게 현재 공격받고 있는 몬스터를 설정
         MonsterManager.Instance.SetCurrentTargetMonster(this);
 
         // 몬스터는 흰색 데미지 텍스트 표시
-        ShowDamageText(damage, Color.white);  // 색상으로 흰색 전달
+        ShowDamageText(skillData.Dmg, Color.white);  // 색상으로 흰색 전달
 
         // **머리 위 체력바가 있을 경우 업데이트**
         if (headHealthBar != null)
@@ -398,18 +415,9 @@ public class MonsterController : BattleSystem
         }
         // 데미지 받음 몬스터를 안 죽였을 떄 n초 후 체력바를 비활성화하는 코루틴 실행
         hideHealthBarCoroutine = StartCoroutine(HideHealthBarAfterDelay(3f));
-
-        if (m_curHealPoint <= 0)
-        {
-            m_curHealPoint = 0;
-            HandleDeath();  // 체력이 0이 되면 사망 처리                                         
-            return;
-        }
-
         // 보스 몬스터는 Hit 모션 시간을 짧게 설정
         if (this is BossMonster)
         {
-
             SetHitColor(0.2f);  // 보스가 0.2초간 흰색으로 변함
         }
         else
@@ -424,19 +432,27 @@ public class MonsterController : BattleSystem
             ApplyKnockback(skillData);
             StartCoroutine(ResumeMovementAfterDamage());
         }
+        if (m_curHealPoint <= 0)
+        {
+            m_curHealPoint = 0;
+            SetState(BehaviourState.Die);
+            return;
+        }
+
+
     }
     #endregion
     #region Mon Find Methods
 
     // 플레이어 방향으로 고개 돌리기 메서드
-    protected IEnumerator LookAtPlayer()
+    protected virtual IEnumerator LookAtPlayer()
     {
         if (m_player == null) yield break;
 
         Vector3 direction = (m_player.transform.position - transform.position).normalized;
         direction.y = 0f; // 수평면에서만 회전하도록 Y축을 0으로 설정
 
-        float rotationSpeed = 1.0f; // 회전 속도
+        float rotationSpeed = 10f; // 회전 속도
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
@@ -450,6 +466,11 @@ public class MonsterController : BattleSystem
         transform.rotation = targetRotation;  // 최종적으로 완전히 회전시킴
 
     }
+
+
+  
+
+
 
     protected bool FindTarget()
     {
@@ -468,7 +489,6 @@ public class MonsterController : BattleSystem
             if (targetPlayer != null)
             {
                 detectedPlayer = player.gameObject; // 감지된 플레이어 저장
-                //StartCoroutine(LookAtPlayer());// 타겟을 찾으면 플레이어 쪽으로 고개 돌리기
                 return true; // 타겟을 찾았으면 true 반환
             }
         }
@@ -535,6 +555,7 @@ public class MonsterController : BattleSystem
         {
             Debug.LogWarning("DamageUIPrefab is not assigned during initialization.");
         }
+        
     }
 
     // 피 흘리는 이펙트
@@ -551,7 +572,7 @@ public class MonsterController : BattleSystem
         bleedEffect.transform.position = position;
 
         // 일정 시간이 지나면 피 이펙트를 다시 풀로 반환
-        StartCoroutine(ReturnBleedEffectToPool(bleedEffect, 2.0f)); // 2초 뒤 반환
+        StartCoroutine(ReturnBleedEffectToPool(bleedEffect, 1.8f)); 
     }
     // 피 이펙트를 다시 풀로 반환하는 코루틴
     public IEnumerator ReturnBleedEffectToPool(GameObject bleedEffect, float delay)
@@ -563,17 +584,16 @@ public class MonsterController : BattleSystem
     // 핏자국 이펙트
     public void SpawnBloodSplatter(Vector3 position)
     {
-        GameObject bloodSpletter = ObjectPool.Inst.Pull<GameObject>(bloodSpletterPrefab);
-        bloodSpletter.transform.position = position;
-
-        StartCoroutine(ReturnBloodSplatter(bloodSpletter, 5.0f));
+        GameObject bloodSplatter = ObjectPool.Inst.Pull<GameObject>(bloodSplatterPrefab);
+        bloodSplatter.transform.position = position;
+        StartCoroutine(ReturnBloodSplatter(bloodSplatter, 4.0f));//시간
     }
     // 핏 자국을 다시 풀로 반환하는 코루틴 
-    public IEnumerator ReturnBloodSplatter(GameObject bloodSpletter, float delay)
+    public IEnumerator ReturnBloodSplatter(GameObject bloodSplatter, float delay)
     {
         yield return new WaitForSeconds(delay);
-        ObjectPool.Inst.Push<GameObject>(bloodSpletter);
-
+        ObjectPool.Inst.Push<GameObject>(bloodSplatter);
+      
     }
 
     // 일정 시간이 지나면 체력바를 숨기는 코루틴(몬스터를 떄리고 있다가 몇초 뒤 꺼지게 만들려고)
@@ -608,31 +628,32 @@ public class MonsterController : BattleSystem
         }
     }
 
-
-
-    protected virtual void HandleDeath()//죽음 상태 처리
+    public void DisableColiders()
     {
-        
-        if (IsDie) return;// 이미 죽은 상태에서 다시 처리하지 않도록 함
-        m_manager.HandleMonsterDeath(transform.position);// 매니저에게 몬스터가 죽었다고 알림
-        m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // 사망 애니메이션 재생
-        StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과                                                 
-        m_navAgent.isStopped = true;  // 네비게이션 에이전트 중지
         // Collider 비활성화 (필요한 Collider를 전부 비활성화)
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (Collider col in colliders)
         {
             col.enabled = false;
         }
-        m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정                                                                                       
-        SetState(BehaviourState.Die);
-        ShutDownHealthBars();
-        // 공격 범위 비활성화 (박스가 보이지 않도록 설정)
-        AttackArea.SetActive(false);
-        SpawnBloodSplatter(transform.position);
     }
 
-    
+    protected virtual void HandleDeath()//죽음 상태 처리
+    {
+        if (IsDie) return;// 이미 죽은 상태에서 다시 처리하지 않도록 함
+        IsDie = true;
+        StopAllCoroutines();// 모든 코루틴 중지
+        m_manager.HandleMonsterDeath(transform.position);// 매니저에게 몬스터가 죽었다고 알림
+        m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // 사망 애니메이션 재생
+        StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과                                                 
+        m_navAgent.isStopped = true;  // 네비게이션 에이전트 중지
+        DisableColiders();
+        m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정                                                                                       
+        ShutDownHealthBars();    
+        AttackArea.SetActive(false);// 공격 범위 비활성화 (박스가 보이지 않도록 설정)
+        SpawnBloodSplatter(transform.position);  // 핏자국 이펙트는 죽을 때만 생성
+    }
+
 
 
 
@@ -744,7 +765,11 @@ public class MonsterController : BattleSystem
                 break;
             //죽은 상태  
             case BehaviourState.Die:
-                HandleDeath();
+                if (!IsDie) // IsDie가 false인 경우에만 처리
+                {
+                    HandleDeath();               
+                    IsDie = true; // IsDie를 true로 설정하여 다시 호출되지 않도록 방지
+                }
                 break;
 
         }

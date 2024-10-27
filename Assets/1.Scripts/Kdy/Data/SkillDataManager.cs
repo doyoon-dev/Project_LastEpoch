@@ -35,5 +35,7 @@ public class SkillDataManager : MonoBehaviour
         m_skillDataDic.Add(m_skillDatas[2].name, m_skillDatas[2]);
         m_skillDataDic.Add(m_skillDatas[3].name, m_skillDatas[3]);
         m_skillDataDic.Add(m_skillDatas[4].name, m_skillDatas[4]);
+        m_skillDataDic.Add(m_skillDatas[5].name, m_skillDatas[5]);
+        m_skillDataDic.Add(m_skillDatas[6].name, m_skillDatas[6]);
     }
 }

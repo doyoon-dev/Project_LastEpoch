@@ -2657,7 +2657,7 @@ MonoBehaviour:
   boxSize: {x: 1, y: 1, z: 1}
   AttackArea: {fileID: 8255628561778141796}
   bleedEffectPrefab: {fileID: 196484, guid: f8867ff3174b1f14bbc920645899d501, type: 3}
-  bloodSpletterPrefab: {fileID: 100000, guid: c057a66ce62d9b6428cf55e84b4a6a43, type: 3}
+  bloodSplatterPrefab: {fileID: 100000, guid: c057a66ce62d9b6428cf55e84b4a6a43, type: 3}
   m_playerMask:
     serializedVersion: 2
     m_Bits: 512
@@ -2668,6 +2668,7 @@ MonoBehaviour:
   headHealthBar: {fileID: 5276524552572215768}
   monsterName: 
   m_isPatrol: 0
+  isLookingAtPlayer: 0
 --- !u!114 &9075252592327570951
 MonoBehaviour:
   m_ObjectHideFlags: 0
