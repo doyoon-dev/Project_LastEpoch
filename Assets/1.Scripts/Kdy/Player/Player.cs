@@ -139,10 +139,10 @@ public class Player : BattleSystem, ISetClickEffect
         //Debug.Log($"플레이어가 {damage}의 데미지를 받았습니다.");  // 데미지 로그
         m_curHealPoint -= damage.Dmg;  // 현재 체력에서 데미지를 뺌
         // 수정필요
-        GameObject obj = Instantiate(m_hitEffect);
-        obj.transform.position = transform.position;
-        ParticleSystem ps = obj.GetComponentInChildren<ParticleSystem>();
-        ps.Play();
+        //GameObject obj = Instantiate(m_hitEffect);
+        //obj.transform.position = transform.position;
+        //ParticleSystem ps = obj.GetComponentInChildren<ParticleSystem>();
+        //ps.Play();
         ShowDamageText(damage.Dmg, Color.red);
         if (m_curHealPoint <= 0)
         {

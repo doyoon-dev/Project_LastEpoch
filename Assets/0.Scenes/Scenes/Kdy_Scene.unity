@@ -41273,10 +41273,6 @@ PrefabInstance:
       propertyPath: m_masterSlider
       value: 
       objectReference: {fileID: 544593084}
-    - target: {fileID: 8668297321737929104, guid: 9fda461c7019ee84397be7de6e3b69eb, type: 3}
-      propertyPath: m_sfxClips.Array.data[10]
-      value: 
-      objectReference: {fileID: 8300000, guid: e89c7181658a95340ade40f7a965a4e2, type: 3}
     - target: {fileID: 8668297321737929105, guid: 9fda461c7019ee84397be7de6e3b69eb, type: 3}
       propertyPath: m_RootOrder
       value: 11
