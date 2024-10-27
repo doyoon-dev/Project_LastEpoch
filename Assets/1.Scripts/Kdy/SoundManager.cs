@@ -144,8 +144,8 @@ public class SoundManager : MonoBehaviour
         {
             if (m_sfxClips[i].name == name)
             {
-                m_bgmAudioSource.clip = m_sfxClips[i];
-                m_bgmAudioSource.Stop();
+                m_sfxAudioSource.clip = m_sfxClips[i];
+                m_sfxAudioSource.Stop();
             }
         }
     }

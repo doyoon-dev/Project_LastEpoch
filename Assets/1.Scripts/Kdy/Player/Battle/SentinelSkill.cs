@@ -151,9 +151,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         {
             if (!m_isSoundPlay)
             {
-                SoundManager.Inst.PlaySfx("WarPath_Sound_Start");
-                SoundManager.Inst.PlaySfx("WarPath_Sound_Playing");
-                //SoundManager.Inst.m_sfxAudioSource.loop = true;
+                SoundManager.Inst.PlaySfx("WarPath_Playing_Sound");
                 m_isSoundPlay = true;
             }
             if (m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
@@ -184,7 +182,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
             m_isSoundPlay = false;
-            //SoundManager.Inst.StopSfxSound("WarPath_Sound_Playing");
+            SoundManager.Inst.StopSfxSound("WarPath_Playing_Sound");
             m_warpathEffect.SetActive(false);
             m_myAnim.SetBool("SkillWarPath", false);
             m_warPathUse = false;
@@ -261,6 +259,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
             {
                 m_lungeEffect.SetActive(true);
                 m_usingSkill = true;
+                SoundManager.Inst.PlaySfx("Lunge_Sound");
                 UsingSkillMp(SkillDataManager.m_skillDataDic["Lunge"].Mp);
                 
                 IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
