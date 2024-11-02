@@ -2649,6 +2649,7 @@ MonoBehaviour:
   damageUIPrefab: {fileID: 0}
   m_curHp: 60
   m_curMp: 0
+  monsterType: 1
   m_state: 0
   m_detectDist: 2.1
   m_attackDist: 1
@@ -2656,8 +2657,6 @@ MonoBehaviour:
   m_waypointCtr: {fileID: 0}
   boxSize: {x: 1, y: 1, z: 1}
   AttackArea: {fileID: 8255628561778141796}
-  bleedEffectPrefab: {fileID: 196484, guid: f8867ff3174b1f14bbc920645899d501, type: 3}
-  bloodSplatterPrefab: {fileID: 100000, guid: c057a66ce62d9b6428cf55e84b4a6a43, type: 3}
   m_playerMask:
     serializedVersion: 2
     m_Bits: 512
@@ -2669,6 +2668,7 @@ MonoBehaviour:
   monsterName: 
   m_isPatrol: 0
   IsDie: 0
+  isTransitioning: 0
 --- !u!114 &9075252592327570951
 MonoBehaviour:
   m_ObjectHideFlags: 0
