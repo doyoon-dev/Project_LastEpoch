@@ -9153,6 +9153,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8272114240289469282, guid: 9d371ad26e755dc499713e9991c57a1f, type: 3}
+      propertyPath: m_text
+      value: "\uAC10\uC5FC\uB41C \uC880\uBE44"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d371ad26e755dc499713e9991c57a1f, type: 3}
 --- !u!224 &674851636 stripped
@@ -9160,6 +9164,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1963616221558572132, guid: 9d371ad26e755dc499713e9991c57a1f, type: 3}
   m_PrefabInstance: {fileID: 674851635}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &674851637 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5493887996456006765, guid: 9d371ad26e755dc499713e9991c57a1f, type: 3}
+  m_PrefabInstance: {fileID: 674851635}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cebf813487d14645b544b356b1eac6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &686200491
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10615,6 +10630,10 @@ PrefabInstance:
       propertyPath: m_inventory
       value: 
       objectReference: {fileID: 834145223}
+    - target: {fileID: 5244370769833058608, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
+      propertyPath: m_stat.MaxHp
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058608, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_dropItemPrefab
       value: 
@@ -16602,7 +16621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb63ec6e4221fb44a5f7fba98d07275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMonsterCount: 1
+  initialMonsterCount: 0
   spawnInterval: 10
   spawnOffset: 1
   bossMonsterPrefab: {fileID: 2880857684377986955, guid: 71883b8bef406f04096d738eb1d27ef5, type: 3}
@@ -16610,7 +16629,7 @@ MonoBehaviour:
   - {fileID: 8539942111360040700, guid: 0f61ae1b8da7f484198895822f942369, type: 3}
   - {fileID: 8555175228367498427, guid: e6c949088738ba74c9cb60ea63c1f10b, type: 3}
   itemDropManager: {fileID: 251983557}
-  healthBarUI: {fileID: 0}
+  healthBarUI: {fileID: 674851637}
   headHealthBarPrefab: {fileID: 1887587094}
   monsterNames:
   - "\uAC10\uC5FC\uB41C \uAC1C"
@@ -21223,7 +21242,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0

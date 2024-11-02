@@ -6,8 +6,8 @@ using static UnityEngine.GraphicsBuffer;
 
 public class DamageUI : MonoBehaviour
 {
-    private float moveSpeed = 2.0f;  // 텍스트가 올라가는 속도
-    private float alphaSpeed = 4.0f; // 알파 값이 서서히 줄어드는 속도
+    private float moveSpeed = 1.0f;  // 텍스트가 올라가는 속도
+    private float alphaSpeed = 3.0f; // 알파 값이 서서히 줄어드는 속도
     public LayerMask m_playerMask;
     public TextMeshProUGUI damageText;
     private Color alpha;
@@ -35,13 +35,29 @@ public class DamageUI : MonoBehaviour
     {
         damagePosition = pos;
     }
+    private void OnEnable()
+    {
+        ResetState(Color.white);
+    }
 
+    public void ResetState(Color defaultColor)
+    {
+        // 알파 값 및 위치 초기화
+        alpha = defaultColor;
+        alpha.a = 1f; // 알파를 초기화
+        damageText.color = alpha;
+
+        // 위치 초기화
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = Vector2.zero; // 필요 시 기본 위치로 초기화
+    }
     void Update()
     {
         if (damagePosition != null)
         {
             // 월드 좌표를 스크린 좌표로 변환
             Vector3 screenPosition = Camera.main.WorldToScreenPoint(damagePosition.position);
+            screenPosition.y += moveSpeed * Time.deltaTime * 100; // 이동 속도를 조정하여 부드럽게 올라가도록 설정
 
             // RectTransform을 통해 스크린 좌표 위치로 변환된 값을 반영
             RectTransform rect = GetComponent<RectTransform>();
@@ -53,7 +69,7 @@ public class DamageUI : MonoBehaviour
         rectTransform.anchoredPosition += new Vector2(0, moveSpeed * Time.deltaTime);
 
         // 텍스트 알파값이 서서히 줄어듦
-        alpha.a = Mathf.Lerp(alpha.a, 0, Time.deltaTime * alphaSpeed);
+        alpha.a = Mathf.Lerp(alpha.a, 0, Time.deltaTime * (alphaSpeed)); 
         damageText.color = alpha;  // 텍스트의 색상에 반영
     }
 
