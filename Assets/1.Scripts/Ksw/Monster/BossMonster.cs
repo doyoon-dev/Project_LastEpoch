@@ -217,9 +217,7 @@ public class BossMonster : MonsterController
         isGathering = true;
         isForceGathering = true; // 강제 Gathering 상태 활성화
 
-        // 게더링 사운드 재생
-        SoundManager.Inst.PlaySfx("Boss_Gathering");
-
+       
         m_navAgent.enabled = false; // NavMeshAgent 비활성화
         // Gathering 모션 재생
         m_monAnimCtr.Play(MonsterAnimController.Motion.Gathering);
@@ -244,7 +242,7 @@ public class BossMonster : MonsterController
             {
                 Debug.Log("체력이 0이 되어 Gathering 중단 후 죽음 상태로 전환");
                 SetState(BehaviourState.Die);
-                SoundManager.Inst.StopSfxSound("Boss_Gathering"); // 사운드 중지
+              
                 yield break;
             }
             // 강제 Gathering 시간이 종료되면 강제 상태 해제
@@ -265,7 +263,6 @@ public class BossMonster : MonsterController
         SetState(BehaviourState.SpecialAttack);
         isGathering = false;
         isForceGathering = false;  // Gathering과 강제 상태 모두 해제
-        SoundManager.Inst.StopSfxSound("Boss_Gathering"); // 게더링 완료 시 사운드 중지
         ExecuteSpecialAttack();
         
         
