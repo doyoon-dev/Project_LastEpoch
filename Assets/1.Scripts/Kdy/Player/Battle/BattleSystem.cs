@@ -171,23 +171,30 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
 
     public void ShowDamageText(float damage, Color color)
     {
-        if (SceneData.Inst.damageUIPrefab != null && damageTextPosition != null)
+        if (ObjectPool.Inst != null && SceneData.Inst.damageUIPrefab != null && damageTextPosition != null)
         {
+            // ObjectPool에서 damageUIPrefab을 가져와서 사용
+            GameObject damageUIInstance = ObjectPool.Inst.Pull<DamageUI>(SceneData.Inst.damageUIPrefab, SceneData.Inst.canvasTransform);
+
+            // 초기화 후 위치와 데미지 설정
+            DamageUI damageUIScript = damageUIInstance.GetComponent<DamageUI>();
+            damageUIScript.ResetState(color);
             // 월드 좌표에서 스크린 좌표로 변환
             Vector3 screenPosition = Camera.main.WorldToScreenPoint(damageTextPosition.position);
 
             // SceneData에서 가져온 damageUIPrefab을 생성하고 캔버스의 자식으로 설정
-            GameObject damageUIInstance = Instantiate(SceneData.Inst.damageUIPrefab, screenPosition, Quaternion.identity, SceneData.Inst.canvasTransform);
+            damageUIInstance.transform.position = screenPosition;
 
             // damageUIInstance에서 DamageUI 스크립트를 가져와서 데미지 값을 설정
-            DamageUI damageUIScript = damageUIInstance.GetComponent<DamageUI>();
+            //DamageUI damageUIScript = damageUIInstance.GetComponent<DamageUI>();
+
             damageUIScript.DMUISetDamage(damage);
             // 데미지 위치 설정
             damageUIScript.DMUISetPosition(damageTextPosition);
             // 색상 설정
             damageUIScript.SetDamageTextColor(color);
             // 일정 시간 후 오브젝트 풀로 되돌리기 (DamageUI 내에서 ReturnToPoolAfter 사용)
-            damageUIScript.DestroyAfter(3f);
+            damageUIScript.DestroyAfter(5.0f);
         }
         else
         {
