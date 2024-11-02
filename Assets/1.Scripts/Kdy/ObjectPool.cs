@@ -25,6 +25,7 @@ public class ObjectPool : MonoBehaviour
     }
 
     Dictionary<string, Queue<GameObject>> m_myPool = new Dictionary<string, Queue<GameObject>>();
+    Dictionary<string, Transform> m_myExplore = new Dictionary<string, Transform>();
 
     // 오브젝트 풀에서 꺼내기
     public GameObject Pull<T>(GameObject org, Transform parent = null)
@@ -49,17 +50,16 @@ public class ObjectPool : MonoBehaviour
     {
         obj.SetActive(false);
         string name = typeof(T).Name;
-        //int index = obj.name.IndexOf("(Clone)");
-        //if(index > 0)
-        //{
-        //    obj.name = obj.name.Substring(0, index);
-        //}
-        //string name = obj.name;
         
         if (!m_myPool.ContainsKey(name))
         {
             m_myPool[name] = new Queue<GameObject>();
+            GameObject directory = new GameObject(name);
+            m_myExplore[name] = directory.transform;
         }
+
+        obj.transform.SetParent(m_myExplore[name]);
+
         m_myPool[name].Enqueue(obj);
     }
 }
