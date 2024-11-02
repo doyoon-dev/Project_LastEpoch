@@ -30,7 +30,6 @@ public class ObjectPool : MonoBehaviour
     public GameObject Pull<T>(GameObject org, Transform parent = null)
     {
         string name = typeof(T).Name;
-        //string name = org.name;
         if (m_myPool.ContainsKey(name))
         {
             if (m_myPool[name].Count > 0)
