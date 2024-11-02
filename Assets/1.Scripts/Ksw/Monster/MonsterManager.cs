@@ -35,7 +35,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
 
     [Header("머리 위 체력바 프리팹")]
     [SerializeField]
-    private GameObject headHealthBarPrefab; 
+    private GameObject headHealthBarPrefab;
 
     [Header("몬스터 이름 목록")]
     [SerializeField]
@@ -56,7 +56,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     public WaypointController waypointController;
     private Vector3 lastSpawnPosition = Vector3.zero; // 마지막 소환 위치 저장
     private MonsterController currentTargetMonster;  // 현재 공격받고 있는 몬스터
-   
+
     void Start()
     {
 
@@ -105,7 +105,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
             monsterController.monsterName = "Unknown Monster";
         }
 
-       
+
 
         // 몬스터 초기화
         monsterController.Initialize(this, waypointController, healthBarUI, damageUIPrefab);  // 매니저를 초기화 시 전달
@@ -149,7 +149,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         // 웨이포인트에 몬스터 배치
         monster.transform.position = spawnPosition;
 
-      
+
 
         // 마지막 소환 위치 업데이트
         lastSpawnPosition = spawnPosition;
@@ -169,6 +169,9 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
 
         // **소환 이펙트 생성**
         GameObject summonEffect = Instantiate(summonEffectPrefab, bossSpawnPosition, Quaternion.identity);
+
+        //보스 몬스터 스폰 사운드
+        SoundManager.Inst.PlaySfx("Boss_Spawn");
 
         // 일정 시간 대기 (예: 3초 대기)
         yield return new WaitForSeconds(0.5f);
@@ -196,7 +199,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         boss.transform.position = bossSpawnPosition;
     }
 
-   
+
 
 
     #endregion
@@ -252,7 +255,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
             currentTargetMonster = null;
         }
     }
-  
+
 
     // 몬스터가 죽을 때 호출되는 메서드
     public void HandleMonsterDeath(Vector3 position)
@@ -276,7 +279,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         return 0;
     }
 
-    
+
 
 
     // Update is called once per frame
