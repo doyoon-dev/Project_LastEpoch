@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -23,8 +24,10 @@ public class PlayerUI : MonoBehaviour, IRecoveryMP
     public Player m_player;
     public Image m_hpUI;
     public Image m_mpUI;
-    public Text m_hpText;
-    public Text m_mpText;
+    //public Text m_hpText;
+    //public Text m_mpText;
+    public TextMeshProUGUI m_hpText;
+    public TextMeshProUGUI m_mpText;
     public SkillCoolTime m_skillCoolTime;
     public UsingPotion m_potionFlame;
 
@@ -55,6 +58,9 @@ public class PlayerUI : MonoBehaviour, IRecoveryMP
     // HP MP UI 이미지 2개로 만들어서 "{앞에 그려진 이미지는 한번에 줄어들게} {뒤에 그려진 이미지는 Time.deltaTime 써서 서서히 줄어들게 만들기}"
     void Initialize()
     {
+        //m_hpText.text = m_player.GetComponent<BattleSystem>().m_stat.MaxHp + " / " + m_player.GetComponent<BattleSystem>().m_stat.MaxHp;
+        //m_mpText.text = m_player.GetComponent<BattleSystem>().m_stat.MaxMp + " / " + m_player.GetComponent<BattleSystem>().m_stat.MaxMp;
+
         m_hpText.text = m_player.GetComponent<BattleSystem>().m_stat.MaxHp + " / " + m_player.GetComponent<BattleSystem>().m_stat.MaxHp;
         m_mpText.text = m_player.GetComponent<BattleSystem>().m_stat.MaxMp + " / " + m_player.GetComponent<BattleSystem>().m_stat.MaxMp;
     }
@@ -66,6 +72,7 @@ public class PlayerUI : MonoBehaviour, IRecoveryMP
         if (healCheck)
         {
             RecoveryHp(value);
+            //m_hpText.text = (value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
             m_hpText.text = (value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
         }
         // 체력 감소 UI 함수 실행
@@ -73,6 +80,7 @@ public class PlayerUI : MonoBehaviour, IRecoveryMP
         {
             StopAllCoroutines();
             StartCoroutine(DamagedHealPoint(value));
+            //m_hpText.text = (value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
             m_hpText.text = (value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
         }
     }
@@ -86,6 +94,7 @@ public class PlayerUI : MonoBehaviour, IRecoveryMP
             StopAllCoroutines();
             StartCoroutine(UsingManaPoint(value));
             //m_mpText.text = (value * MaxMpValue).ToString() + " / " + (MaxMpValue).ToString();
+            //m_mpText.text = Mathf.FloorToInt(value * MaxMpValue).ToString() + " / " + (MaxMpValue).ToString();
             m_mpText.text = Mathf.FloorToInt(value * MaxMpValue).ToString() + " / " + (MaxMpValue).ToString();
         }
         // 마나 회복 UI 함수 실행
@@ -166,12 +175,14 @@ public class PlayerUI : MonoBehaviour, IRecoveryMP
         while (!isUsingSkill && m_mpUI.fillAmount < 1)
         {
             m_mpUI.fillAmount += Time.deltaTime * 0.1f;
+            //m_mpText.text = Mathf.FloorToInt(m_mpUI.fillAmount * m_player.m_stat.MaxMp).ToString() + " / " + (m_player.m_stat.MaxMp).ToString();
             m_mpText.text = Mathf.FloorToInt(m_mpUI.fillAmount * m_player.m_stat.MaxMp).ToString() + " / " + (m_player.m_stat.MaxMp).ToString();
             yield return null;
         }
         if (m_mpUI.fillAmount >= 1)
         {
             m_mpUI.fillAmount = 1;
+            //m_mpText.text = Mathf.FloorToInt(m_mpUI.fillAmount * m_player.m_stat.MaxMp).ToString() + " / " + (m_player.m_stat.MaxMp).ToString();
             m_mpText.text = Mathf.FloorToInt(m_mpUI.fillAmount * m_player.m_stat.MaxMp).ToString() + " / " + (m_player.m_stat.MaxMp).ToString();
         }
     }
