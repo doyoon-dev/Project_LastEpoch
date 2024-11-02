@@ -2668,7 +2668,7 @@ MonoBehaviour:
   headHealthBar: {fileID: 5276524552572215768}
   monsterName: 
   m_isPatrol: 0
-  isLookingAtPlayer: 0
+  IsDie: 0
 --- !u!114 &9075252592327570951
 MonoBehaviour:
   m_ObjectHideFlags: 0

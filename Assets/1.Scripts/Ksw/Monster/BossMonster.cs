@@ -4,25 +4,26 @@ using UnityEngine.AI;
 using UnityEngine.Rendering.Universal;
 public class BossMonster : MonsterController
 {
-    [Header("게더링 이펙트 프리팹")]
-    [SerializeField]
-    public GameObject GatheringEffectPrefab; // 피흘리는 이펙트 프리팹
+
+   
     private Vector3 startPos; // 시작 위치 저장
     private bool isGathering = false;
     private float gatheringDuration = 4.0f; // 힘을 모으는 시간  
     private bool isSpecialAttackActive = false;
     private float lastHealthThreshold = 1.0f; // 마지막 체크한 체력 비율
     private bool isForceGathering = false; // 강제 Gathering 상태 플래그
-    private float forceGatheringDuration = 2.0f; // 강제로 Gathering 상태를 유지할 시간
-    private float specialAttackCooldown = 10.0f; // 스페셜 어택 쿨다운
-    private float lastSpecialAttackTime = -10f;  // 마지막 스페셜 어택 시간을 초기화
+    private float forceGatheringDuration = 4.0f; // 강제로 Gathering 상태를 유지할 시간
     private float specialAttackMoveDistance = 7.0f; // 스페셜 어택 시 이동할 거리
     private float specialAttackSpeed = 5.0f; // 스페셜 어택 시 이동 속도
+    public bool isLookingAtPlayer = false;
+  
+
     protected override void Start()
     {
         base.Start();
         startPos = transform.position; // 시작 위치 초기화
-       
+                                       // 인디케이터 기본 설정
+        
     }
 
     //행동 프로세스
@@ -75,13 +76,15 @@ public class BossMonster : MonsterController
                 StartCoroutine(LookAtPlayer()); // 공격 상태에서 플레이어를 바라보도록 호출
                 break;
 
-
             //추적 상태
             case BehaviourState.Chase:
                 
                 StartCoroutine(LookAtPlayer()); // 추적 상태에서도 플레이어를 바라보도록 호출
-                // 플레이어 위치로 추적
-                m_navAgent.SetDestination(m_player.transform.position);
+                                                                                            
+                if (m_navAgent.enabled) // NavMeshAgent가 활성화된 경우에만 SetDestination 호출
+                {
+                    m_navAgent.SetDestination(m_player.transform.position);
+                }
 
                 // 플레이어와의 거리를 계산
                 float distanceToPlayer = Vector3.Distance(m_player.transform.position, transform.position);
@@ -110,13 +113,16 @@ public class BossMonster : MonsterController
                     if (FindTarget()) // 플레이어를 발견하면
                     {
                         m_isPatrol = false;
-                        m_navAgent.ResetPath();
+                        if (m_navAgent.enabled && m_navAgent.isOnNavMesh) // NavMeshAgent가 활성화 상태인지 확인
+                        {
+                            m_navAgent.ResetPath();
+                        }
                         SetIdle(1f);
                     }
                     else
                     {
-                        // NavMeshAgent의 remainingDistance가 stoppingDistance 이하인지 확인
-                        if (m_navAgent.remainingDistance <= m_navAgent.stoppingDistance && !m_navAgent.pathPending)
+                        // NavMeshAgent가 활성화 상태인지 확인
+                        if (m_navAgent.enabled && m_navAgent.isOnNavMesh && m_navAgent.remainingDistance <= m_navAgent.stoppingDistance && !m_navAgent.pathPending)
                         {
                             m_isPatrol = false; // 패트롤 종료 플래그
                             SetIdle(2f); // Idle 상태로 전환하여 잠시 대기
@@ -151,7 +157,7 @@ public class BossMonster : MonsterController
         }
         
     }
-
+  
     // 체력이 30% 감소할 때마다 Gathering 상태로 전환하는 메서드
     private void CheckHealthThreshold()
     {
@@ -164,7 +170,13 @@ public class BossMonster : MonsterController
         if (lastHealthThreshold - currentHealthRatio >= 0.3f)
         {
             lastHealthThreshold = currentHealthRatio; // 현재 체력 비율 저장
-            SetState(BehaviourState.Gathering); // Gathering 상태로 전환
+
+            // 기존 Gather 상태로 들어가 있는 경우는 무시하고, 진행되지 않은 경우만 Gathering 시작
+            if (!isGathering)
+            {
+                SetState(BehaviourState.Gathering); // Gathering 상태로 전환
+                StartCoroutine(GatheringCoroutine()); // Gathering 강제 실행
+            }
         }
     }
 
@@ -204,17 +216,25 @@ public class BossMonster : MonsterController
         isGathering = true;
         isForceGathering = true; // 강제 Gathering 상태 활성화
         Debug.Log("Gathering 시작");
+
         m_navAgent.enabled = false; // NavMeshAgent 비활성화
         // Gathering 모션 재생
         m_monAnimCtr.Play(MonsterAnimController.Motion.Gathering);
+
+        //게더링 이펙트 생성
+        SpawnGatheringEffect(transform.position);
+
+
+       
+
+
         // 플레이어를 바라보는 메서드 호출
         StartCoroutine(LookAtPlayer());
+
 
         float elapsed = 0f; //경과
         while (elapsed < gatheringDuration)
         {
-           
-
             // 체력이 0이 되어 Gathering 중단 후 죽음
             if (m_curHealPoint <= 0)
             {
@@ -227,7 +247,7 @@ public class BossMonster : MonsterController
             {
                 isForceGathering = false;
             }
-
+            
             elapsed += Time.deltaTime;
             yield return null;
         }
@@ -240,7 +260,10 @@ public class BossMonster : MonsterController
         SetState(BehaviourState.SpecialAttack);
         isGathering = false;
         isForceGathering = false;  // Gathering과 강제 상태 모두 해제
+
         ExecuteSpecialAttack();
+        
+        
     }
 
     private void ExecuteSpecialAttack()
@@ -248,17 +271,11 @@ public class BossMonster : MonsterController
         if (isSpecialAttackActive) return;
         isSpecialAttackActive = true;
 
-        // 스페셜 어택 쿨다운이 지났을 경우
-        if (Time.time - lastSpecialAttackTime >= specialAttackCooldown)
-        {
-          
-            // 스페셜 어택 애니메이션 재생
-            m_monAnimCtr.Play(MonsterAnimController.Motion.SpAttack);
-            lastSpecialAttackTime = Time.time;  // 마지막 스페셜 어택 시간 갱신
+        // 스페셜 어택 애니메이션 재생
+        m_monAnimCtr.Play(MonsterAnimController.Motion.SpAttack);
 
-            //이동하면서 공격
-            StartCoroutine(MoveForwardSpecialAttack(specialAttackMoveDistance, specialAttackSpeed));
-        }
+        // 이동하면서 공격
+        StartCoroutine(MoveForwardSpecialAttack(specialAttackMoveDistance, specialAttackSpeed));
     }
 
     // 플레이어가 범위에 들어왔을 때만 데미지 적용
@@ -269,6 +286,9 @@ public class BossMonster : MonsterController
 
         while (accumulatedDistance < totalMoveDistance)
         {
+            // 현재 위치와 이전 위치를 저장하여 벽에 막혔는지 확인
+            Vector3 previousPosition = transform.position;
+
             float distanceThisFrame = moveSpeedPerSecond * Time.deltaTime;
             Vector3 moveDirection = transform.forward * distanceThisFrame;
 
@@ -290,40 +310,35 @@ public class BossMonster : MonsterController
                     }
                 }
             }
+            // 벽에 막혀 이동하지 못할 경우 탈출 조건
+            if (Vector3.Distance(previousPosition, transform.position) < 0.01f)
+            {
+                Debug.Log("벽에 막혀 스페셜 어택 종료");
+                break;
+            }
 
             yield return null;
         }
-
-        SetIdle(1f);
         isSpecialAttackActive = false;
+        SetIdle(0.5f);
+       
     }
 
 
 
-    /*
+
     public void SpawnGatheringEffect(Vector3 position)
     {
         if (m_state != BehaviourState.Gathering) return;  // Gathering 상태가 아니면 실행하지 않음
-        // 보스 몬스터일 경우 높이를 추가
-        if (this is BossMonster)
+                                                          
+        if (this is BossMonster)// 보스 몬스터일 경우 높이를 추가
         {
             position.y += 1.0f;
         }
 
-        // ObjectPool에서 이펙트 가져오기
-        GameObject gatherEffect = ObjectPool.Inst.Pull<GameObject>(GatheringEffectPrefab);
-        gatherEffect.transform.position = position;
-
-        StartCoroutine(ReturnGatherEffectToPool(gatherEffect));
+        // EffectManager를 통해 피 이펙트를 생성하고 위치 설정
+        EffectManager.Instance.GetEffect("Gathering", position, Quaternion.identity);
     }
-
-    // 게더링 이펙트를 다시 풀로 반환하는 코루틴
-    public IEnumerator ReturnGatherEffectToPool(GameObject gatherEffect)
-    {
-        yield return new WaitForSeconds(gatheringDuration);
-        ObjectPool.Inst.Push<GameObject>(gatherEffect);
-    }
-    */
 
 
 
@@ -340,10 +355,11 @@ public class BossMonster : MonsterController
         StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과                                                  
         DisableColiders();
         m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정                                                                                       
-        //SetState(BehaviourState.Die);
+        SetState(BehaviourState.Die);
         ShutDownHealthBars();    
         AttackArea.SetActive(false);  // 공격 범위 비활성화 (박스가 보이지 않도록 설정)
-        SpawnBloodSplatter(transform.position);
+        GameObject bloodstainEffect = EffectManager.Instance.GetEffect("BloodSplatter05", transform.position, Quaternion.identity);// 핏자국 이펙트 생성
+
     }
 
     // 랜덤 이동 시작
@@ -368,14 +384,28 @@ public class BossMonster : MonsterController
     // 이동 완료 후 호출되는 콜백 처리
     void MoveToPos(Vector3 pos, System.Action onComplete)
     {
-        m_navAgent.SetDestination(pos);
-        StartCoroutine(CheckArrival(onComplete));
+        // NavMeshAgent가 활성화 상태인지와 NavMesh 위에 위치해 있는지 확인
+        if (m_navAgent.enabled && m_navAgent.isOnNavMesh)
+        {
+            m_navAgent.SetDestination(pos);
+            StartCoroutine(CheckArrival(onComplete));
+        }
+        else
+        {
+            Debug.LogWarning("NavMeshAgent가 활성화되지 않았거나 NavMesh 위에 배치되지 않았습니다.");
+            // NavMesh에 위치해 있지 않다면 다시 NavMesh 위에 배치하거나 에러 처리 수행
+            if (onComplete != null)
+            {
+                onComplete.Invoke(); // onComplete 콜백을 즉시 호출하여 다음 행동을 이어가도록 설정 가능
+            }
+        }
     }
 
     // 목표 지점에 도달했는지 확인하는 코루틴
     IEnumerator CheckArrival(System.Action onComplete)
     {
-        while (m_navAgent.pathPending || m_navAgent.remainingDistance > m_navAgent.stoppingDistance)
+        // NavMeshAgent가 활성화 상태이고 NavMesh에 위치해 있는지 확인
+        while (m_navAgent.enabled && m_navAgent.isOnNavMesh && (m_navAgent.pathPending || m_navAgent.remainingDistance > m_navAgent.stoppingDistance))
         {
             yield return null;
         }
@@ -397,7 +427,7 @@ public class BossMonster : MonsterController
 
         // 항상 플레이어를 바라보도록 설정 (거리와 상관없이)
         StartCoroutine(LookAtPlayer());
-
+         
         // 보스 몬스터일 경우 시야각을 적용
         if (this is BossMonster)
         {
