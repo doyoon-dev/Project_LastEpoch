@@ -16879,7 +16879,8 @@ MonoBehaviour:
   bossMonsterName: "\uC880\uBE44\uC655 \uD2B8\uB860"
   damageUIPrefab: {fileID: 5253934711585909276}
   summonEffectPrefab: {fileID: 4830667674265293240, guid: 0772e143ceb707e4bbf76b7b06e45f8e, type: 3}
-  waypointController: {fileID: 1176403753}
+  waypointGroups:
+  - {fileID: 1176403753}
 --- !u!4 &1262388510
 Transform:
   m_ObjectHideFlags: 0

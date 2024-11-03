@@ -2654,7 +2654,10 @@ MonoBehaviour:
   m_detectDist: 2.1
   m_attackDist: 1
   m_chaseDist: 3.2
-  m_waypointCtr: {fileID: 0}
+  m_waypointCtr:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   boxSize: {x: 1, y: 1, z: 1}
   AttackArea: {fileID: 8255628561778141796}
   m_playerMask:
