@@ -135,13 +135,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1518358734}
     m_Modifications:
-    - target: {fileID: 6851746602139634862, guid: 3964c23ae9838e84889ea6d65b5861aa, type: 3}
-      propertyPath: m_Name
-      value: Floor_Plain_Parent (11)
-      objectReference: {fileID: 0}
-    - target: {fileID: 6851746602139634862, guid: 3964c23ae9838e84889ea6d65b5861aa, type: 3}
-      propertyPath: m_Layer
-      value: 6
+    - target: {fileID: 538475815120887897, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
+      propertyPath: m_myAnim
+      value: 
+      objectReference: {fileID: 822364157}
+    - target: {fileID: 538475815120887897, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
+      propertyPath: m_player
+      value: 
+      objectReference: {fileID: 822364154}
+    - target: {fileID: 538475815120887897, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 538475815120887897, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
       propertyPath: m_warPathEndPos
