@@ -44,7 +44,7 @@ public class MonsterController : BattleSystem
 
     [Header("웨이포인트")]
     [SerializeField]
-    WaypointController m_waypointCtr;
+    public List<WaypointController> m_waypointCtr;
 
     [Header("공격범위")]
     [SerializeField]
@@ -238,7 +238,9 @@ public class MonsterController : BattleSystem
     public void SetMonster(WaypointController waypoint)
     {
         gameObject.SetActive(true);
-        m_waypointCtr = waypoint;
+
+        m_waypointCtr.Clear(); // 기존 리스트를 초기화하여 중복 방지
+        m_waypointCtr.Add(waypoint); // 리스트에 단일 WaypointController 추가
 
     }
     #endregion
@@ -647,7 +649,7 @@ public class MonsterController : BattleSystem
             case MonsterType.Rat:
                 SoundManager.Inst.PlaySfx("Rat_Death");
                 break;
-           
+
         }
 
     }
@@ -716,6 +718,7 @@ public class MonsterController : BattleSystem
                 // 추적 거리를 벗어나면 추적 중지
                 if (distanceToPlayer > m_chaseDist)
                 {
+                    StopCoroutine(LookAtPlayer());
                     SetIdle(1f);  // Idle 상태로 전환
                 }
                 else if (CheckArea(m_player.transform.position, Mathf.Pow(m_navAgent.stoppingDistance, 2f)))
@@ -726,41 +729,34 @@ public class MonsterController : BattleSystem
 
             //경계 상태
             case BehaviourState.Patrol:
-
                 if (!m_isPatrol)
                 {
-                    //순찰 시작
                     m_isPatrol = true;
-                    m_curWaypoint = Random.Range(0, m_waypointCtr.m_waypoints.Length);//랜덤으로
-                    m_navAgent.SetDestination(m_waypointCtr.m_waypoints[m_curWaypoint].transform.position);
-                    // 자동 회전을 활성화하여 웨이포인트를 향하게 함
-                    m_navAgent.updateRotation = true;
-                    /* //웨이포인트 순차적으로
-                    m_curWaypoint++;
-                    if (m_curWaypoint >= m_waypointCtr.m_waypoints.Length)
-                    {
-                        m_curWaypoint = 0;
-                    }
-                    */
+                    // 여러 개의 웨이포인트 컨트롤러 리스트에서 랜덤으로 선택
+                    var selectedWaypointCtr = m_waypointCtr[Random.Range(0, m_waypointCtr.Count)];
+
+                    // 선택된 웨이포인트 컨트롤러의 웨이포인트 배열에서 랜덤으로 웨이포인트 선택
+                    m_curWaypoint = Random.Range(0, selectedWaypointCtr.m_waypoints.Length);
+                    m_navAgent.SetDestination(selectedWaypointCtr.m_waypoints[m_curWaypoint].transform.position);
+                    m_navAgent.updateRotation = true; 
                 }
                 else
                 {
-                    //타켓을 찾으면 순찰 중지 idle상태로 감
                     if (FindTarget())
                     {
                         m_isPatrol = false;
                         m_navAgent.ResetPath();
                         SetIdle(1f);
                     }
-                    //타겟을 찾지 못함, 현재 웨이포인트에 도착판단
                     else
                     {
-                        if (CheckArea(m_waypointCtr.m_waypoints[m_curWaypoint].transform.position, m_navAgent.stoppingDistance))
+                        // 현재 할당된 웨이포인트 컨트롤러에서 목표 웨이포인트에 도달했는지 확인
+                        var currentWaypointCtr = m_waypointCtr[Random.Range(0, m_waypointCtr.Count)];
+                        if (CheckArea(currentWaypointCtr.m_waypoints[m_curWaypoint].transform.position, m_navAgent.stoppingDistance))
                         {
                             m_isPatrol = false;
                             SetIdle(1f);
                         }
-
                     }
                 }
                 break;
