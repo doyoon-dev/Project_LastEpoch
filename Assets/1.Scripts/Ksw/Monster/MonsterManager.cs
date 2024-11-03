@@ -14,9 +14,9 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     [SerializeField]
     public float spawnInterval; // 몬스터 소환 간격 (초 단위)
 
-    [Header("몬스터 소환 거리")]
-    [SerializeField]
-    private float spawnOffset; // 몬스터 간 거리 오프셋
+    //[Header("몬스터 소환 거리")]
+    //[SerializeField]
+    //private float spawnOffset; // 몬스터 간 거리 오프셋
 
     [Header("보스 몬스터 프리팹")]
     [SerializeField]
@@ -35,7 +35,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
 
     [Header("머리 위 체력바 프리팹")]
     [SerializeField]
-    private GameObject headHealthBarPrefab; 
+    private GameObject headHealthBarPrefab;
 
     [Header("몬스터 이름 목록")]
     [SerializeField]
@@ -53,13 +53,19 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     [SerializeField]
     private GameObject summonEffectPrefab;  // 소환 이펙트 프리팹
 
-    public WaypointController waypointController;
+    [Header("보스 웨이포인트")]
+    [SerializeField]
+    private WaypointController bossWaypoint; // 보스 몬스터가 소환될 고정 웨이포인트
+    [Header("웨이포인트 그룹 목록")]
+    [SerializeField]
+    private List<WaypointController> waypointGroups; // 여러 웨이포인트 그룹 관리
+
     private Vector3 lastSpawnPosition = Vector3.zero; // 마지막 소환 위치 저장
     private MonsterController currentTargetMonster;  // 현재 공격받고 있는 몬스터
-   
+
+
     void Start()
     {
-
         // 코루틴 시작: 일정 간격마다 몬스터 소환
         StartCoroutine(AutoSpawnMonsters());
     }
@@ -92,6 +98,9 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         MonsterController monsterController = monster.GetComponent<MonsterController>();
         NavMeshAgent navAgent = monster.GetComponent<NavMeshAgent>();
 
+        // NavMeshAgent의 이동을 멈춘 상태로 설정
+        navAgent.isStopped = true;
+
         // NavMeshAgent의 장애물 회피 비활성화
         navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
@@ -105,11 +114,14 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
             monsterController.monsterName = "Unknown Monster";
         }
 
-       
+        // 웨이포인트 그룹을 랜덤으로 할당
+        int groupIndex = Random.Range(0, waypointGroups.Count);
+        WaypointController assignedWaypointGroup = waypointGroups[groupIndex];
 
         // 몬스터 초기화
-        monsterController.Initialize(this, waypointController, healthBarUI, damageUIPrefab);  // 매니저를 초기화 시 전달
+        monsterController.Initialize(this, assignedWaypointGroup, healthBarUI, damageUIPrefab);  // 매니저를 초기화 시 전달
 
+ 
         // 헤드 헬스바 설정
         GameObject headHealthBarObj = ObjectPool.Inst.Pull<GameObject>(SceneData.Inst.headHealthBarPrefab);
         headHealthBarObj.transform.SetParent(SceneData.Inst.headHealthBarParent, false);
@@ -129,27 +141,15 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
             monsterController.healthBarUI.HideHealthBar();
         }
 
-        // 웨이포인트에서 랜덤 위치를 얻어옴
-        Vector3 spawnPosition = waypointController.GetRandomWaypointPosition();
-        monster.transform.position = spawnPosition;
+        // 스폰 위치를 해당 웨이포인트 그룹 내에서 결정
+        Vector3 spawnPosition = assignedWaypointGroup.GetRandomWaypointPosition();
 
-
-        // 이전 소환 위치와 동일한지 확인
-        if (spawnPosition == lastSpawnPosition)
-        {
-            // 동일하다면 다른 위치 선택
-            int nextIndex = GetNextWaypointIndex(spawnPosition);
-            spawnPosition = waypointController.m_waypoints[nextIndex].transform.position;
-        }
-
-        // 소환 위치에 약간의 오프셋을 추가하여 겹침 방지
-        spawnPosition += new Vector3(Random.Range(-spawnOffset, spawnOffset), 0, Random.Range(-spawnOffset, spawnOffset));
-
-
-        // 웨이포인트에 몬스터 배치
-        monster.transform.position = spawnPosition;
-
-      
+        // NavMeshAgent의 위치를 강제로 설정
+        navAgent.Warp(spawnPosition);
+        
+   
+        // 소환 위치가 설정된 후, NavMeshAgent의 이동을 다시 활성화
+        navAgent.isStopped = false;
 
         // 마지막 소환 위치 업데이트
         lastSpawnPosition = spawnPosition;
@@ -164,11 +164,20 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
 
     IEnumerator SpawnBossWithEffect()
     {
-        // 보스 소환 위치를 설정
-        Vector3 bossSpawnPosition = waypointController.GetBossSpawnPoint(); // 보스 전용 스폰 지점
+        if (bossWaypoint == null)
+        {
+            Debug.LogWarning("보스 웨이포인트가 설정되지 않았습니다.");
+            yield break;
+        }
+
+        // 고정된 보스 소환 위치를 설정
+        Vector3 bossSpawnPosition = bossWaypoint.GetBossSpawnPoint(); // 보스 소환 위치 가져오기
 
         // **소환 이펙트 생성**
         GameObject summonEffect = Instantiate(summonEffectPrefab, bossSpawnPosition, Quaternion.identity);
+
+        //보스 몬스터 스폰 사운드
+        SoundManager.Inst.PlaySfx("Boss_Spawn");
 
         // 일정 시간 대기 (예: 3초 대기)
         yield return new WaitForSeconds(0.5f);
@@ -185,7 +194,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         bossController.monsterName = bossMonsterName;
 
         // 보스 몬스터 초기화
-        bossController.Initialize(this, waypointController, healthBarUI, damageUIPrefab);
+        bossController.Initialize(this, bossWaypoint, healthBarUI, damageUIPrefab);
 
         // 보스 소환 시 체력바 숨기기
         bossController.healthBarUI.HideHealthBar();
@@ -193,10 +202,11 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
         // 보스를 지정된 위치에 소환
-        boss.transform.position = bossSpawnPosition;
+        navAgent.Warp(bossSpawnPosition); // 위치 설정
+        boss.transform.position = bossSpawnPosition; // 위치를 고정
     }
 
-   
+
 
 
     #endregion
@@ -252,7 +262,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
             currentTargetMonster = null;
         }
     }
-  
+
 
     // 몬스터가 죽을 때 호출되는 메서드
     public void HandleMonsterDeath(Vector3 position)
@@ -262,21 +272,21 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     }
 
     // 특정 위치의 다음 웨이포인트 인덱스를 얻는 메서드
-    int GetNextWaypointIndex(Vector3 currentPosition)
+    int GetNextWaypointIndex(Vector3 currentPosition, WaypointController waypointGroup)
     {
-        for (int i = 0; i < waypointController.m_waypoints.Length; i++)
+        for (int i = 0; i < waypointGroup.m_waypoints.Length; i++)
         {
-            if (waypointController.m_waypoints[i].transform.position == currentPosition)
+            if (waypointGroup.m_waypoints[i].transform.position == currentPosition)
             {
-                // 현재 위치의 다음 인덱스를 반환, 배열의 끝에 도달하면 0으로 순환  원형(순환) 배열과 같은 효과
-                return (i + 1) % waypointController.m_waypoints.Length;
+                // 현재 위치의 다음 인덱스를 반환, 배열의 끝에 도달하면 0으로 순환
+                return (i + 1) % waypointGroup.m_waypoints.Length;
             }
         }
         // 위치를 찾지 못한 경우 0번 인덱스를 기본으로 반환
         return 0;
     }
 
-    
+
 
 
     // Update is called once per frame

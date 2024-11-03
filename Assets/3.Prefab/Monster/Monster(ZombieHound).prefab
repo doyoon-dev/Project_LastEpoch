@@ -2717,11 +2717,15 @@ MonoBehaviour:
   damageUIPrefab: {fileID: 0}
   m_curHp: 50
   m_curMp: 0
+  monsterType: 0
   m_state: 0
   m_detectDist: 2.5
   m_attackDist: 1.5
   m_chaseDist: 3.2
-  m_waypointCtr: {fileID: 0}
+  m_waypointCtr:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   boxSize: {x: 1, y: 1, z: 1}
   AttackArea: {fileID: 2975331073465117184}
   m_playerMask:

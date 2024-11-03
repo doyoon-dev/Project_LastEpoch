@@ -18,6 +18,15 @@ public class MonsterController : BattleSystem
         Die,
         Max
     }
+    public enum MonsterType
+    {
+        Dog,
+        Rat,
+        ZombieKing
+    }
+    [Header("몬스터 타입")]
+    public MonsterType monsterType; // 몬스터 타입 설정
+
     [SerializeField]
     protected BehaviourState m_state; //상태
 
@@ -35,7 +44,7 @@ public class MonsterController : BattleSystem
 
     [Header("웨이포인트")]
     [SerializeField]
-    WaypointController m_waypointCtr;
+    public List<WaypointController> m_waypointCtr;
 
     [Header("공격범위")]
     [SerializeField]
@@ -43,12 +52,12 @@ public class MonsterController : BattleSystem
     [SerializeField]
     protected GameObject AttackArea;  // OverlapBox의 중심이 될 오브젝트 (몬스터의 위치)
 
-   
-    
-    protected Player m_player;   
+
+
+    protected Player m_player;
     protected NavMeshAgent m_navAgent;
     protected MonsterAnimController m_monAnimCtr;
-    protected MaterialPropertyBlock m_mpBlock;  
+    protected MaterialPropertyBlock m_mpBlock;
     protected float m_idleDuration = 1f;
     protected float m_idleTime = 0;
     protected MonsterManager m_manager;  // 매니저 참조
@@ -68,8 +77,9 @@ public class MonsterController : BattleSystem
     public string monsterName;
     public bool m_isPatrol; //patrol 여부확인
     public bool IsDie = false;
-    public bool isTransitioning = false;// 상태 전환 중인지 확인하는 플래그
-    
+    public bool isTransitioning = false;// 상태 전환 중인지 확인하는 플래그\
+    private bool hasAttacked = false;
+
     #region Blank Methods
 
     /* //레이캐스트로 타켓 찾는법
@@ -200,7 +210,7 @@ public class MonsterController : BattleSystem
         Gizmos.DrawWireSphere(transform.position, m_chaseDist);
 
     }
-    
+
     #endregion
     #region SetMethods
     protected virtual void SetState(BehaviourState state)
@@ -218,7 +228,7 @@ public class MonsterController : BattleSystem
 
     protected virtual void SetIdle(float duration)
     {
-       
+
         SetState(BehaviourState.Idle);
         m_monAnimCtr.Play(MonsterAnimController.Motion.Idle);
         SetIdleDuration(duration);
@@ -228,7 +238,9 @@ public class MonsterController : BattleSystem
     public void SetMonster(WaypointController waypoint)
     {
         gameObject.SetActive(true);
-        m_waypointCtr = waypoint;
+
+        m_waypointCtr.Clear(); // 기존 리스트를 초기화하여 중복 방지
+        m_waypointCtr.Add(waypoint); // 리스트에 단일 WaypointController 추가
 
     }
     #endregion
@@ -239,6 +251,9 @@ public class MonsterController : BattleSystem
     // 플레이어한테 공격
     public override void Attack()
     {
+        if (hasAttacked) return; // 이미 공격이 호출된 경우 실행하지 않음
+        hasAttacked = true; // 공격이 호출되었음을 설정
+        //Debug.Log("Attack1 호출됨");
         Collider[] playersInRange = Physics.OverlapSphere(AttackArea.transform.position, m_attackDist, m_playerMask);
 
         foreach (Collider player in playersInRange)
@@ -250,9 +265,14 @@ public class MonsterController : BattleSystem
 
             }
         }
+
+        StartCoroutine(ResetAttackFlag()); // 공격 플래그 초기화 코루틴 실행
     }
     public void Attack2()
     {
+        if (hasAttacked) return; // 이미 공격이 호출된 경우 실행하지 않음
+        hasAttacked = true; // 공격이 호출되었음을 설정
+        //Debug.Log("Attack2 호출됨"); // 호출 횟수 확인을 위한 로그
         Collider[] playersInRange = Physics.OverlapSphere(AttackArea.transform.position, m_attackDist, m_playerMask);
 
         foreach (Collider player in playersInRange)
@@ -264,7 +284,15 @@ public class MonsterController : BattleSystem
 
             }
         }
+        StartCoroutine(ResetAttackFlag()); // 공격 플래그 초기화 코루틴 실행
     }
+
+    private IEnumerator ResetAttackFlag()
+    {
+        yield return new WaitForSeconds(1f); // 원하는 시간만큼 대기 후
+        hasAttacked = false; // 공격 플래그 초기화
+    }
+
 
     //공격 가능여부
 
@@ -300,7 +328,7 @@ public class MonsterController : BattleSystem
     }
 
 
- 
+
 
 
     // 몬스터 차례대로 공격 모션
@@ -315,7 +343,7 @@ public class MonsterController : BattleSystem
                 break;
             case 1:
                 m_monAnimCtr.Play(MonsterAnimController.Motion.Attack2);
-                StartCoroutine(DamageAfterDelay(0.5f)); // 두 번째 공격 후 0.5초 후 데미지 적용
+                StartCoroutine(DamageAfterDelay(1f)); // 두 번째 공격 후 0.5초 후 데미지 적용
                 break;
         }
         m_currentAttackIndex = (m_currentAttackIndex + 1) % 2; // 0, 1 를 반복
@@ -341,15 +369,15 @@ public class MonsterController : BattleSystem
             dir.y = 0f; // 수평 방향으로만 넉백 처리
             var duration = SkillDataManager.MaxKnockbackDuration * (skillData.knockback / SkillDataManager.MaxKnockbackDist);
             m_moveTween.Play(transform.position, transform.position + dir * skillData.knockback, duration);
-           
+
         }
     }
 
- 
+
 
     public override void SetDamage(SkillData skillData)
     {
-        if (IsDie || isTransitioning ) return; // 무적 상태면 데미지 무시) return;
+        if (IsDie || isTransitioning) return; // 무적 상태면 데미지 무시) return;
         if (m_state == BehaviourState.Gathering || m_state == BehaviourState.SpecialAttack || m_state == BehaviourState.Damaged) return;
 
         // 피 흘리는 이펙트 소환
@@ -395,11 +423,11 @@ public class MonsterController : BattleSystem
             return;
         }
 
-        if(this is BossMonster)
+        if (this is BossMonster)
         {
             SetHitColor(0.2f);
         }
-        else 
+        else
         {
             // 일반 몬스터의 데미지 처리 (기존 로직)
             SetState(BehaviourState.Damaged);
@@ -411,20 +439,20 @@ public class MonsterController : BattleSystem
             StartCoroutine(ResumeMovementAfterDamage());
 
         }
-    
- 
+
+
     }
 
     // 데미지 후 다시 돌아오기
     protected IEnumerator ResumeMovementAfterDamage(float delay = 0.5f)
     {
         yield return new WaitForSeconds(delay); // Hit 모션이 끝날 시간을 대기
-                                               
+
         if (m_navAgent != null && m_navAgent.isOnNavMesh) // NavMeshAgent가 활성화되어 있고, NavMesh 위에 배치되어 있는지 확인
         {
             m_navAgent.isStopped = false; // 이동 재개           
-            
-        }   
+
+        }
     }
 
 
@@ -434,7 +462,7 @@ public class MonsterController : BattleSystem
 
     // 플레이어 방향으로 고개 돌리기 메서드
     protected virtual IEnumerator LookAtPlayer()
-    {  
+    {
         Vector3 direction = (m_player.transform.position - transform.position).normalized;
         direction.y = 0f; // 수평면에서만 회전하도록 Y축을 0으로 설정
 
@@ -452,7 +480,7 @@ public class MonsterController : BattleSystem
         transform.rotation = targetRotation;  // 최종적으로 완전히 회전시킴
 
     }
- 
+
 
 
     protected bool FindTarget()
@@ -538,7 +566,7 @@ public class MonsterController : BattleSystem
         {
             Debug.LogWarning("DamageUIPrefab is not assigned during initialization.");
         }
-        
+
     }
 
     // 피 흘리는 이펙트
@@ -609,9 +637,20 @@ public class MonsterController : BattleSystem
         m_navAgent.isStopped = true;  // 네비게이션 에이전트 중지
         DisableColiders();
         m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정                                                                                       
-        ShutDownHealthBars();    
+        ShutDownHealthBars();
         AttackArea.SetActive(false);// 공격 범위 비활성화 (박스가 보이지 않도록 설정)                              
         GameObject bloodstainEffect = EffectManager.Instance.GetEffect("BloodSplatter02", transform.position, Quaternion.identity);// 핏자국 이펙트 생성
+                                                                                                                                   // 몬스터 종류에 따라 죽음 소리 재생
+        switch (monsterType)
+        {
+            case MonsterType.Dog:
+                SoundManager.Inst.PlaySfx("Dog_Death");
+                break;
+            case MonsterType.Rat:
+                SoundManager.Inst.PlaySfx("Rat_Death");
+                break;
+
+        }
 
     }
 
@@ -627,7 +666,7 @@ public class MonsterController : BattleSystem
             case BehaviourState.Idle:
                 m_idleTime += Time.deltaTime;
                 if (m_idleTime > m_idleDuration * 0.5f)
-                {                                     
+                {
                     if (FindTarget())
                     {
                         // 타켓을 찾아 공격 가능하면 공격
@@ -645,7 +684,7 @@ public class MonsterController : BattleSystem
                             SetState(BehaviourState.Chase);
                             StartCoroutine(Coroutine_CalculateTargetPath(30));
                             m_monAnimCtr.Play(MonsterAnimController.Motion.Run);
-                            m_navAgent.stoppingDistance = m_attackDist;                          
+                            m_navAgent.stoppingDistance = m_attackDist;
                             m_idleTime = 0;
                         }
                     }
@@ -653,16 +692,16 @@ public class MonsterController : BattleSystem
                     else
                     {
                         SetState(BehaviourState.Patrol);
-                        m_monAnimCtr.Play(MonsterAnimController.Motion.Run);                      
+                        m_monAnimCtr.Play(MonsterAnimController.Motion.Run);
                         m_navAgent.stoppingDistance = m_navAgent.radius; //navagent radius만큼 정지                 
 
                     }
-                    
+
                 }
                 break;
 
             //공격 상태
-            case BehaviourState.Attack:          
+            case BehaviourState.Attack:
                 break;
 
             //추적 상태
@@ -679,6 +718,7 @@ public class MonsterController : BattleSystem
                 // 추적 거리를 벗어나면 추적 중지
                 if (distanceToPlayer > m_chaseDist)
                 {
+                    StopCoroutine(LookAtPlayer());
                     SetIdle(1f);  // Idle 상태로 전환
                 }
                 else if (CheckArea(m_player.transform.position, Mathf.Pow(m_navAgent.stoppingDistance, 2f)))
@@ -689,41 +729,34 @@ public class MonsterController : BattleSystem
 
             //경계 상태
             case BehaviourState.Patrol:
-                
                 if (!m_isPatrol)
                 {
-                    //순찰 시작
-                    m_isPatrol = true;                
-                    m_curWaypoint = Random.Range(0, m_waypointCtr.m_waypoints.Length);//랜덤으로
-                    m_navAgent.SetDestination(m_waypointCtr.m_waypoints[m_curWaypoint].transform.position);
-                    // 자동 회전을 활성화하여 웨이포인트를 향하게 함
-                    m_navAgent.updateRotation = true;
-                    /* //웨이포인트 순차적으로
-                    m_curWaypoint++;
-                    if (m_curWaypoint >= m_waypointCtr.m_waypoints.Length)
-                    {
-                        m_curWaypoint = 0;
-                    }
-                    */
+                    m_isPatrol = true;
+                    // 여러 개의 웨이포인트 컨트롤러 리스트에서 랜덤으로 선택
+                    var selectedWaypointCtr = m_waypointCtr[Random.Range(0, m_waypointCtr.Count)];
+
+                    // 선택된 웨이포인트 컨트롤러의 웨이포인트 배열에서 랜덤으로 웨이포인트 선택
+                    m_curWaypoint = Random.Range(0, selectedWaypointCtr.m_waypoints.Length);
+                    m_navAgent.SetDestination(selectedWaypointCtr.m_waypoints[m_curWaypoint].transform.position);
+                    m_navAgent.updateRotation = true; 
                 }
                 else
                 {
-                    //타켓을 찾으면 순찰 중지 idle상태로 감
                     if (FindTarget())
                     {
                         m_isPatrol = false;
                         m_navAgent.ResetPath();
                         SetIdle(1f);
                     }
-                    //타겟을 찾지 못함, 현재 웨이포인트에 도착판단
                     else
                     {
-                        if (CheckArea(m_waypointCtr.m_waypoints[m_curWaypoint].transform.position, m_navAgent.stoppingDistance))
+                        // 현재 할당된 웨이포인트 컨트롤러에서 목표 웨이포인트에 도달했는지 확인
+                        var currentWaypointCtr = m_waypointCtr[Random.Range(0, m_waypointCtr.Count)];
+                        if (CheckArea(currentWaypointCtr.m_waypoints[m_curWaypoint].transform.position, m_navAgent.stoppingDistance))
                         {
                             m_isPatrol = false;
                             SetIdle(1f);
                         }
-
                     }
                 }
                 break;
@@ -734,7 +767,7 @@ public class MonsterController : BattleSystem
             case BehaviourState.Die:
                 if (!IsDie) // IsDie가 false인 경우에만 처리
                 {
-                    HandleDeath();               
+                    HandleDeath();
                     IsDie = true; // IsDie를 true로 설정하여 다시 호출되지 않도록 방지
                 }
                 break;
@@ -756,7 +789,7 @@ public class MonsterController : BattleSystem
         m_navAgent = GetComponent<NavMeshAgent>();
         m_renderers = GetComponentsInChildren<Renderer>();
         m_player = FindObjectOfType<Player>();
-       
+
     }
 
     void Update()

@@ -33751,7 +33751,7 @@ MonoBehaviour:
     rotSpeed: 3
   m_cam: {fileID: 0}
   m_stat:
-    MaxHp: 100000
+    MaxHp: 500
     MaxMp: 100
     AttackDmg: 20
     AttackRange: 5
@@ -33829,7 +33829,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &5244370769833058613
 MonoBehaviour:

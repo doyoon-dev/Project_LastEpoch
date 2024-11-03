@@ -5,7 +5,8 @@ using UnityEngine.Rendering.Universal;
 public class BossMonster : MonsterController
 {
 
-   
+    public GameObject specialAttackEffect; // 스페셜 어택 이펙트 GameObject를 연결
+
     private Vector3 startPos; // 시작 위치 저장
     private bool isGathering = false;
     private float gatheringDuration = 4.0f; // 힘을 모으는 시간  
@@ -215,8 +216,8 @@ public class BossMonster : MonsterController
 
         isGathering = true;
         isForceGathering = true; // 강제 Gathering 상태 활성화
-        Debug.Log("Gathering 시작");
 
+       
         m_navAgent.enabled = false; // NavMeshAgent 비활성화
         // Gathering 모션 재생
         m_monAnimCtr.Play(MonsterAnimController.Motion.Gathering);
@@ -224,10 +225,11 @@ public class BossMonster : MonsterController
         //게더링 이펙트 생성
         SpawnGatheringEffect(transform.position);
 
-
-       
-
-
+        // 스킬 이펙트 활성화
+        if (specialAttackEffect != null)
+        {
+            specialAttackEffect.SetActive(true);
+        }
         // 플레이어를 바라보는 메서드 호출
         StartCoroutine(LookAtPlayer());
 
@@ -240,6 +242,7 @@ public class BossMonster : MonsterController
             {
                 Debug.Log("체력이 0이 되어 Gathering 중단 후 죽음 상태로 전환");
                 SetState(BehaviourState.Die);
+              
                 yield break;
             }
             // 강제 Gathering 시간이 종료되면 강제 상태 해제
@@ -252,7 +255,7 @@ public class BossMonster : MonsterController
             yield return null;
         }
 
-        Debug.Log("Gathering 완료 - SpecialAttack 상태로 전환");
+        //Debug.Log("Gathering 완료 - SpecialAttack 상태로 전환");
         // 스페셜 어택 전 지연 시간 추가
         yield return new WaitForSeconds(0.2f); //  (원하는 시간으로 설정 가능)
 
@@ -260,7 +263,6 @@ public class BossMonster : MonsterController
         SetState(BehaviourState.SpecialAttack);
         isGathering = false;
         isForceGathering = false;  // Gathering과 강제 상태 모두 해제
-
         ExecuteSpecialAttack();
         
         
@@ -270,9 +272,11 @@ public class BossMonster : MonsterController
     {
         if (isSpecialAttackActive) return;
         isSpecialAttackActive = true;
-
+        SoundManager.Inst.PlaySfx("Boss_SpAttack");
         // 스페셜 어택 애니메이션 재생
         m_monAnimCtr.Play(MonsterAnimController.Motion.SpAttack);
+
+       
 
         // 이동하면서 공격
         StartCoroutine(MoveForwardSpecialAttack(specialAttackMoveDistance, specialAttackSpeed));
@@ -320,6 +324,12 @@ public class BossMonster : MonsterController
             yield return null;
         }
         isSpecialAttackActive = false;
+        SoundManager.Inst.StopSfxSound("Boss_SpAttack");
+        // 스페셜 어택 이펙트 비활성화
+        if (specialAttackEffect != null)
+        {
+            specialAttackEffect.SetActive(false);
+        }
         SetIdle(0.5f);
        
     }
@@ -359,7 +369,7 @@ public class BossMonster : MonsterController
         ShutDownHealthBars();    
         AttackArea.SetActive(false);  // 공격 범위 비활성화 (박스가 보이지 않도록 설정)
         GameObject bloodstainEffect = EffectManager.Instance.GetEffect("BloodSplatter05", transform.position, Quaternion.identity);// 핏자국 이펙트 생성
-
+        SoundManager.Inst.PlaySfx("Boss_Death");
     }
 
     // 랜덤 이동 시작
