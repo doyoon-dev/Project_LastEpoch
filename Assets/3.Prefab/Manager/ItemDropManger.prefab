@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2045136758470345236
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2045136758470345238}
+  - component: {fileID: 2045136758470345237}
+  m_Layer: 0
+  m_Name: ItemDropManger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2045136758470345238
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045136758470345236}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2045136758470345237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045136758470345236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c872128025354479f0c615168c8049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lowRangeItemPrefabs:
+  - {fileID: 1065372898184681076, guid: 7f2e99ec33e53e84e9a4656bfb121d22, type: 3}
+  - {fileID: 3549253014000864380, guid: 44b901e1a71c98f4d93ec1336a401740, type: 3}
+  - {fileID: 3612378865459992952, guid: ceffb827667916c43be6912e11d3131f, type: 3}
+  - {fileID: 4571913225954340060, guid: e1b1eaa1e57edfc4c88bcd42a9d2947b, type: 3}
+  midRangeItemPrefabs:
+  - {fileID: 9010480957426070280, guid: 6000c99d04af84f488f6dfa05a5076cd, type: 3}
+  - {fileID: 6789326584539032846, guid: bd31014dfb673c24780de9a328dcfefd, type: 3}
+  highRangeItemPrefabs:
+  - {fileID: 6355247356634027517, guid: b0893b7ab7b2adb489c5ced6cc38d90c, type: 3}
+  lowRangeDropChances:
+  - 10
+  - 10
+  - 10
+  - 60
+  midRangeDropChances:
+  - 7
+  - 7
+  highRangeDropChances:
+  - 3
+  lowRange: {x: 1, y: 61}
+  lowRangeItemCount: {x: 1, y: 2}
+  midRange: {x: 61, y: 91}
+  midRangeItemCount: {x: 1, y: 2}
+  higRange: {x: 91, y: 100}
+  higRangeItemCount: {x: 1, y: 1}
