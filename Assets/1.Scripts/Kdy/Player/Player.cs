@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.GraphicsBuffer;
@@ -33,6 +34,7 @@ public class Player : BattleSystem, ISetClickEffect
 
     public event UnityAction<string> m_clickEffectPush;
     public UnityEvent m_camShake;
+    public GameObject m_resurrectionObj;
     public GameObject m_hitEffect;
     public int attackDamage = 20;
     public float attackRange = 3f;
@@ -43,6 +45,7 @@ public class Player : BattleSystem, ISetClickEffect
 
     int m_clickCnt = 0;
     bool m_isComboCheck = false;
+    bool m_isDie = false;
     Vector3 boxSize = new Vector3(1, 1, 1);
     
     // Start is called before the first frame update
@@ -53,11 +56,13 @@ public class Player : BattleSystem, ISetClickEffect
         m_changeMp += SceneData.Inst.m_playerHpMpUI.ManaPoint;
         m_deadAlarm += () =>
         {
+            m_isDie = true;
             gameObject.GetComponent<Collider>().isTrigger = true;
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
             gameObject.layer = 0;
             m_myAnim.SetTrigger("Die");
-            
+            m_resurrectionObj.SetActive(true);
+
             //Debug.Log("죽음");
         };
     }
@@ -121,7 +126,7 @@ public class Player : BattleSystem, ISetClickEffect
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
-            m_curMagicPoint = 30;
+            SetDamage(SkillDataManager.m_skillDataDic["Normal"]);
         }
         #endregion
     }
@@ -130,6 +135,28 @@ public class Player : BattleSystem, ISetClickEffect
     {
         base.Initalize();
         SkillDataManager.m_skillDataDic["Normal"].Dmg = m_stat.AttackDmg;
+        if (m_isDie)
+        {
+            // 처음 스폰 위치 (부활 위치)
+            transform.position = Vector3.zero;
+            gameObject.GetComponent<Collider>().isTrigger = false;
+            gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            gameObject.layer = 9;
+            m_myAnim.SetBool("Resurrection", true);
+            IInitializeUI iiu = m_resurrectionObj.GetComponent<IInitializeUI>();
+            if (iiu != null)
+            {
+                iiu.InitializeUI();
+            }
+            m_isDie = false;
+            Invoke("SetIdle", 1.0f);
+        }
+        
+    }
+
+    void SetIdle()
+    {
+        m_myAnim.SetBool("Resurrection", false);
     }
 
     public override void SetDamage(SkillData damage)
