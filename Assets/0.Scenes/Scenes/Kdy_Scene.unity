@@ -5507,6 +5507,7 @@ GameObject:
   - component: {fileID: 412117471}
   - component: {fileID: 412117470}
   - component: {fileID: 412117474}
+  - component: {fileID: 412117475}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5634,6 +5635,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   m_mr: []
+--- !u!114 &412117475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412117469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a7dcdc139a2abf4a8867336dd6ed976, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_isEnd: 0
+  m_time: 
 --- !u!1 &441482223
 GameObject:
   m_ObjectHideFlags: 0
@@ -6012,8 +6027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e44bcaecc14314eaf3aa83dcb41943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_bg: {fileID: 450728497}
-  m_text: {fileID: 2061310974}
+  m_speed: 0.5
   m_bgImage: {fileID: 1533632994}
   m_dieTextImage: {fileID: 811747200}
   m_lineImage: {fileID: 1198265990}
@@ -6022,7 +6036,6 @@ MonoBehaviour:
   m_bgLineUIImage: {fileID: 1082615035}
   m_dieLineUIText: {fileID: 829014757}
   m_button: {fileID: 1516146264}
-  m_speed: 0.5
 --- !u!1 &522843009
 GameObject:
   m_ObjectHideFlags: 0
@@ -6084,7 +6097,7 @@ MonoBehaviour:
   m_text: "\uBD80\uD65C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ad0c12e5e2eedf4468b214607711805b, type: 2}
-  m_sharedMaterial: {fileID: -212703323162104010, guid: 241816a4e9a3dc94aa1898264f900d41, type: 2}
+  m_sharedMaterial: {fileID: -7979293858641132529, guid: ad0c12e5e2eedf4468b214607711805b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6147,7 +6160,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &522843012
@@ -6541,8 +6554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a0a09da0286ed43bf8a8f93fe0ad80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_bg: {fileID: 450728497}
-  m_text: {fileID: 2061310974}
+  m_speed: 2.5
   m_bgImage: {fileID: 1270432420}
   m_dieTextImage: {fileID: 811747200}
   m_lineImage: {fileID: 1198265990}
@@ -6551,7 +6563,8 @@ MonoBehaviour:
   m_bgLineUIImage: {fileID: 1082615035}
   m_dieLineUIText: {fileID: 829014757}
   m_button: {fileID: 1516146264}
-  m_speed: 2.5
+  m_initDieTextImageColor: {r: 0, g: 0, b: 0, a: 0}
+  m_initDieTextColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1001 &816023173
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12394,17 +12407,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b290d420fb4a3409385751112ce5e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_speed: 0.5
   m_bg: {fileID: 450728497}
   m_text: {fileID: 2061310974}
-  m_bgImage: {fileID: 1533632994}
-  m_dieTextImage: {fileID: 811747200}
-  m_lineImage: {fileID: 1198265990}
-  m_bgDieTextImage: {fileID: 1270432420}
-  m_dieText: {fileID: 876146718}
-  m_bgLineUIImage: {fileID: 1082615035}
-  m_dieLineUIText: {fileID: 829014757}
-  m_button: {fileID: 1516146264}
-  m_speed: 0.5
+  m_initQuestUIImageColor: {r: 0, g: 0, b: 0, a: 0}
+  m_initQuestUITextColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1198265990
 GameObject:
   m_ObjectHideFlags: 0
@@ -12456,8 +12463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ca0581c2e1233f4fb24993bb5c86a2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_bg: {fileID: 450728497}
-  m_text: {fileID: 2061310974}
+  m_speed: 2
   m_bgImage: {fileID: 1533632994}
   m_dieTextImage: {fileID: 811747200}
   m_lineImage: {fileID: 1198265990}
@@ -12466,7 +12472,8 @@ MonoBehaviour:
   m_bgLineUIImage: {fileID: 1082615035}
   m_dieLineUIText: {fileID: 829014757}
   m_button: {fileID: 1516146264}
-  m_speed: 2
+  m_initLineUIImageColor: {r: 0, g: 0, b: 0, a: 0}
+  m_initLineUITextColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1200804225
 GameObject:
   m_ObjectHideFlags: 0

@@ -61,8 +61,12 @@ public class Player : BattleSystem, ISetClickEffect
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
             gameObject.layer = 0;
             m_myAnim.SetTrigger("Die");
-            m_resurrectionObj.SetActive(true);
-
+            IResurrectionUIActive irua = m_resurrectionObj.GetComponent<IResurrectionUIActive>();
+            if (irua != null)
+            {
+                m_resurrectionObj.SetActive(true);
+                irua.ResurrectionUIActive();
+            }
             //Debug.Log("Á×À½");
         };
     }

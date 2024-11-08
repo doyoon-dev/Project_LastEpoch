@@ -7,8 +7,13 @@ using UnityEngine.UI;
 
 public class StartQuestUI : ShowUI
 {
-    //public Image m_bg;
-    //public TextMeshProUGUI m_text;
+    [Header("StartQuestUI Parameter")]
+    public Image m_bg;
+    public TextMeshProUGUI m_text;
+
+    public Color m_initQuestUIImageColor;
+    public Color m_initQuestUITextColor;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,5 +52,11 @@ public class StartQuestUI : ShowUI
             yield return null;
         }
         gameObject.SetActive(false);
+    }
+
+    public void InitColor()
+    {
+        m_initQuestUIImageColor = m_bg.color;
+        m_initQuestUITextColor = m_text.color;
     }
 }
