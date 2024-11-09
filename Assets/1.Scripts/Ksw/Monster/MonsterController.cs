@@ -22,6 +22,7 @@ public class MonsterController : BattleSystem
     {
         Dog,
         Rat,
+        Worm,
         ZombieKing
     }
     [Header("몬스터 타입")]
@@ -544,6 +545,17 @@ public class MonsterController : BattleSystem
         }
     }
 
+    // Chase 상태 종료 시 LookAtPlayer 코루틴 중지
+    void StopChase()
+    {
+        if (isLookingAtPlayer)
+        {
+            StopCoroutine(LookAtPlayer());
+            isLookingAtPlayer = false;  // 플래그 초기화
+        }
+        m_navAgent.updateRotation = true; // NavMeshAgent 회전 활성화
+    }
+
     #endregion
     public void Initialize(MonsterManager manager, WaypointController waypoint, HealthBarUI healthBar, GameObject damageUIPrefab)
     {
@@ -656,17 +668,7 @@ public class MonsterController : BattleSystem
         }
 
     }
-    // Chase 상태 종료 시 LookAtPlayer 코루틴 중지
-  
-    void StopChase()
-    {
-        if (isLookingAtPlayer)
-        {
-            StopCoroutine(LookAtPlayer());
-            isLookingAtPlayer = false;  // 플래그 초기화
-        }
-        m_navAgent.updateRotation = true; // NavMeshAgent 회전 활성화
-    }
+
 
 
 
