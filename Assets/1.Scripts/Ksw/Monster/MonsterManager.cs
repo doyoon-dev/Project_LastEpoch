@@ -61,10 +61,13 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     private float bossSpawnDelay = 3f; // 보스 소환 지연 시간 (초)
 
     private Dictionary<WaypointController, bool> waypointStatus = new Dictionary<WaypointController, bool>(); // 웨이포인트 활성 상태 관리
+
     private Vector3 lastSpawnPosition = Vector3.zero; // 마지막 소환 위치 저장
     private MonsterController currentTargetMonster;  // 현재 공격받고 있는 몬스터
     private int destroyedTotemCount = 0; // 파괴된 토템 수를 저장하는 변수
     private const int totalTotems = 4; // 총 토템 수
+
+    public int KillMonCount { get; private set; } = 0;
 
     void Start()
     {
@@ -106,19 +109,14 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         }
     }
 
-    // 특정 웨이포인트에 있는 모든 몬스터들을 제거하는 메서드
-    public void KillMonstersAtWaypoint(WaypointController waypoint)
+    // 처치 수를 증가시키는 메서드
+    public void IncreaseKillCount()
     {
-        foreach (Transform child in transform) // MonsterManager의 자식으로 생성된 몬스터들
-        {
-            MonsterController monster = child.GetComponent<MonsterController>();
-            if (monster != null && monster.m_waypointCtr.Contains(waypoint))
-            {
-                monster.SetDamage(new SkillData { Dmg = monster.m_stat.MaxHp }); // 몬스터의 체력을 모두 소진시켜 죽음 처리
-            }
-        }
+        KillMonCount++;
+        Debug.Log("현재 처치한 몬스터 수: " + KillMonCount);
     }
 
+    
 
     // 몬스터 랜덤 소환 메서드
     void SpawnMonster(WaypointController assignedWaypointGroup = null)
@@ -361,7 +359,18 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         return 0;
     }
 
-
+    public void RemoveMonstersAtWaypoint(WaypointController waypoint)
+    {
+        foreach (var monster in FindObjectsOfType<MonsterController>())
+        {
+            if (monster.m_waypointCtr.Contains(waypoint))
+            {
+                // 사망 처리 또는 비활성화
+                monster.HandleDeath(); // 사망 처리 메서드 호출
+                Destroy(monster.gameObject); // 또는 Destroy로 제거
+            }
+        }
+    }
 
 
     // Update is called once per frame

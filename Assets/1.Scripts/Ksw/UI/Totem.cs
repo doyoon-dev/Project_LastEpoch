@@ -60,7 +60,8 @@ public class Totem : BattleSystem
             MonsterManager.Instance.DisableWaypoint(assignedWaypoint);
             // MonsterManager에 해당 토템이 파괴되었음을 알림
             MonsterManager.Instance.OnTotemDestroyed();
-
+            // **웨이포인트에 소환된 몬스터 제거**
+            MonsterManager.Instance.RemoveMonstersAtWaypoint(assignedWaypoint);
         }
 
         // 본체 오브젝트 제거

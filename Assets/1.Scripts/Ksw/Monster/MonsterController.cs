@@ -419,6 +419,9 @@ public class MonsterController : BattleSystem
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
+
+            // 처치 수 증가
+            MonsterManager.Instance.IncreaseKillCount();
             SetState(BehaviourState.Die);
             return;
         }
@@ -626,7 +629,7 @@ public class MonsterController : BattleSystem
         }
     }
 
-    protected virtual void HandleDeath()//죽음 상태 처리
+    public virtual void HandleDeath()//죽음 상태 처리
     {
         if (IsDie) return;// 이미 죽은 상태에서 다시 처리하지 않도록 함
         IsDie = true;

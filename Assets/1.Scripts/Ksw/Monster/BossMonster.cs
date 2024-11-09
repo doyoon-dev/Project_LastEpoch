@@ -352,7 +352,7 @@ public class BossMonster : MonsterController
 
 
 
-    protected override void HandleDeath()//죽음 상태 처리
+    public override void HandleDeath()//죽음 상태 처리
     {
         if (IsDie) return;// 이미 죽은 상태에서 다시 처리하지 않도록 함
         IsDie = true;                        // 
