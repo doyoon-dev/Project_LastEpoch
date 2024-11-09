@@ -134,10 +134,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossWaypointGroup
       objectReference: {fileID: 0}
-    - target: {fileID: 6447388471092558186, guid: de22c33a0505a2d47b27acc7399481a4, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6447388471092558188, guid: de22c33a0505a2d47b27acc7399481a4, type: 3}
       propertyPath: m_RootOrder
       value: 14

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
 {
@@ -57,6 +58,9 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     [SerializeField]
     private List<WaypointController> waypointGroups; // 여러 웨이포인트 그룹 관리
 
+
+
+    [Header("보스 소환 지연 시간")]
     [SerializeField]
     private float bossSpawnDelay = 3f; // 보스 소환 지연 시간 (초)
 
@@ -86,15 +90,10 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         // 설정된 지연 후에 자동 스폰 코루틴 시작
         StartCoroutine(StartAutoSpawnAfterDelay());
     }
+ 
 
-    // 자동 스폰 코루틴을 지연 후 시작하는 메서드
-    IEnumerator StartAutoSpawnAfterDelay()
-    {
-        yield return new WaitForSeconds(spawnInterval); // 초기 소환 후 spawnInterval만큼 대기
-        StartCoroutine(AutoSpawnMonsters()); // 이후부터 자동 스폰 코루틴 시작
-    }
 
-    #region Spawn
+    #region Spawn Methods
     // 일정 시간마다 몬스터를 자동으로 소환하는 코루틴
     IEnumerator AutoSpawnMonsters()
     {
@@ -109,20 +108,23 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         }
     }
 
-    // 처치 수를 증가시키는 메서드
-    public void IncreaseKillCount()
+    // 자동 스폰 코루틴을 지연 후 시작하는 메서드
+    IEnumerator StartAutoSpawnAfterDelay()
     {
-        KillMonCount++;
-        Debug.Log("현재 처치한 몬스터 수: " + KillMonCount);
+        yield return new WaitForSeconds(spawnInterval); // 초기 소환 후 spawnInterval만큼 대기
+        StartCoroutine(AutoSpawnMonsters()); // 이후부터 자동 스폰 코루틴 시작
     }
+  
 
     
 
     // 몬스터 랜덤 소환 메서드
     void SpawnMonster(WaypointController assignedWaypointGroup = null)
     {
+      
         // 활성화된 웨이포인트 그룹 중에서 선택
         List<WaypointController> activeWaypoints = new List<WaypointController>();
+
         foreach (var waypoint in waypointGroups)
         {
             if (waypointStatus[waypoint]) activeWaypoints.Add(waypoint);
@@ -273,6 +275,12 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
             waypointStatus[waypoint] = false; // 웨이포인트 비활성화
             Debug.Log("웨이포인트 비활성화: " + waypoint.name);
         }
+    }
+    // 처치 수를 증가시키는 메서드
+    public void IncreaseKillCount()
+    {
+        KillMonCount++;
+        Debug.Log("현재 처치한 몬스터 수: " + KillMonCount);
     }
 
     // 토템 파괴를 처리하는 메서드 추가
