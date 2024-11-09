@@ -14,10 +14,6 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     [SerializeField]
     public float spawnInterval; // 몬스터 소환 간격 (초 단위)
 
-    //[Header("몬스터 소환 거리")]
-    //[SerializeField]
-    //private float spawnOffset; // 몬스터 간 거리 오프셋
-
     [Header("보스 몬스터 프리팹")]
     [SerializeField]
     private GameObject bossMonsterPrefab; // 보스 몬스터 프리팹 추가
@@ -56,19 +52,45 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     [Header("보스 웨이포인트")]
     [SerializeField]
     private WaypointController bossWaypoint; // 보스 몬스터가 소환될 고정 웨이포인트
+
     [Header("웨이포인트 그룹 목록")]
     [SerializeField]
     private List<WaypointController> waypointGroups; // 여러 웨이포인트 그룹 관리
 
+    [SerializeField]
+    private float bossSpawnDelay = 3f; // 보스 소환 지연 시간 (초)
+
+    private Dictionary<WaypointController, bool> waypointStatus = new Dictionary<WaypointController, bool>(); // 웨이포인트 활성 상태 관리
     private Vector3 lastSpawnPosition = Vector3.zero; // 마지막 소환 위치 저장
     private MonsterController currentTargetMonster;  // 현재 공격받고 있는 몬스터
-
+    private int destroyedTotemCount = 0; // 파괴된 토템 수를 저장하는 변수
+    private const int totalTotems = 4; // 총 토템 수
 
     void Start()
     {
-        // 코루틴 시작: 일정 간격마다 몬스터 소환
-        StartCoroutine(AutoSpawnMonsters());
+        // 모든 웨이포인트를 활성화 상태로 초기화
+        foreach (var waypoint in waypointGroups)
+        {
+            waypointStatus[waypoint] = true;
+        }
+
+        // 시작 시 각 웨이포인트에 몬스터 하나씩 소환
+        foreach (var waypoint in waypointGroups)
+        {
+            SpawnMonster(waypoint);
+        }
+
+        // 설정된 지연 후에 자동 스폰 코루틴 시작
+        StartCoroutine(StartAutoSpawnAfterDelay());
     }
+
+    // 자동 스폰 코루틴을 지연 후 시작하는 메서드
+    IEnumerator StartAutoSpawnAfterDelay()
+    {
+        yield return new WaitForSeconds(spawnInterval); // 초기 소환 후 spawnInterval만큼 대기
+        StartCoroutine(AutoSpawnMonsters()); // 이후부터 자동 스폰 코루틴 시작
+    }
+
     #region Spawn
     // 일정 시간마다 몬스터를 자동으로 소환하는 코루틴
     IEnumerator AutoSpawnMonsters()
@@ -84,9 +106,42 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         }
     }
 
-    // 몬스터 소환 메서드
-    void SpawnMonster()
+    // 특정 웨이포인트에 있는 모든 몬스터들을 제거하는 메서드
+    public void KillMonstersAtWaypoint(WaypointController waypoint)
     {
+        foreach (Transform child in transform) // MonsterManager의 자식으로 생성된 몬스터들
+        {
+            MonsterController monster = child.GetComponent<MonsterController>();
+            if (monster != null && monster.m_waypointCtr.Contains(waypoint))
+            {
+                monster.SetDamage(new SkillData { Dmg = monster.m_stat.MaxHp }); // 몬스터의 체력을 모두 소진시켜 죽음 처리
+            }
+        }
+    }
+
+
+    // 몬스터 랜덤 소환 메서드
+    void SpawnMonster(WaypointController assignedWaypointGroup = null)
+    {
+        // 활성화된 웨이포인트 그룹 중에서 선택
+        List<WaypointController> activeWaypoints = new List<WaypointController>();
+        foreach (var waypoint in waypointGroups)
+        {
+            if (waypointStatus[waypoint]) activeWaypoints.Add(waypoint);
+        }
+
+        if (activeWaypoints.Count == 0)
+        {
+            Debug.LogWarning("활성화된 웨이포인트가 없습니다. 몬스터를 소환할 수 없습니다.");
+            return;
+        }
+
+        // 웨이포인트가 지정되지 않았다면 랜덤으로 선택
+        if (assignedWaypointGroup == null)
+        {
+            assignedWaypointGroup = activeWaypoints[Random.Range(0, activeWaypoints.Count)];// 활성화된 웨이포인트 중 랜덤으로 선택
+        }
+       
 
         // 랜덤하게 몬스터 프리팹을 선택
         int monsterIndex = Random.Range(0, m_monsterPrefabs.Length);
@@ -114,9 +169,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
             monsterController.monsterName = "Unknown Monster";
         }
 
-        // 웨이포인트 그룹을 랜덤으로 할당
-        int groupIndex = Random.Range(0, waypointGroups.Count);
-        WaypointController assignedWaypointGroup = waypointGroups[groupIndex];
+
 
         // 몬스터 초기화
         monsterController.Initialize(this, assignedWaypointGroup, healthBarUI, damageUIPrefab);  // 매니저를 초기화 시 전달
@@ -145,8 +198,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         Vector3 spawnPosition = assignedWaypointGroup.GetRandomWaypointPosition();
 
         // NavMeshAgent의 위치를 강제로 설정
-        navAgent.Warp(spawnPosition);
-        
+        navAgent.Warp(spawnPosition);     
    
         // 소환 위치가 설정된 후, NavMeshAgent의 이동을 다시 활성화
         navAgent.isStopped = false;
@@ -206,11 +258,34 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
         boss.transform.position = bossSpawnPosition; // 위치를 고정
     }
 
-
+    // 지연 후 보스 몬스터 소환 코루틴
+    private IEnumerator SpawnBossAfterDelay()
+    {
+        yield return new WaitForSeconds(bossSpawnDelay); // 설정된 시간만큼 대기
+        SpawnBossMonster(); // 보스 몬스터 소환
+    }
 
 
     #endregion
+    // 특정 웨이포인트 비활성화 메서드 (토템이 파괴될 때 호출됨)
+    public void DisableWaypoint(WaypointController waypoint)
+    {
+        if (waypointStatus.ContainsKey(waypoint))
+        {
+            waypointStatus[waypoint] = false; // 웨이포인트 비활성화
+            Debug.Log("웨이포인트 비활성화: " + waypoint.name);
+        }
+    }
 
+    // 토템 파괴를 처리하는 메서드 추가
+    public void OnTotemDestroyed()
+    {
+        destroyedTotemCount++; // 토템 파괴 시 카운트 증가
+        if (destroyedTotemCount >= totalTotems) // 모든 토템이 파괴되었는지 확인
+        {
+            StartCoroutine(SpawnBossAfterDelay()); // 모든 토템이 파괴되면 지연 후 보스 소환
+        }
+    }
     // 현재 공격받고 있는 몬스터 설정 (중앙 체력바)
     public void SetCurrentTargetMonster(MonsterController monster)
     {

@@ -10,18 +10,13 @@ public class Totem : BattleSystem
 
     private RayfireRigid rayfireRigid;
     // Start is called before the first frame update
+    public WaypointController assignedWaypoint;// 토템이 속한 웨이포인트 지정
     void Start()
-    {
-
-        // RayFire Rigid 컴포넌트를 가져옵니다.
+    {       
         rayfireRigid = GetComponent<RayfireRigid>();
-
-
         rayfireRigid.simulationType = SimType.Dynamic; // 파괴 가능한 오브젝트로 설정
         rayfireRigid.objectType = ObjectType.SkinnedMesh;
         rayfireRigid.demolitionType = DemolitionType.Runtime; // 런타임에 파괴가 일어나도록 설정
-
-        //Cluster Demolition 설정
         rayfireRigid.clusterDemolition.demolishable = true; // Cluster Demolition 활성화
         rayfireRigid.clusterDemolition.connectivity = ConnectivityType.ByBoundingBox; // 연결성을 BoundingBox 기반으로 설정
         Initalize();
@@ -45,11 +40,8 @@ public class Totem : BattleSystem
     }
     public override void Initalize()
     {
-
-
         m_curHealPoint = m_stat.MaxHp;
         m_curMagicPoint = m_stat.MaxMp;
-
     }
 
 
@@ -57,7 +49,6 @@ public class Totem : BattleSystem
     private void DestroyObject()
     {
         //Debug.Log("Totem이 완전히 파괴되었습니다!");
-
         SoundManager.Inst.PlaySfx("Rock_Broke");
         // 파괴 실행
         rayfireRigid.Demolish();
@@ -65,7 +56,13 @@ public class Totem : BattleSystem
         if (RayfireMan.inst != null)
         {
             RayfireMan.inst.StartCoroutine(ClearFragmentsAfterDelay(5f));
+            // MonsterManager에 해당 웨이포인트 비활성화 요청
+            MonsterManager.Instance.DisableWaypoint(assignedWaypoint);
+            // MonsterManager에 해당 토템이 파괴되었음을 알림
+            MonsterManager.Instance.OnTotemDestroyed();
+
         }
+
         // 본체 오브젝트 제거
         Destroy(gameObject, 2f);
     }

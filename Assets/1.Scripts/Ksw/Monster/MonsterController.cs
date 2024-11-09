@@ -79,7 +79,7 @@ public class MonsterController : BattleSystem
     public bool IsDie = false;
     public bool isTransitioning = false;// 상태 전환 중인지 확인하는 플래그\
     private bool hasAttacked = false;
-
+    public bool isLookingAtPlayer = false;
     #region Blank Methods
 
     /* //레이캐스트로 타켓 찾는법
@@ -128,7 +128,7 @@ public class MonsterController : BattleSystem
 
     void AnimEvent_AttackFinished()
     {
-        SetIdle(1f);
+        SetIdle(0.5f);
     }
 
 
@@ -653,7 +653,17 @@ public class MonsterController : BattleSystem
         }
 
     }
-
+    // Chase 상태 종료 시 LookAtPlayer 코루틴 중지
+  
+    void StopChase()
+    {
+        if (isLookingAtPlayer)
+        {
+            StopCoroutine(LookAtPlayer());
+            isLookingAtPlayer = false;  // 플래그 초기화
+        }
+        m_navAgent.updateRotation = true; // NavMeshAgent 회전 활성화
+    }
 
 
 
@@ -706,9 +716,10 @@ public class MonsterController : BattleSystem
 
             //추적 상태
             case BehaviourState.Chase:
+
                 //LookAtPlayer 떄문에 자동회전 비활성화
-                m_navAgent.updateRotation = false;
-                StartCoroutine(LookAtPlayer()); // 추적 상태에서도 플레이어를 바라보도록 호출
+                m_navAgent.updateRotation = true; // 자동 회전 활성화
+                
                 // 플레이어 위치로 추적
                 m_navAgent.SetDestination(m_player.transform.position);
 
@@ -718,27 +729,38 @@ public class MonsterController : BattleSystem
                 // 추적 거리를 벗어나면 추적 중지
                 if (distanceToPlayer > m_chaseDist)
                 {
-                    StopCoroutine(LookAtPlayer());
+                    StopChase();
                     SetIdle(1f);  // Idle 상태로 전환
                 }
                 else if (CheckArea(m_player.transform.position, Mathf.Pow(m_navAgent.stoppingDistance, 2f)))
                 {
+                    StopChase();
                     SetIdle(1f);  // 플레이어 근처에 도착하면 Idle 상태로 전환
                 }
                 break;
 
             //경계 상태
             case BehaviourState.Patrol:
+                StopChase(); // Chase 종료 설정 초기화
+                m_navAgent.updateRotation = true; // 자동 회전 활성화
                 if (!m_isPatrol)
-                {
+                { 
                     m_isPatrol = true;
-                    // 여러 개의 웨이포인트 컨트롤러 리스트에서 랜덤으로 선택
-                    var selectedWaypointCtr = m_waypointCtr[Random.Range(0, m_waypointCtr.Count)];
 
-                    // 선택된 웨이포인트 컨트롤러의 웨이포인트 배열에서 랜덤으로 웨이포인트 선택
-                    m_curWaypoint = Random.Range(0, selectedWaypointCtr.m_waypoints.Length);
-                    m_navAgent.SetDestination(selectedWaypointCtr.m_waypoints[m_curWaypoint].transform.position);
-                    m_navAgent.updateRotation = true; 
+                    // 여러 개의 웨이포인트 컨트롤러 리스트에서 랜덤으로 선택
+                    if (m_waypointCtr != null && m_waypointCtr.Count > 0)
+                    {
+                        var selectedWaypointCtr = m_waypointCtr[Random.Range(0, m_waypointCtr.Count)];
+
+                        // 선택된 웨이포인트 컨트롤러의 웨이포인트 배열에서 랜덤으로 웨이포인트 선택
+                        if (selectedWaypointCtr != null && selectedWaypointCtr.m_waypoints.Length > 0)
+                        {
+                            m_curWaypoint = Random.Range(0, selectedWaypointCtr.m_waypoints.Length);
+                            m_navAgent.SetDestination(selectedWaypointCtr.m_waypoints[m_curWaypoint].transform.position);
+                            //m_navAgent.updateRotation = true;
+                        }
+                        
+                    }             
                 }
                 else
                 {
@@ -746,16 +768,24 @@ public class MonsterController : BattleSystem
                     {
                         m_isPatrol = false;
                         m_navAgent.ResetPath();
+                        StopChase();
                         SetIdle(1f);
                     }
                     else
                     {
                         // 현재 할당된 웨이포인트 컨트롤러에서 목표 웨이포인트에 도달했는지 확인
-                        var currentWaypointCtr = m_waypointCtr[Random.Range(0, m_waypointCtr.Count)];
-                        if (CheckArea(currentWaypointCtr.m_waypoints[m_curWaypoint].transform.position, m_navAgent.stoppingDistance))
+                        if (m_waypointCtr != null && m_waypointCtr.Count > 0)
                         {
-                            m_isPatrol = false;
-                            SetIdle(1f);
+                            var currentWaypointCtr = m_waypointCtr[Random.Range(0, m_waypointCtr.Count)];
+                            if (currentWaypointCtr != null && m_curWaypoint >= 0 && m_curWaypoint < currentWaypointCtr.m_waypoints.Length)
+                            {
+                                if (CheckArea(currentWaypointCtr.m_waypoints[m_curWaypoint].transform.position, m_navAgent.stoppingDistance))
+                                {
+                                    m_isPatrol = false;
+                                    SetIdle(1f);
+                                }
+                            }
+                            
                         }
                     }
                 }

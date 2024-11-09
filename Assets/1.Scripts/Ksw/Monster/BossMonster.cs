@@ -16,7 +16,7 @@ public class BossMonster : MonsterController
     private float forceGatheringDuration = 4.0f; // 강제로 Gathering 상태를 유지할 시간
     private float specialAttackMoveDistance = 7.0f; // 스페셜 어택 시 이동할 거리
     private float specialAttackSpeed = 5.0f; // 스페셜 어택 시 이동 속도
-    public bool isLookingAtPlayer = false;
+   
   
 
     protected override void Start()
