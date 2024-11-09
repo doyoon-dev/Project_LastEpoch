@@ -13,23 +13,34 @@ public class StartQuestUI : ShowUI
 
     public Color m_initQuestUIImageColor;
     public Color m_initQuestUITextColor;
+    bool m_isStart = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        CoroutineShowUI(m_bg, m_text, StartFadeOutQuest);
+        ShowQuestUI();
+        //CoroutineShowUI(m_bg, m_text, StartFadeOutQuest);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            ShowQuestUI();
+        }
     }
 
-    //public override void CoroutineShowUI(Image bg, TextMeshProUGUI text, UnityAction act)
-    //{
-    //    base.CoroutineShowUI(bg, text, act);
-    //}
+    public override void CoroutineShowUI(Image bg, TextMeshProUGUI text, UnityAction act)
+    {
+        base.CoroutineShowUI(bg, text, act);
+    }
+
+    public void ShowQuestUI()
+    {
+        ShowText();
+        CoroutineShowUI(m_bg, m_text, StartFadeOutQuest);
+    }
 
     public void StartFadeOutQuest()
     {
@@ -58,5 +69,19 @@ public class StartQuestUI : ShowUI
     {
         m_initQuestUIImageColor = m_bg.color;
         m_initQuestUITextColor = m_text.color;
+    }
+
+    public string ShowText()
+    {
+        if (m_isStart)
+        {
+            m_text.text = "던전에 설치된 오브젝트들을 모두 부수고 부활한 좀비왕을 처치하세요.";
+            m_isStart = false;
+        }
+        else
+        {
+            m_text.text = "모든 오즈벡트가 부서져 좀비왕이 부활합니다.";
+        }
+        return m_text.text;
     }
 }
