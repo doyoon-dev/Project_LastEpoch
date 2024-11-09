@@ -33752,7 +33752,7 @@ MonoBehaviour:
   m_cam: {fileID: 0}
   m_stat:
     MaxHp: 500
-    MaxMp: 100
+    MaxMp: 51
     AttackDmg: 20
     AttackRange: 5
     Defense: 0
@@ -33792,6 +33792,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_resurrectionObj: {fileID: 0}
   m_hitEffect: {fileID: 117448, guid: 90e29a122a6b56e40ad6314a8616cf08, type: 3}
   attackDamage: 20
   attackRange: 3
@@ -33799,7 +33800,7 @@ MonoBehaviour:
   m_playerUI: {fileID: 0}
   m_enemyMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 2176
   m_clickEffect: {fileID: 0}
 --- !u!136 &5244370769833058614
 CapsuleCollider:

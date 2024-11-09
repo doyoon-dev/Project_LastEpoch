@@ -179,6 +179,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
                 SkillMove(hit.point);
             }
         }
+
         if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
             m_isSoundPlay = false;
