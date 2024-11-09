@@ -11889,6 +11889,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1963616221558572135, guid: 9d371ad26e755dc499713e9991c57a1f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6304507910942402161, guid: 9d371ad26e755dc499713e9991c57a1f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -12143,17 +12147,9 @@ PrefabInstance:
       propertyPath: m_cam
       value: 
       objectReference: {fileID: 412117472}
-    - target: {fileID: 1434607845487233651, guid: a344330fbfad8684e81f46e6d74f86a9, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1434607846977062412, guid: a344330fbfad8684e81f46e6d74f86a9, type: 3}
       propertyPath: m_Name
       value: GameClearUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 1434607846977062412, guid: a344330fbfad8684e81f46e6d74f86a9, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1434607846977062413, guid: a344330fbfad8684e81f46e6d74f86a9, type: 3}
       propertyPath: m_Pivot.x
