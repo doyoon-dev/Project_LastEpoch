@@ -2291,8 +2291,8 @@ MonoBehaviour:
   m_isPatrol: 0
   IsDie: 0
   isTransitioning: 0
-  specialAttackEffect: {fileID: 7371864001393348475}
   isLookingAtPlayer: 0
+  specialAttackEffect: {fileID: 7371864001393348475}
 --- !u!114 &8813861907267086165
 MonoBehaviour:
   m_ObjectHideFlags: 0
