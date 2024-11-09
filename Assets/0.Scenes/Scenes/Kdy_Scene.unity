@@ -11129,6 +11129,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1434607846977062413, guid: a344330fbfad8684e81f46e6d74f86a9, type: 3}
   m_PrefabInstance: {fileID: 1434607845911182278}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1082686924 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1082686924, guid: a344330fbfad8684e81f46e6d74f86a9, type: 3}
+  m_PrefabInstance: {fileID: 1434607845911182278}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248661334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33374aee1051d96418808072a366b534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1095206279 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6004472151377447837, guid: b29fa472a10552c4ea75a2825a5c0b67, type: 3}
@@ -11432,7 +11443,7 @@ MonoBehaviour:
   canvasTransform: {fileID: 1518358734}
   headHealthBarPrefab: {fileID: 1803567793}
   headHealthBarParent: {fileID: 816023174}
-  m_monsterManager: {fileID: 1262388509}
+  m_gameClearUI: {fileID: 1082686924}
 --- !u!4 &1308659345
 Transform:
   m_ObjectHideFlags: 0
@@ -12132,9 +12143,17 @@ PrefabInstance:
       propertyPath: m_cam
       value: 
       objectReference: {fileID: 412117472}
+    - target: {fileID: 1434607845487233651, guid: a344330fbfad8684e81f46e6d74f86a9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1434607846977062412, guid: a344330fbfad8684e81f46e6d74f86a9, type: 3}
       propertyPath: m_Name
       value: GameClearUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434607846977062412, guid: a344330fbfad8684e81f46e6d74f86a9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1434607846977062413, guid: a344330fbfad8684e81f46e6d74f86a9, type: 3}
       propertyPath: m_Pivot.x
