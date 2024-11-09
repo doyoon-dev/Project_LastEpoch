@@ -447,6 +447,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1518358734}
     m_Modifications:
+    - target: {fileID: 1737067029826803404, guid: 44b5c34bddfa5d644824fdcca438bfaf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 822364154}
+    - target: {fileID: 1737067029826803404, guid: 44b5c34bddfa5d644824fdcca438bfaf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Initalize
+      objectReference: {fileID: 0}
     - target: {fileID: 1737067030779957248, guid: 44b5c34bddfa5d644824fdcca438bfaf, type: 3}
       propertyPath: m_Name
       value: ResurrectionUI
@@ -640,6 +648,7 @@ GameObject:
   - component: {fileID: 412117471}
   - component: {fileID: 412117470}
   - component: {fileID: 412117474}
+  - component: {fileID: 412117475}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -767,6 +776,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   m_mr: []
+--- !u!114 &412117475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412117469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a7dcdc139a2abf4a8867336dd6ed976, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_isEnd: 0
+  m_time: 
 --- !u!1 &442802064
 GameObject:
   m_ObjectHideFlags: 0
@@ -1438,7 +1461,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1446,7 +1469,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 33.72
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2226,6 +2249,10 @@ PrefabInstance:
       value: Totem3
       objectReference: {fileID: 0}
     - target: {fileID: 7346879887582471543, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
+      propertyPath: m_stat.MaxHp
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7346879887582471543, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
       propertyPath: assignedWaypoint
       value: 
       objectReference: {fileID: 892060552}
@@ -2275,72 +2302,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
---- !u!1 &1262388508
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1262388510}
-  - component: {fileID: 1262388509}
-  m_Layer: 0
-  m_Name: MonsterManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1262388509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1262388508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0eb63ec6e4221fb44a5f7fba98d07275, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initialMonsterCount: 0
-  spawnInterval: 10
-  bossMonsterPrefab: {fileID: 2880857684377986955, guid: 71883b8bef406f04096d738eb1d27ef5, type: 3}
-  m_monsterPrefabs:
-  - {fileID: 8539942111360040700, guid: 0f61ae1b8da7f484198895822f942369, type: 3}
-  - {fileID: 8555175228367498427, guid: e6c949088738ba74c9cb60ea63c1f10b, type: 3}
-  itemDropManager: {fileID: 251983557}
-  healthBarUI: {fileID: 674851637}
-  headHealthBarPrefab: {fileID: 1887587094}
-  monsterNames:
-  - "\uAC10\uC5FC\uB41C \uAC1C"
-  - "\uAC10\uC5FC\uB41C \uC950"
-  bossMonsterName: "\uC880\uBE44\uC655 \uD558\uD2B8\uB860"
-  damageUIPrefab: {fileID: 1470227857}
-  summonEffectPrefab: {fileID: 4830667674265293240, guid: 0772e143ceb707e4bbf76b7b06e45f8e, type: 3}
-  bossWaypoint: {fileID: 559896291}
-  waypointGroups:
-  - {fileID: 55823639}
-  - {fileID: 1491101871}
-  - {fileID: 892060552}
-  - {fileID: 1705051582}
-  bossSpawnDelay: 3
---- !u!4 &1262388510
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1262388508}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1295759818
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2504,6 +2465,10 @@ PrefabInstance:
     - target: {fileID: 6605433966461573164, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
       propertyPath: m_Name
       value: Totem4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7346879887582471543, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
+      propertyPath: m_stat.MaxHp
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 7346879887582471543, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
       propertyPath: assignedWaypoint
@@ -3115,7 +3080,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8131604520204682678, guid: 5b531968442235f40997f2002f8b024c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 42
+      value: 43.16
       objectReference: {fileID: 0}
     - target: {fileID: 8131604520204682678, guid: 5b531968442235f40997f2002f8b024c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3598,6 +3563,10 @@ PrefabInstance:
       value: Totem1
       objectReference: {fileID: 0}
     - target: {fileID: 7346879887582471543, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
+      propertyPath: m_stat.MaxHp
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7346879887582471543, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
       propertyPath: assignedWaypoint
       value: 
       objectReference: {fileID: 55823639}
@@ -3886,6 +3855,10 @@ PrefabInstance:
       value: Totem2
       objectReference: {fileID: 0}
     - target: {fileID: 7346879887582471543, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
+      propertyPath: m_stat.MaxHp
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7346879887582471543, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
       propertyPath: assignedWaypoint
       value: 
       objectReference: {fileID: 1491101871}
@@ -4129,6 +4102,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8813861907267086164, guid: 71883b8bef406f04096d738eb1d27ef5, type: 3}
+      propertyPath: playTime
+      value: 
+      objectReference: {fileID: 412117475}
+    - target: {fileID: 8813861907267086164, guid: 71883b8bef406f04096d738eb1d27ef5, type: 3}
       propertyPath: m_waypointCtr.Array.data[0]
       value: 
       objectReference: {fileID: 559896291}
@@ -4252,3 +4229,100 @@ PrefabInstance:
       objectReference: {fileID: 1797610203}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e460b0cec6fed14d98d70bffb003d78, type: 3}
+--- !u!1001 &9011694043439770435
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 9011694044325457501, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011694044325457501, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011694044325457501, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011694044325457501, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011694044325457501, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011694044325457501, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011694044325457501, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011694044325457501, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011694044325457501, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011694044325457501, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011694044325457501, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: healthBarUI
+      value: 
+      objectReference: {fileID: 674851637}
+    - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: bossWaypoint
+      value: 
+      objectReference: {fileID: 559896291}
+    - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: damageUIPrefab
+      value: 
+      objectReference: {fileID: 1470227857}
+    - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: bossMonsterName
+      value: "\uC880\uBE44\uC655 \uD2B8\uB860"
+      objectReference: {fileID: 0}
+    - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: itemDropManager
+      value: 
+      objectReference: {fileID: 251983557}
+    - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: headHealthBarPrefab
+      value: 
+      objectReference: {fileID: 1887587094}
+    - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: waypointGroups.Array.data[0]
+      value: 
+      objectReference: {fileID: 55823639}
+    - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: waypointGroups.Array.data[1]
+      value: 
+      objectReference: {fileID: 1491101871}
+    - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: waypointGroups.Array.data[2]
+      value: 
+      objectReference: {fileID: 892060552}
+    - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: waypointGroups.Array.data[3]
+      value: 
+      objectReference: {fileID: 1705051582}
+    - target: {fileID: 9011694044325457503, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: m_Name
+      value: MonsterManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 34568142d1b79b34088d159f871e3198, type: 3}
