@@ -2293,6 +2293,7 @@ MonoBehaviour:
   isTransitioning: 0
   isLookingAtPlayer: 0
   specialAttackEffect: {fileID: 7371864001393348475}
+  playTime: {fileID: 0}
 --- !u!114 &8813861907267086165
 MonoBehaviour:
   m_ObjectHideFlags: 0

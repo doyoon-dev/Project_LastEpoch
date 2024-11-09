@@ -5,7 +5,13 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
 
-public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
+
+public interface KillCountAlarm
+{
+    int KillMonCount { get; }
+}
+
+public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCountAlarm
 {
     [Header("몬스터 소환 수")]
     [SerializeField]
@@ -71,7 +77,10 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager>
     private int destroyedTotemCount = 0; // 파괴된 토템 수를 저장하는 변수
     private const int totalTotems = 4; // 총 토템 수
 
+
     public int KillMonCount { get; private set; } = 0;
+
+
 
     void Start()
     {
