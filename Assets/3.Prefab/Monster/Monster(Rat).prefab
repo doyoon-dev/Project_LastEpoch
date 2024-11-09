@@ -2651,10 +2651,11 @@ MonoBehaviour:
   m_curMp: 0
   monsterType: 1
   m_state: 0
-  m_detectDist: 2.1
+  m_detectDist: 3
   m_attackDist: 1
-  m_chaseDist: 3.2
+  m_chaseDist: 4
   m_waypointCtr:
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -2672,6 +2673,7 @@ MonoBehaviour:
   m_isPatrol: 0
   IsDie: 0
   isTransitioning: 0
+  isLookingAtPlayer: 0
 --- !u!114 &9075252592327570951
 MonoBehaviour:
   m_ObjectHideFlags: 0
