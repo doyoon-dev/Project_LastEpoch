@@ -20,6 +20,9 @@ public class BossMonster : MonsterController
 
     public PlayTime playTime;
 
+    [SerializeField]
+    public GameObject GameUI;
+
     protected override void Start()
     {
         base.Start();
@@ -362,6 +365,12 @@ public class BossMonster : MonsterController
         // 보스 몬스터 전용 핏자국 이펙트 및 사운드
         GameObject bloodstainEffect = EffectManager.Instance.GetEffect("BloodSplatter05", transform.position, Quaternion.identity);
         SoundManager.Inst.PlaySfx("Boss_Death");
+
+        IMonsterCountResult GameClear = GameUI.GetComponent<IMonsterCountResult>();
+        if (GameClear != null)
+        {
+            GameClear.MonsterCountResult(MonsterManager.Instance.KillMonCount);        
+        }
 
         // PlayTime의 m_isEnd를 true로 설정
         if (playTime != null)

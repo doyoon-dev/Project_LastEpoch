@@ -788,8 +788,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a7dcdc139a2abf4a8867336dd6ed976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_gamClearUI: {fileID: 0}
   m_isEnd: 0
   m_time: 
+  m: {fileID: 0}
 --- !u!1 &442802064
 GameObject:
   m_ObjectHideFlags: 0
@@ -2440,6 +2442,7 @@ MonoBehaviour:
   canvasTransform: {fileID: 1518358734}
   headHealthBarPrefab: {fileID: 1887587094}
   headHealthBarParent: {fileID: 1887587093}
+  m_monsterManager: {fileID: 0}
 --- !u!4 &1308659345
 Transform:
   m_ObjectHideFlags: 0
@@ -3537,7 +3540,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8492186141576145929, guid: 471869703d1778a479a94eeef0cd5b69, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 471869703d1778a479a94eeef0cd5b69, type: 3}
@@ -4292,10 +4295,6 @@ PrefabInstance:
       propertyPath: damageUIPrefab
       value: 
       objectReference: {fileID: 1470227857}
-    - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
-      propertyPath: bossMonsterName
-      value: "\uC880\uBE44\uC655 \uD2B8\uB860"
-      objectReference: {fileID: 0}
     - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
       propertyPath: itemDropManager
       value: 
