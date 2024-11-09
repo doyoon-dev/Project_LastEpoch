@@ -17,6 +17,8 @@ public class SceneData : MonoBehaviour
     public GameObject headHealthBarPrefab;  // 모든 몬스터가 사용할 헤드 헬스바 프리팹
     public Transform headHealthBarParent;   // 헤드 헬스바가 위치할 부모 객체 (Canvas 하위)
 
+    public MonsterManager m_monsterManager;
+
 
     private void Awake()
     {
