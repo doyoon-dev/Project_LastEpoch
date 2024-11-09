@@ -51,9 +51,10 @@ public class GameClearUI : MonoBehaviour, ITimeResult, IMonsterCountResult
         m_playTime.text = s;
     }
 
+    
+
     public void MonsterCountResult(int cnt)
     {
-
         m_monCnt = cnt;
     }
 
