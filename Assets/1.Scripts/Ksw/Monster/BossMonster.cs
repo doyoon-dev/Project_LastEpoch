@@ -335,8 +335,6 @@ public class BossMonster : MonsterController
     }
 
 
-
-
     public void SpawnGatheringEffect(Vector3 position)
     {
         if (m_state != BehaviourState.Gathering) return;  // Gathering 상태가 아니면 실행하지 않음
@@ -350,28 +348,20 @@ public class BossMonster : MonsterController
         EffectManager.Instance.GetEffect("Gathering", position, Quaternion.identity);
     }
 
-
-
-    public override void HandleDeath()//죽음 상태 처리
+    // BossMonster의 HandleDeath 메서드
+    public override void HandleDeath()
     {
-        if (IsDie) return;// 이미 죽은 상태에서 다시 처리하지 않도록 함
-        IsDie = true;                        // 
-        StopAllCoroutines();// 모든 코루틴 중지
+        base.HandleDeath();  // 공통 처리 부분 호출
+
+        // 보스 몬스터 전용 처리 부분
         isGathering = false;
         isSpecialAttackActive = false;
-        m_navAgent.isStopped = true;  // 네비게이션 에이전트 중지
-        m_manager.HandleMonsterDeath(transform.position);// 매니저에게 몬스터가 죽었다고 알림
-        m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // 사망 애니메이션 재생
-        StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과                                                  
-        DisableColiders();
-        m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정                                                                                       
         SetState(BehaviourState.Die);
-        ShutDownHealthBars();    
-        AttackArea.SetActive(false);  // 공격 범위 비활성화 (박스가 보이지 않도록 설정)
-        GameObject bloodstainEffect = EffectManager.Instance.GetEffect("BloodSplatter05", transform.position, Quaternion.identity);// 핏자국 이펙트 생성
+
+        // 보스 몬스터 전용 핏자국 이펙트 및 사운드
+        GameObject bloodstainEffect = EffectManager.Instance.GetEffect("BloodSplatter05", transform.position, Quaternion.identity);
         SoundManager.Inst.PlaySfx("Boss_Death");
     }
-
     // 랜덤 이동 시작
     void StartRoaming()
     {

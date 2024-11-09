@@ -1346,6 +1346,10 @@ PrefabInstance:
       propertyPath: damageUIPrefab
       value: 
       objectReference: {fileID: 5253934711585909276}
+    - target: {fileID: 5244370769833058608, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
+      propertyPath: m_enemyMask.m_Bits
+      value: 2176
+      objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_RootOrder
       value: 13

@@ -1894,6 +1894,7 @@ MonoBehaviour:
   summonEffectPrefab: {fileID: 4830667674265293240, guid: 0772e143ceb707e4bbf76b7b06e45f8e, type: 3}
   bossWaypoint: {fileID: 0}
   waypointGroups: []
+  bossSpawnDelay: 3
 --- !u!4 &1262388510
 Transform:
   m_ObjectHideFlags: 0
