@@ -149,36 +149,41 @@ public class SentinelSkill : Skill, ISkill_Lunge
         // 마우스 방향으로 이동가능
         if (Input.GetKey(inputKey) && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
-            if (!m_isSoundPlay)
+            if (!m_usingSkill)
             {
-                SoundManager.Inst.PlaySfx("WarPath_Playing_Sound");
-                m_isSoundPlay = true;
-            }
-            if (m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
-            {
+                if (!m_isSoundPlay)
+                {
+                    SoundManager.Inst.PlaySfx("WarPath_Playing_Sound");
+                    m_isSoundPlay = true;
+                }
+                if (m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
+                {
+                    m_stopMovingAct?.Invoke();
+                    return;
+                }
+                //StopAllCoroutines();
+                m_myAnim.SetBool("Move", false);
+                m_usingSkill = true;
                 m_stopMovingAct?.Invoke();
-                return;
-            }
-            //StopAllCoroutines();
-            m_myAnim.SetBool("Move", false);
-            m_usingSkill = true;
-            m_stopMovingAct?.Invoke();
-            RecoverMp(m_usingSkill);
-            UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
-            if (!m_warPathUse)
-            {
-                m_warpathEffect.SetActive(true);
+                RecoverMp(m_usingSkill);
+                UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
+                if (!m_warPathUse)
+                {
+                    m_warpathEffect.SetActive(true);
 
-                m_warPathUse = true;
-                m_myAnim.SetBool("SkillWarPath", true);
+                    m_warPathUse = true;
+                    m_myAnim.SetBool("SkillWarPath", true);
+                }
             }
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
-            {
-                SkillMove(hit.point);
-            }
+            
+            SkillMove();
+            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            //if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
+            //{
+            //    SkillMove(hit.point);
+            //}
         }
+
 
         if (Input.GetKeyUp(inputKey) || m_player.m_curMagicPoint < SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
@@ -192,10 +197,16 @@ public class SentinelSkill : Skill, ISkill_Lunge
         }
     }
 
-    public void SkillMove(Vector3 target)
+    public void SkillMove()
     {
-        StopAllCoroutines();
-        StartCoroutine(SkillMoving(target));
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
+        {
+            StopAllCoroutines();
+            StartCoroutine(SkillMoving(hit.point));
+        }
+        //StopAllCoroutines();
+        //StartCoroutine(SkillMoving(target));
     }
 
     public IEnumerator SkillMoving(Vector3 target)
@@ -204,7 +215,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         dir.Normalize();
         dir.y = 0;
 
-        while (gameObject.GetComponent<SentinelSkill>().m_usingSkill && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
+        while (m_warPathUse && m_usingSkill && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
             float delta = Time.deltaTime * m_player.m_moveStat.moveSpeed;
             transform.Translate(dir * delta, Space.World);

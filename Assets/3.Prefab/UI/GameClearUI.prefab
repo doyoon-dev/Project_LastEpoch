@@ -129,7 +129,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1434607845487233648
 RectTransform:
   m_ObjectHideFlags: 0
@@ -243,7 +243,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1434607845950722896
 RectTransform:
   m_ObjectHideFlags: 0
@@ -963,6 +963,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1434607846977062413}
+  - component: {fileID: 1082686924}
   m_Layer: 5
   m_Name: GameClearUI
   m_TagString: Untagged
@@ -994,6 +995,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 700, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1082686924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1434607846977062412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33374aee1051d96418808072a366b534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_cam: {fileID: 0}
+  m_playTimeObj: {fileID: 1434607845950722899}
+  m_monCntObj: {fileID: 1434607845487233651}
+  m_playTime: {fileID: 1434607847191014475}
+  m_monCntText: {fileID: 1434607847031570061}
 --- !u!1 &1434607847031570063
 GameObject:
   m_ObjectHideFlags: 0
