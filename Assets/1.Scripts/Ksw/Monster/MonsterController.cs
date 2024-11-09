@@ -648,10 +648,13 @@ public class MonsterController : BattleSystem
         StopAllCoroutines();// 모든 코루틴 중지
         m_manager.HandleMonsterDeath(transform.position);// 매니저에게 몬스터가 죽었다고 알림
         m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // 사망 애니메이션 재생
-        StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과                                                 
-        m_navAgent.isStopped = true;  // 네비게이션 에이전트 중지
-        DisableColiders();
-        m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정                                                                                       
+        StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과
+        if (m_navAgent != null && m_navAgent.isActiveAndEnabled && m_navAgent.isOnNavMesh)
+        {
+            m_navAgent.isStopped = true;  // 네비게이션 에이전트 중지
+            m_navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;  // 네비게이션 에이전트 설정    
+        }      
+        DisableColiders();                                                                                         
         ShutDownHealthBars();
         AttackArea.SetActive(false);// 공격 범위 비활성화 (박스가 보이지 않도록 설정)                              
         GameObject bloodstainEffect = EffectManager.Instance.GetEffect("BloodSplatter02", transform.position, Quaternion.identity);// 핏자국 이펙트 생성
