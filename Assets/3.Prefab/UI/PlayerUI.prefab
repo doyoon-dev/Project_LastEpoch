@@ -548,14 +548,60 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3996918203844313377}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7935396ff15fe034c8917359f4080961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_skillKeyCode: 113
+  m_useSkill:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: BattleSystem, Assembly-CSharp
+        m_MethodName: UsedSkill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_usingSkill: 0
   m_player: {fileID: 0}
+  m_playerUI: {fileID: 3996918205501953457}
+  m_myAnim: {fileID: 0}
+  m_warPathStartPos: {fileID: 0}
+  m_warPathEndPos: {fileID: 0}
+  m_stopMovingAct:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: StopCoroutineFunc
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_effectPos: {fileID: 0}
+  m_erasingStrikeEffect: {fileID: 0}
+  m_warpathEffect: {fileID: 0}
+  m_lungeEffect: {fileID: 0}
+  m_enemyMask:
+    serializedVersion: 2
+    m_Bits: 2176
+  m_backgroundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  m_skillKey: 113
   m_skillObj: {fileID: 8162887530517710935}
+  m_pUI: {fileID: 3996918205501953457}
 --- !u!1 &3996918204326825208
 GameObject:
   m_ObjectHideFlags: 0
@@ -853,9 +899,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7935396ff15fe034c8917359f4080961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_skillKeyCode: 114
+  m_useSkill:
+    m_PersistentCalls:
+      m_Calls: []
+  m_usingSkill: 0
   m_player: {fileID: 0}
+  m_playerUI: {fileID: 0}
+  m_myAnim: {fileID: 0}
+  m_warPathStartPos: {fileID: 0}
+  m_warPathEndPos: {fileID: 0}
+  m_stopMovingAct:
+    m_PersistentCalls:
+      m_Calls: []
+  m_effectPos: {fileID: 0}
+  m_erasingStrikeEffect: {fileID: 0}
+  m_warpathEffect: {fileID: 0}
+  m_lungeEffect: {fileID: 0}
+  m_enemyMask:
+    serializedVersion: 2
+    m_Bits: 0
+  m_backgroundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  m_skillKey: 0
   m_skillObj: {fileID: 0}
+  m_pUI: {fileID: 0}
 --- !u!1 &3996918204473825216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1744,9 +1812,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7935396ff15fe034c8917359f4080961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_skillKeyCode: 119
+  m_useSkill:
+    m_PersistentCalls:
+      m_Calls: []
+  m_usingSkill: 0
   m_player: {fileID: 0}
+  m_playerUI: {fileID: 0}
+  m_myAnim: {fileID: 0}
+  m_warPathStartPos: {fileID: 0}
+  m_warPathEndPos: {fileID: 0}
+  m_stopMovingAct:
+    m_PersistentCalls:
+      m_Calls: []
+  m_effectPos: {fileID: 0}
+  m_erasingStrikeEffect: {fileID: 0}
+  m_warpathEffect: {fileID: 0}
+  m_lungeEffect: {fileID: 0}
+  m_enemyMask:
+    serializedVersion: 2
+    m_Bits: 0
+  m_backgroundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  m_skillKey: 0
   m_skillObj: {fileID: 8324343081671180894}
+  m_pUI: {fileID: 0}
 --- !u!1 &3996918205088073520
 GameObject:
   m_ObjectHideFlags: 0
@@ -2110,9 +2200,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7935396ff15fe034c8917359f4080961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_skillKeyCode: 101
+  m_useSkill:
+    m_PersistentCalls:
+      m_Calls: []
+  m_usingSkill: 0
   m_player: {fileID: 0}
+  m_playerUI: {fileID: 0}
+  m_myAnim: {fileID: 0}
+  m_warPathStartPos: {fileID: 0}
+  m_warPathEndPos: {fileID: 0}
+  m_stopMovingAct:
+    m_PersistentCalls:
+      m_Calls: []
+  m_effectPos: {fileID: 0}
+  m_erasingStrikeEffect: {fileID: 0}
+  m_warpathEffect: {fileID: 0}
+  m_lungeEffect: {fileID: 0}
+  m_enemyMask:
+    serializedVersion: 2
+    m_Bits: 0
+  m_backgroundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  m_skillKey: 0
   m_skillObj: {fileID: 6591091645902810766}
+  m_pUI: {fileID: 0}
 --- !u!1 &3996918205374050724
 GameObject:
   m_ObjectHideFlags: 0
@@ -2367,7 +2479,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BattleSystem, Assembly-CSharp
+        m_TargetAssemblyTypeName: RecoverResource, Assembly-CSharp
         m_MethodName: RecoveryHealPoint
         m_Mode: 0
         m_Arguments:
@@ -3614,3 +3726,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1863090642359058779, guid: 01f3960c0a6e0f645941d9c9a1da7777, type: 3}
   m_PrefabInstance: {fileID: 7535474236619737356}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2074253970395880455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8162887530517710935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac480683beb67244192b41dbf48a69b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_skillData: {fileID: 11400000, guid: eb1faffda9601fd4ba04dcc3c013e073, type: 2}
+  m_parent: {fileID: 0}
