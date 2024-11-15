@@ -40,7 +40,7 @@ public class PlayTime : MonoBehaviour
                 }
             }
             m_sec = (int)time;
-            Debug.Log(string.Format("{0:D2}:{1:D2}:{2:D2}", m_hour, m_min, m_sec));
+            //Debug.Log(string.Format("{0:D2}:{1:D2}:{2:D2}", m_hour, m_min, m_sec));
             yield return null;
         }
         //m_sec = (int)time;

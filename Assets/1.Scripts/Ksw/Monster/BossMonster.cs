@@ -376,6 +376,14 @@ public class BossMonster : MonsterController
         GameObject bloodstainEffect = EffectManager.Instance.GetEffect("BloodSplatter05", transform.position, Quaternion.identity);
         SoundManager.Inst.PlaySfx("Boss_Death");
 
+
+
+        // GameClearUI 활성화
+        if (SceneData.Inst.m_gameClearUI != null)
+        {
+            SceneData.Inst.m_gameClearUI.gameObject.SetActive(true);  // GameClearUI의 GameObject를 활성화
+        }
+
         IMonsterCountResult GameClear = SceneData.Inst.m_gameClearUI.GetComponent<IMonsterCountResult>();
         if (GameClear != null)
         {
@@ -392,8 +400,9 @@ public class BossMonster : MonsterController
         {
             Debug.Log("playTime에m_isend가 NULL.");
         }
-       
 
+
+      
     }
     // 랜덤 이동 시작
     void StartRoaming()
