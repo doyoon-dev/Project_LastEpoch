@@ -18,7 +18,7 @@ public class Skill : MonoBehaviour, IUsingSkill
     // Start is called before the first frame update
     void Awake()
     {
-        m_player = transform.GetComponent<Player>();
+        //m_player = transform.GetComponent<Player>();
     }
 
     // Update is called once per frame

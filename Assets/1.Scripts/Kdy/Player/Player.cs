@@ -42,6 +42,7 @@ public class Player : BattleSystem, ISetClickEffect
     public PlayerUI m_playerUI;
     public LayerMask m_enemyMask;
     public GameObject m_clickEffect;
+    public GameObject m_resurrectionEffect;
 
     int m_clickCnt = 0;
     bool m_isComboCheck = false;
@@ -141,6 +142,7 @@ public class Player : BattleSystem, ISetClickEffect
         SkillDataManager.m_skillDataDic["Normal"].Dmg = m_stat.AttackDmg;
         if (m_isDie)
         {
+            m_resurrectionEffect.SetActive(true);
             // 처음 스폰 위치 (부활 위치)
             transform.position = Vector3.zero;
             gameObject.GetComponent<Collider>().isTrigger = false;

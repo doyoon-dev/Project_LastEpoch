@@ -36,7 +36,12 @@ public interface IEquipItemStat
     event UnityAction<ItemData> m_equipItemStat;
 }
 
-public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IChangePos, IOrgPos, IEquipItemStat, ISetInventory
+public interface IItemInterface : IChangePos, IOrgPos, IEquipItemStat, ISetInventory
+{
+
+}
+
+public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler, IItemInterface
 {
     public event UnityAction m_unEquipItem = null;
     //public event UnityAction<ItemData, bool> m_equipItemStat = null;         // 아이템을 장착했을 때 유니티 이벤트 실행해서 BattleSystem에 있는 Stat 아이템 Stat에 따라 바꿔주기
@@ -82,6 +87,21 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         transform.position = m_orgPos;
         transform.SetParent(m_parentPos);
         m_image.raycastTarget = true;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        ISetItemInform isii = m_inventory.GetComponent<Inventory>().m_itemInform.GetComponent<ISetItemInform>();
+        if (isii != null)
+        {
+            isii.SetItemInform(m_itemData);
+        }
+        m_inventory.GetComponent<Inventory>().m_itemInform.m_informUIObj.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        m_inventory.GetComponent<Inventory>().m_itemInform.m_informUIObj.SetActive(false);
     }
 
     public void OnPointerClick(PointerEventData eventData)

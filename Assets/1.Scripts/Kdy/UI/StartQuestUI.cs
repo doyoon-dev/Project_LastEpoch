@@ -25,10 +25,7 @@ public class StartQuestUI : ShowUI
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            ShowQuestUI();
-        }
+
     }
 
     public override void CoroutineShowUI(Image bg, TextMeshProUGUI text, UnityAction act)
@@ -71,17 +68,17 @@ public class StartQuestUI : ShowUI
         m_initQuestUITextColor = m_text.color;
     }
 
-    public string ShowText()
+    public void ShowText()
     {
         if (m_isStart)
         {
-            m_text.text = "던전에 설치된 오브젝트들을 모두 부수고 부활한 좀비왕을 처치하세요.";
+            m_text.text = "던전에 설치된 토템들을 모두 부수고 부활한 좀비왕을 처치하세요.";
             m_isStart = false;
         }
         else
         {
-            m_text.text = "모든 오즈벡트가 부서져 좀비왕이 부활합니다.";
+            m_text.text = "모든 토템이 부서져 좀비왕이 부활합니다.";
+            m_isStart = true;
         }
-        return m_text.text;
     }
 }
