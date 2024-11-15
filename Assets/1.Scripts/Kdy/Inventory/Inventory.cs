@@ -45,6 +45,7 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
 
     public Slot m_selectedItmeGrid;
     public EquipSlot m_equipSlot;
+    public ItemInform m_itemInform;
 
     Item m_selectedItem;
 
