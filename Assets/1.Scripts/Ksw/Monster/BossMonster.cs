@@ -394,6 +394,11 @@ public class BossMonster : MonsterController
         if (playTime != null)
         {
             playTime.m_isEnd = true;
+            IResult ir = SceneData.Inst.m_gameClearUI.GetComponent<IResult>();
+            if (ir != null)
+            {
+                ir.Result();
+            }
             //Debug.Log("playTime에m_isend가 true로 설정되었습니다.");
         }
         else

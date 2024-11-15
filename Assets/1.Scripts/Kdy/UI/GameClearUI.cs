@@ -13,7 +13,12 @@ public interface ITimeResult
     void TimeResult(string s);
 }
 
-public class GameClearUI : MonoBehaviour, ITimeResult, IMonsterCountResult
+public interface IResult
+{
+    void Result();
+}
+
+public class GameClearUI : MonoBehaviour, ITimeResult, IMonsterCountResult, IResult
 {
     // 카메라 나중에 지움
     [SerializeField]
@@ -58,7 +63,7 @@ public class GameClearUI : MonoBehaviour, ITimeResult, IMonsterCountResult
         m_monCnt = cnt;
     }
 
-    void Result()
+    public void Result()
     {
         ActiveObjects();
     }
