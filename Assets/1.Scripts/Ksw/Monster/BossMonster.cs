@@ -20,15 +20,24 @@ public class BossMonster : MonsterController
 
     public PlayTime playTime;
 
-    [SerializeField]
-    public GameObject GameUI;
+    
 
     protected override void Start()
     {
         base.Start();
         startPos = transform.position; // 시작 위치 초기화
                                        // 인디케이터 기본 설정
-        
+                                       // 메인 카메라에서 PlayTime 컴포넌트를 가져옴
+        if (playTime == null)
+        {
+            GameObject mainCamera = Camera.main.gameObject;
+            playTime = mainCamera.GetComponent<PlayTime>();
+
+            if (playTime == null)
+            {
+                Debug.LogError("메인 카메라에 PlayTime 스크립트가 없습니다.");
+            }
+        }
     }
 
     //행동 프로세스
@@ -351,7 +360,8 @@ public class BossMonster : MonsterController
         // EffectManager를 통해 피 이펙트를 생성하고 위치 설정
         EffectManager.Instance.GetEffect("Gathering", position, Quaternion.identity);
     }
-
+    
+   
     // BossMonster의 HandleDeath 메서드
     public override void HandleDeath()
     {
@@ -366,7 +376,15 @@ public class BossMonster : MonsterController
         GameObject bloodstainEffect = EffectManager.Instance.GetEffect("BloodSplatter05", transform.position, Quaternion.identity);
         SoundManager.Inst.PlaySfx("Boss_Death");
 
-        IMonsterCountResult GameClear = GameUI.GetComponent<IMonsterCountResult>();
+
+
+        // GameClearUI 활성화
+        if (SceneData.Inst.m_gameClearUI != null)
+        {
+            SceneData.Inst.m_gameClearUI.gameObject.SetActive(true);  // GameClearUI의 GameObject를 활성화
+        }
+
+        IMonsterCountResult GameClear = SceneData.Inst.m_gameClearUI.GetComponent<IMonsterCountResult>();
         if (GameClear != null)
         {
             GameClear.MonsterCountResult(MonsterManager.Instance.KillMonCount);        
@@ -376,14 +394,15 @@ public class BossMonster : MonsterController
         if (playTime != null)
         {
             playTime.m_isEnd = true;
-            Debug.Log("playTime에m_isend가 true로 설정되었습니다.");
+            //Debug.Log("playTime에m_isend가 true로 설정되었습니다.");
         }
         else
         {
             Debug.Log("playTime에m_isend가 NULL.");
         }
-       
 
+
+      
     }
     // 랜덤 이동 시작
     void StartRoaming()

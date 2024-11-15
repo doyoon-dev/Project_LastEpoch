@@ -788,10 +788,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a7dcdc139a2abf4a8867336dd6ed976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gamClearUI: {fileID: 0}
+  m_gamClearUI: {fileID: 435759113}
   m_isEnd: 0
   m_time: 
   m: {fileID: 0}
+--- !u!1 &435759113 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1434607846977062412, guid: a344330fbfad8684e81f46e6d74f86a9, type: 3}
+  m_PrefabInstance: {fileID: 1295759818}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &442802064
 GameObject:
   m_ObjectHideFlags: 0
@@ -1471,7 +1476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 33
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2406,6 +2411,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1434607846977062413, guid: a344330fbfad8684e81f46e6d74f86a9, type: 3}
   m_PrefabInstance: {fileID: 1295759818}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1295759820 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1082686924, guid: a344330fbfad8684e81f46e6d74f86a9, type: 3}
+  m_PrefabInstance: {fileID: 1295759818}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435759113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33374aee1051d96418808072a366b534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1308659343
 GameObject:
   m_ObjectHideFlags: 0
@@ -2442,7 +2458,7 @@ MonoBehaviour:
   canvasTransform: {fileID: 1518358734}
   headHealthBarPrefab: {fileID: 1887587094}
   headHealthBarParent: {fileID: 1887587093}
-  m_monsterManager: {fileID: 0}
+  m_gameClearUI: {fileID: 1295759820}
 --- !u!4 &1308659345
 Transform:
   m_ObjectHideFlags: 0
@@ -4291,6 +4307,10 @@ PrefabInstance:
       propertyPath: bossWaypoint
       value: 
       objectReference: {fileID: 559896291}
+    - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: spawnInterval
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
       propertyPath: damageUIPrefab
       value: 
