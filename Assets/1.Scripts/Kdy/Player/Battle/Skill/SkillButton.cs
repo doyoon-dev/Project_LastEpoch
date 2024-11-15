@@ -13,12 +13,10 @@ public interface IGetSkillData
     void GetSkillData(GameObject data);
 }
 
-public class SkillButton : MonoBehaviour, IGetSkillData
+public class SkillButton : TestSkill, IGetSkillData
 {
-    //public event UnityAction<KeyCode> m_skillAct;
-    public KeyCode m_skillKeyCode;
-    public GameObject m_player;
     public GameObject m_skillObj;
+    public PlayerUI m_pUI;
 
     // Start is called before the first frame update
     void Start()
@@ -29,14 +27,10 @@ public class SkillButton : MonoBehaviour, IGetSkillData
     // Update is called once per frame
     void Update()
     {
-        //if(Input.GetKey(m_skillKeyCode))
-        //{
-        //    ISkill_Lunge isl = m_player.GetComponent<ISkill_Lunge>();
-        //    if(isl != null)
-        //    {
-        //        isl.Skill_Lunge(m_skillKeyCode);
-        //    }
-        //}
+        if (Input.GetKey(m_skillKey))
+        {
+            Skill_ErasingStrike(m_skillKey);
+        }
     }
 
     public void GetSkillData(GameObject data)

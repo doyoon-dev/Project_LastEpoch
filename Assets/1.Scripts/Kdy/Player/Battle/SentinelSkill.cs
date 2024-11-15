@@ -177,11 +177,6 @@ public class SentinelSkill : Skill, ISkill_Lunge
             }
             
             SkillMove();
-            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, m_enemyMask | m_backgroundMask))
-            //{
-            //    SkillMove(hit.point);
-            //}
         }
 
 
@@ -217,6 +212,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
 
         while (m_warPathUse && m_usingSkill && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Warpath"].Mp)
         {
+            UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
             float delta = Time.deltaTime * m_player.m_moveStat.moveSpeed;
             transform.Translate(dir * delta, Space.World);
             yield return null;
