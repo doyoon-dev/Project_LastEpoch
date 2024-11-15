@@ -1476,7 +1476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 33
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5244370769833058610, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4307,6 +4307,10 @@ PrefabInstance:
       propertyPath: bossWaypoint
       value: 
       objectReference: {fileID: 559896291}
+    - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
+      propertyPath: spawnInterval
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 9011694044325457502, guid: 34568142d1b79b34088d159f871e3198, type: 3}
       propertyPath: damageUIPrefab
       value: 
