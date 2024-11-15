@@ -1088,6 +1088,10 @@ MonoBehaviour:
   manaText: {fileID: 60509957905434961}
   attackDmgText: {fileID: 60509956498321831}
   defenseText: {fileID: 60509956106870673}
+  itemDataList:
+  - {fileID: 11400000, guid: f50777cfc8dcea4458e05b26710e8620, type: 2}
+  - {fileID: 11400000, guid: 8584b251692971d48af0193b13b425d3, type: 2}
+  - {fileID: 11400000, guid: d334c21392467674aa038a78014a1661, type: 2}
 --- !u!1 &3616676801841949673
 GameObject:
   m_ObjectHideFlags: 0

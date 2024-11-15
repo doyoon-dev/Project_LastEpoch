@@ -2188,6 +2188,7 @@ MonoBehaviour:
   canvasTransform: {fileID: 1518358734}
   headHealthBarPrefab: {fileID: 1506653335}
   headHealthBarParent: {fileID: 345629152}
+  m_gameClearUI: {fileID: 0}
 --- !u!4 &1308659345
 Transform:
   m_ObjectHideFlags: 0
@@ -3581,22 +3582,6 @@ PrefabInstance:
       propertyPath: s_player
       value: 
       objectReference: {fileID: 822364154}
-    - target: {fileID: 60509958080153777, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
-      propertyPath: itemDataList.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 60509958080153777, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
-      propertyPath: itemDataList.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: f50777cfc8dcea4458e05b26710e8620, type: 2}
-    - target: {fileID: 60509958080153777, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
-      propertyPath: itemDataList.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 8584b251692971d48af0193b13b425d3, type: 2}
-    - target: {fileID: 60509958080153777, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
-      propertyPath: itemDataList.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: d334c21392467674aa038a78014a1661, type: 2}
     - target: {fileID: 60509958080153778, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3684,6 +3669,10 @@ PrefabInstance:
     - target: {fileID: 60509958080153779, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
       propertyPath: m_Name
       value: PlayerStat
+      objectReference: {fileID: 0}
+    - target: {fileID: 60509958080153779, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3616676801841949673, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
       propertyPath: m_IsActive
