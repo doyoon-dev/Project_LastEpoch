@@ -113,9 +113,6 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI
             // 장착 시 공격력과 방어력 증가
             s_player.m_stat.AttackDmg = initialAttackDmg + additionalAttackDmg;
             s_player.m_stat.Defense = initialDefense + additionalDefense;
-            SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg += additionalAttackDmg;
-            SkillDataManager.m_skillDataDic["Warpath"].Dmg += additionalAttackDmg;
-            SkillDataManager.m_skillDataDic["Lunge"].Dmg += additionalAttackDmg;
             // 아이템이 장착되었다는 설정
             hasEquippedItem = true;
 
