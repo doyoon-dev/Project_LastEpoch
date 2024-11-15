@@ -124,11 +124,6 @@ public class Player : BattleSystem, ISetClickEffect
             SkillDataManager.m_skillDataDic["Normal"].Dmg = 30;
             
         }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            //ExDropItemOnDeath();
-            ExCheckDropItem(m_inventory);
-        }
         if (Input.GetKeyDown(KeyCode.P))
         {
             SetDamage(SkillDataManager.m_skillDataDic["Normal"]);
@@ -143,6 +138,7 @@ public class Player : BattleSystem, ISetClickEffect
         if (m_isDie)
         {
             m_resurrectionEffect.SetActive(true);
+            SoundManager.Inst.PlaySfx("ResurrectionSound");
             // 처음 스폰 위치 (부활 위치)
             transform.position = Vector3.zero;
             gameObject.GetComponent<Collider>().isTrigger = false;

@@ -234,66 +234,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1518358734}
     m_Modifications:
-    - target: {fileID: 538475815120887897, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_myAnim
-      value: 
-      objectReference: {fileID: 822364157}
-    - target: {fileID: 538475815120887897, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_player
-      value: 
-      objectReference: {fileID: 822364154}
-    - target: {fileID: 538475815120887897, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 538475815120887897, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_warPathEndPos
-      value: 
-      objectReference: {fileID: 822364155}
-    - target: {fileID: 538475815120887897, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_warPathStartPos
-      value: 
-      objectReference: {fileID: 822364156}
-    - target: {fileID: 538475815120887897, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 822364154}
-    - target: {fileID: 538475815120887897, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UsedSkill
-      objectReference: {fileID: 0}
-    - target: {fileID: 2411990166024800489, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_myAnim
-      value: 
-      objectReference: {fileID: 822364157}
-    - target: {fileID: 2411990166024800489, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_player
-      value: 
-      objectReference: {fileID: 822364154}
-    - target: {fileID: 2411990166024800489, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2411990166024800489, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_warPathEndPos
-      value: 
-      objectReference: {fileID: 822364155}
-    - target: {fileID: 2411990166024800489, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_warPathStartPos
-      value: 
-      objectReference: {fileID: 822364156}
-    - target: {fileID: 2411990166024800489, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 822364154}
-    - target: {fileID: 2411990166024800489, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UsedSkill
-      objectReference: {fileID: 0}
     - target: {fileID: 3996918205501953457, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
       propertyPath: m_player
       value: 
       objectReference: {fileID: 822364154}
+    - target: {fileID: 3996918205501953457, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
+      propertyPath: m_usingPotionAct.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 822364159}
     - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -329,18 +277,6 @@ PrefabInstance:
     - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
       propertyPath: m_SizeDelta.y
       value: 181.00006
-      objectReference: {fileID: 0}
-    - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3996918205501953462, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -393,34 +329,6 @@ PrefabInstance:
     - target: {fileID: 3996918205501953463, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
       propertyPath: m_Name
       value: PlayerUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 8400501006759727497, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_myAnim
-      value: 
-      objectReference: {fileID: 822364157}
-    - target: {fileID: 8400501006759727497, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_player
-      value: 
-      objectReference: {fileID: 822364154}
-    - target: {fileID: 8400501006759727497, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8400501006759727497, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_warPathEndPos
-      value: 
-      objectReference: {fileID: 822364155}
-    - target: {fileID: 8400501006759727497, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_warPathStartPos
-      value: 
-      objectReference: {fileID: 822364156}
-    - target: {fileID: 8400501006759727497, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 822364154}
-    - target: {fileID: 8400501006759727497, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
-      propertyPath: m_useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UsedSkill
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c7c06a37a676f141994412002d8bb0a, type: 3}
@@ -1535,26 +1443,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a55ec5b9d70ab546b3932bf7d412810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &822364155 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5244370769486884012, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
-  m_PrefabInstance: {fileID: 822364153}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &822364156 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5244370769042063078, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
-  m_PrefabInstance: {fileID: 822364153}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &822364157 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5244370768580197507, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
-  m_PrefabInstance: {fileID: 822364153}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &822364158 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5244370769833058611, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
   m_PrefabInstance: {fileID: 822364153}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &822364159 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 822364160, guid: 2c719599d1e887a4685751b0e3f8ab2a, type: 3}
+  m_PrefabInstance: {fileID: 822364153}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822364158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 442067c63890b8b42b05136d1528a3a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &832375484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4018,6 +3922,10 @@ PrefabInstance:
     - target: {fileID: 2045136758470345236, guid: e0fde0080f7bcc6448e60c8e8b07b1ac, type: 3}
       propertyPath: m_Name
       value: ItemDropManger
+      objectReference: {fileID: 0}
+    - target: {fileID: 2045136758470345237, guid: e0fde0080f7bcc6448e60c8e8b07b1ac, type: 3}
+      propertyPath: lowRangeDropChances.Array.data[3]
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2045136758470345238, guid: e0fde0080f7bcc6448e60c8e8b07b1ac, type: 3}
       propertyPath: m_RootOrder

@@ -209,15 +209,15 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
 
 
 
-    //public void RecoveryHealPoint(float healpoint)
-    //{
-    //    m_recoveryCheck = true;
-    //    m_curHealPoint += healpoint;
-    //    if (m_curHealPoint >= m_stat.MaxHp)
-    //    {
-    //        m_curHealPoint = m_stat.MaxHp;
-    //    }
-    //}
+    public void RecoveryHealPoint(float healpoint)
+    {
+        m_recoveryCheck = true;
+        m_curHealPoint += healpoint;
+        if (m_curHealPoint >= m_stat.MaxHp)
+        {
+            m_curHealPoint = m_stat.MaxHp;
+        }
+    }
 
     //public void RecoveryManaPoint(bool isUsingSkill)
     //{
