@@ -11,6 +11,9 @@ public class Totem : BattleSystem
     private RayfireRigid rayfireRigid;
     // Start is called before the first frame update
     public WaypointController assignedWaypoint;// 토템이 속한 웨이포인트 지정
+
+    public HeadHealthBar headHealthBar;
+
     void Start()
     {       
         rayfireRigid = GetComponent<RayfireRigid>();
