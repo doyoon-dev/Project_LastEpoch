@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayTime : MonoBehaviour
 {
     [SerializeField]
-    GameObject m_gamClearUI;
+    GameObject m_gameClearUI;
     public bool m_isEnd = false;
     int m_hour = 0;
     int m_min = 0;
@@ -22,7 +22,7 @@ public class PlayTime : MonoBehaviour
     {
         
     }
-    public MonsterManager m;
+
     IEnumerator TimeCheck()
     {
         float time = 0.0f;
@@ -45,7 +45,7 @@ public class PlayTime : MonoBehaviour
         }
         //m_sec = (int)time;
         
-        ITimeResult itr = m_gamClearUI.GetComponent<ITimeResult>();
+        ITimeResult itr = m_gameClearUI.GetComponent<ITimeResult>();
         if (itr != null)
         {
             itr.TimeResult(TimeToText(m_hour, m_min, m_sec));

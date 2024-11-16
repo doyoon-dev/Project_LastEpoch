@@ -30,12 +30,16 @@ public class SkillDataManager : MonoBehaviour
 
     private void Awake()
     {
-        m_skillDataDic.Add(m_skillDatas[0].name, m_skillDatas[0]);
-        m_skillDataDic.Add(m_skillDatas[1].name, m_skillDatas[1]);
-        m_skillDataDic.Add(m_skillDatas[2].name, m_skillDatas[2]);
-        m_skillDataDic.Add(m_skillDatas[3].name, m_skillDatas[3]);
-        m_skillDataDic.Add(m_skillDatas[4].name, m_skillDatas[4]);
-        m_skillDataDic.Add(m_skillDatas[5].name, m_skillDatas[5]);
-        m_skillDataDic.Add(m_skillDatas[6].name, m_skillDatas[6]);
+        for (int i = 0; i < m_skillDatas.Length; i++)
+        {
+            m_skillDataDic.Add(m_skillDatas[i].name, m_skillDatas[i]);
+        }
+        //m_skillDataDic.Add(m_skillDatas[0].name, m_skillDatas[0]);
+        //m_skillDataDic.Add(m_skillDatas[1].name, m_skillDatas[1]);
+        //m_skillDataDic.Add(m_skillDatas[2].name, m_skillDatas[2]);
+        //m_skillDataDic.Add(m_skillDatas[3].name, m_skillDatas[3]);
+        //m_skillDataDic.Add(m_skillDatas[4].name, m_skillDatas[4]);
+        //m_skillDataDic.Add(m_skillDatas[5].name, m_skillDatas[5]);
+        //m_skillDataDic.Add(m_skillDatas[6].name, m_skillDatas[6]);
     }
 }

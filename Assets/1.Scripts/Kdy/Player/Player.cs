@@ -44,6 +44,7 @@ public class Player : BattleSystem, ISetClickEffect
     public GameObject m_clickEffect;
     public GameObject m_resurrectionEffect;
 
+    int m_deathCnt = 0;
     int m_clickCnt = 0;
     bool m_isComboCheck = false;
     bool m_isDie = false;
@@ -135,6 +136,9 @@ public class Player : BattleSystem, ISetClickEffect
     {
         base.Initalize();
         SkillDataManager.m_skillDataDic["Normal"].Dmg = m_stat.AttackDmg;
+        SkillDataManager.m_skillDataDic["Warpath"].Dmg = 1;
+        SkillDataManager.m_skillDataDic["Lunge"].Dmg = 1;
+        SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg = 10;
         if (m_isDie)
         {
             m_resurrectionEffect.SetActive(true);
