@@ -65,7 +65,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
         yield return new WaitForSeconds(lifetime); // 일정 시간 대기
         if (!isPickedUp) // 아이템이 인벤토리에 들어가지 않은 경우에만 처리
         {
-            //ObjectPool.Inst.Push<GameObject>(m_itemNameUIPrefabObj);
+            ObjectPool.Inst.Push<GameObject>(m_itemNameUIPrefabObj);
             ObjectPool.Inst.Push<DropItem>(gameObject); // 객체 풀로 아이템 반환
         }
     }
