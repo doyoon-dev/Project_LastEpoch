@@ -2054,8 +2054,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb63ec6e4221fb44a5f7fba98d07275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMonsterCount: 4
-  spawnInterval: 40
+  initialMonsterCount: 3
+  spawnInterval: 10
   bossMonsterPrefab: {fileID: 2880857684377986955, guid: 71883b8bef406f04096d738eb1d27ef5, type: 3}
   m_monsterPrefabs:
   - {fileID: 8539942111360040700, guid: 0f61ae1b8da7f484198895822f942369, type: 3}
@@ -2567,7 +2567,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8000527176415546930, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -26
+      value: -2.58
       objectReference: {fileID: 0}
     - target: {fileID: 8000527176415546930, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2575,7 +2575,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8000527176415546930, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 22.6
+      value: 50.43
       objectReference: {fileID: 0}
     - target: {fileID: 8000527176415546930, guid: c782a2e77520b9647b047e33e8cb53d5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3668,6 +3668,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2260510112662965951, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3294678790049295844, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
