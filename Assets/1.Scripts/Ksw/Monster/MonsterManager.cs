@@ -75,7 +75,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
     private Vector3 lastSpawnPosition = Vector3.zero; // 마지막 소환 위치 저장
     private MonsterController currentTargetMonster;  // 현재 공격받고 있는 몬스터
     private int destroyedTotemCount = 0; // 파괴된 토템 수를 저장하는 변수
-    private const int totalTotems = 4; // 총 토템 수
+    private const int totalTotems = 5; // 총 토템 수
 
 
     public int KillMonCount { get; private set; } = 0;
