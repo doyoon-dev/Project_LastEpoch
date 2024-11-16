@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Normal
   Mp: 0
+  InitDmg: 20
   Dmg: 20
   CoolTime: 0
   Channeling: 0
