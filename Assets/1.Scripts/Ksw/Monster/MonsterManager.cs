@@ -108,13 +108,38 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
     {
         while (true)
         {
-            // 설정된 수만큼 몬스터를 연속적으로 소환
-            for (int i = 0; i < initialMonsterCount; i++)
+            // 활성화된 웨이포인트 그룹 목록을 가져오기
+            List<WaypointController> activeWaypoints = new List<WaypointController>();
+            foreach (var waypoint in waypointGroups)
             {
-                SpawnMonster();
+                if (waypointStatus[waypoint]) activeWaypoints.Add(waypoint);
             }
+
+            // 활성화된 웨이포인트 그룹이 없으면 경고 로그 출력 후 대기
+            if (activeWaypoints.Count == 0)
+            {
+                Debug.LogWarning("활성화된 웨이포인트 그룹이 없습니다. 몬스터를 소환할 수 없습니다.");
+                yield return new WaitForSeconds(spawnInterval);
+                continue;
+            }
+
+            // `initialMonsterCount`만큼 랜덤으로 웨이포인트 그룹 선택
+            HashSet<int> selectedIndices = new HashSet<int>();
+            while (selectedIndices.Count < Mathf.Min(initialMonsterCount, activeWaypoints.Count))
+            {
+                selectedIndices.Add(Random.Range(0, activeWaypoints.Count));
+            }
+
+            // 선택된 웨이포인트 그룹에 몬스터 소환
+            foreach (int index in selectedIndices)
+            {
+                SpawnMonster(activeWaypoints[index]);
+            }
+
             yield return new WaitForSeconds(spawnInterval); // 설정된 간격만큼 대기 후 다시 소환
         }
+
+
     }
 
     // 자동 스폰 코루틴을 지연 후 시작하는 메서드
