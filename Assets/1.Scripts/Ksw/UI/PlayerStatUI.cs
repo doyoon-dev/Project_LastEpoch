@@ -13,7 +13,12 @@ public interface IUnEquipItemStatUI
     void UnequipItemStat(ItemData itemData);
 }
 
-public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI
+public interface IAdditionalStats
+{
+    Dictionary<string, float> AdditionalStats { get; set; }
+}
+
+public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI, IAdditionalStats
 {
     [SerializeField]
     private Player s_player;
@@ -30,13 +35,21 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI
     // 여러 아이템을 관리하는 리스트
     [SerializeField]
     private List<ItemData> itemDataList;
+
     private bool isStatsVisible = false;  // 스탯창 표시 여부
     private bool hasEquippedItem = false; // 아이템 장착 여부
 
     // 장착 아이템으로 증가한 스탯을 따로 저장
     private float additionalAttackDmg = 0.0f;
     private float additionalDefense = 0.0f;
-    private float additionalSkillDmg = 0.0f;
+    //private float additionalSkillDmg = 0.0f;
+
+    // AdditionalStats 인터페이스 구현
+    public Dictionary<string, float> AdditionalStats { get; set; } = new Dictionary<string, float>();
+
+    // 초기 스킬 데미지 저장
+    private Dictionary<string, float> initialSkillDmgDict = new Dictionary<string, float>();
+
 
     // 초기 스탯 저장
     private float initialhealth;
@@ -59,7 +72,8 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI
         // SkillDataManager에서 스킬 데이터를 가져와서 배열로 설정
         int skillCount = SkillDataManager.m_skillDataDic.Count;
         initialSkillDmg = new float[skillCount];
-
+      
+      
 
         //각 스킬의 데미지를 배열에 저장
         int index = 0;
@@ -67,7 +81,9 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI
         {
             if (index < 4)
             {
-                initialSkillDmg[index] = skillData.Dmg;
+                string key = $"Skill{index}";
+                initialSkillDmgDict[key] = skillData.Dmg; // 초기값 저장
+                AdditionalStats[key] = initialSkillDmgDict[key];
             }
             index++;
         }
@@ -126,7 +142,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI
             // 추가된 공격력과 방어력을 별도로 저장
             additionalAttackDmg += itemData.atkPower;
             additionalDefense += itemData.defense;
-            additionalSkillDmg += itemData.atkPower;
+            //additionalSkillDmg += itemData.atkPower;
 
             // 장착 시 공격력과 방어력 증가
             s_player.m_stat.AttackDmg = initialAttackDmg + additionalAttackDmg;
@@ -136,11 +152,20 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI
             int index = 0;
             foreach (var skillData in SkillDataManager.m_skillDataDic.Values)
             {
-                if (index <4)
+                if (index < 4)
                 {
-                    skillData.Dmg = initialSkillDmg[index] + additionalSkillDmg; // 스킬 데미지 업데이트
-                    //Debug.Log($"Skill Updated: {skillData.Name}, Damage: {skillData.Dmg} (+{additionalSkillDmg})");
-                }                             
+                    string key = $"Skill{index}";
+                    if (AdditionalStats.ContainsKey(key))
+                    {
+                        AdditionalStats[key] += itemData.atkPower; // 추가 데미지를 관리
+                        skillData.Dmg = AdditionalStats[key]; // 스킬 데미지 업데이트
+
+                    }
+                    else
+                    {
+                        Debug.LogError($"AdditionalStats에 {key}가 없습니다.");
+                    }
+                }
                 index++;
             }
             // 아이템이 장착되었다는 설정
@@ -159,7 +184,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI
             // 장착 해제 시 추가된 스탯을 감소
             additionalAttackDmg -= itemData.atkPower;
             additionalDefense -= itemData.defense;
-            additionalSkillDmg -= itemData.atkPower;
+            //additionalSkillDmg -= itemData.atkPower;
 
             // 장착 해제 후 스탯을 다시 초기 값에 추가된 값으로 설정
             s_player.m_stat.AttackDmg = initialAttackDmg + Mathf.Max(additionalAttackDmg, 0);
@@ -171,8 +196,16 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI
             {
                 if (index < 4)
                 {
-                    skillData.Dmg = initialSkillDmg[index] + Mathf.Max(additionalSkillDmg, 0); // 스킬 데미지 업데이트
-                    //Debug.Log($"Skill Updated: {skillData.Name}, Damage: {skillData.Dmg} (-{itemData.atkPower})"); // 디버그 로그 추가
+                    string key = $"Skill{index}";
+                    if (AdditionalStats.ContainsKey(key))
+                    {
+                        AdditionalStats[key] = Mathf.Max(0, AdditionalStats[key] - itemData.atkPower); // 추가 데미지 감소
+                        skillData.Dmg = AdditionalStats[key]; // 스킬 데미지 업데이트
+                    }
+                    else
+                    {
+                        Debug.LogError($"AdditionalStats에 {key}가 없습니다.");
+                    }
                 }
                 index++;
             }
@@ -187,7 +220,19 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI
             UpdateStatUI();
         }
     }
-
+    private void ApplySkillDamageUpdates()
+    {
+        int index = 0;
+        foreach (var skillData in SkillDataManager.m_skillDataDic.Values)
+        {
+            if (index < 4)
+            {
+                string key = $"Skill{index}";
+                skillData.Dmg = initialSkillDmgDict[key] + AdditionalStats[key]; // 스킬 데미지 반영
+            }
+            index++;
+        }
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z))
