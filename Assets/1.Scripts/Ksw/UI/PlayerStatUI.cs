@@ -93,7 +93,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
 
         AdditionalStats.Add("Atk", additionalAttackDmg);
         AdditionalStats.Add("Def", additionalDefense);
-        AdditionalStats.Add("Skill", additionalAttackDmg);
+        AdditionalStats.Add("Skill", additionalSkillDmg);   // 이거 문제잇음
 
         UpdateStatUI();
     }
