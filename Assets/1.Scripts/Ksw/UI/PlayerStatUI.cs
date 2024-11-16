@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 public interface IEquipItemStatUI
 {
     void EquipItemStat(ItemData itemData);
@@ -20,13 +20,13 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI
     [SerializeField]
     private GameObject statsPanel;   // 스탯 UI 패널 오브젝트
     [SerializeField]
-    private Text healthText;
+    private TextMeshProUGUI healthText;
     [SerializeField]
-    private Text manaText;
+    private TextMeshProUGUI manaText;
     [SerializeField]
-    private Text attackDmgText;
+    private TextMeshProUGUI attackDmgText;
     [SerializeField]
-    private Text defenseText;
+    private TextMeshProUGUI defenseText;
     // 여러 아이템을 관리하는 리스트
     [SerializeField]
     private List<ItemData> itemDataList;

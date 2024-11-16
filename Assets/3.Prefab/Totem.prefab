@@ -560,7 +560,7 @@ MonoBehaviour:
     rotSpeed: 0
   m_cam: {fileID: 0}
   m_stat:
-    MaxHp: 500
+    MaxHp: 2000
     MaxMp: 0
     AttackDmg: 0
     AttackRange: 0
@@ -572,6 +572,7 @@ MonoBehaviour:
   damageUIPrefab: {fileID: 0}
   m_curHp: 0
   m_curMp: 0
+  assignedWaypoint: {fileID: 0}
 --- !u!114 &6672001511651544505
 MonoBehaviour:
   m_ObjectHideFlags: 0
