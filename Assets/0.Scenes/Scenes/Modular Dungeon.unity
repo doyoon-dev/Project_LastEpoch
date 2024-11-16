@@ -2342,6 +2342,7 @@ MonoBehaviour:
   headHealthBarPrefab: {fileID: 50670202}
   headHealthBarParent: {fileID: 50670201}
   m_gameClearUI: {fileID: 1634198208}
+  m_playerStatUI: {fileID: 1913747418}
 --- !u!4 &1308659345
 Transform:
   m_ObjectHideFlags: 0
@@ -3219,6 +3220,10 @@ PrefabInstance:
     - target: {fileID: 2260510112662965951, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3294678790049295844, guid: d7745471a27081e43b61091fc031d6cb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7745471a27081e43b61091fc031d6cb, type: 3}

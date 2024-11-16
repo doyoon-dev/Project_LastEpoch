@@ -18,7 +18,7 @@ public class SceneData : MonoBehaviour
     public Transform headHealthBarParent;   // 헤드 헬스바가 위치할 부모 객체 (Canvas 하위)
 
     public GameClearUI m_gameClearUI;
-
+    public PlayerStatUI m_playerStatUI;
 
     private void Awake()
     {

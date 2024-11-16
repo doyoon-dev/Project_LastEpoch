@@ -135,10 +135,16 @@ public class Player : BattleSystem, ISetClickEffect
     public override void Initalize()
     {
         base.Initalize();
-        SkillDataManager.m_skillDataDic["Normal"].Dmg = m_stat.AttackDmg;
-        SkillDataManager.m_skillDataDic["Warpath"].Dmg = 1;
-        SkillDataManager.m_skillDataDic["Lunge"].Dmg = 1;
-        SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg = 10;
+        IAdditionalStats ias = SceneData.Inst.m_playerStatUI.GetComponent<IAdditionalStats>();
+        if (ias != null)
+        {
+            SkillDataManager.m_skillDataDic["Normal"].Dmg = ias.AdditionalStats["Atk"];
+            SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg = ias.AdditionalStats["Skill"];
+            SkillDataManager.m_skillDataDic["Lunge"].Dmg = ias.AdditionalStats["Skill"];
+            SkillDataManager.m_skillDataDic["Warpath"].Dmg = ias.AdditionalStats["Skill"];
+        }
+        
+        
         if (m_isDie)
         {
             m_resurrectionEffect.SetActive(true);

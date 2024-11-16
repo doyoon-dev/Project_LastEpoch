@@ -42,7 +42,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
     // 장착 아이템으로 증가한 스탯을 따로 저장
     private float additionalAttackDmg = 0.0f;
     private float additionalDefense = 0.0f;
-    //private float additionalSkillDmg = 0.0f;
+    private float additionalSkillDmg = 0.0f;
 
     // AdditionalStats 인터페이스 구현
     public Dictionary<string, float> AdditionalStats { get; set; } = new Dictionary<string, float>();
@@ -63,7 +63,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
     private Color increaseColor = Color.yellow;  // 증가 시 노란색
     
 
-    void Start()
+    void Awake()
     {
         // 플레이어의 초기 스탯 저장
         initialAttackDmg = s_player.m_stat.AttackDmg;
@@ -72,21 +72,28 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
         // SkillDataManager에서 스킬 데이터를 가져와서 배열로 설정
         int skillCount = SkillDataManager.m_skillDataDic.Count;
         initialSkillDmg = new float[skillCount];
-      
-      
+
+
+        additionalAttackDmg = initialAttackDmg;
+        additionalDefense = initialDefense;
 
         //각 스킬의 데미지를 배열에 저장
-        int index = 0;
-        foreach (var skillData in SkillDataManager.m_skillDataDic.Values)
-        {
-            if (index < 4)
-            {
-                string key = $"Skill{index}";
-                initialSkillDmgDict[key] = skillData.Dmg; // 초기값 저장
-                AdditionalStats[key] = initialSkillDmgDict[key];
-            }
-            index++;
-        }
+        //int index = 0;
+        //foreach (var skillData in SkillDataManager.m_skillDataDic.Values)
+        //{
+        //    if (index < 4)
+        //    {
+        //        string key = skillData.name;
+        //        initialSkillDmgDict[key] = skillData.Dmg; // 초기값 저장
+        //        AdditionalStats[key] = initialSkillDmgDict[key];
+        //    }
+        //    index++;
+        //}
+
+
+        AdditionalStats.Add("Atk", additionalAttackDmg);
+        AdditionalStats.Add("Def", additionalDefense);
+        AdditionalStats.Add("Skill", additionalSkillDmg);   // 이거 문제잇음
 
         UpdateStatUI();
     }
