@@ -42,7 +42,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
     // 장착 아이템으로 증가한 스탯을 따로 저장
     private float additionalAttackDmg = 0.0f;
     private float additionalDefense = 0.0f;
-    private float additionalSkillDmg = 0.0f;
+   
 
     // AdditionalStats 인터페이스 구현
     public Dictionary<string, float> AdditionalStats { get; set; } = new Dictionary<string, float>();
@@ -129,7 +129,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
             // 추가된 공격력과 방어력을 별도로 저장
             additionalAttackDmg += itemData.atkPower;
             additionalDefense += itemData.defense;
-            //additionalSkillDmg += itemData.atkPower;
+           
 
             // 장착 시 공격력과 방어력 증가
             s_player.m_stat.AttackDmg = initialAttackDmg + additionalAttackDmg;
@@ -154,7 +154,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
             // 장착 해제 시 추가된 스탯을 감소
             additionalAttackDmg -= itemData.atkPower;
             additionalDefense -= itemData.defense;
-            //additionalSkillDmg -= itemData.atkPower;
+           
 
             // 장착 해제 후 스탯을 다시 초기 값에 추가된 값으로 설정
             s_player.m_stat.AttackDmg = initialAttackDmg + Mathf.Max(additionalAttackDmg, 0);
