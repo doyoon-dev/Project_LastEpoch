@@ -74,26 +74,6 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
         initialSkillDmg = new float[skillCount];
 
 
-        additionalAttackDmg = initialAttackDmg;
-        additionalDefense = initialDefense;
-
-        //각 스킬의 데미지를 배열에 저장
-        //int index = 0;
-        //foreach (var skillData in SkillDataManager.m_skillDataDic.Values)
-        //{
-        //    if (index < 4)
-        //    {
-        //        string key = skillData.name;
-        //        initialSkillDmgDict[key] = skillData.Dmg; // 초기값 저장
-        //        AdditionalStats[key] = initialSkillDmgDict[key];
-        //    }
-        //    index++;
-        //}
-
-
-        AdditionalStats.Add("Atk", additionalAttackDmg);
-        AdditionalStats.Add("Def", additionalDefense);
-        AdditionalStats.Add("Skill", additionalSkillDmg);   // 이거 문제잇음
 
         UpdateStatUI();
     }
@@ -155,26 +135,9 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
             s_player.m_stat.AttackDmg = initialAttackDmg + additionalAttackDmg;
             s_player.m_stat.Defense = initialDefense + additionalDefense;
 
-            // 스킬 데미지 증가
-            int index = 0;
-            foreach (var skillData in SkillDataManager.m_skillDataDic.Values)
-            {
-                if (index < 4)
-                {
-                    string key = $"Skill{index}";
-                    if (AdditionalStats.ContainsKey(key))
-                    {
-                        AdditionalStats[key] += itemData.atkPower; // 추가 데미지를 관리
-                        skillData.Dmg = AdditionalStats[key]; // 스킬 데미지 업데이트
-
-                    }
-                    else
-                    {
-                        Debug.LogError($"AdditionalStats에 {key}가 없습니다.");
-                    }
-                }
-                index++;
-            }
+            SkillDataManager.m_skillDataDic["Warpath"].Dmg += itemData.atkPower;
+            SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg += itemData.atkPower;
+            SkillDataManager.m_skillDataDic["Lunge"].Dmg += itemData.atkPower;
             // 아이템이 장착되었다는 설정
             hasEquippedItem = true;
 
@@ -216,6 +179,10 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
                 }
                 index++;
             }
+
+            SkillDataManager.m_skillDataDic["Warpath"].Dmg -= itemData.atkPower;
+            SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg -= itemData.atkPower;
+            SkillDataManager.m_skillDataDic["Lunge"].Dmg -= itemData.atkPower;
 
             // 추가 스탯이 모두 해제되면 장착 상태 해제
             if (additionalAttackDmg <= 0 && additionalDefense <= 0)

@@ -132,19 +132,11 @@ public class Player : BattleSystem, ISetClickEffect
         #endregion
     }
 
+    // 첫 시작, 부활 했을 때 초기화
     public override void Initalize()
     {
         base.Initalize();
-        IAdditionalStats ias = SceneData.Inst.m_playerStatUI.GetComponent<IAdditionalStats>();
-        if (ias != null)
-        {
-            SkillDataManager.m_skillDataDic["Normal"].Dmg = ias.AdditionalStats["Atk"];
-            SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg = ias.AdditionalStats["Skill"];
-            SkillDataManager.m_skillDataDic["Lunge"].Dmg = ias.AdditionalStats["Skill"];
-            SkillDataManager.m_skillDataDic["Warpath"].Dmg = ias.AdditionalStats["Skill"];
-        }
-        
-        
+
         if (m_isDie)
         {
             m_resurrectionEffect.SetActive(true);
@@ -162,6 +154,12 @@ public class Player : BattleSystem, ISetClickEffect
             }
             m_isDie = false;
             Invoke("SetIdle", 1.0f);
+        }
+        else
+        {
+            SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg = SkillDataManager.m_skillDataDic["ErasingStrike"].InitDmg;
+            SkillDataManager.m_skillDataDic["Lunge"].Dmg = SkillDataManager.m_skillDataDic["Lunge"].InitDmg;
+            SkillDataManager.m_skillDataDic["Warpath"].Dmg = SkillDataManager.m_skillDataDic["Warpath"].InitDmg;
         }
         
     }
