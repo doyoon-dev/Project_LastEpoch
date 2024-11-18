@@ -6,13 +6,11 @@ using UnityEngine.UIElements.Experimental;
 
 public class Totem : BattleSystem
 {
-
-
     private RayfireRigid rayfireRigid;
-    // Start is called before the first frame update
+   
     public WaypointController assignedWaypoint;// 토템이 속한 웨이포인트 지정
 
-    public HeadHealthBar headHealthBar;
+    int Hit = 10;//토템 
 
     void Start()
     {       
@@ -24,25 +22,13 @@ public class Totem : BattleSystem
         rayfireRigid.clusterDemolition.connectivity = ConnectivityType.ByBoundingBox; // 연결성을 BoundingBox 기반으로 설정
         Initalize();
     }
-    int cnt = 5;
+   
     // SetDamage 메서드를 BattleSystem에서 오버라이드
     public override void SetDamage(SkillData skillData)
     {
-        //if (rayfireRigid == null) return;
 
-        //// 데미지 계산
-        //float damage = skillData.Dmg; // 스킬의 데미지 값
-        //m_curHealPoint -= damage;
-
-        //if (m_curHealPoint <= 0)
-        //{
-        //    m_curHealPoint = 0;
-        //    SoundManager.Inst.StopSfxSound("Rock_Hit");
-        //    DestroyObject();
-        //}
-        //SoundManager.Inst.PlaySfx("Rock_Hit");
-        cnt--;
-        if(cnt <= 0)
+        Hit--;
+        if(Hit <= 0)
         {
             SoundManager.Inst.StopSfxSound("Rock_Hit");
             DestroyObject();
@@ -52,11 +38,7 @@ public class Totem : BattleSystem
             SoundManager.Inst.PlaySfx("Rock_Hit");
         }
     }
-    public override void Initalize()
-    {
-        m_curHealPoint = m_stat.MaxHp;
-        m_curMagicPoint = m_stat.MaxMp;
-    }
+   
 
 
 
