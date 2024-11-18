@@ -7,7 +7,8 @@ public class SkillData : ScriptableObject
 {
     public string Name;
     public int Mp;
-    public float Dmg;
+    public float InitDmg;               // 수정 안함
+    public float Dmg;                   // 수정 가능
     public float CoolTime;
     public int Channeling;
     public float knockback;
