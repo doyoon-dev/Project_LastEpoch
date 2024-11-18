@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Lunge
   Mp: 8
-  InitDmg: 15
-  Dmg: 15
+  Dmg: 30
   CoolTime: 4
   Channeling: 0
   knockback: 0
