@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: ErasingStrike
   Mp: 10
+  InitDmg: 40
   Dmg: 40
   CoolTime: 3
   Channeling: 0

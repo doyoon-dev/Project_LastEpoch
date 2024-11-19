@@ -21,6 +21,14 @@ public class Player : BattleSystem, ISetClickEffect
 
     #endregion
 
+    #region 미니맵 카메라
+
+    public GameObject m_minimapCam;
+    public GameObject m_minimapCamPos;
+
+    #endregion
+
+
     [SerializeField]
     Transform m_weaponStartPoint;
     [SerializeField]
@@ -130,13 +138,16 @@ public class Player : BattleSystem, ISetClickEffect
             SetDamage(SkillDataManager.m_skillDataDic["Normal"]);
         }
         #endregion
+        m_minimapCam.transform.position = m_minimapCamPos.transform.position;
     }
 
+    public GameObject m_icon;
     // 첫 시작, 부활 했을 때 초기화
     public override void Initalize()
     {
         base.Initalize();
-
+        m_icon = Instantiate(Resources.Load("UI\\MinimapIcon") as GameObject, SceneData.Inst.m_minimap);
+        m_icon.GetComponent<MinimapIcon>().Initialize(transform);
         if (m_isDie)
         {
             m_resurrectionEffect.SetActive(true);
@@ -268,6 +279,8 @@ public class Player : BattleSystem, ISetClickEffect
         dir.y = 0;
         m_myAnim.SetBool("Move", true);
         StartCoroutine(Rotating(dir));
+        // 미니맵 아이콘 회전 추가
+        m_icon.GetComponent<MinimapIcon>().Rotate(target);
         while (dist > 0.0f)
         {
             float delta = Time.deltaTime * m_moveStat.moveSpeed;
