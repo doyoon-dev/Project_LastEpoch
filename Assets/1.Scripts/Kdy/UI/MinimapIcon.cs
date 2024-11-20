@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MinimapIcon : MonoBehaviour
 {
     public Image m_icon;
-    Transform m_target;
-    float m_size;
+    public Transform m_target;
+    public float m_size;
     Vector3 m_posForward;
+    public LayerMask m_moveMask;
+    public LayerMask m_enemyMask;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +31,7 @@ public class MinimapIcon : MonoBehaviour
         {
             Vector2 pos = Camera.allCameras[1].WorldToViewportPoint(m_target.position) * m_size;
             (transform as RectTransform).anchoredPosition = pos;
+            m_icon.rectTransform.localEulerAngles = new Vector3(0, 0, -m_target.localEulerAngles.y);
         }
     }
 
@@ -46,12 +51,13 @@ public class MinimapIcon : MonoBehaviour
     // È¸Àü
     public IEnumerator Rotating(Vector3 pos)
     {
-        float angle = Vector3.Angle(m_posForward, pos);
+        float angle = Vector3.Angle(m_target.forward, pos);
+        Debug.Log(angle);
         if (angle > 180.0f) angle -= 360.0f;
-        float rotDir = 1.0f;
-        if (Vector3.Dot(m_icon.rectTransform.up, pos) < 0.0f)
+        float rotDir = -1.0f;
+        if (Vector3.Dot(m_target.right, pos) < 0.0f)
         {
-            rotDir = -1.0f;
+            rotDir = 1.0f;
         }
 
         while (angle > 0.0f)
@@ -59,7 +65,7 @@ public class MinimapIcon : MonoBehaviour
             float delta = Time.deltaTime * 360.0f;
             if (delta > angle) delta = angle;
             angle -= delta;
-            m_icon.rectTransform.Rotate(m_icon.rectTransform.forward * rotDir * delta, Space.World);
+            transform.Rotate(transform.forward * rotDir * delta, Space.World);
             yield return null;
         }
     }
