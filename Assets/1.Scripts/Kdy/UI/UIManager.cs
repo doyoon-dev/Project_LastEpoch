@@ -6,7 +6,10 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField]
     GameObject m_optionObj;
+    [SerializeField]
+    GameObject m_statObj;
     bool m_isActive = false;
+    bool m_isStatActive = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +30,18 @@ public class UIManager : MonoBehaviour
                 m_optionObj.SetActive(false);
             }
             m_isActive = !m_isActive;
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (!m_isStatActive)
+            {
+                m_statObj.SetActive(true);
+            }
+            else
+            {
+                m_statObj.SetActive(false);
+            }
+            m_isStatActive = !m_isStatActive;
         }
     }
 }

@@ -61,6 +61,7 @@ public class GameClearUI : MonoBehaviour, ITimeResult, IMonsterCountResult, IRes
     public void MonsterCountResult(int cnt)
     {
         m_monCnt = cnt;
+        m_monCntText.text = m_monCnt.ToString();
     }
 
     public void Result()
