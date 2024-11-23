@@ -360,23 +360,8 @@ public class BossMonster : MonsterController
         // EffectManager를 통해 피 이펙트를 생성하고 위치 설정
         EffectManager.Instance.GetEffect("Gathering", position, Quaternion.identity);
     }
-    
-   
-    // BossMonster의 HandleDeath 메서드
-    public override void HandleDeath()
+    public void OnGameClear()
     {
-        base.HandleDeath();  // 공통 처리 부분 호출
-
-        // 보스 몬스터 전용 처리 부분
-        isGathering = false;
-        isSpecialAttackActive = false;
-        SetState(BehaviourState.Die);
-
-        // 보스 몬스터 전용 핏자국 이펙트 및 사운드
-        GameObject bloodstainEffect = EffectManager.Instance.GetEffect("BloodSplatter05", transform.position, Quaternion.identity);
-        SoundManager.Inst.PlaySfx("Boss_Death");
-
-
 
         // GameClearUI 활성화
         if (SceneData.Inst.m_gameClearUI != null)
@@ -387,7 +372,7 @@ public class BossMonster : MonsterController
         IMonsterCountResult GameClear = SceneData.Inst.m_gameClearUI.GetComponent<IMonsterCountResult>();
         if (GameClear != null)
         {
-            GameClear.MonsterCountResult(MonsterManager.Instance.KillMonCount);        
+            GameClear.MonsterCountResult(MonsterManager.Instance.KillMonCount);
         }
 
         // PlayTime의 m_isEnd를 true로 설정
@@ -405,9 +390,34 @@ public class BossMonster : MonsterController
         {
             Debug.Log("playTime에m_isend가 NULL.");
         }
+    }
+
+    private IEnumerator DelayOnGameClear(float delay)
+    {
+        yield return new WaitForSeconds(delay); // 지정된 시간 대기
+
+        // 게임 클리어 처리
+        OnGameClear();
+    }
+
+    // BossMonster의 HandleDeath 메서드
+    public override void HandleDeath()
+    {
+        base.HandleDeath();  // 공통 처리 부분 호출
+
+        // 보스 몬스터 전용 처리 부분
+        isGathering = false;
+        isSpecialAttackActive = false;
+        SetState(BehaviourState.Die);
+
+        // 보스 몬스터 전용 핏자국 이펙트 및 사운드
+        GameObject bloodstainEffect = EffectManager.Instance.GetEffect("BloodSplatter05", transform.position, Quaternion.identity);
+        SoundManager.Inst.PlaySfx("Boss_Death");
+
+        StartCoroutine(DelayOnGameClear(1.5f));
 
 
-      
+
     }
     // 랜덤 이동 시작
     void StartRoaming()
