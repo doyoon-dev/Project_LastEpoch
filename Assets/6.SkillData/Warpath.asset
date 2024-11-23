@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Warpath
   Mp: 1
+  InitDmg: 15
   Dmg: 15
   CoolTime: 0.5
   Channeling: 10
