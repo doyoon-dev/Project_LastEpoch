@@ -65,7 +65,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
         yield return new WaitForSeconds(lifetime); // 일정 시간 대기
         if (!isPickedUp) // 아이템이 인벤토리에 들어가지 않은 경우에만 처리
         {
-            ObjectPool.Inst.Push<GameObject>(m_itemNameUIPrefabObj);
+            ObjectPool.Inst.Push<ItemNameUI>(m_itemNameUIPrefabObj);
             ObjectPool.Inst.Push<DropItem>(gameObject); // 객체 풀로 아이템 반환
         }
     }
@@ -85,7 +85,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
                 //}
 
                 isPickedUp = true; // 아이템이 인벤토리에 들어갔음을 표시(성원)
-                ObjectPool.Inst.Push<GameObject>(nameUI);
+                ObjectPool.Inst.Push<ItemNameUI>(m_itemNameUIPrefabObj);
                 ObjectPool.Inst.Push<Item>(gameObject); // 객체 풀로 아이템 반환
                 if (lifetimeCoroutine != null) StopCoroutine(lifetimeCoroutine); // 타이머 정지(성원)
             }
@@ -110,7 +110,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
                         SoundManager.Inst.PlaySfx("GetItem");
                         igd.SetItemToInventory(m_itemImagePrefab);
                     }
-                    ObjectPool.Inst.Push<GameObject>(nameUI);
+                    ObjectPool.Inst.Push<ItemNameUI>(m_itemNameUIPrefabObj);
                     ObjectPool.Inst.Push<Item>(gameObject);
                 }
                 else
@@ -129,7 +129,7 @@ public class DropItem : MonoBehaviour, ICheckDropItem//, ICheckDropItemTest
 
     public void NameUI()
     {
-        m_itemNameUIPrefabObj = ObjectPool.Inst.Pull<GameObject>(m_itemNameUIPrefab, SceneData.Inst.m_itemNameUIPos);
+        m_itemNameUIPrefabObj = ObjectPool.Inst.Pull<ItemNameUI>(m_itemNameUIPrefab, SceneData.Inst.m_itemNameUIPos);
         m_itemNameUIPrefabObj.GetComponent<ItemNameUI>().Initialize(m_itemNameUIPos, m_itemData, gameObject);
     }
 
