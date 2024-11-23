@@ -161,7 +161,8 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
 
         foreach (var waypoint in waypointGroups)
         {
-            if (waypointStatus[waypoint]) activeWaypoints.Add(waypoint);
+            if (waypointStatus[waypoint] && waypoint.CanSpawnMoreMonsters())
+                activeWaypoints.Add(waypoint);
         }
 
         if (activeWaypoints.Count == 0)
@@ -175,7 +176,11 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
         {
             assignedWaypointGroup = activeWaypoints[Random.Range(0, activeWaypoints.Count)];// 활성화된 웨이포인트 중 랜덤으로 선택
         }
-       
+        if (!assignedWaypointGroup.CanSpawnMoreMonsters())
+        {
+            Debug.LogWarning("지정된 웨이포인트에 몬스터를 더 이상 소환할 수 없습니다.");
+            return;
+        }
 
         // 랜덤하게 몬스터 프리팹을 선택
         int monsterIndex = Random.Range(0, m_monsterPrefabs.Length);
@@ -240,6 +245,8 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
         // 마지막 소환 위치 업데이트
         lastSpawnPosition = spawnPosition;
 
+        // 웨이포인트의 몬스터 수 증가
+        assignedWaypointGroup.IncrementMonsterCount();
     }
 
     // 보스 몬스터 스폰 메서드 추가
@@ -409,6 +416,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
             {
                 // 사망 처리 또는 비활성화
                 monster.HandleDeath(); // 사망 처리 메서드 호출
+                waypoint.DecrementMonsterCount(); // 웨이포인트 몬스터 수 감소
                 Destroy(monster.gameObject); // 또는 Destroy로 제거
             }
         }

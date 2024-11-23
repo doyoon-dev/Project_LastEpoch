@@ -649,6 +649,13 @@ public class MonsterController : BattleSystem
         m_manager.HandleMonsterDeath(transform.position);// 매니저에게 몬스터가 죽었다고 알림
         m_monAnimCtr.Play(MonsterAnimController.Motion.Die, false);  // 사망 애니메이션 재생
         StartCoroutine(Coroutine_SetDissolve(4f));  // 사라지는 효과
+        if (m_waypointCtr != null)
+        {
+            foreach (var waypoint in m_waypointCtr)
+            {
+                waypoint.DecrementMonsterCount(); // 웨이포인트의 몬스터 카운트 감소
+            }
+        }
         if (m_navAgent != null && m_navAgent.isActiveAndEnabled && m_navAgent.isOnNavMesh)
         {
             m_navAgent.isStopped = true;  // 네비게이션 에이전트 중지
