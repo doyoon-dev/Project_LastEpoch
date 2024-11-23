@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RayFire;
-using UnityEngine.UIElements.Experimental;
+using UnityEngine.Events;
+//using UnityEngine.UIElements.Experimental;
 
 public class Totem : BattleSystem
 {
 
-
+    public event UnityAction m_minimapDestroy;
     private RayfireRigid rayfireRigid;
     // Start is called before the first frame update
     public WaypointController assignedWaypoint;// 토템이 속한 웨이포인트 지정
@@ -56,6 +57,9 @@ public class Totem : BattleSystem
     {
         m_curHealPoint = m_stat.MaxHp;
         m_curMagicPoint = m_stat.MaxMp;
+        GameObject icon = Instantiate(Resources.Load("UI\\MinimapIcon") as GameObject, SceneData.Inst.m_minimap);
+        icon.GetComponent<MinimapIcon>().Initialize(transform, 1);
+        m_minimapDestroy += icon.GetComponent<IDestroyObj>().DestroyObj;
     }
 
 
@@ -80,6 +84,7 @@ public class Totem : BattleSystem
 
         // 본체 오브젝트 제거
         Destroy(gameObject, 2f);
+        m_minimapDestroy?.Invoke();
     }
 
 

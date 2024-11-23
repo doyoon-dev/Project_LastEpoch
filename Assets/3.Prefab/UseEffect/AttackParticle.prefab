@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6342997053558280363}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: AttackParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 6342997054055584050}
   - component: {fileID: 6342997054055584052}
   - component: {fileID: 6342997054055584053}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 419016404}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: VFX_WarPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 699179250}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: VFX_ErasingStrike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 782856692}
   - component: {fileID: 782856694}
   - component: {fileID: 782856693}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5009,7 +5009,7 @@ GameObject:
   - component: {fileID: 1017392159}
   - component: {fileID: 1017392161}
   - component: {fileID: 1017392160}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9879,7 +9879,7 @@ GameObject:
   - component: {fileID: 1073626202}
   - component: {fileID: 1073626204}
   - component: {fileID: 1073626203}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19619,7 +19619,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1471949278}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: VFX_Lunge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19651,7 +19651,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1520328190}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: VFX_Skill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24556,7 +24556,7 @@ GameObject:
   - component: {fileID: 1858588460}
   - component: {fileID: 1858588462}
   - component: {fileID: 1858588461}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29358,6 +29358,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &2042386965
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2042386966}
+  m_Layer: 9
+  m_Name: MinimapPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2042386966
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042386965}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 14, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5244370769833058610}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &14239136537423318
 GameObject:
   m_ObjectHideFlags: 0
@@ -30258,7 +30289,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1922418411794017483}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vfx Right Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30670,7 +30701,7 @@ GameObject:
   - component: {fileID: 1707436120078284967}
   - component: {fileID: 1707436120078284961}
   - component: {fileID: 1707436120078284960}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Runes small
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36290,7 +36321,7 @@ GameObject:
   - component: {fileID: 3818548115468328131}
   - component: {fileID: 6435359139836926420}
   - component: {fileID: 7526390573509265142}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Runes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41330,7 +41361,7 @@ GameObject:
   - component: {fileID: 2916497095683576225}
   - component: {fileID: 2916497095683576227}
   - component: {fileID: 2916497095683576226}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Rays
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46154,7 +46185,7 @@ GameObject:
   - component: {fileID: 2916497096024727039}
   - component: {fileID: 2916497096024727038}
   - component: {fileID: 2916497096024727040}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46270,7 +46301,7 @@ GameObject:
   - component: {fileID: 2916497096051499268}
   - component: {fileID: 2916497096051499323}
   - component: {fileID: 2916497096051499270}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: CFXR3 Magic Aura A (Runic)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53330,6 +53361,7 @@ Transform:
   - {fileID: 419016404}
   - {fileID: 8545217828143808989}
   - {fileID: 2916497096051499269}
+  - {fileID: 2042386966}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -53418,6 +53450,7 @@ MonoBehaviour:
     moveSpeed: 3
     rotSpeed: 3
   m_cam: {fileID: 0}
+  m_minimapIcon: {fileID: 21300000, guid: e1774611c0fdbbf44b84f430d748b456, type: 3}
   m_stat:
     MaxHp: 500
     MaxMp: 500
@@ -53440,6 +53473,8 @@ MonoBehaviour:
   - {fileID: 7564730545186980701, guid: 65bc71014f2f4b540b0bb94501aced27, type: 3}
   - {fileID: 4159682687083724937, guid: 1f7b82d0fdedff7419be4160cdcc1a52, type: 3}
   m_itemData: {fileID: 11400000, guid: 8584b251692971d48af0193b13b425d3, type: 2}
+  m_minimapCam: {fileID: 0}
+  m_minimapCamPos: {fileID: 2042386965}
   m_weaponStartPoint: {fileID: 5244370769042063078}
   m_weaponEndPoint: {fileID: 5244370770216268804}
   weaponPoint: {fileID: 5244370770216268804}

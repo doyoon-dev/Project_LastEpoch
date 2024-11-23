@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UIElements;
+//using UnityEngine.UIElements;
+using UnityEngine.UI;
 using static ItemData;
 using TMPro;
 [System.Serializable]
@@ -57,7 +58,9 @@ public interface IBattle : ITransform, IUsedSkill, IEquipItemSetting, ISetStatus
 // 공격하고, 데미지 받는 스크립트
 public class BattleSystem : MovePath, IDeadAlarm, IBattle
 {
+    public Sprite m_minimapIcon;
     public BattleStat m_stat;
+    
     public event UnityAction m_deadAlarm;
     public event UnityAction<float, float, bool> m_changeHp;
     public event UnityAction<float, float, bool> m_changeMp;
@@ -99,7 +102,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     // Start is called before the first frame update
     void Start()
     {
-       
+        
     }
 
     // Update is called once per frame

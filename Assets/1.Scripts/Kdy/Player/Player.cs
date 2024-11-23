@@ -147,7 +147,7 @@ public class Player : BattleSystem, ISetClickEffect
         base.Initalize();
 
         GameObject icon = Instantiate(Resources.Load("UI\\MinimapIcon") as GameObject, SceneData.Inst.m_minimap);
-        icon.GetComponent<MinimapIcon>().Initialize(transform);
+        icon.GetComponent<MinimapIcon>().Initialize(transform, 0);
 
         if (m_isDie)
         {
