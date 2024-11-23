@@ -89,7 +89,8 @@ public class SentinelSkill : Skill, ISkill_Lunge
             {
                 m_myAnim.SetBool("Move", false);
                 StopAllCoroutines();
-                m_player.StopAllCoroutines();
+                //m_player.StopAllCoroutines();
+                m_stopMovingAct?.Invoke();
                 m_myAnim.SetTrigger("SkillStrike");
                 m_strikeUse = true;
                 m_usingSkill = true;
@@ -269,7 +270,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
                 m_usingSkill = true;
                 SoundManager.Inst.PlaySfx("Lunge_Sound");
                 UsingSkillMp(SkillDataManager.m_skillDataDic["Lunge"].Mp);
-                
+                m_stopMovingAct?.Invoke();
                 IUsableSkillAct iusa = m_playerUI.m_skillCoolTime.GetComponent<IUsableSkillAct>();
                 if (iusa != null)
                 {

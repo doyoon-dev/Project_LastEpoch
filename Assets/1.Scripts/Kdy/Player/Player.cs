@@ -303,9 +303,11 @@ public class Player : BattleSystem, ISetClickEffect
     {
         if (m_clickEffect != null)
         {
-            ObjectPool.Inst.Push<GameObject>(m_clickEffect);
+            //ObjectPool.Inst.Push<ClickEffectPool>(m_clickEffect);
+            m_clickEffectPush?.Invoke(typeof(ClickEffectPool).Name);
             m_clickEffect = null;
         }
+        m_clickEffectPush?.Invoke(typeof(ClickEffectPool).Name);
         StopAllCoroutines();
     }
 
