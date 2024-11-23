@@ -23,6 +23,7 @@ public class ItemNameUI : MonoBehaviour, IHighlightUI, IPointerEnterHandler, IPo
     public void OnPointerEnter(PointerEventData eventData)
     {
         HighlightUI(true);
+        Debug.Log(m_itemName.text);
     }
 
     public void OnPointerExit(PointerEventData eventData)
