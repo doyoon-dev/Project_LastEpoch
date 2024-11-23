@@ -20,6 +20,8 @@ public class SceneData : MonoBehaviour
     public GameClearUI m_gameClearUI;
     public PlayerStatUI m_playerStatUI;
 
+    public Transform m_minimap;
+
     private void Awake()
     {
         Inst = this;
