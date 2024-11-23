@@ -405,9 +405,6 @@ public class BossMonster : MonsterController
         {
             Debug.Log("playTime에m_isend가 NULL.");
         }
-
-
-      
     }
     // 랜덤 이동 시작
     void StartRoaming()
