@@ -64,11 +64,14 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
     [SerializeField]
     private List<WaypointController> waypointGroups; // 여러 웨이포인트 그룹 관리
 
-
-
     [Header("보스 소환 지연 시간")]
     [SerializeField]
     private float bossSpawnDelay = 3f; // 보스 소환 지연 시간 (초)
+
+    [Header("문 컨트롤러")]
+    [SerializeField]
+    private DoorController doorController; // 문 애니메이션을 제어하는 DoorController
+
 
     private Dictionary<WaypointController, bool> waypointStatus = new Dictionary<WaypointController, bool>(); // 웨이포인트 활성 상태 관리
 
@@ -328,9 +331,18 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
     public void OnTotemDestroyed()
     {
         destroyedTotemCount++; // 토템 파괴 시 카운트 증가
-        if (destroyedTotemCount >= totalTotems) // 모든 토템이 파괴되었는지 확인
+                              
+        if (destroyedTotemCount == 4)  // 4개의 토템이 파괴되었을 때 문 열기
         {
-            StartCoroutine(SpawnBossAfterDelay()); // 모든 토템이 파괴되면 지연 후 보스 소환
+            Debug.Log("4개의 토템이 파괴되었습니다. 문을 엽니다!");
+            doorController.PlayOpenAnimation(); // 문 열기 실행
+        }
+
+        // 5개의 토템이 모두 파괴되었을 때 보스 몬스터 소환
+        if (destroyedTotemCount == totalTotems)
+        {
+            Debug.Log("모든 토템이 파괴되었습니다. 보스 몬스터를 소환합니다!");
+            StartCoroutine(SpawnBossAfterDelay());
         }
     }
     // 현재 공격받고 있는 몬스터 설정 (중앙 체력바)
