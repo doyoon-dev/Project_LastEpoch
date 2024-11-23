@@ -10,6 +10,10 @@ public class WaypointController : MonoBehaviour
     public Waypoint[] m_waypoints;
     public Transform bossSpawnPoint; // 보스 몬스터 전용 스폰 지점
 
+    [Header("웨이포인트 몬스터 제한")]
+    public int maxMonsters = 2; // 웨이포인트당 최대 몬스터 수
+    private int currentMonsters = 0; // 현재 소환된 몬스터 수
+
     void OnDrawGizmos()
     {
         m_waypoints = GetComponentsInChildren<Waypoint>();
@@ -54,4 +58,21 @@ public class WaypointController : MonoBehaviour
         }
     }
 
+    // 몬스터 소환 가능 여부 확인
+    public bool CanSpawnMoreMonsters()
+    {
+        return currentMonsters < maxMonsters;
+    }
+
+    // 몬스터 수 증가
+    public void IncrementMonsterCount()
+    {
+        currentMonsters++;
+    }
+
+    // 몬스터 수 감소
+    public void DecrementMonsterCount()
+    {
+        currentMonsters = Mathf.Max(0, currentMonsters - 1);
+    }
 }
