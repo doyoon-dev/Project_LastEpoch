@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 437046}
   - component: {fileID: 19865988}
   - component: {fileID: 19916780}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: smok_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4871,7 +4871,7 @@ GameObject:
   - component: {fileID: 478250}
   - component: {fileID: 19807574}
   - component: {fileID: 19948494}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: blood_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9657,7 +9657,7 @@ GameObject:
   - component: {fileID: 451660}
   - component: {fileID: 19891204}
   - component: {fileID: 19929368}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: blood_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14423,7 +14423,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 442062}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: FX_Bleed
   m_TagString: Untagged
   m_Icon: {fileID: 0}

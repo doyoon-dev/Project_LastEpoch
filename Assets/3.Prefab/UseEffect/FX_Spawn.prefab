@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4830667674265566458}
   - component: {fileID: 4830667674283871828}
   - component: {fileID: 4830667674285110410}
-  m_Layer: 8
+  m_Layer: 13
   m_Name: glow_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4845,7 +4845,7 @@ GameObject:
   - component: {fileID: 4830667674265569240}
   - component: {fileID: 4830667674283837096}
   - component: {fileID: 4830667674285100718}
-  m_Layer: 8
+  m_Layer: 13
   m_Name: flare_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9665,7 +9665,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4830667674265475688}
-  m_Layer: 8
+  m_Layer: 13
   m_Name: FX_Spawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9699,7 +9699,7 @@ GameObject:
   - component: {fileID: 4830667674265474446}
   - component: {fileID: 4830667674283876406}
   - component: {fileID: 4830667674283809352}
-  m_Layer: 8
+  m_Layer: 13
   m_Name: flare_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14521,7 +14521,7 @@ GameObject:
   - component: {fileID: 4830667674265552068}
   - component: {fileID: 4830667674283911278}
   - component: {fileID: 4830667674285033448}
-  m_Layer: 8
+  m_Layer: 13
   m_Name: rainbow_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
