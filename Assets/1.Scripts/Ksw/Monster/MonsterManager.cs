@@ -341,6 +341,11 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
         // 5개의 토템이 모두 파괴되었을 때 보스 몬스터 소환
         if (destroyedTotemCount == totalTotems)
         {
+            IShowQuestUI isq = SceneData.Inst.m_startQuestUI.GetComponent<IShowQuestUI>();
+            if (isq != null)
+            {
+                isq.ShowQuestUI();
+            }
             Debug.Log("모든 토템이 파괴되었습니다. 보스 몬스터를 소환합니다!");
             StartCoroutine(SpawnBossAfterDelay());
         }
