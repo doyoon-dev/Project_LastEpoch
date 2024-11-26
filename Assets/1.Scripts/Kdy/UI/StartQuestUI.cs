@@ -5,7 +5,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class StartQuestUI : ShowUI
+public interface IShowQuestUI
+{
+    void ShowQuestUI();
+}
+
+public class StartQuestUI : ShowUI, IShowQuestUI
 {
     [Header("StartQuestUI Parameter")]
     public Image m_bg;

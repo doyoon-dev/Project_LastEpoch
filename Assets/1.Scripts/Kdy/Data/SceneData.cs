@@ -19,6 +19,7 @@ public class SceneData : MonoBehaviour
 
     public GameClearUI m_gameClearUI;
     public PlayerStatUI m_playerStatUI;
+    public StartQuestUI m_startQuestUI;
 
     public Transform m_minimap;
 
