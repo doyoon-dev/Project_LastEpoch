@@ -331,17 +331,23 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
     public void OnTotemDestroyed()
     {
         destroyedTotemCount++; // 토템 파괴 시 카운트 증가
-                              
+
+        IShowQuestUI isq = SceneData.Inst.m_startQuestUI.GetComponent<IShowQuestUI>();
         if (destroyedTotemCount == 4)  // 4개의 토템이 파괴되었을 때 문 열기
         {
             Debug.Log("4개의 토템이 파괴되었습니다. 문을 엽니다!");
+            SceneData.Inst.m_startQuestUI.gameObject.SetActive(true);
+            if (isq != null)
+            {
+                isq.ShowQuestUI();
+            }
             doorController.PlayOpenAnimation(); // 문 열기 실행
         }
 
         // 5개의 토템이 모두 파괴되었을 때 보스 몬스터 소환
         if (destroyedTotemCount == totalTotems)
         {
-            IShowQuestUI isq = SceneData.Inst.m_startQuestUI.GetComponent<IShowQuestUI>();
+            SceneData.Inst.m_startQuestUI.gameObject.SetActive(true);
             if (isq != null)
             {
                 isq.ShowQuestUI();

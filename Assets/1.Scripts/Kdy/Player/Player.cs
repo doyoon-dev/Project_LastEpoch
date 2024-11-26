@@ -128,15 +128,15 @@ public class Player : BattleSystem, ISetClickEffect
         }
         
         #region 실험코드 나중에 지워야함
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            SkillDataManager.m_skillDataDic["Normal"].Dmg = 30;
+        //if (Input.GetKeyDown(KeyCode.T))
+        //{
+        //    SkillDataManager.m_skillDataDic["Normal"].Dmg = 30;
             
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            SetDamage(SkillDataManager.m_skillDataDic["Normal"]);
-        }
+        //}
+        //if (Input.GetKeyDown(KeyCode.P))
+        //{
+        //    SetDamage(SkillDataManager.m_skillDataDic["Normal"]);
+        //}
         #endregion
         m_minimapCam.transform.position = m_minimapCamPos.transform.position;
     }
