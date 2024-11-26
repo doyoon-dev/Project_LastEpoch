@@ -158,7 +158,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         m_recoveryCheck = false;
 
         // 데미지 계산
-        float damage = Mathf.Max(0, skillData.Dmg - m_stat.Defense);
+        float damage = Mathf.Max(0, skillData.Dmg * (1 - (m_stat.Defense * 0.01f)));
         m_curHealPoint -= damage;
 
         // 데미지 텍스트 표시
