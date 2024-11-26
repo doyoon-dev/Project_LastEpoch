@@ -347,7 +347,6 @@ public class BossMonster : MonsterController
        
     }
 
-
     public void SpawnGatheringEffect(Vector3 position)
     {
         if (m_state != BehaviourState.Gathering) return;  // Gathering 상태가 아니면 실행하지 않음
@@ -360,10 +359,11 @@ public class BossMonster : MonsterController
         // EffectManager를 통해 피 이펙트를 생성하고 위치 설정
         EffectManager.Instance.GetEffect("Gathering", position, Quaternion.identity);
     }
+
     public void OnGameClear()
     {
-
         // GameClearUI 활성화
+
         if (SceneData.Inst.m_gameClearUI != null)
         {
             SceneData.Inst.m_gameClearUI.gameObject.SetActive(true);  // GameClearUI의 GameObject를 활성화
@@ -416,9 +416,8 @@ public class BossMonster : MonsterController
         SoundManager.Inst.PlaySfx("Boss_Death");
 
         StartCoroutine(DelayOnGameClear(1.5f));
-    }
-    
     // 랜덤 이동 시작
+
     void StartRoaming()
     {
         m_monAnimCtr.Play(MonsterAnimController.Motion.Run);
@@ -427,8 +426,6 @@ public class BossMonster : MonsterController
         Vector3 rndPos = startPos + rndDir;  // 시작 위치에서 이동할 목표 위치 계산
         MoveToPos(rndPos, () => { StartCoroutine(DelayChangeIdle(Random.Range(1.5f, 4.0f))); });  // 이동 후 일정 시간 후에 다시 Idle 상태로
     }
-
-
 
     // 일정 시간 후 다시 Normal 상태로 전환하는 코루틴
     IEnumerator DelayChangeIdle(float t)
