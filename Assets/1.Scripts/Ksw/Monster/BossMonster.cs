@@ -20,7 +20,7 @@ public class BossMonster : MonsterController
 
     public PlayTime playTime;
 
-    
+
 
     protected override void Start()
     {
@@ -92,9 +92,9 @@ public class BossMonster : MonsterController
 
             //추적 상태
             case BehaviourState.Chase:
-                
+
                 StartCoroutine(LookAtPlayer()); // 추적 상태에서도 플레이어를 바라보도록 호출
-                                                                                            
+
                 if (m_navAgent.enabled) // NavMeshAgent가 활성화된 경우에만 SetDestination 호출
                 {
                     m_navAgent.SetDestination(m_player.transform.position);
@@ -169,9 +169,9 @@ public class BossMonster : MonsterController
                 }
                 break;
         }
-        
+
     }
-  
+
     // 체력이 30% 감소할 때마다 Gathering 상태로 전환하는 메서드
     private void CheckHealthThreshold()
     {
@@ -230,7 +230,7 @@ public class BossMonster : MonsterController
         isGathering = true;
         isForceGathering = true; // 강제 Gathering 상태 활성화
 
-       
+
         m_navAgent.enabled = false; // NavMeshAgent 비활성화
         // Gathering 모션 재생
         m_monAnimCtr.Play(MonsterAnimController.Motion.Gathering);
@@ -255,7 +255,7 @@ public class BossMonster : MonsterController
             {
                 Debug.Log("체력이 0이 되어 Gathering 중단 후 죽음 상태로 전환");
                 SetState(BehaviourState.Die);
-              
+
                 yield break;
             }
             // 강제 Gathering 시간이 종료되면 강제 상태 해제
@@ -263,7 +263,7 @@ public class BossMonster : MonsterController
             {
                 isForceGathering = false;
             }
-            
+
             elapsed += Time.deltaTime;
             yield return null;
         }
@@ -277,8 +277,8 @@ public class BossMonster : MonsterController
         isGathering = false;
         isForceGathering = false;  // Gathering과 강제 상태 모두 해제
         ExecuteSpecialAttack();
-        
-        
+
+
     }
 
     private void ExecuteSpecialAttack()
@@ -289,7 +289,7 @@ public class BossMonster : MonsterController
         // 스페셜 어택 애니메이션 재생
         m_monAnimCtr.Play(MonsterAnimController.Motion.SpAttack);
 
-       
+
 
         // 이동하면서 공격
         StartCoroutine(MoveForwardSpecialAttack(specialAttackMoveDistance, specialAttackSpeed));
@@ -344,13 +344,13 @@ public class BossMonster : MonsterController
             specialAttackEffect.SetActive(false);
         }
         SetIdle(0.5f);
-       
+
     }
 
     public void SpawnGatheringEffect(Vector3 position)
     {
         if (m_state != BehaviourState.Gathering) return;  // Gathering 상태가 아니면 실행하지 않음
-                                                          
+
         if (this is BossMonster)// 보스 몬스터일 경우 높이를 추가
         {
             position.y += 1.0f;
@@ -416,8 +416,10 @@ public class BossMonster : MonsterController
         SoundManager.Inst.PlaySfx("Boss_Death");
 
         StartCoroutine(DelayOnGameClear(1.5f));
-    // 랜덤 이동 시작
 
+    }
+
+    // 랜덤 이동 시작
     void StartRoaming()
     {
         m_monAnimCtr.Play(MonsterAnimController.Motion.Run);
@@ -434,6 +436,48 @@ public class BossMonster : MonsterController
         SetIdle(1f);  // 다시 Idle 상태로
     }
 
+    // 상태를 Idle로 전환하는 메서드
+    protected override void SetIdle(float duration)
+    {
+        SetState(BehaviourState.Idle);  // Idle 상태로 전환
+        m_idleTime = 0;  // Idle 시간 초기화
+        m_idleDuration = duration;  // 새로운 Idle 대기 시간 설정
+    }
+
+    protected override bool CanAttack()
+    {
+        var dist = transform.position - m_player.transform.position;
+
+        // 항상 플레이어를 바라보도록 설정 (거리와 상관없이)
+        StartCoroutine(LookAtPlayer());
+
+        // 보스 몬스터일 경우 시야각을 적용
+        if (this is BossMonster)
+        {
+            Vector3 directionToPlayer = (m_player.transform.position - transform.position).normalized;
+            float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
+            float maxViewAngle = 90f;
+
+            // 공격 범위 안에 있고, 시야각 내에 있을 때만 공격 가능
+            if (dist.sqrMagnitude < Mathf.Pow(m_attackDist, 2f) && angleToPlayer <= maxViewAngle)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 목표 지점에 도달했는지 확인하는 코루틴
+    IEnumerator CheckArrival(System.Action onComplete)
+    {
+        // NavMeshAgent가 활성화 상태이고 NavMesh에 위치해 있는지 확인
+        while (m_navAgent.enabled && m_navAgent.isOnNavMesh && (m_navAgent.pathPending || m_navAgent.remainingDistance > m_navAgent.stoppingDistance))
+        {
+            yield return null;
+        }
+
+        onComplete?.Invoke(); // 목표 도달 시 콜백 호출
+    }
     // 이동 완료 후 호출되는 콜백 처리
     void MoveToPos(Vector3 pos, System.Action onComplete)
     {
@@ -454,48 +498,6 @@ public class BossMonster : MonsterController
         }
     }
 
-    // 목표 지점에 도달했는지 확인하는 코루틴
-    IEnumerator CheckArrival(System.Action onComplete)
-    {
-        // NavMeshAgent가 활성화 상태이고 NavMesh에 위치해 있는지 확인
-        while (m_navAgent.enabled && m_navAgent.isOnNavMesh && (m_navAgent.pathPending || m_navAgent.remainingDistance > m_navAgent.stoppingDistance))
-        {
-            yield return null;
-        }
-
-        onComplete?.Invoke(); // 목표 도달 시 콜백 호출
-    }
-
-    // 상태를 Idle로 전환하는 메서드
-    protected override void SetIdle(float duration)
-    {
-        SetState(BehaviourState.Idle);  // Idle 상태로 전환
-        m_idleTime = 0;  // Idle 시간 초기화
-        m_idleDuration = duration;  // 새로운 Idle 대기 시간 설정
-    }
-
-    protected override bool CanAttack()
-    {
-        var dist = transform.position - m_player.transform.position;
-
-        // 항상 플레이어를 바라보도록 설정 (거리와 상관없이)
-        StartCoroutine(LookAtPlayer());
-         
-        // 보스 몬스터일 경우 시야각을 적용
-        if (this is BossMonster)
-        {
-            Vector3 directionToPlayer = (m_player.transform.position - transform.position).normalized;
-            float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
-            float maxViewAngle = 90f;
-
-            // 공격 범위 안에 있고, 시야각 내에 있을 때만 공격 가능
-            if (dist.sqrMagnitude < Mathf.Pow(m_attackDist, 2f) && angleToPlayer <= maxViewAngle)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 
 
 }
