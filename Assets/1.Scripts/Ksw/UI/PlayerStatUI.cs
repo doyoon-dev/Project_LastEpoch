@@ -90,7 +90,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
                 if (additionalAttackDmg > 0)
                 {
                     attackDmgText.color = increaseColor;  // 노란색
-                    attackDmgText.text = $"{s_player.m_stat.AttackDmg} (+{additionalAttackDmg})";
+                    attackDmgText.text = $"{s_player.m_stat.AttackDmg} (+{CalculateStat(initialAttackDmg, additionalAttackDmg)})";
                 }
                 else
                 {
@@ -101,7 +101,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
                 if (additionalDefense > 0)
                 {
                     defenseText.color = increaseColor;  // 노란색
-                    defenseText.text = $"{s_player.m_stat.Defense} (+{additionalDefense})";
+                    defenseText.text = $"{s_player.m_stat.Defense} (+{CalculateStat(initialDefense,additionalDefense)})";
                 }
                 else
                 {
@@ -148,23 +148,12 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
     {
         if (itemData != null && s_player != null)
         {
-            // 변화된 공격력과 방어력을 별도로 저장
+          
             // additional 값은 최종 계산된 값
-
-            //additionalAttackDmg += initialAttackDmg * itemData.atkPower * 0.01f;
-            //additionalDefense += initialDefense * itemData.defense * 0.01f;
             additionalAttackDmg += itemData.atkPower;
             additionalDefense += itemData.defense;
 
-            // 장착 시 공격력과 방어력 증가
-            //s_player.m_stat.AttackDmg = initialAttackDmg + additionalAttackDmg;
-            //s_player.m_stat.Defense = initialDefense + additionalDefense;
-            //s_player.m_stat.AttackDmg = CalculateFinalStat(initialAttackDmg, additionalAttackDmg);
-            //s_player.m_stat.Defense = CalculateFinalStat(initialDefense, additionalDefense);
-
-            //SkillDataManager.m_skillDataDic["Warpath"].Dmg = CalculateFinalStat(SkillDataManager.m_skillDataDic["Warpath"].InitDmg, additionalAttackDmg);
-            //SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg = CalculateFinalStat(SkillDataManager.m_skillDataDic["ErasingStrike"].InitDmg, additionalAttackDmg);
-            //SkillDataManager.m_skillDataDic["Lunge"].Dmg = CalculateFinalStat(SkillDataManager.m_skillDataDic["Lunge"].InitDmg, additionalAttackDmg);
+    
             ChangeStat();
 
             // 아이템이 장착되었다는 설정
@@ -185,33 +174,6 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
             additionalDefense -= itemData.defense;
 
 
-            // 장착 해제 후 스탯을 다시 초기 값에 추가된 값으로 설정
-            //s_player.m_stat.AttackDmg = initialAttackDmg + Mathf.Max(additionalAttackDmg, 0);
-            //s_player.m_stat.Defense = initialDefense + Mathf.Max(additionalDefense, 0);
-
-            //스킬 데미지 감소
-            //int index = 0;
-            //foreach (var skillData in SkillDataManager.m_skillDataDic.Values)
-            //{
-            //    if (index < 4)
-            //    {
-            //        string key = $"Skill{index}";
-            //        if (AdditionalStats.ContainsKey(key))
-            //        {
-            //            AdditionalStats[key] = Mathf.Max(0, AdditionalStats[key] - itemData.atkPower); // 추가 데미지 감소
-            //            skillData.Dmg = AdditionalStats[key]; // 스킬 데미지 업데이트
-            //        }
-            //        else
-            //        {
-            //            Debug.LogError($"AdditionalStats에 {key}가 없습니다.");
-            //        }
-            //    }
-            //    index++;
-            //}
-
-            //SkillDataManager.m_skillDataDic["Warpath"].Dmg -= itemData.atkPower;
-            //SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg -= itemData.atkPower;
-            //SkillDataManager.m_skillDataDic["Lunge"].Dmg -= itemData.atkPower;
             ChangeStat();
 
             // 추가 스탯이 모두 해제되면 장착 상태 해제
@@ -224,19 +186,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
             UpdateStatUI();
         }
     }
-    private void ApplySkillDamageUpdates()
-    {
-        int index = 0;
-        foreach (var skillData in SkillDataManager.m_skillDataDic.Values)
-        {
-            if (index < 4)
-            {
-                string key = $"Skill{index}";
-                skillData.Dmg = initialSkillDmgDict[key] + AdditionalStats[key]; // 스킬 데미지 반영
-            }
-            index++;
-        }
-    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z))
