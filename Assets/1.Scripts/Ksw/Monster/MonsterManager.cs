@@ -317,14 +317,14 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
         if (waypointStatus.ContainsKey(waypoint))
         {
             waypointStatus[waypoint] = false; // 웨이포인트 비활성화
-            Debug.Log("웨이포인트 비활성화: " + waypoint.name);
+            //Debug.Log("웨이포인트 비활성화: " + waypoint.name);
         }
     }
     // 처치 수를 증가시키는 메서드
     public void IncreaseKillCount()
     {
         KillMonCount++;
-        Debug.Log("현재 처치한 몬스터 수: " + KillMonCount);
+        //Debug.Log("현재 처치한 몬스터 수: " + KillMonCount);
     }
 
     // 토템 파괴를 처리하는 메서드 추가
@@ -334,7 +334,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
                               
         if (destroyedTotemCount == 4)  // 4개의 토템이 파괴되었을 때 문 열기
         {
-            Debug.Log("4개의 토템이 파괴되었습니다. 문을 엽니다!");
+           // Debug.Log("4개의 토템이 파괴되었습니다. 문을 엽니다!");
             doorController.PlayOpenAnimation(); // 문 열기 실행
         }
 
@@ -346,7 +346,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
             {
                 isq.ShowQuestUI();
             }
-            Debug.Log("모든 토템이 파괴되었습니다. 보스 몬스터를 소환합니다!");
+            //Debug.Log("모든 토템이 파괴되었습니다. 보스 몬스터를 소환합니다!");
             StartCoroutine(SpawnBossAfterDelay());
         }
     }
@@ -355,7 +355,7 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
     {
         if (monster == null)
         {
-            Debug.LogWarning("Trying to set null monster as current target.");
+            //Debug.LogWarning("Trying to set null monster as current target.");
             return;
         }
         // 현재 타겟 몬스터와 새 타겟이 다를 때만 변경
@@ -443,16 +443,16 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
     // Update is called once per frame
     void Update()
     {
-        // V 키를 눌렀을 때 몬스터 소환
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            SpawnMonster();
-        }
+        //// V 키를 눌렀을 때 몬스터 소환
+        //if (Input.GetKeyDown(KeyCode.V))
+        //{
+        //    SpawnMonster();
+        //}
 
-        // B 키를 눌렀을 때 보스 몬스터 소환
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            SpawnBossMonster();
-        }
+        //// B 키를 눌렀을 때 보스 몬스터 소환
+        //if (Input.GetKeyDown(KeyCode.B))
+        //{
+        //    SpawnBossMonster();
+        //}
     }
 }
