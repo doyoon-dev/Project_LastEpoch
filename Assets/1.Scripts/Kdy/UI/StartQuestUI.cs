@@ -19,6 +19,7 @@ public class StartQuestUI : ShowUI, IShowQuestUI
     public Color m_initQuestUIImageColor;
     public Color m_initQuestUITextColor;
     bool m_isStart = true;
+    bool m_isDoorOpen = false;
 
     // Start is called before the first frame update
     void Start()
@@ -26,13 +27,6 @@ public class StartQuestUI : ShowUI, IShowQuestUI
         ShowQuestUI();
         //CoroutineShowUI(m_bg, m_text, StartFadeOutQuest);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public override void CoroutineShowUI(Image bg, TextMeshProUGUI text, UnityAction act)
     {
         base.CoroutineShowUI(bg, text, act);
@@ -79,6 +73,11 @@ public class StartQuestUI : ShowUI, IShowQuestUI
         {
             m_text.text = "던전에 설치된 토템들을 모두 부수고 부활한 좀비왕을 처치하세요.";
             m_isStart = false;
+        }
+        else if (!m_isDoorOpen)
+        {
+            m_text.text = "4개의 토템이 파괴되었습니다. 문이 열립니다.";
+            m_isDoorOpen = true;
         }
         else
         {

@@ -122,7 +122,7 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
         dir.Normalize();
         while (dist > 0)
         {
-            float delta = Time.deltaTime * 1000.0f;
+            float delta = Time.deltaTime * 2000.0f;
             if(delta > dist) delta = dist;
             transform.Translate(dir * delta);
             dist -= delta;
