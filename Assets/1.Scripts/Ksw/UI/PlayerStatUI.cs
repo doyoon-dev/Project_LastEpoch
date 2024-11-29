@@ -90,33 +90,34 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
                 if (additionalAttackDmg > 0)
                 {
                     attackDmgText.color = increaseColor;  // 노란색
-                    attackDmgText.text = $"{s_player.m_stat.AttackDmg} (+{CalculateStat(initialAttackDmg, additionalAttackDmg, true)})";
+                    attackDmgText.text = $"{s_player.m_stat.AttackDmg.ToString("F1")} (+{CalculateStat(initialAttackDmg, additionalAttackDmg, true).ToString("F1")})";
                 }
                 else
                 {
                     attackDmgText.color = normalColor;  // 기본색
-                    attackDmgText.text = $"{s_player.m_stat.AttackDmg}";
+                    attackDmgText.text = $"{s_player.m_stat.AttackDmg.ToString("F1")}";
                 }
 
                 if (additionalDefense > 0)
                 {
                     defenseText.color = increaseColor;  // 노란색
-                    defenseText.text = $"{s_player.m_stat.Defense} (+{CalculateStat(initialDefense,additionalDefense, false)})";
+                    defenseText.text = $"{s_player.m_stat.Defense.ToString("F1")} (+{CalculateStat(initialDefense,additionalDefense, false).ToString("F1")})";
                 }
                 else
                 {
                     defenseText.color = normalColor;  // 기본색
-                    defenseText.text = $"{s_player.m_stat.Defense}";
+                    defenseText.text = $"{s_player.m_stat.Defense.ToString("F1")}";
                 }
             }
             else
             {
                 // 장착 아이템이 없을 경우 기본 색상으로 스탯만 표시
                 attackDmgText.color = normalColor;
-                attackDmgText.text = $"{s_player.m_stat.AttackDmg}";
+                attackDmgText.text = $"{s_player.m_stat.AttackDmg.ToString("F1")}";
 
                 defenseText.color = normalColor;
-                defenseText.text = $"{s_player.m_stat.Defense}";
+                defenseText.text = $"{s_player.m_stat.Defense.ToString("F1")}";
+                defenseText.text = $"{s_player.m_stat.Defense.ToString("F1")}";
             }
         }
     }
@@ -196,21 +197,21 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            if (!isStatsVisible)
-            {
-                statsPanel.SetActive(true);
-            }
-            else
-            {
-                statsPanel.SetActive(false);
-            }
-            isStatsVisible = !isStatsVisible;
-        }
+        //if (Input.GetKeyDown(KeyCode.K))
+        //{
+        //    if (!isStatsVisible)
+        //    {
+        //        statsPanel.SetActive(true);
+        //    }
+        //    else
+        //    {
+        //        statsPanel.SetActive(false);
+        //    }
+        //    isStatsVisible = !isStatsVisible;
+        //}
 
-        //// 임시로 1번 아이템을 장착하는 예시
-        //if (Input.GetKeyDown(KeyCode.F1))
+        //임시로 1번 아이템을 장착하는 예시
+        //if (Input.GetKeyDown(KeyCode.F2))
         //{
         //    if (itemDataList.Count > 0)
         //    {

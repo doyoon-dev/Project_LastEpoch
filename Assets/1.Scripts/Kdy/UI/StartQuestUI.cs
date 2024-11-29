@@ -76,7 +76,7 @@ public class StartQuestUI : ShowUI, IShowQuestUI
         }
         else if (!m_isDoorOpen)
         {
-            m_text.text = "4개의 토템이 파괴되었습니다. 문이 열립니다.";
+            m_text.text = "4개의 토템이 파괴되었습니다. 가운데 문이 열립니다.";
             m_isDoorOpen = true;
         }
         else
