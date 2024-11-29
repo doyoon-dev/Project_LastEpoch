@@ -12,7 +12,7 @@ public class Totem : BattleSystem
    
     public WaypointController assignedWaypoint;// 토템이 속한 웨이포인트 지정
 
-    int Hit = 10;//토템 
+    int Hit = 5;//토템 
 
     void Start()
     {       

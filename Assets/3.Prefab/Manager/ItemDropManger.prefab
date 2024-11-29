@@ -58,15 +58,15 @@ MonoBehaviour:
   - 10
   - 10
   - 10
-  - 60
+  - 80
   midRangeDropChances:
-  - 7
-  - 7
+  - 30
+  - 30
   highRangeDropChances:
   - 3
   lowRange: {x: 1, y: 61}
-  lowRangeItemCount: {x: 1, y: 2}
+  lowRangeItemCount: {x: 1, y: 1}
   midRange: {x: 61, y: 91}
-  midRangeItemCount: {x: 1, y: 2}
+  midRangeItemCount: {x: 1, y: 1}
   higRange: {x: 91, y: 100}
   higRangeItemCount: {x: 1, y: 1}
