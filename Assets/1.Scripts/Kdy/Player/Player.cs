@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.Build;
+//using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.GraphicsBuffer;
@@ -169,6 +169,7 @@ public class Player : BattleSystem, ISetClickEffect
         }
         else
         {
+            SkillDataManager.m_skillDataDic["Normal"].Dmg = SkillDataManager.m_skillDataDic["Normal"].InitDmg;
             SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg = SkillDataManager.m_skillDataDic["ErasingStrike"].InitDmg;
             SkillDataManager.m_skillDataDic["Lunge"].Dmg = SkillDataManager.m_skillDataDic["Lunge"].InitDmg;
             SkillDataManager.m_skillDataDic["Warpath"].Dmg = SkillDataManager.m_skillDataDic["Warpath"].InitDmg;
