@@ -70,6 +70,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
         m_orgPos = transform.position;
         m_parentPos = transform.parent;
         m_dragOffset = (Vector2)transform.position - eventData.position;
@@ -79,11 +80,13 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
         transform.position = eventData.position + m_dragOffset;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
         transform.position = m_orgPos;
         transform.SetParent(m_parentPos);
         m_image.raycastTarget = true;
