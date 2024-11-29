@@ -90,7 +90,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
                 if (additionalAttackDmg > 0)
                 {
                     attackDmgText.color = increaseColor;  // 노란색
-                    attackDmgText.text = $"{s_player.m_stat.AttackDmg} (+{CalculateStat(initialAttackDmg, additionalAttackDmg)})";
+                    attackDmgText.text = $"{s_player.m_stat.AttackDmg} (+{CalculateStat(initialAttackDmg, additionalAttackDmg, true)})";
                 }
                 else
                 {
@@ -101,7 +101,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
                 if (additionalDefense > 0)
                 {
                     defenseText.color = increaseColor;  // 노란색
-                    defenseText.text = $"{s_player.m_stat.Defense} (+{CalculateStat(initialDefense,additionalDefense)})";
+                    defenseText.text = $"{s_player.m_stat.Defense} (+{CalculateStat(initialDefense,additionalDefense, false)})";
                 }
                 else
                 {
@@ -122,25 +122,32 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
     }
 
     // 증가(감소)율
-    float CalculateStat(float initStat, float addStat)
+    float CalculateStat(float initStat, float addStat, bool isAtk)
     {
-        return initStat * (addStat * 0.01f);
+        if (isAtk)
+        {
+            return initStat * (addStat * 0.01f);
+        }
+        else
+        {
+            return addStat * 0.01f;
+        }
     }
 
     // 최종값
-    float CalculateFinalStat(float initStat, float addStat)
+    float CalculateFinalStat(float initStat, float addStat, bool isAtk)
     {
-        return initStat + CalculateStat(initStat, addStat);
+        return initStat + CalculateStat(initStat, addStat, isAtk);
     }
 
     void ChangeStat()
     {
-        s_player.m_stat.AttackDmg = CalculateFinalStat(initialAttackDmg, additionalAttackDmg);
-        s_player.m_stat.Defense = CalculateFinalStat(initialDefense, additionalDefense);
+        s_player.m_stat.AttackDmg = CalculateFinalStat(initialAttackDmg, additionalAttackDmg, true);
+        s_player.m_stat.Defense = CalculateFinalStat(initialDefense, additionalDefense, false);
 
-        SkillDataManager.m_skillDataDic["Warpath"].Dmg = CalculateFinalStat(SkillDataManager.m_skillDataDic["Warpath"].InitDmg, additionalAttackDmg);
-        SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg = CalculateFinalStat(SkillDataManager.m_skillDataDic["ErasingStrike"].InitDmg, additionalAttackDmg);
-        SkillDataManager.m_skillDataDic["Lunge"].Dmg = CalculateFinalStat(SkillDataManager.m_skillDataDic["Lunge"].InitDmg, additionalAttackDmg);
+        SkillDataManager.m_skillDataDic["Warpath"].Dmg = CalculateFinalStat(SkillDataManager.m_skillDataDic["Warpath"].InitDmg, additionalAttackDmg, true);
+        SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg = CalculateFinalStat(SkillDataManager.m_skillDataDic["ErasingStrike"].InitDmg, additionalAttackDmg, true);
+        SkillDataManager.m_skillDataDic["Lunge"].Dmg = CalculateFinalStat(SkillDataManager.m_skillDataDic["Lunge"].InitDmg, additionalAttackDmg, true);
     }
 
     // 임시로 아이템 장착 후 스탯 증가시키는 함수
