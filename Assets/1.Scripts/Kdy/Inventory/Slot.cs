@@ -54,6 +54,7 @@ public class Slot : MonoBehaviour, IDropHandler//, ISlotInterface
 
     public void OnDrop(PointerEventData eventData)
     {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
         // 아이템을 놓는 슬롯의 좌표 가져오기
         // 아이템을 해당 슬롯에 놓기
         // item.transform.position : 드랍했을 때의 아이템 위치
