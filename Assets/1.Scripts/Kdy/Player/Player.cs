@@ -169,6 +169,7 @@ public class Player : BattleSystem, ISetClickEffect
         }
         else
         {
+            SkillDataManager.m_skillDataDic["Normal"].Dmg = SkillDataManager.m_skillDataDic["Normal"].InitDmg;
             SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg = SkillDataManager.m_skillDataDic["ErasingStrike"].InitDmg;
             SkillDataManager.m_skillDataDic["Lunge"].Dmg = SkillDataManager.m_skillDataDic["Lunge"].InitDmg;
             SkillDataManager.m_skillDataDic["Warpath"].Dmg = SkillDataManager.m_skillDataDic["Warpath"].InitDmg;
