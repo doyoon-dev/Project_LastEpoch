@@ -407,7 +407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -738,7 +738,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1514,7 +1514,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3155,7 +3155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3347,6 +3347,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3996918205058731502}
     m_Modifications:
+    - target: {fileID: 2695749808522956407, guid: 92103189a7d061f40bbcbe0535e8412e, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2695749808677660731, guid: 92103189a7d061f40bbcbe0535e8412e, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7032612885542639861, guid: 92103189a7d061f40bbcbe0535e8412e, type: 3}
       propertyPath: m_Name
       value: Skill_WarPath
@@ -3465,6 +3473,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3996918205222895991}
     m_Modifications:
+    - target: {fileID: 2557974722282758438, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2557974724102062081, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3787731239762905435, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3618,6 +3634,14 @@ PrefabInstance:
     - target: {fileID: 1863090642359058779, guid: 01f3960c0a6e0f645941d9c9a1da7777, type: 3}
       propertyPath: m_Name
       value: Skill_Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 6909795108474728635, guid: 01f3960c0a6e0f645941d9c9a1da7777, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6909795109192350213, guid: 01f3960c0a6e0f645941d9c9a1da7777, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8227460805692439441, guid: 01f3960c0a6e0f645941d9c9a1da7777, type: 3}
       propertyPath: m_Pivot.x

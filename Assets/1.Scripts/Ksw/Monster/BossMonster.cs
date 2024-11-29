@@ -15,7 +15,7 @@ public class BossMonster : MonsterController
     private float lastHealthThreshold = 1.0f; // 마지막 체크한 체력 비율
     private bool isForceGathering = false; // 강제 Gathering 상태 플래그
     private float forceGatheringDuration = 4.0f; // 강제로 Gathering 상태를 유지할 시간
-    private float specialAttackMoveDistance = 7.0f; // 스페셜 어택 시 이동할 거리
+    private float specialAttackMoveDistance = 9.0f; // 스페셜 어택 시 이동할 거리
     private float specialAttackSpeed = 5.0f; // 스페셜 어택 시 이동 속도
 
     public PlayTime playTime;
@@ -149,7 +149,7 @@ public class BossMonster : MonsterController
                 break;
             // 힘을 모으는 상태 (Gathering)
             case BehaviourState.Gathering:
-                StartCoroutine(LookAtPlayer()); // 게더링 상태에서도 플레이어를 바라보도록 호출
+                //StartCoroutine(LookAtPlayer()); // 게더링 상태에서도 플레이어를 바라보도록 호출
                 if (!isGathering)
                 {
                     // 코루틴 시작
@@ -229,9 +229,8 @@ public class BossMonster : MonsterController
 
         isGathering = true;
         isForceGathering = true; // 강제 Gathering 상태 활성화
-
-
         m_navAgent.enabled = false; // NavMeshAgent 비활성화
+
         // Gathering 모션 재생
         m_monAnimCtr.Play(MonsterAnimController.Motion.Gathering);
 
@@ -243,6 +242,7 @@ public class BossMonster : MonsterController
         {
             specialAttackEffect.SetActive(true);
         }
+
         // 플레이어를 바라보는 메서드 호출
         StartCoroutine(LookAtPlayer());
 
@@ -288,8 +288,6 @@ public class BossMonster : MonsterController
         SoundManager.Inst.PlaySfx("Boss_SpAttack");
         // 스페셜 어택 애니메이션 재생
         m_monAnimCtr.Play(MonsterAnimController.Motion.SpAttack);
-
-
 
         // 이동하면서 공격
         StartCoroutine(MoveForwardSpecialAttack(specialAttackMoveDistance, specialAttackSpeed));
