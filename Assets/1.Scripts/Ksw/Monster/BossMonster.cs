@@ -35,7 +35,7 @@ public class BossMonster : MonsterController
 
             if (playTime == null)
             {
-                Debug.LogError("메인 카메라에 PlayTime 스크립트가 없습니다.");
+                //Debug.LogError("메인 카메라에 PlayTime 스크립트가 없습니다.");
             }
         }
     }
@@ -330,7 +330,7 @@ public class BossMonster : MonsterController
             // 벽에 막혀 이동하지 못할 경우 탈출 조건
             if (Vector3.Distance(previousPosition, transform.position) < 0.01f)
             {
-                Debug.Log("벽에 막혀 스페셜 어택 종료");
+                //Debug.Log("벽에 막혀 스페셜 어택 종료");
                 break;
             }
 
@@ -357,7 +357,7 @@ public class BossMonster : MonsterController
         }
 
         // EffectManager를 통해 피 이펙트를 생성하고 위치 설정
-        EffectManager.Instance.GetEffect("Gathering", position, Quaternion.identity);
+        //EffectManager.Instance.GetEffect("Gathering", position, Quaternion.identity);
     }
 
     public void OnGameClear()
@@ -388,7 +388,7 @@ public class BossMonster : MonsterController
         }
         else
         {
-            Debug.Log("playTime에m_isend가 NULL.");
+            //Debug.Log("playTime에m_isend가 NULL.");
         }
 
     }
@@ -489,7 +489,7 @@ public class BossMonster : MonsterController
         }
         else
         {
-            Debug.LogWarning("NavMeshAgent가 활성화되지 않았거나 NavMesh 위에 배치되지 않았습니다.");
+            //Debug.LogWarning("NavMeshAgent가 활성화되지 않았거나 NavMesh 위에 배치되지 않았습니다.");
             // NavMesh에 위치해 있지 않다면 다시 NavMesh 위에 배치하거나 에러 처리 수행
             if (onComplete != null)
             {
