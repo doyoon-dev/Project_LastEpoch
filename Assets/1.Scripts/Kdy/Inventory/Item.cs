@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static ItemData;
-using static UnityEditor.Progress;
+//using static UnityEditor.Progress;
 using static UnityEngine.Rendering.VolumeComponent;
 
 public interface ISetInventory
