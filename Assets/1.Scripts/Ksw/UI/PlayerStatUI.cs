@@ -146,6 +146,7 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
         s_player.m_stat.AttackDmg = CalculateFinalStat(initialAttackDmg, additionalAttackDmg, true);
         s_player.m_stat.Defense = CalculateFinalStat(initialDefense, additionalDefense, false);
 
+        SkillDataManager.m_skillDataDic["Normal"].Dmg = CalculateFinalStat(SkillDataManager.m_skillDataDic["Normal"].InitDmg, additionalAttackDmg, true);
         SkillDataManager.m_skillDataDic["Warpath"].Dmg = CalculateFinalStat(SkillDataManager.m_skillDataDic["Warpath"].InitDmg, additionalAttackDmg, true);
         SkillDataManager.m_skillDataDic["ErasingStrike"].Dmg = CalculateFinalStat(SkillDataManager.m_skillDataDic["ErasingStrike"].InitDmg, additionalAttackDmg, true);
         SkillDataManager.m_skillDataDic["Lunge"].Dmg = CalculateFinalStat(SkillDataManager.m_skillDataDic["Lunge"].InitDmg, additionalAttackDmg, true);
