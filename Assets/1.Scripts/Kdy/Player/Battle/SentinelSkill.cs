@@ -372,6 +372,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         m_myAnim.SetBool("SkillLunge", false);
         m_player.GetComponent<Collider>().isTrigger = false;
         m_player.GetComponent<Rigidbody>().isKinematic = false;
+        yield return new WaitForSeconds(0.5f);
         RecoverMp(m_usingSkill);
     }
     #endregion
