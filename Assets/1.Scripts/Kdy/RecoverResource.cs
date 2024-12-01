@@ -7,7 +7,12 @@ public interface IRecoveryManaPoint
     void RecoveryManaPoint(bool isUsingSkill);
 }
 
-public class RecoverResource : MonoBehaviour, IRecoveryManaPoint
+public interface IStopRecoverCoroutine
+{
+    void StopRecoverCoroutine();
+}
+
+public class RecoverResource : MonoBehaviour, IRecoveryManaPoint, IStopRecoverCoroutine
 {
     [SerializeField]
     Player m_player;
@@ -44,5 +49,10 @@ public class RecoverResource : MonoBehaviour, IRecoveryManaPoint
             }
             yield return null;
         }
+    }
+
+    public void StopRecoverCoroutine()
+    {
+        StopAllCoroutines();
     }
 }

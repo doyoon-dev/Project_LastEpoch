@@ -87,6 +87,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         {
             if (m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["ErasingStrike"].Mp && !m_strikeUse)
             {
+                StopRecover();
                 m_myAnim.SetBool("Move", false);
                 StopAllCoroutines();
                 //m_player.StopAllCoroutines();
@@ -266,6 +267,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
             //if (Input.GetKeyDown(inputKey) && !m_lungeUse && m_player.m_curMagicPoint >= SkillData.m_skillData["Lunge"].Mp)
             if (!m_lungeUse && m_player.m_curMagicPoint >= SkillDataManager.m_skillDataDic["Lunge"].Mp)
             {
+                StopRecover();
                 m_lungeEffect.SetActive(true);
                 m_usingSkill = true;
                 SoundManager.Inst.PlaySfx("Lunge_Sound");
@@ -372,7 +374,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         m_myAnim.SetBool("SkillLunge", false);
         m_player.GetComponent<Collider>().isTrigger = false;
         m_player.GetComponent<Rigidbody>().isKinematic = false;
-        yield return new WaitForSeconds(0.5f);
+        //yield return new WaitForSeconds(0.5f);
         RecoverMp(m_usingSkill);
     }
     #endregion
@@ -386,6 +388,14 @@ public class SentinelSkill : Skill, ISkill_Lunge
         }
     }
 
+    void StopRecover()
+    {
+        IStopRecoverCoroutine isrc = m_player.GetComponent<IStopRecoverCoroutine>();
+        if (isrc != null)
+        {
+            isrc.StopRecoverCoroutine();
+        }
+    }
 
     // 돌진 스킬 데미지 박스
     // OnTrigger 함수로 무기 앞에 콜라이더 만들고 충돌 적 무시, 충돌 적 데미지 주기로 해야 할 지도
