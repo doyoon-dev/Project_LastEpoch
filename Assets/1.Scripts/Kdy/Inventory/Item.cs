@@ -41,7 +41,7 @@ public interface IItemInterface : IChangePos, IOrgPos, IEquipItemStat, ISetInven
 
 }
 
-public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler, IItemInterface
+public class Item : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IItemInterface, IPointerClickHandler,  IPointerEnterHandler, IPointerExitHandler
 {
     public event UnityAction m_unEquipItem = null;
     //public event UnityAction<ItemData, bool> m_equipItemStat = null;         // 아이템을 장착했을 때 유니티 이벤트 실행해서 BattleSystem에 있는 Stat 아이템 Stat에 따라 바꿔주기
@@ -142,7 +142,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                 SetEquip();
             }
             // 장착 아이템만 해제
-            else if(m_equipedItem)
+            else if (m_equipedItem)
             {
                 if (imse != null)
                 {
@@ -165,6 +165,7 @@ public class Item : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         }
         if (eventData.button == PointerEventData.InputButton.Left)
         {
+            return;
             //Debug.Log("아이템 위치 : " + eventData.position);
         }
     }
