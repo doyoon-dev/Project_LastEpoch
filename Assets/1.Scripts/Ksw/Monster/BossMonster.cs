@@ -355,7 +355,7 @@ public class BossMonster : MonsterController
         }
 
         // EffectManager를 통해 피 이펙트를 생성하고 위치 설정
-        //EffectManager.Instance.GetEffect("Gathering", position, Quaternion.identity);
+        EffectManager.Instance.GetEffect("Gathering", position, Quaternion.identity);
     }
 
     public void OnGameClear()

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: BossSpAttk
   Mp: 0
-  Dmg: 150
+  InitDmg: 0
+  Dmg: 100
   CoolTime: 0
   Channeling: 0
   knockback: 0
