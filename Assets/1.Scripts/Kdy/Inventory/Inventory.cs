@@ -79,9 +79,10 @@ public class Inventory : MonoBehaviour, IGetItemData, IMakeSlotEmpty, IPlaceItem
         }
         if (m_selectedItmeGrid == null) { return; }
 
-        //if(Input.GetMouseButtonDown(0))
+        //if (Input.GetMouseButtonDown(0))
         //{
         //    Vector2Int tileGridPosition = m_selectedItmeGrid.GetTileGridPosition(Input.mousePosition);
+        //    Debug.Log("( " + tileGridPosition.x + ", " + tileGridPosition.y + " )");
         //}
     }
 
