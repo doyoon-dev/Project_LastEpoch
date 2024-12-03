@@ -28,6 +28,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
     public LayerMask m_enemyMask;
     public LayerMask m_backgroundMask;
     public Dictionary<string, SkillButton> m_skillBtns = new Dictionary<string, SkillButton>();
+    public float m_delayTime = 0.3f;
     bool m_warPathUse = false;
     bool m_lungeUse = false;
     bool m_strikeUse = false;
@@ -46,7 +47,10 @@ public class SentinelSkill : Skill, ISkill_Lunge
         {
             Skill_ErasingStrike(KeyCode.Q);
         }
-
+        if(Input.GetKey(KeyCode.R))
+        {
+            UsingSkillMp(Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
+        }
         Skill_WarPath(KeyCode.W);
         if (Input.GetKey(KeyCode.E))
         {
@@ -141,10 +145,10 @@ public class SentinelSkill : Skill, ISkill_Lunge
     {
         m_erasingStrikeEffect.SetActive(false);
         m_usingSkill = false;
-        RecoverMp(m_usingSkill);
+        //RecoverMp(m_usingSkill);
+        Invoke("DelayMp", m_delayTime);
     }
-
-    
+    int cnt = 0;
     public void Skill_WarPath(KeyCode inputKey)
     {
         // 스킬 키 누르고 있으면 마나를 다 쓸 때 까지 스킬 발동
@@ -164,10 +168,12 @@ public class SentinelSkill : Skill, ISkill_Lunge
                     return;
                 }
                 //StopAllCoroutines();
+                StopRecover();
                 m_myAnim.SetBool("Move", false);
                 m_usingSkill = true;
                 m_stopMovingAct?.Invoke();
-                RecoverMp(m_usingSkill);
+                //RecoverMp(m_usingSkill);
+                Debug.Log(++cnt);
                 UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
                 if (!m_warPathUse)
                 {
@@ -190,8 +196,14 @@ public class SentinelSkill : Skill, ISkill_Lunge
             m_myAnim.SetBool("SkillWarPath", false);
             m_warPathUse = false;
             m_usingSkill = false;
-            RecoverMp(m_usingSkill);
+            //RecoverMp(m_usingSkill);
+            Invoke("DelayMp", m_delayTime);
         }
+    }
+
+    void DelayMp()
+    {
+        RecoverMp(m_usingSkill);
     }
 
     public void SkillMove()
@@ -375,7 +387,8 @@ public class SentinelSkill : Skill, ISkill_Lunge
         m_player.GetComponent<Collider>().isTrigger = false;
         m_player.GetComponent<Rigidbody>().isKinematic = false;
         //yield return new WaitForSeconds(0.5f);
-        RecoverMp(m_usingSkill);
+        //RecoverMp(m_usingSkill);
+        Invoke("DelayMp", m_delayTime);
     }
     #endregion
 

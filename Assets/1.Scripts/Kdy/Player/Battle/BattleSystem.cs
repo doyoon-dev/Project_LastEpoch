@@ -50,7 +50,7 @@ public interface ISetStatus
 
 
 
-public interface IBattle : ITransform, IUsedSkill, IEquipItemSetting, ISetStatus, IDamageable
+public interface IBattle : ITransform, IUsedSkill, ISetStatus, IDamageable//, IEquipItemSetting
 {
 
 }
@@ -256,6 +256,7 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
     public void UsedSkill(float skillMp)
     {
         m_curMagicPoint -= skillMp;
+        
         if (m_curMagicPoint <= 0)
         {
             m_curMagicPoint = 0;
@@ -280,38 +281,4 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         //Debug.Log("      공격력 :   " + m_stat.AttackDmg + "      방어력 :   " + m_stat.Defense);
     }
 
-    public void EquipItemSetting(Item item)
-    {
-        m_item = item;
-        switch (item.m_itemData.itemType)
-        {
-            case ItemType.Head:
-                
-                break;
-            case ItemType.Necklace:
-                
-                break;
-            case ItemType.Weapon:
-                
-                break;
-            case ItemType.Armor:
-                
-                break;
-            case ItemType.Sheild:
-                
-                break;
-            case ItemType.Belt:
-                
-                break;
-            case ItemType.Ring:
-                
-                break;
-            case ItemType.Shoes:
-                
-                break;
-            case ItemType.Hand:
-                
-                break;
-        }
-    }
 }

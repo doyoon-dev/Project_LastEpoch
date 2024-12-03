@@ -512,7 +512,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3996918203844313376}
-  - component: {fileID: 529842104}
   m_Layer: 5
   m_Name: Q
   m_TagString: Untagged
@@ -541,67 +540,6 @@ RectTransform:
   m_AnchoredPosition: {x: -152, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &529842104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3996918203844313377}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7935396ff15fe034c8917359f4080961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_useSkill:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BattleSystem, Assembly-CSharp
-        m_MethodName: UsedSkill
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_usingSkill: 0
-  m_player: {fileID: 0}
-  m_playerUI: {fileID: 3996918205501953457}
-  m_myAnim: {fileID: 0}
-  m_warPathStartPos: {fileID: 0}
-  m_warPathEndPos: {fileID: 0}
-  m_stopMovingAct:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: StopCoroutineFunc
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_effectPos: {fileID: 0}
-  m_erasingStrikeEffect: {fileID: 0}
-  m_warpathEffect: {fileID: 0}
-  m_lungeEffect: {fileID: 0}
-  m_enemyMask:
-    serializedVersion: 2
-    m_Bits: 2176
-  m_backgroundMask:
-    serializedVersion: 2
-    m_Bits: 64
-  m_skillKey: 113
-  m_skillObj: {fileID: 8162887530517710935}
-  m_pUI: {fileID: 3996918205501953457}
 --- !u!1 &3996918204326825208
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +795,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3996918204452371569}
-  - component: {fileID: 1096637094}
   m_Layer: 5
   m_Name: R
   m_TagString: Untagged
@@ -887,43 +824,6 @@ RectTransform:
   m_AnchoredPosition: {x: 150, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1096637094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3996918204452371574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7935396ff15fe034c8917359f4080961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_useSkill:
-    m_PersistentCalls:
-      m_Calls: []
-  m_usingSkill: 0
-  m_player: {fileID: 0}
-  m_playerUI: {fileID: 0}
-  m_myAnim: {fileID: 0}
-  m_warPathStartPos: {fileID: 0}
-  m_warPathEndPos: {fileID: 0}
-  m_stopMovingAct:
-    m_PersistentCalls:
-      m_Calls: []
-  m_effectPos: {fileID: 0}
-  m_erasingStrikeEffect: {fileID: 0}
-  m_warpathEffect: {fileID: 0}
-  m_lungeEffect: {fileID: 0}
-  m_enemyMask:
-    serializedVersion: 2
-    m_Bits: 0
-  m_backgroundMask:
-    serializedVersion: 2
-    m_Bits: 0
-  m_skillKey: 0
-  m_skillObj: {fileID: 0}
-  m_pUI: {fileID: 0}
 --- !u!1 &3996918204473825216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,7 +1671,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3996918205058731502}
-  - component: {fileID: 780519303}
   m_Layer: 5
   m_Name: W
   m_TagString: Untagged
@@ -1800,43 +1699,6 @@ RectTransform:
   m_AnchoredPosition: {x: -49, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &780519303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3996918205058731503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7935396ff15fe034c8917359f4080961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_useSkill:
-    m_PersistentCalls:
-      m_Calls: []
-  m_usingSkill: 0
-  m_player: {fileID: 0}
-  m_playerUI: {fileID: 0}
-  m_myAnim: {fileID: 0}
-  m_warPathStartPos: {fileID: 0}
-  m_warPathEndPos: {fileID: 0}
-  m_stopMovingAct:
-    m_PersistentCalls:
-      m_Calls: []
-  m_effectPos: {fileID: 0}
-  m_erasingStrikeEffect: {fileID: 0}
-  m_warpathEffect: {fileID: 0}
-  m_lungeEffect: {fileID: 0}
-  m_enemyMask:
-    serializedVersion: 2
-    m_Bits: 0
-  m_backgroundMask:
-    serializedVersion: 2
-    m_Bits: 0
-  m_skillKey: 0
-  m_skillObj: {fileID: 8324343081671180894}
-  m_pUI: {fileID: 0}
 --- !u!1 &3996918205088073520
 GameObject:
   m_ObjectHideFlags: 0
@@ -2159,7 +2021,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3996918205222895991}
-  - component: {fileID: 1831686578}
   m_Layer: 5
   m_Name: E
   m_TagString: Untagged
@@ -2188,43 +2049,6 @@ RectTransform:
   m_AnchoredPosition: {x: 51, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1831686578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3996918205222895988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7935396ff15fe034c8917359f4080961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_useSkill:
-    m_PersistentCalls:
-      m_Calls: []
-  m_usingSkill: 0
-  m_player: {fileID: 0}
-  m_playerUI: {fileID: 0}
-  m_myAnim: {fileID: 0}
-  m_warPathStartPos: {fileID: 0}
-  m_warPathEndPos: {fileID: 0}
-  m_stopMovingAct:
-    m_PersistentCalls:
-      m_Calls: []
-  m_effectPos: {fileID: 0}
-  m_erasingStrikeEffect: {fileID: 0}
-  m_warpathEffect: {fileID: 0}
-  m_lungeEffect: {fileID: 0}
-  m_enemyMask:
-    serializedVersion: 2
-    m_Bits: 0
-  m_backgroundMask:
-    serializedVersion: 2
-    m_Bits: 0
-  m_skillKey: 0
-  m_skillObj: {fileID: 6591091645902810766}
-  m_pUI: {fileID: 0}
 --- !u!1 &3996918205374050724
 GameObject:
   m_ObjectHideFlags: 0
@@ -3456,11 +3280,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &8324343081671180894 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7032612885542639861, guid: 92103189a7d061f40bbcbe0535e8412e, type: 3}
-  m_PrefabInstance: {fileID: 1305724780278143659}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8422873350589435248 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7420475791069911003, guid: 92103189a7d061f40bbcbe0535e8412e, type: 3}
@@ -3601,7 +3420,8 @@ PrefabInstance:
       propertyPath: m_useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7865920746580458127, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
 --- !u!224 &2348801915682590646 stripped
 RectTransform:
@@ -3619,11 +3439,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &6591091645902810766 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5724186680087783523, guid: 698c0f9518e3b1b46a4aecdaa5bfa095, type: 3}
-  m_PrefabInstance: {fileID: 1443447228633138925}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7535474236619737356
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3745,22 +3560,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &8162887530517710935 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1863090642359058779, guid: 01f3960c0a6e0f645941d9c9a1da7777, type: 3}
-  m_PrefabInstance: {fileID: 7535474236619737356}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2074253970395880455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8162887530517710935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac480683beb67244192b41dbf48a69b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_skillData: {fileID: 11400000, guid: eb1faffda9601fd4ba04dcc3c013e073, type: 2}
-  m_parent: {fileID: 0}
