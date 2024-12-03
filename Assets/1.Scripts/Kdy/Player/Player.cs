@@ -188,9 +188,9 @@ public class Player : BattleSystem, ISetClickEffect
         m_camShake?.Invoke();
         //Debug.Log($"플레이어가 {damage}의 데미지를 받았습니다.");  // 데미지 로그
         float defensePercent = m_stat.Defense;
-        if (m_stat.Defense > 85)
+        if (m_stat.Defense > 0.85f)
         {
-            defensePercent = 85;
+            defensePercent = 0.85f;
         }
         // 데미지 계산
         float damage = Mathf.Max(0, skillData.Dmg * (1 - (defensePercent)));
@@ -200,7 +200,7 @@ public class Player : BattleSystem, ISetClickEffect
         //obj.transform.position = transform.position;
         //ParticleSystem ps = obj.GetComponentInChildren<ParticleSystem>();
         //ps.Play();
-        ShowDamageText(skillData.Dmg, Color.red);
+        ShowDamageText(damage, Color.red);
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
