@@ -182,18 +182,25 @@ public class Player : BattleSystem, ISetClickEffect
         m_myAnim.SetBool("Resurrection", false);
     }
 
-    public override void SetDamage(SkillData damage)
+    public override void SetDamage(SkillData skillData)
     {
         SoundManager.Inst.PlaySfx("Hit_Sound");
         m_camShake?.Invoke();
         //Debug.Log($"플레이어가 {damage}의 데미지를 받았습니다.");  // 데미지 로그
-        m_curHealPoint -= damage.Dmg;  // 현재 체력에서 데미지를 뺌
+        float defensePercent = m_stat.Defense;
+        if (m_stat.Defense > 85)
+        {
+            defensePercent = 85;
+        }
+        // 데미지 계산
+        float damage = Mathf.Max(0, skillData.Dmg * (1 - (defensePercent)));
+        m_curHealPoint -= damage;
         // 수정필요
         //GameObject obj = Instantiate(m_hitEffect);
         //obj.transform.position = transform.position;
         //ParticleSystem ps = obj.GetComponentInChildren<ParticleSystem>();
         //ps.Play();
-        ShowDamageText(damage.Dmg, Color.red);
+        ShowDamageText(skillData.Dmg, Color.red);
         if (m_curHealPoint <= 0)
         {
             m_curHealPoint = 0;
