@@ -455,10 +455,10 @@ public class MonsterManager : SingletonMonoBehaviour<MonsterManager> , KillCount
         //    SpawnMonster();
         //}
 
-        //// B 키를 눌렀을 때 보스 몬스터 소환
-        //if (Input.GetKeyDown(KeyCode.B))
-        //{
-        //    SpawnBossMonster();
-        //}
+        // B 키를 눌렀을 때 보스 몬스터 소환
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            SpawnBossMonster();
+        }
     }
 }
