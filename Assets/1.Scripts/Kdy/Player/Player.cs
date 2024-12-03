@@ -154,7 +154,7 @@ public class Player : BattleSystem, ISetClickEffect
             m_resurrectionEffect.SetActive(true);
             SoundManager.Inst.PlaySfx("ResurrectionSound");
             // 처음 스폰 위치 (부활 위치)
-            transform.position = Vector3.zero;
+            //transform.position = Vector3.zero;
             gameObject.GetComponent<Collider>().isTrigger = false;
             gameObject.GetComponent<Rigidbody>().isKinematic = false;
             gameObject.layer = 9;
