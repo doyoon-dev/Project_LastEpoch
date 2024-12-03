@@ -213,23 +213,23 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
         //    isStatsVisible = !isStatsVisible;
         //}
 
-        //임시로 1번 아이템을 장착하는 예시
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            if (itemDataList.Count > 0)
-            {
-                EquipItemStat(itemDataList[0]);  // 첫 번째 아이템 장착
-            }
-        }
+        ////임시로 1번 아이템을 장착하는 예시
+        //if (Input.GetKeyDown(KeyCode.F2))
+        //{
+        //    if (itemDataList.Count > 0)
+        //    {
+        //        EquipItemStat(itemDataList[0]);  // 첫 번째 아이템 장착
+        //    }
+        //}
 
-        //// 임시로 2번 아이템을 장착하는 예시 
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            if (itemDataList.Count > 1)
-            {
-                EquipItemStat(itemDataList[1]);  // 두 번째 아이템 장착
-            }
-        }
+        ////// 임시로 2번 아이템을 장착하는 예시 
+        //if (Input.GetKeyDown(KeyCode.F3))
+        //{
+        //    if (itemDataList.Count > 1)
+        //    {
+        //        EquipItemStat(itemDataList[1]);  // 두 번째 아이템 장착
+        //    }
+        //}
 
         //// 임시로 1번 아이템을 해제하는 예시 
         //if (Input.GetKeyDown(KeyCode.F3))

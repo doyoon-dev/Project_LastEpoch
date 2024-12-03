@@ -27,7 +27,7 @@ public class DamageUI : MonoBehaviour
     }
     public void DMUISetDamage(float damage)
     {
-        damageText.text = damage.ToString("F2");  // 데미지 값을 텍스트로 설정
+        damageText.text = damage.ToString("F1");  // 데미지 값을 텍스트로 설정
         
     }
     // 데미지 텍스트를 화면에 표시할 위치 설정 (월드 좌표로 받음)
