@@ -148,7 +148,7 @@ public class SentinelSkill : Skill, ISkill_Lunge
         //RecoverMp(m_usingSkill);
         Invoke("DelayMp", m_delayTime);
     }
-    int cnt = 0;
+
     public void Skill_WarPath(KeyCode inputKey)
     {
         // 스킬 키 누르고 있으면 마나를 다 쓸 때 까지 스킬 발동
@@ -173,7 +173,6 @@ public class SentinelSkill : Skill, ISkill_Lunge
                 m_usingSkill = true;
                 m_stopMovingAct?.Invoke();
                 //RecoverMp(m_usingSkill);
-                Debug.Log(++cnt);
                 UsingSkillMp(SkillDataManager.m_skillDataDic["Warpath"].Mp * Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
                 if (!m_warPathUse)
                 {
