@@ -7,7 +7,12 @@ public interface IRecoveryManaPoint
     void RecoveryManaPoint(bool isUsingSkill);
 }
 
-public class RecoverResource : MonoBehaviour, IRecoveryManaPoint
+public interface IStopRecoverCoroutine
+{
+    void StopRecoverCoroutine();
+}
+
+public class RecoverResource : MonoBehaviour, IRecoveryManaPoint, IStopRecoverCoroutine
 {
     [SerializeField]
     Player m_player;
@@ -32,8 +37,10 @@ public class RecoverResource : MonoBehaviour, IRecoveryManaPoint
     IEnumerator ManaPointCoroutine(bool isUsingSkill)
     {
         //m_recoveryMpCheck = isUsingSkill;
+        yield return new WaitForSeconds(0.5f);
         while (!isUsingSkill && m_player.m_curMagicPoint < m_player.m_stat.MaxHp)
         {
+            
             m_player.m_curMagicPoint += Time.deltaTime * 10;
             if (m_player.m_curMagicPoint >= m_player.m_stat.MaxHp)
             {
@@ -42,5 +49,10 @@ public class RecoverResource : MonoBehaviour, IRecoveryManaPoint
             }
             yield return null;
         }
+    }
+
+    public void StopRecoverCoroutine()
+    {
+        StopAllCoroutines();
     }
 }

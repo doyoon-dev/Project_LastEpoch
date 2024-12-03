@@ -86,6 +86,7 @@ public class PlayerUI : MonoBehaviour, IRecoveryMP
     }
 
     // 플레이어의 마나가 회복, 감소함에 따라 함수 실행
+    // -> Player 스크립트 m_changeMp 이벤트 함수에서 m_curMagicPoint 변화하면 실행
     public void ManaPoint(float value, float MaxMpValue, bool isUsingSkill)
     {
         // 마나 감소 UI 함수 실행
@@ -136,7 +137,6 @@ public class PlayerUI : MonoBehaviour, IRecoveryMP
             m_mpUI.fillAmount = beforeMp - val;
             yield return null;
         }
-
         m_mpUI.fillAmount = value;
     }
     #endregion
