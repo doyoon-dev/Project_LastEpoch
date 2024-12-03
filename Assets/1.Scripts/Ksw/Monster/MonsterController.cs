@@ -375,7 +375,7 @@ public class MonsterController : BattleSystem
     }
 
 
-
+    //플레이어한테 몬스터 공격을 받았을떄임
     public override void SetDamage(SkillData skillData)
     {
         if (IsDie || isTransitioning) return; // 무적 상태면 데미지 무시) return;
