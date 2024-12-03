@@ -90,7 +90,8 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
                 if (additionalAttackDmg > 0)
                 {
                     attackDmgText.color = increaseColor;  // 노란색
-                    attackDmgText.text = $"{s_player.m_stat.AttackDmg.ToString("F1")} (+{CalculateStat(initialAttackDmg, additionalAttackDmg, true).ToString("F1")})";
+                    float attackPercentage = CalculateStat(initialAttackDmg, additionalAttackDmg, false) * 100;
+                    attackDmgText.text = $"{s_player.m_stat.AttackDmg.ToString("F1")} (+{attackPercentage.ToString("F1")}%)";
                 }
                 else
                 {
@@ -101,7 +102,8 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
                 if (additionalDefense > 0)
                 {
                     defenseText.color = increaseColor;  // 노란색
-                    defenseText.text = $"{s_player.m_stat.Defense.ToString("F1")} (+{CalculateStat(initialDefense,additionalDefense, false).ToString("F1")})";
+                    float defensePercentage = CalculateStat(initialDefense, additionalDefense, false) * 100;
+                    defenseText.text = $"+{defensePercentage.ToString("F1")}%";
                 }
                 else
                 {
@@ -221,13 +223,13 @@ public class PlayerStatUI : MonoBehaviour, IEquipItemStatUI, IUnEquipItemStatUI,
         }
 
         //// 임시로 2번 아이템을 장착하는 예시 
-        //if (Input.GetKeyDown(KeyCode.F2))
-        //{
-        //    if (itemDataList.Count > 1)
-        //    {
-        //        EquipItemStat(itemDataList[1]);  // 두 번째 아이템 장착
-        //    }
-        //}
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            if (itemDataList.Count > 1)
+            {
+                EquipItemStat(itemDataList[1]);  // 두 번째 아이템 장착
+            }
+        }
 
         //// 임시로 1번 아이템을 해제하는 예시 
         //if (Input.GetKeyDown(KeyCode.F3))
