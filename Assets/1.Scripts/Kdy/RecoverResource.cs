@@ -37,14 +37,13 @@ public class RecoverResource : MonoBehaviour, IRecoveryManaPoint, IStopRecoverCo
     IEnumerator ManaPointCoroutine(bool isUsingSkill)
     {
         //m_recoveryMpCheck = isUsingSkill;
-        yield return new WaitForSeconds(0.5f);
-        while (!isUsingSkill && m_player.m_curMagicPoint < m_player.m_stat.MaxHp)
+        //yield return new WaitForSeconds(0.5f);
+        while (!isUsingSkill && m_player.m_curMagicPoint < m_player.m_stat.MaxMp)
         {
-            
             m_player.m_curMagicPoint += Time.deltaTime * 10;
-            if (m_player.m_curMagicPoint >= m_player.m_stat.MaxHp)
+            if (m_player.m_curMagicPoint >= m_player.m_stat.MaxMp)
             {
-                m_player.m_curMagicPoint = m_player.m_stat.MaxHp;
+                m_player.m_curMagicPoint = m_player.m_stat.MaxMp;
                 break;
             }
             yield return null;
