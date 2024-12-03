@@ -73,7 +73,7 @@ public class PlayerUI : MonoBehaviour, IRecoveryMP
         {
             RecoveryHp(value);
             //m_hpText.text = (value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
-            m_hpText.text = (value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
+            m_hpText.text = Mathf.FloorToInt(value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
         }
         // 체력 감소 UI 함수 실행
         else
@@ -81,7 +81,7 @@ public class PlayerUI : MonoBehaviour, IRecoveryMP
             StopAllCoroutines();
             StartCoroutine(DamagedHealPoint(value));
             //m_hpText.text = (value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
-            m_hpText.text = (value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
+            m_hpText.text = Mathf.FloorToInt(value * MaxHpValue).ToString() + " / " + (MaxHpValue).ToString();
         }
     }
 
