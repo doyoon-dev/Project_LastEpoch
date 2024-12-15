@@ -64,7 +64,7 @@ public class MonsterController : BattleSystem
     protected MonsterManager m_manager;  // 매니저 참조
     protected float lastAttackTime = 0f;
     private MoveTween m_moveTween;
-    private Renderer[] m_renderers;
+    protected Renderer[] m_renderers;
     private GameObject detectedPlayer;
     public LayerMask m_playerMask;
     public LayerMask m_BackgroundMask;
