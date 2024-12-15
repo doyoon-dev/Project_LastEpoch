@@ -71,8 +71,8 @@ public class GameClearUI : MonoBehaviour, ITimeResult, IMonsterCountResult, IRes
 
     public void ActiveObjects()
     {
-        Invoke("OnPlayTimeObj", 1.0f);
-        Invoke("OnMonsterCountObj", 2.0f);
+        Invoke("OnPlayTimeObj", 1.5f);
+        Invoke("OnMonsterCountObj", 3.0f);
     }
 
     void OnPlayTimeObj()

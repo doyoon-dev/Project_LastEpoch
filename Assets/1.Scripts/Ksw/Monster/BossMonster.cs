@@ -413,7 +413,7 @@ public class BossMonster : MonsterController
         GameObject bloodstainEffect = EffectManager.Instance.GetEffect("BloodSplatter05", transform.position, Quaternion.identity);
         SoundManager.Inst.PlaySfx("Boss_Death");
 
-        StartCoroutine(DelayOnGameClear(1.5f));
+        StartCoroutine(DelayOnGameClear(4.0f));
 
     }
 
