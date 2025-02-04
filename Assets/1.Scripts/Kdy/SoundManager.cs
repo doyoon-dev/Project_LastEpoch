@@ -149,4 +149,8 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
+    public void StopBGMSound()
+    {
+        m_bgmAudioSource.Stop();
+    }
 }
