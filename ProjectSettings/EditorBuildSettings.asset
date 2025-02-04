@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/0.Scenes/Scenes/MainMenu.unity
+    guid: 05df2c4656b2a394c825bfdc563085be
+  - enabled: 1
     path: Assets/0.Scenes/Scenes/Modular Dungeon.unity
     guid: 27915ac565aadf048b89a94d619c501d
   m_configObjects: {}
