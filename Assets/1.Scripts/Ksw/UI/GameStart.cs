@@ -7,6 +7,7 @@ public class GameStart : MonoBehaviour
 {
   public void StartGame()
     {
+        SoundManager.Inst.StopBGMSound();
         SceneManager.LoadScene("Modular Dungeon");
     }
 }
