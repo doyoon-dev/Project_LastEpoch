@@ -1,0 +1,30 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Inventory/Item Data")]
+public class NewItemData : ScriptableObject
+{
+    public enum ItemType
+    {
+        Potion = -1,
+        Head,
+        Necklace,
+        Weapon,
+        Armor,
+        Sheild,
+        Belt,
+        Ring,
+        Shoes,
+        Hand
+    }
+
+    public ItemType itemType;
+    public Sprite itemImagePrefab;
+    public string itemName;
+    public int itemWidth;
+    public int itemHeight;
+    public float atkPower;
+    public float defense;
+    public float recoveryAmount;
+}

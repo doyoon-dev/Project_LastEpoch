@@ -40,8 +40,12 @@ public class Player : BattleSystem, ISetClickEffect
     [SerializeField]
     GameObject m_atkParticle;
 
+    public UnityAction<float> m_onUseMana;            // 마나 회복 이벤트
+    public event UnityAction<float> m_onRecoverMana;        // 마나 감소 이벤트
+    public event UnityAction<float> m_showManaUI;
     public event UnityAction<string> m_clickEffectPush;
     public UnityEvent m_camShake;
+
     public GameObject m_resurrectionObj;
     public GameObject m_hitEffect;
     public int attackDamage = 20;
@@ -62,6 +66,8 @@ public class Player : BattleSystem, ISetClickEffect
     void Start()
     {
         Initalize();
+        m_showManaUI += m_playerUI.MPUI;
+        m_onUseMana += ReduceMana;
         m_changeHp += SceneData.Inst.m_playerHpMpUI.HealthPoint;
         m_changeMp += SceneData.Inst.m_playerHpMpUI.ManaPoint;
         m_deadAlarm += () =>
@@ -116,6 +122,7 @@ public class Player : BattleSystem, ISetClickEffect
         }
     }
 
+
     // Update is called once per frame
     void Update()
     {
@@ -138,7 +145,10 @@ public class Player : BattleSystem, ISetClickEffect
         //    SetDamage(SkillDataManager.m_skillDataDic["Normal"]);
         //}
         #endregion
-        m_minimapCam.transform.position = m_minimapCamPos.transform.position;
+        if (m_minimapCam != null && m_minimapCamPos != null)
+        {
+            m_minimapCam.transform.position = m_minimapCamPos.transform.position;
+        }
     }
 
     // 첫 시작, 부활 했을 때 초기화
@@ -175,6 +185,35 @@ public class Player : BattleSystem, ISetClickEffect
             SkillDataManager.m_skillDataDic["Warpath"].Dmg = SkillDataManager.m_skillDataDic["Warpath"].InitDmg;
         }
         
+    }
+
+    // MP가 차고 있을 때 즉시 차는게 아닌 일정시간 대기 후 차도록
+    // 문제 : 일정시간 대기 후 차는데 MP가 차고있을 때 스킬을 사용하면 즉시 차고 있는 MP가 멈추고 대기 후 차는게 아니라
+    //        조금 차다가 멈추고 대기 후 다시 참
+    public void RecoveMP()
+    {
+        StopAllCoroutines();
+        StartCoroutine(FillMP());
+    }
+
+    IEnumerator FillMP()
+    {
+        yield return new WaitForSeconds(0.5f);
+        while (m_curMp < m_stat.MaxMp)
+        {
+            m_curMp += Time.deltaTime * 10;
+            m_showManaUI?.Invoke(m_curMp);
+            yield return null;
+        }
+        m_curMp = m_stat.MaxMp;
+    }
+
+    // SkillBase의 ConsumeMana 함수에서 호출됨
+    public void ReduceMana(float amount)
+    {
+        StopAllCoroutines();
+        m_curMp -= amount;
+        m_showManaUI?.Invoke(m_curMp);
     }
 
     void SetIdle()

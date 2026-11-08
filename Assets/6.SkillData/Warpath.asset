@@ -12,10 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610938c3d906a084a9fc75470c2233ba, type: 3}
   m_Name: Warpath
   m_EditorClassIdentifier: 
+  triggerType: 1
+  skillType: 3
   Name: Warpath
-  Mp: 3
+  Mp: 1
   InitDmg: 15
   Dmg: 15
   CoolTime: 0.5
   Channeling: 10
   knockback: 0
+  radius: 0
+  effectPos: {fileID: 0}
+  vfxPrefab: {fileID: 61633212800654079, guid: 40b24fa944b4fd84ebf0c5d6c02ea967, type: 3}
+  sfx: {fileID: 0}

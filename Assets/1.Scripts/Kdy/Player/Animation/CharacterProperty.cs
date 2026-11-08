@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterProperty : MonoBehaviour
 {
     Animator m_anim = null;
-    protected Animator m_myAnim
+    public Animator m_myAnim
     {
         get
         {

@@ -19,6 +19,7 @@ public class AnimEvent : MonoBehaviour
     public UnityEvent m_secondMoveSound;
     public UnityEvent m_atkEffectOn;
     public UnityEvent m_atkEffectOff;
+    public UnityEvent m_LungeEffect;
 
     // Start is called before the first frame update
     void Start()

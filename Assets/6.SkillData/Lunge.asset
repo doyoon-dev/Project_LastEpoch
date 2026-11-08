@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610938c3d906a084a9fc75470c2233ba, type: 3}
   m_Name: Lunge
   m_EditorClassIdentifier: 
+  triggerType: 0
+  skillType: 1
   Name: Lunge
   Mp: 8
   InitDmg: 30
@@ -19,3 +21,6 @@ MonoBehaviour:
   CoolTime: 4
   Channeling: 0
   knockback: 0
+  radius: 0
+  vfxPrefab: {fileID: 5519256817566179768, guid: 764f4c61858287b41872f5d65ccfa90d, type: 3}
+  sfx: {fileID: 0}

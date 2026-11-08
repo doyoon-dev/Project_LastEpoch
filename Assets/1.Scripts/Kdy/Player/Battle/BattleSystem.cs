@@ -33,6 +33,11 @@ public interface IDamageable
     void SetDamage(SkillData skillData);
 }
 
+public interface IDamage
+{
+    void Damaged(float amount);
+}
+
 public interface ITransform
 {
     Transform transform { get; }
@@ -50,7 +55,7 @@ public interface ISetStatus
 
 
 
-public interface IBattle : ITransform, IUsedSkill, ISetStatus, IDamageable//, IEquipItemSetting
+public interface IBattle : ITransform, IUsedSkill, ISetStatus, IDamageable, IDamage
 {
 
 }
@@ -99,16 +104,27 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void Damaged(float amount)
     {
-        
-    }
+        m_recoveryCheck = false;
+        float defensePercent = m_stat.Defense;
+        if (m_stat.Defense > 85)
+        {
+            defensePercent = 85;
+        }
+        // 데미지 계산
+        float damage = Mathf.Max(0, amount * (1 - (defensePercent * 0.01f)));
+        m_curHealPoint -= damage;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // 데미지 텍스트 표시
+        ShowDamageText(damage, Color.white);
+
+        // 체력이 0 이하일 때 사망 처리
+        if (m_curHealPoint <= 0)
+        {
+            m_curHealPoint = 0;
+            Dead(); // 사망 처리
+        }
     }
 
     public virtual void Initalize()
@@ -212,8 +228,6 @@ public class BattleSystem : MovePath, IDeadAlarm, IBattle
                 Debug.LogError("DamageTextPosition이 할당되지 않았습니다.");
         }
     }
-
-
 
 
     public void RecoveryHealPoint(float healpoint)

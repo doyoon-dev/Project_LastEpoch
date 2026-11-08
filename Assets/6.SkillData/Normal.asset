@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610938c3d906a084a9fc75470c2233ba, type: 3}
   m_Name: Normal
   m_EditorClassIdentifier: 
+  skillType: 2
   Name: Normal
   Mp: 0
   InitDmg: 10

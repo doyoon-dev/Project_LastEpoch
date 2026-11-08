@@ -175,16 +175,22 @@ public class PlayerUI : MonoBehaviour, IRecoveryMP
         while (!isUsingSkill && m_mpUI.fillAmount < 1)
         {
             m_mpUI.fillAmount += Time.deltaTime * 0.1f;
-            //m_mpText.text = Mathf.FloorToInt(m_mpUI.fillAmount * m_player.m_stat.MaxMp).ToString() + " / " + (m_player.m_stat.MaxMp).ToString();
+            //m_mpText.text = Mathf.FloorToInt(m_onRecoverMana.fillAmount * m_player.m_stat.MaxMp).ToString() + " / " + (m_player.m_stat.MaxMp).ToString();
             m_mpText.text = Mathf.FloorToInt(m_mpUI.fillAmount * m_player.m_stat.MaxMp).ToString() + " / " + (m_player.m_stat.MaxMp).ToString();
             yield return null;
         }
         if (m_mpUI.fillAmount >= 1)
         {
             m_mpUI.fillAmount = 1;
-            //m_mpText.text = Mathf.FloorToInt(m_mpUI.fillAmount * m_player.m_stat.MaxMp).ToString() + " / " + (m_player.m_stat.MaxMp).ToString();
+            //m_mpText.text = Mathf.FloorToInt(m_onRecoverMana.fillAmount * m_player.m_stat.MaxMp).ToString() + " / " + (m_player.m_stat.MaxMp).ToString();
             m_mpText.text = Mathf.FloorToInt(m_mpUI.fillAmount * m_player.m_stat.MaxMp).ToString() + " / " + (m_player.m_stat.MaxMp).ToString();
         }
     }
     #endregion
+
+    public void MPUI(float amount)
+    {
+        m_mpUI.fillAmount = amount / m_player.m_stat.MaxMp;
+        m_mpText.text = Mathf.FloorToInt(m_mpUI.fillAmount * m_player.m_stat.MaxMp).ToString() + " / " + (m_player.m_stat.MaxMp).ToString();
+    }
 }

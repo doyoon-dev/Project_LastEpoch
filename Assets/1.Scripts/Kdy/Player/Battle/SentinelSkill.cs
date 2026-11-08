@@ -43,19 +43,19 @@ public class SentinelSkill : Skill, ISkill_Lunge
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Q))
-        {
-            Skill_ErasingStrike(KeyCode.Q);
-        }
-        if(Input.GetKey(KeyCode.R))
-        {
-            UsingSkillMp(Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
-        }
-        Skill_WarPath(KeyCode.W);
-        if (Input.GetKey(KeyCode.E))
-        {
-            Skill_Lunge(KeyCode.E);
-        }
+        //if (Input.GetKey(KeyCode.Q))
+        //{
+        //    Skill_ErasingStrike(KeyCode.Q);
+        //}
+        //if(Input.GetKey(KeyCode.R))
+        //{
+        //    UsingSkillMp(Time.deltaTime * SkillDataManager.m_skillDataDic["Warpath"].Channeling);
+        //}
+        //Skill_WarPath(KeyCode.W);
+        //if (Input.GetKey(KeyCode.E))
+        //{
+        //    Skill_Lunge(KeyCode.E);
+        //}
         //Skill_Lunge(KeyCode.E);
     }
 
