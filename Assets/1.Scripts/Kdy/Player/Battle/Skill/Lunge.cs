@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 돌격 스킬
 public class Lunge : SkillBase
 {
     GameObject obj;
